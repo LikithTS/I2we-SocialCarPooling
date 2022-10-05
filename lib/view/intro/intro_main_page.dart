@@ -21,28 +21,11 @@ class IntoMainPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset("assets/images/intro_one.png",
-                     fit: BoxFit.cover),
-               SizedBox(height: 10.h,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('Hi, Welcome',
-                          style: TextStyle(fontSize:29.sp,color: primaryColor,fontFamily: 'assets/fonts/poppins_bold.ttf')),
-                    )
-                ),
+                imageSlide("assets/images/intro_one.png"),
                 SizedBox(height: 10.h,),
-                Container(
-                  margin: EdgeInsets.only(left: 30,right: 100),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Expanded(
-                        child: Text('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car',
-                          style: TextStyle(fontSize:14.sp,height:1.3,color: Colors.black,fontWeight:FontWeight.normal,fontFamily: 'assets/fonts/poppins_regular.ttf'),maxLines: 3,),
-                      ),
-                    )
-                )
+                headerText('Hi, Welcome'),
+                SizedBox(height: 10.h,),
+                smallText('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
               ],
             )),
         Container(
@@ -53,28 +36,11 @@ class IntoMainPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset("assets/images/intro_two.png",
-                    fit: BoxFit.cover),
+                imageSlide("assets/images/intro_two.png"),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('Hi, Welcome',
-                          style: TextStyle(fontSize:29.sp,color: primaryColor,fontFamily: 'assets/fonts/poppins_bold.ttf')),
-                    )
-                ),
+                headerText('Save Fuel'),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.only(left: 30,right: 100),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Expanded(
-                        child: Text('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car',
-                          style: TextStyle(fontSize:14.sp,height:1.3,color: Colors.black,fontWeight:FontWeight.normal,fontFamily: 'assets/fonts/poppins_regular.ttf'),maxLines: 3,),
-                      ),
-                    )
-                )
+                smallText('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
               ],
             )),
         Container(
@@ -85,28 +51,11 @@ class IntoMainPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset("assets/images/intro_three.png",
-                    fit: BoxFit.cover),
+                imageSlide("assets/images/intro_three.png"),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('Hi, Welcome',
-                          style: TextStyle(fontSize:29.sp,color: primaryColor,fontFamily: 'assets/fonts/poppins_bold.ttf')),
-                    )
-                ),
+                headerText('Save Environment'),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.only(left: 30,right: 100),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Expanded(
-                        child: Text('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car',
-                          style: TextStyle(fontSize:14.sp,height:1.3,color: Colors.black,fontWeight:FontWeight.normal,fontFamily: 'assets/fonts/poppins_regular.ttf'),maxLines: 3,),
-                      ),
-                    )
-                )
+                smallText('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
               ],
             )),
         Container(
@@ -117,28 +66,11 @@ class IntoMainPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset("assets/images/intro_four.png",width: 300,height: 250,
-                    fit: BoxFit.cover),
+                imageSlide("assets/images/intro_four.png"),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text('Make New Friends',
-                          style: TextStyle(fontSize:29.sp,color: primaryColor,fontFamily: 'assets/fonts/poppins_bold.ttf')),
-                    )
-                ),
+                headerText('Make New Friends'),
                 SizedBox(height: 10.h,),
-                Container(
-                    margin: EdgeInsets.only(left: 30,right:100),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Expanded(
-                        child: Text('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car',
-                          style: TextStyle(fontSize:14.sp,height:1.3,color: Colors.black,fontWeight:FontWeight.normal,fontFamily: 'assets/fonts/poppins_regular.ttf'),maxLines: 3,),
-                      ),
-                    )
-                )
+                smallText('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
               ],
             )),
       ],
@@ -152,4 +84,27 @@ class IntoMainPage extends StatelessWidget {
       },
     );
   }
+
+  Widget imageSlide(String url) => Image.asset(url,width: 300.w,height: 250.h,
+      fit: BoxFit.cover);
+
+  Widget smallText(String text) =>   Container(
+      margin: EdgeInsets.only(left: 30,right:100),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Expanded(
+          child: Text('A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car',
+            style: TextStyle(fontSize:14.sp,height:1.3,color: Colors.black,fontWeight:FontWeight.normal,decoration: TextDecoration.none,fontFamily: 'Poppins'),maxLines: 3,),
+        ),
+      )
+  );
+  Widget headerText(String title) =>  Container(
+      margin: EdgeInsets.symmetric(horizontal: 30.w),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(title,
+            style: TextStyle(fontSize:29.sp,decoration: TextDecoration.none,color: primaryColor,fontWeight: FontWeight.bold,fontFamily: 'Poppins')),
+      )
+  );
+
 }

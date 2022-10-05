@@ -102,14 +102,14 @@ class _IntroPageState extends State<IntroPage> {
         primary: title=='Skip'?Colors.white:primaryLightColor,
         textStyle: TextStyle(
             fontSize: 20.sp,
-            fontWeight: FontWeight.w600),
-        side: title=='Skip'?BorderSide(width: 1.0):BorderSide(width:0),
+            fontFamily: 'assets/fonts/poppins_medium.ttf'),
+        side: title=='Skip'?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.only(left: 12,right: 12),
         child: Text(
           title,
-          style: TextStyle(color: title=='Skip'?primaryLightColor:Colors.white),
+          style: TextStyle(color: title=='Skip'?borderColor:Colors.white,decoration: TextDecoration.none,fontFamily: 'assets/fonts/poppins_medium.ttf'),
         ),
       ),
       onPressed: callback,
