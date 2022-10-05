@@ -21,8 +21,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.blue,
-            textTheme:
-            GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
+              fontFamily: 'Poppins'
           ),
           home: child,
         );

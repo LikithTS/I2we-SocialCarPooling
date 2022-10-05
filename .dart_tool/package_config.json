@@ -128,6 +128,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "getwidget",
+      "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/getwidget-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "google_fonts",
       "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-3.0.1",
       "packageUri": "lib/",
@@ -144,6 +150,12 @@
       "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "intro_slider",
+      "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/intro_slider-4.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "json_annotation",
@@ -184,6 +196,12 @@
     {
       "name": "octo_image",
       "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/octo_image-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "page_transition",
+      "rootUri": "file:///Users/muthusoftlabs/Satya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/page_transition-2.0.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -368,7 +386,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-10-04T17:17:49.587437Z",
+  "generated": "2022-10-05T07:45:33.992299Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }
