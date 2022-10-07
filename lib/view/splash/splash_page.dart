@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/util/dimens.dart';
+import 'package:socialcarpooling/util/margin_confiq.dart';
 
+import '../../util/string_url.dart';
+import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
 import '../intro/intro_main_page.dart';
 
@@ -32,20 +37,16 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         body: Stack(
           children: [
             Center(
-              child: Image.asset(
-                'assets/images/splash_image.png',
-                width: 118.w,height: 122.h,
-              ),
-            ),
+              child:imageAssets(StringUrl.splashImage,Dimens().screenWidth,Dimens().screenWidth)),
             Container(
-              margin: EdgeInsets.only(bottom: 60.h),
+              margin: EdgeInsets.only(bottom: margin60.h),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  secondaryTextWidget(context,'Please Wait'),
-                  SizedBox(height: 10.h,),
-                  primaryTextWidget(context, 'Working on the task'),
+                  secondaryTextWidget(context,Constant.please_wait),
+                  SizedBox(height: margin10.h,),
+                  primaryTextWidget(context, Constant.working_task),
                 ],
               ),
             )

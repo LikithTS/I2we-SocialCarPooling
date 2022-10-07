@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-              fontFamily: 'Poppins'
-          ),
+          theme:  ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(
+        Theme.of(context).textTheme,
+        ),),
           home: child,
         );
       },
