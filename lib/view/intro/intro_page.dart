@@ -4,7 +4,6 @@ import 'package:socialcarpooling/util/color.dart';
 
 import '../../util/margin_confiq.dart';
 
-
 class IntroPage extends StatefulWidget {
   final List<Widget> pages;
   final VoidCallback onIntroCompleted;
@@ -13,7 +12,7 @@ class IntroPage extends StatefulWidget {
     Key? key,
     required this.pages,
     required this.onIntroCompleted,
-  })  : super(key: key);
+  }) : super(key: key);
 
   @override
   State<IntroPage> createState() => _IntroPageState();
@@ -56,9 +55,10 @@ class _IntroPageState extends State<IntroPage> {
             ),
           ),
         ),
-        SizedBox(height: 60.h,),
+        SizedBox(
+          height: 60.h,
+        ),
         _buildBottomButtons(),
-
       ],
     );
   }
@@ -68,13 +68,15 @@ class _IntroPageState extends State<IntroPage> {
   Widget _buildBottomButtons() {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      margin: EdgeInsets.only(bottom: 60,left: 10,right: 10),
+      margin: EdgeInsets.only(bottom: 60, left: 10, right: 10),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           _buildNavIndicator(),
-          SizedBox(height: 63,),
+          SizedBox(
+            height: 63,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -96,26 +98,28 @@ class _IntroPageState extends State<IntroPage> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(margin10)
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(margin10)),
         ), // <-- Radius
-        primary: title=='Skip'?Colors.white:primaryLightColor,
+        primary: title == 'Skip' ? Colors.white : primaryLightColor,
         textStyle: TextStyle(
-            fontSize: 20.sp,
-            fontFamily: 'assets/fonts/poppins_medium.ttf'),
-        side: title=='Skip'?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
+            fontSize: 20.sp, fontFamily: 'assets/fonts/poppins_medium.ttf'),
+        side: title == 'Skip'
+            ? BorderSide(width: 1.0, color: borderColor)
+            : BorderSide(width: 0, color: primaryLightColor),
       ),
       child: Padding(
-        padding:  EdgeInsets.only(left: 12,right: 12),
+        padding: EdgeInsets.only(left: 12, right: 12),
         child: Text(
           title,
-          style: TextStyle(color: title=='Skip'?borderColor:Colors.white,decoration: TextDecoration.none,fontFamily: 'assets/fonts/poppins_medium.ttf'),
+          style: TextStyle(
+              color: title == 'Skip' ? borderColor : Colors.white,
+              decoration: TextDecoration.none,
+              fontFamily: 'assets/fonts/poppins_medium.ttf'),
         ),
       ),
       onPressed: callback,
     );
   }
-
 
   void _gotoLastPage() {
     _pageController!.animateToPage(
@@ -136,25 +140,25 @@ class _IntroPageState extends State<IntroPage> {
     final indicatorList = <Widget>[];
     for (int i = 0; i < widget.pages.length; i++)
       indicatorList.add(_buildIndicator(i == _currentPage));
-    return Row(mainAxisAlignment: MainAxisAlignment.center,
-        children: indicatorList);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center, children: indicatorList);
   }
 
   Widget _buildIndicator(bool isActive) {
     return Container(
-        margin: EdgeInsets.only(left: 10),
-        decoration: BoxDecoration(
-          color: isActive?primaryColor:Colors.transparent,
-          border: Border.all(
-              width: 1.0,color:isActive?Colors.transparent:borderColor
-          ),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-          ),
-        ),
-        child: Align(
+      margin: EdgeInsets.only(left: 10),
+      decoration: BoxDecoration(
+        color: isActive ? primaryColor : Colors.transparent,
+        border: Border.all(
+            width: 1.0, color: isActive ? Colors.transparent : borderColor),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      child: Align(
           alignment: Alignment.center,
-            child: SizedBox(width: 22.w,height: 10.h,)),
+          child: SizedBox(
+            width: 22.w,
+            height: 10.h,
+          )),
     );
   }
 }
