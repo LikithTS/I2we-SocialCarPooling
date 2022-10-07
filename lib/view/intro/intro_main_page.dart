@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
-import 'package:socialcarpooling/widgets/text_widgets.dart';
+import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 class IntoMainPage extends StatelessWidget {
   const IntoMainPage({Key? key}) : super(key: key);
@@ -80,7 +79,7 @@ class IntoMainPage extends StatelessWidget {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child:HomePage()));
+                child:QuestionariePage()));
       },
     );
   }
