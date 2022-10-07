@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
 
 import '../../util/color.dart';
@@ -99,7 +101,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void login() {}
+  void login() {
+    Navigator.pushReplacement(
+        context,
+        PageTransition(
+            type: PageTransitionType.bottomToTop, child: HomePage()));
+  }
 
   Widget _buildButton(String title, VoidCallback callback) {
     return ElevatedButton(
