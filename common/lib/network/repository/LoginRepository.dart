@@ -1,11 +1,11 @@
 import 'dart:developer';
 
+import 'package:common/network/apiclient.dart';
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/request/loginapi.dart';
+import 'package:common/network/response/LoginResponse.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:dio/dio.dart';
-import 'package:socialcarpooling/network/apiclient.dart';
-import 'package:socialcarpooling/network/model/error_response.dart';
-import 'package:socialcarpooling/network/request/loginapi.dart';
-import 'package:socialcarpooling/network/response/LoginResponse.dart';
-import 'package:socialcarpooling/network/response/SuccessResponse.dart';
 
 class LoginRepository{
 

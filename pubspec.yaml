@@ -63,6 +63,10 @@ dependencies:
   #Shared Pref
   shared_preferences: ^2.0.15
 
+  #Modular
+  common:
+    path: common
+
 
 dev_dependencies:
   flutter_test:

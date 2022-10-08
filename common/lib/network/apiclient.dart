@@ -1,5 +1,5 @@
+import 'package:common/network/interceptors/logging_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:socialcarpooling/network/interceptors/logging_interceptor.dart';
 
 
 class APIClient {
