@@ -19,4 +19,11 @@ Widget secondaryTextWidget(BuildContext context,String text) =>Container(
     )
 );
 
+Widget primaryThemeTextWidget(BuildContext context,String text) =>Container(
+    child: Align(
+      alignment: Alignment.center,
+      child: Text(text,
+          style: TextStyle(fontSize:17.sp,fontWeight: FontWeight.bold,color: textThemeColor,decoration: TextDecoration.none,fontFamily: 'Poppins')),
+    )
+);
 
