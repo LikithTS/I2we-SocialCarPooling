@@ -67,6 +67,11 @@ dependencies:
   common:
     path: common
 
+  #Date Picker
+  intl: ^0.17.0
+
+   #flar animations:
+  flare_flutter: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +99,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/svgimages/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

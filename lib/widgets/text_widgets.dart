@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/font_size.dart';
 
@@ -17,7 +18,7 @@ Widget primaryTextWidget(BuildContext context,String text) =>Container(
    child: Align(
       alignment: Alignment.center,
       child: Text(text,
-          style: TextStyle(fontSize:fontSize17,fontWeight: FontWeight.w500,color: Colors.black,decoration: TextDecoration.none,fontFamily: Constant.fontFamilyPoppins)),
+          style: TextStyleUtils.primaryTextBold),
     )
 );
 
