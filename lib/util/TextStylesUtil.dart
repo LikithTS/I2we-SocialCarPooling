@@ -22,7 +22,6 @@ abstract class TextStyleUtils {
       fontFamily: 'Poppins',
       color: Colors.black,
       fontSize: 20,
-      height: 0.5,
       fontWeight: FontWeight.w400);
 
 
@@ -46,8 +45,7 @@ abstract class TextStyleUtils {
   static const TextStyle primaryTextBold = TextStyle(
       fontFamily: 'Poppins',
       color: Colors.black,
-      fontSize: 20,
-      height: 0.5,
+      fontSize: 22,
       fontWeight: FontWeight.w700);
 
   static const TextStyle progressFooter = TextStyle(

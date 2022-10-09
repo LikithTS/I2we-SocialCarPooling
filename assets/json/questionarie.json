@@ -1,0 +1,197 @@
+{
+  "questionarie": [
+    {
+      "category": "Indoor",
+      "id": 1,
+      "enabled": true,
+      "subcategory": [
+        {
+          "id": 1,
+          "name": "Badminton",
+          "enabled": true
+        },
+        {
+          "id": 2,
+          "name": "Bowlin",
+          "enabled": true
+        },
+        {
+          "id": 3,
+          "name": "Handball",
+          "enabled": true
+        },
+        {
+          "id": 1,
+          "name": "Badminton",
+          "enabled": true
+        },
+        {
+          "id": 2,
+          "name": "Bowlin",
+          "enabled": true
+        },
+        {
+          "id": 3,
+          "name": "Handball",
+          "enabled": true
+        },
+        {
+          "id": 1,
+          "name": "Badminton",
+          "enabled": true
+        },
+        {
+          "id": 2,
+          "name": "Bowlin",
+          "enabled": true
+        },
+        {
+          "id": 3,
+          "name": "Handball",
+          "enabled": true
+        },
+        {
+          "id": 1,
+          "name": "Badminton",
+          "enabled": true
+        },
+        {
+          "id": 2,
+          "name": "Bowlin",
+          "enabled": true
+        },
+        {
+          "id": 3,
+          "name": "Handball",
+          "enabled": true
+        },
+        {
+          "id": 1,
+          "name": "Badminton",
+          "enabled": true
+        },
+        {
+          "id": 2,
+          "name": "Bowlin",
+          "enabled": true
+        },
+        {
+          "id": 3,
+          "name": "Handball",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "category": "Outdoor",
+      "id": 2,
+      "enabled": true,
+      "subcategory": [
+        {
+          "id": 4,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 5,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 6,
+          "name": "Foot ball",
+          "enabled": true
+        },
+        {
+          "id": 4,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 5,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 6,
+          "name": "Foot ball",
+          "enabled": true
+        },
+        {
+          "id": 4,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 5,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 6,
+          "name": "Foot ball",
+          "enabled": true
+        },
+        {
+          "id": 4,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 5,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 6,
+          "name": "Foot ball",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "category": "Wellbeing",
+      "id": 3,
+      "enabled": true,
+      "subcategory": [
+        {
+          "id": 7,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 8,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 9,
+          "name": "Foot ball",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "category": "Water Games",
+      "id": 4,
+      "enabled": true,
+      "subcategory": [
+        {
+          "id": 10,
+          "name": "cricket",
+          "enabled": true
+        },
+        {
+          "id": 11,
+          "name": "Cycling",
+          "enabled": true
+        },
+        {
+          "id": 12,
+          "name": "Foot ball",
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}
