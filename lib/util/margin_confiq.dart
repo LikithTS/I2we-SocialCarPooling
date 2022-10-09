@@ -17,8 +17,11 @@ double margin30 = 30;
 double margin35 = 35;
 double margin50 = 50;
 double margin60 = 60;
+double margin64 = 64;
 double margin90 = 90;
 double margin100 = 100;
+double margin110 = 110;
+double margin390 = 390;
 
 
 double width150 = 150;

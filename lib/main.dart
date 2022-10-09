@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/view/splash/splash_page.dart';
 
 void main() {

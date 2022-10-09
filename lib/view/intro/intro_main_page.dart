@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/util/dimens.dart';
+import 'package:socialcarpooling/util/font_size.dart';
+import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
@@ -13,92 +19,91 @@ class IntoMainPage extends StatelessWidget {
     return IntroPage(
       pages: <Widget>[
         Container(
-            margin: EdgeInsets.only(top: 110),
-            width: 390.w,
-            height: 390.h,
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(top: margin110),
+            width: margin390.w,
+            height: margin390.h,
+            padding: EdgeInsets.all(margin20),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                imageSlide("assets/images/intro_one.png"),
+                imageSlide(StringUrl.introOne),
                 SizedBox(
-                  height: 10.h,
+                  height:margin10,
                 ),
-                headerText('Hi, Welcome'),
+                headerText(CPString.welcome),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10,
                 ),
                 smallText(
-                    'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
+                    CPString.tempText)
               ],
             )),
         Container(
-            margin: EdgeInsets.only(top: 110),
-            width: 390.w,
-            height: 390.h,
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(top: margin110),
+            width: margin390.w,
+            height: margin390.h,
+            padding: EdgeInsets.all(margin20),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                imageSlide("assets/images/intro_two.png"),
+                imageSlide(StringUrl.introTwo),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10,
                 ),
-                headerText('Save Fuel'),
+                headerText(CPString.saveFuel),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10,
                 ),
                 smallText(
-                    'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
+                    CPString.tempText)
               ],
             )),
         Container(
-            margin: EdgeInsets.only(top: 110),
-            width: 390.w,
-            height: 390.h,
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(top: margin110),
+            width: margin390.w,
+            height: margin390.h,
+            padding: EdgeInsets.all(margin20),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                imageSlide("assets/images/intro_three.png"),
+                imageSlide(StringUrl.introThree),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10,
                 ),
-                headerText('Save Environment'),
+                headerText(CPString.SaveEnvironment),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10,
                 ),
                 smallText(
-                    'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
+                    CPString.tempText)
               ],
             )),
         Container(
-            margin: EdgeInsets.only(top: 110),
-            width: 390.w,
-            height: 390.h,
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(top: margin110),
+            width: margin390.w,
+            height: margin390.h,
+            padding: EdgeInsets.all(margin20),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                imageSlide("assets/images/intro_four.png"),
+                imageSlide(StringUrl.introFour),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10.h,
                 ),
-                headerText('Make New Friends'),
+                headerText(CPString.makeFriends),
                 SizedBox(
-                  height: 10.h,
+                  height: margin10.h,
                 ),
                 smallText(
-                    'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car')
+                    CPString.tempText)
               ],
             )),
       ],
       onIntroCompleted: () {
-        print("Into is Completed");
         Navigator.pushReplacement(
             context,
             PageTransition(
@@ -109,32 +114,21 @@ class IntoMainPage extends StatelessWidget {
   }
 
   Widget imageSlide(String url) =>
-      Image.asset(url, width: 300.w, height: 250.h, fit: BoxFit.cover);
+      Image.asset(url, width: introImageWidth, height: introImageHeight, fit: BoxFit.cover);
 
   Widget smallText(String text) => Expanded(
         child: Text(
           text,
-          style: TextStyle(
-              fontSize: 14.sp,
-              height: 1.3,
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              fontFamily: 'Poppins'),
+          style: TextStyleUtils.primaryTextRegular,
           maxLines: 3,
         ),
       );
 
   Widget headerText(String title) => Container(
-      margin: EdgeInsets.symmetric(horizontal: 30.w),
+      margin: EdgeInsets.symmetric(horizontal: margin30.w),
       child: Align(
         alignment: Alignment.topLeft,
         child: Text(title,
-            style: TextStyle(
-                fontSize: 29.sp,
-                decoration: TextDecoration.none,
-                color: primaryColor,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins')),
+            style: TextStyleUtils.primaryTextBold),
       ));
 }

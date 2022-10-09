@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/font_size.dart';
 
 import '../util/color.dart';
@@ -10,7 +10,7 @@ Widget headerTextWidget(BuildContext context,String text) =>Container(
    child: Align(
       alignment: Alignment.center,
       child: Text(text,
-          style: TextStyle(fontSize:fontSize17,fontWeight: FontWeight.w500,color: Colors.black,decoration: TextDecoration.none,fontFamily: Constant.fontFamilyPoppins)),
+          style: TextStyle(fontSize:fontSize17,fontWeight: FontWeight.w500,color: Colors.black,decoration: TextDecoration.none,fontFamily: CPString.fontFamilyPoppins)),
     )
 );
 
@@ -26,14 +26,14 @@ Widget secondaryTextWidget(BuildContext context,String text) =>Container(
     child: Align(
       alignment: Alignment.center,
       child: Text(text,
-          style: TextStyle(fontSize:fontSize20,fontWeight: FontWeight.w800,color: primaryColor,decoration: TextDecoration.none,fontFamily: Constant.fontFamilyPoppins)),
+          style: TextStyle(fontSize:fontSize20,fontWeight: FontWeight.w800,color: primaryColor,decoration: TextDecoration.none,fontFamily: CPString.fontFamilyPoppins)),
     )
 );
 Widget teritaryTextWidget(BuildContext context,String text) =>Container(
     child: Align(
       alignment: Alignment.center,
       child: Text(text,
-          style: TextStyle(fontSize:fontSize20,fontWeight: FontWeight.w800,color: primaryColor,decoration: TextDecoration.none,fontFamily: Constant.fontFamilyPoppins)),
+          style: TextStyle(fontSize:fontSize20,fontWeight: FontWeight.w800,color: primaryColor,decoration: TextDecoration.none,fontFamily: CPString.fontFamilyPoppins)),
     )
 );
 

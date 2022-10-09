@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 
 import '../../util/margin_confiq.dart';
@@ -56,7 +58,7 @@ class _IntroPageState extends State<IntroPage> {
             ),
           ),
         ),
-        SizedBox(height: 60.h,),
+        SizedBox(height: margin60.h,),
         _buildBottomButtons(),
 
       ],
@@ -67,24 +69,24 @@ class _IntroPageState extends State<IntroPage> {
 
   Widget _buildBottomButtons() {
     return Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: EdgeInsets.only(bottom: 60,left: 10,right: 10),
+      padding:  EdgeInsets.all(margin8),
+      margin: EdgeInsets.only(bottom: margin60,left: margin10,right: margin10),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           _buildNavIndicator(),
-          SizedBox(height: 63,),
+          SizedBox(height: margin64,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Opacity(
                 opacity: _isFinalPage ? 0.0 : 1.0,
-                child: _buildButton("Skip", _gotoLastPage),
+                child: _buildButton(CPString.skip, _gotoLastPage),
               ),
               _isFinalPage
-                  ? _buildButton("Done", widget.onIntroCompleted)
-                  : _buildButton("Next", _gotoNextPage),
+                  ? _buildButton(CPString.done, widget.onIntroCompleted)
+                  : _buildButton(CPString.next, _gotoNextPage),
             ],
           ),
         ],
@@ -99,17 +101,15 @@ class _IntroPageState extends State<IntroPage> {
           borderRadius: BorderRadius.all(Radius.circular(margin10)
           ),
         ), // <-- Radius
-        primary: title=='Skip'?Colors.white:primaryLightColor,
-        textStyle: TextStyle(
-            fontSize: 20.sp,
-            fontFamily: 'assets/fonts/poppins_medium.ttf'),
-        side: title=='Skip'?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
+        primary: title==CPString.skip?Colors.white:primaryLightColor,
+        textStyle: TextStyleUtils.primaryTextRegular,
+        side: title==CPString.skip?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
       ),
       child: Padding(
-        padding:  EdgeInsets.only(left: 12,right: 12),
+        padding:  EdgeInsets.only(left: margin12,right: margin12),
         child: Text(
           title,
-          style: TextStyle(color: title=='Skip'?borderColor:Colors.white,decoration: TextDecoration.none,fontFamily: 'assets/fonts/poppins_medium.ttf'),
+         style: TextStyleUtils.primaryTextRegular.copyWith(color: title==CPString.skip?borderColor:Colors.white),
         ),
       ),
       onPressed: callback,

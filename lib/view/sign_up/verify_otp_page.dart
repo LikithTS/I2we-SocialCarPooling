@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
@@ -62,9 +62,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  headerLayout(context, Constant.verifyOTP),
+                  headerLayout(context, CPString.verifyOTP),
                  Text(
-                        Constant.verifyOTPTitle,
+                        CPString.verifyOTPTitle,
                         style: TextStyleUtils.primaryTextMedium
                             .copyWith(fontSize: 14),
                       ),
@@ -81,9 +81,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: inputEditTextWithPrefixWidget(
                             context,
-                            Constant.mobileNo,
+                            CPString.mobileNo,
                             mobileNoController,
-                            Constant.mobileError,
+                            CPString.mobileError,
                             Icons.mobile_screen_share_outlined,4,this,widget.mobileNo),
                       ),
                       Positioned(
@@ -315,7 +315,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                       child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          Constant.verify,
+                          CPString.verify,
                           style: TextStyle(fontSize: fontSize18),
                         ),
                       ),

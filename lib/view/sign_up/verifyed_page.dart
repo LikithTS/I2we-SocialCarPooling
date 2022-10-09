@@ -4,7 +4,7 @@ import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 
-import '../../util/constant.dart';
+import '../../util/CPString.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
 
@@ -59,7 +59,7 @@ class _VerifiedPageState extends State<VerifiedPage> {
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      Constant.continueString,
+                      CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),
                     ),
                   ),

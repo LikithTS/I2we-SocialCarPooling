@@ -6,7 +6,7 @@ import 'package:socialcarpooling/util/Validation.dart';
 
 import '../util/TextStylesUtil.dart';
 import '../util/color.dart';
-import '../util/constant.dart';
+import '../util/CPString.dart';
 
 Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,TextEditingController _controller,String errorText,IconData icon,int flag,InputValidationMixin inputValidationMixin,String initValue) =>  Card(
     shape: RoundedRectangleBorder(
@@ -33,15 +33,15 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
           }
           else if(flag==1 && inputValidationMixin.isNameString(value))
             {
-              return Constant.nameError;
+              return CPString.nameError;
             }
           else if(flag==2 && !inputValidationMixin.isValidPhoneNumber(value))
             {
-              return Constant.mobileValidError;
+              return CPString.mobileValidError;
             }
           else if(flag==3 && !inputValidationMixin.isEmailValid(value))
             {
-              return Constant.emailValidError;
+              return CPString.emailValidError;
             }
           return null;
         },

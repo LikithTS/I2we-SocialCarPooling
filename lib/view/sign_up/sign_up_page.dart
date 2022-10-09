@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
@@ -90,11 +90,11 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   Text('Sign Up', style: TextStyleUtils.primaryTextBold)
                 ],
               ),*/
-              headerLayout(context, Constant.signUp),
+              headerLayout(context, CPString.signUp),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: inputEditTextWithPrefixWidget(context, Constant.fullName,
-                    fullNameController, Constant.fullNameError, Icons.person,1,this,''),
+                child: inputEditTextWithPrefixWidget(context, CPString.fullName,
+                    fullNameController, CPString.fullNameError, Icons.person,1,this,''),
               ),
               const SizedBox(
                 height: 10,
@@ -103,9 +103,9 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: inputEditTextWithPrefixWidget(
                     context,
-                    Constant.mobileNo,
+                    CPString.mobileNo,
                     mobileNoController,
-                    Constant.mobileError,
+                    CPString.mobileError,
                     Icons.mobile_screen_share_outlined,2,this,''),
               ),
               const SizedBox(
@@ -113,8 +113,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: inputEditTextWithPrefixWidget(context, Constant.email,
-                    emailNoController, Constant.emailError, Icons.email,3,this,''),
+                child: inputEditTextWithPrefixWidget(context, CPString.email,
+                    emailNoController, CPString.emailError, Icons.email,3,this,''),
               ),
               const SizedBox(
                 height: 10,
@@ -142,7 +142,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                                     isExpanded: true,
                                     value: selectedValue,
                                     hint: const Text(
-                                      Constant.gender,
+                                      CPString.gender,
                                       style: TextStyleUtils.primaryTextMedium,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -187,9 +187,9 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                               color: primaryColor,
                             ),
                             border: InputBorder.none,
-                            labelText: Constant.selectDate,
+                            labelText: CPString.selectDate,
                             labelStyle: TextStyleUtils.hintTextStyle,
-                            hintText: Constant.selectDate,
+                            hintText: CPString.selectDate,
                             hintStyle: TextStyleUtils.hintTextStyle,
                           ),
                           onTap: () async {
@@ -198,7 +198,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                           },
                           validator: (value) {
                             if (value!.isEmpty || value.isEmpty) {
-                              return Constant.selectDate;
+                              return CPString.selectDate;
                             }
                             return null;
                           },
@@ -219,7 +219,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     SizedBox(width: 5,),
                     Container(
                       margin: EdgeInsets.only(top: 5),
-                        child: Text(Constant.passwordInfo,style: TextStyleUtils.primaryTextRegular.copyWith(fontSize: 14),))
+                        child: Text(CPString.passwordInfo,style: TextStyleUtils.primaryTextRegular.copyWith(fontSize: 14),))
                   ],
                 ),
               ),
@@ -238,8 +238,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
-                        labelText: Constant.password,
-                        hintText: Constant.password,
+                        labelText: CPString.password,
+                        hintText: CPString.password,
                         labelStyle: TextStyleUtils.hintTextStyle,
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
@@ -261,11 +261,11 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return Constant.passwordError;
+                          return CPString.passwordError;
                         }
                         else if(isPasswordValid(value))
                         {
-                          return Constant.passwordValidError;
+                          return CPString.passwordValidError;
 
                         }
                         return null;
@@ -289,8 +289,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       controller: cpasswordController,
                       obscureText: !_cpasswordVisible,
                       decoration: InputDecoration(
-                        labelText: Constant.confirmPassword,
-                        hintText: Constant.confirmPassword,
+                        labelText: CPString.confirmPassword,
+                        hintText: CPString.confirmPassword,
                         labelStyle: TextStyleUtils.hintTextStyle,
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
@@ -312,15 +312,15 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return Constant.cPasswordError;
+                          return CPString.cPasswordError;
                         }
                         else if(isPasswordValid(value))
                         {
-                          return Constant.passwordValidError;
+                          return CPString.passwordValidError;
                         }
                         else if(passwordController.text.toString()!=value)
                         {
-                          return Constant.cPasswordValidError;
+                          return CPString.cPasswordValidError;
                         }
                         return null;
                       },
@@ -442,7 +442,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Padding(
                    padding: EdgeInsets.all(20),
                     child: Text(
-                      Constant.continueString,
+                      CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),
                     ),
                   ),

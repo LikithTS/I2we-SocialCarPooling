@@ -1,6 +1,6 @@
 mixin InputValidationMixin {
 
-  bool isPasswordValid(String password) => password.length == 6;
+  bool isPasswordValid(String password) => password.length > 4;
 
   bool isEmailValid(String em) {
     String p =
