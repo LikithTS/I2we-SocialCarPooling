@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../buttons/elevated_button_view.dart';
 import '../../../buttons/outline_button_view.dart';
 import '../../../util/constant.dart';
+import '../../../utils/Localization.dart';
 import '../../../utils/ride_status_text_function.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
-import '../../../widgets/text_view_bold.dart';
-import '../../../widgets/text_view_normal.dart';
+import '../../../widgets/text_widgets.dart';
 
 class UpcomingRides extends StatelessWidget {
   final String carIcon;
@@ -40,56 +40,70 @@ class UpcomingRides extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SafeArea(
+        child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Card(
           child: Container(
+        width: double.infinity,
         margin: const EdgeInsets.all(5.0),
         child: Wrap(
           direction: Axis.horizontal,
           children: [
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 5, top: 5, bottom: 5),
-                  child: Image.asset(carIcon,
-                      width: 60, height: 60, fit: BoxFit.cover),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 5, top: 5, bottom: 5),
+                    child: Image.asset(carIcon,
+                        width: 60, height: 60, fit: BoxFit.cover),
+                  ),
                 ),
                 const SizedBox(width: 20),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 5, right: 10, top: 5, bottom: 5),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.route_rounded),
-                      const SizedBox(width: 5),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          textViewBold('From'),
-                          textViewNormal(startAddress),
-                          textViewBold('To'),
-                          textViewNormal(endAddress),
-                        ],
-                      ),
-                    ],
+                Expanded(
+                  flex: 6,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 5, right: 10, top: 5, bottom: 5),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.route_rounded),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              primaryThemeTextNormal(context, DemoLocalizations.of(context)?.getText("from")),
+                              primaryTextNormalTwoLine(
+                                  context, startAddress),
+                              primaryThemeTextNormal(context, DemoLocalizations.of(context)?.getText("to")),
+                              primaryTextNormalTwoLine(context, endAddress),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: Column(
-                    children: [
-                      rideTypeView(rideType),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      if (rideType == Constant.AS_HOST) ...[
-                        rideAmountView(amount)
-                      ]
-                    ],
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
+                    child: Column(
+                      children: [
+                        rideTypeView(rideType),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (rideType == Constant.AS_HOST) ...[
+                          rideAmountView(amount)
+                        ]
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -128,7 +142,7 @@ class UpcomingRides extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  textViewNormal(coRidersCount),
+                  primaryTextNormalTwoLine(context, coRidersCount),
                 ],
               ),
             ),
@@ -151,6 +165,6 @@ class UpcomingRides extends StatelessWidget {
           ],
         ),
       )),
-    );
+    ));
   }
 }
