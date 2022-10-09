@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/font_size.dart';
 
 import '../util/color.dart';
 import '../utils/Localization.dart';
@@ -9,11 +12,11 @@ Widget primaryTextWidget(BuildContext context, String? text) => Container(
       alignment: Alignment.center,
       child: Text(text!,
           style: TextStyle(
-            fontSize: 17.sp,
+            fontSize: fontSize17,
             fontWeight: FontWeight.w500,
             color: Colors.black,
             decoration: TextDecoration.none,
-            fontFamily: 'Poppins',
+            fontFamily: CPString.fontFamilyPoppins,
             overflow: TextOverflow.ellipsis,
           )),
     ));
@@ -23,21 +26,21 @@ Widget secondaryTextWidget(BuildContext context, String? text) => Container(
       alignment: Alignment.center,
       child: Text(text!,
           style: TextStyle(
-              fontSize: 20.sp,
+              fontSize: fontSize20,
               fontWeight: FontWeight.w800,
               color: primaryColor,
               decoration: TextDecoration.none,
-              fontFamily: 'Poppins')),
+              fontFamily: CPString.fontFamilyPoppins)),
     ));
 
 Widget primaryThemeTextWidget(BuildContext context, String? text) => Container(
   child: Text(text! ,
       style: TextStyle(
-          fontSize: 17.sp,
+          fontSize: fontSize17,
           fontWeight: FontWeight.bold,
           color: textThemeColor,
           decoration: TextDecoration.none,
-          fontFamily: 'Poppins')),
+          fontFamily: CPString.fontFamilyPoppins)),
 );
 
 Widget primaryThemeTextNormal(BuildContext context, String? text) => Container(
@@ -47,7 +50,7 @@ Widget primaryThemeTextNormal(BuildContext context, String? text) => Container(
         fontWeight: FontWeight.bold,
         color: textThemeColor,
         decoration: TextDecoration.none,
-        fontFamily: 'Poppins',
+        fontFamily: CPString.fontFamilyPoppins,
       )),
 );
 
@@ -58,7 +61,7 @@ Widget primaryTextNormalTwoLine(BuildContext context, String? text) => Container
       fontWeight: FontWeight.bold,
       color: textGreyColor,
       decoration: TextDecoration.none,
-      fontFamily: 'Poppins',
+      fontFamily: CPString.fontFamilyPoppins,
       overflow: TextOverflow.ellipsis,
     ),
     maxLines: 2,
@@ -76,7 +79,7 @@ Widget primaryTextNormal(BuildContext context, String? text) => Center(
             fontWeight: FontWeight.normal,
             color: textGreyColor,
             decoration: TextDecoration.none,
-            fontFamily: 'Poppins'),
+            fontFamily: CPString.fontFamilyPoppins),
         maxLines: 3,
       ),
     ),
