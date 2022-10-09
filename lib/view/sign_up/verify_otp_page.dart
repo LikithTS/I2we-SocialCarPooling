@@ -32,8 +32,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
   bool enableResend = false;
   Timer? timer;
 
-  String resendOtp='Resend OTP in ';
-  String dontreciveOtp='Didn’t receive.Click here to ';
 
   @override
   void initState() {
@@ -248,7 +246,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                       maxLines: 1,
                       textScaleFactor: 1,
                       text: TextSpan(
-                        text: resendOtp,
+                        text: CPString.resendOtpIn,
                         style: TextStyleUtils.primaryTextRegular.copyWith(
                           color: borderColor,
                           fontSize: fontSize14,
@@ -273,14 +271,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                     maxLines: 1,
                     textScaleFactor: 1,
                     text: TextSpan(
-                      text: dontreciveOtp,
+                      text: CPString.dontreciveOtp,
                       style: TextStyleUtils.primaryTextRegular.copyWith(
                         color: borderColor,
                         fontSize: fontSize14,
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Resend OTP',
+                          text: CPString.resendOTP,
                           style: TextStyleUtils.primaryTextSemiBold.copyWith(
                             color: primaryColor,
                             fontSize: fontSize16,
@@ -292,8 +290,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                   ),
                   Container(
                     width: deviceWidth(context),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.symmetric(horizontal: margin20),
+                    margin: EdgeInsets.only(top: margin20),
                     child: ElevatedButton(
                       onPressed: () {
                         /* if (_formKey.currentState!.validate()) {
@@ -313,7 +311,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                         elevation: margin2,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(margin20),
                         child: Text(
                           CPString.verify,
                           style: TextStyle(fontSize: fontSize18),
@@ -327,7 +325,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
           ),
           Positioned(
             child: Container(
-              margin: EdgeInsets.only(bottom: 10),
+              margin: EdgeInsets.only(bottom: margin10),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: RichText(
@@ -338,14 +336,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                   maxLines: 1,
                   textScaleFactor: 1,
                   text: TextSpan(
-                    text: 'By Signing up ,you agree with our ',
+                    text: CPString.signupAgree,
                     style: TextStyleUtils.primaryTextRegular.copyWith(
                       color: borderColor,
                       fontSize: fontSize14,
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Terms & conditions',
+                        text: CPString.termsConditions,
                         style: TextStyleUtils.primaryTextSemiBold.copyWith(
                             color: primaryColor,
                             fontSize: fontSize16,

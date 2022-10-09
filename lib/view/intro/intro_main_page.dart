@@ -10,6 +10,7 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 class IntoMainPage extends StatelessWidget {
   const IntoMainPage({Key? key}) : super(key: key);
@@ -108,7 +109,7 @@ class IntoMainPage extends StatelessWidget {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child: QuestionariePage()));
+                child: SignUpPage()));
       },
     );
   }

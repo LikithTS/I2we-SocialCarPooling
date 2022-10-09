@@ -3,6 +3,7 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../util/CPString.dart';
 import '../../util/font_size.dart';
@@ -37,9 +38,9 @@ class _VerifiedPageState extends State<VerifiedPage> {
                 ),
               ),
               SizedBox(height: 20,),
-              Text('Thank You!',style: TextStyleUtils.primaryTextBold.copyWith(fontSize: fontSize27),textAlign: TextAlign.center,),
+              Text(CPString.thankYou,style: TextStyleUtils.primaryTextBold.copyWith(fontSize: fontSize27),textAlign: TextAlign.center,),
               SizedBox(height: 20,),
-              Text('The registration successful',style: TextStyleUtils.primaryTextMedium.copyWith(fontSize: fontSize20),textAlign: TextAlign.center,),
+              Text(CPString.registerSuccess,style: TextStyleUtils.primaryTextMedium.copyWith(fontSize: fontSize20),textAlign: TextAlign.center,),
               Container(
                 width: deviceWidth(context),
                 margin: EdgeInsets.only(left: 30,right: 30,top: 70,bottom: 10),
@@ -47,7 +48,7 @@ class _VerifiedPageState extends State<VerifiedPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                        HomePage()), (Route<dynamic> route) => false);
+                        QuestionariePage()), (Route<dynamic> route) => false);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: primaryLightColor,
