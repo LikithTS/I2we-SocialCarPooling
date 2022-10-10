@@ -4,12 +4,14 @@ class LoginTextForm extends StatelessWidget {
   final String hint;
   final IconData prefixIcon;
   final IconData suffixIcon;
+  final String? Function(String?)? formValidator;
 
   const LoginTextForm(
       {Key? key,
       required this.hint,
       required this.prefixIcon,
-      required this.suffixIcon})
+      required this.suffixIcon,
+      required this.formValidator})
       : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class LoginTextForm extends StatelessWidget {
           ]),
       child: TextFormField(
         textAlign: TextAlign.start,
+        validator: formValidator,
         decoration: InputDecoration(
             fillColor: Colors.grey,
             enabledBorder: UnderlineInputBorder(

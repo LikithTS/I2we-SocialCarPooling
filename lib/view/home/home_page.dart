@@ -6,6 +6,7 @@ import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.
 import 'package:socialcarpooling/view/home/tab_utils/bubble_tab_indicator.dart';
 import 'package:socialcarpooling/view/home/tab_utils/home_text_form.dart';
 
+import '../../buttons/elevated_button_view.dart';
 import '../../util/color.dart';
 
 class HomePage extends StatefulWidget {
@@ -195,7 +196,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             textformwithhint(
                 text: "Amount per seat", iconData: Icons.currency_rupee),
           ],
-        )
+        ),
+        addVerticalSpace(10),
+        elevatedButtonView("Find Ride")
       ],
     );
   }
@@ -227,6 +230,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
         addVerticalSpace(10),
+        elevatedButtonView("Post Ride")
       ],
     );
   }
