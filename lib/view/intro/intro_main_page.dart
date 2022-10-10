@@ -3,14 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/dimens.dart';
-import 'package:socialcarpooling/util/font_size.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
-import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
-import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
+import 'package:socialcarpooling/view/login/login_screen.dart';
 
 class IntoMainPage extends StatelessWidget {
   const IntoMainPage({Key? key}) : super(key: key);
@@ -30,14 +27,13 @@ class IntoMainPage extends StatelessWidget {
               children: [
                 imageSlide(StringUrl.introOne),
                 SizedBox(
-                  height:margin10,
+                  height: margin10,
                 ),
                 headerText(CPString.welcome),
                 SizedBox(
                   height: margin10,
                 ),
-                smallText(
-                    CPString.tempText)
+                smallText(CPString.tempText)
               ],
             )),
         Container(
@@ -57,8 +53,7 @@ class IntoMainPage extends StatelessWidget {
                 SizedBox(
                   height: margin10,
                 ),
-                smallText(
-                    CPString.tempText)
+                smallText(CPString.tempText)
               ],
             )),
         Container(
@@ -78,8 +73,7 @@ class IntoMainPage extends StatelessWidget {
                 SizedBox(
                   height: margin10,
                 ),
-                smallText(
-                    CPString.tempText)
+                smallText(CPString.tempText)
               ],
             )),
         Container(
@@ -99,8 +93,7 @@ class IntoMainPage extends StatelessWidget {
                 SizedBox(
                   height: margin10.h,
                 ),
-                smallText(
-                    CPString.tempText)
+                smallText(CPString.tempText)
               ],
             )),
       ],
@@ -108,14 +101,13 @@ class IntoMainPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop,
-                child: SignUpPage()));
+                type: PageTransitionType.bottomToTop, child: LoginScreen()));
       },
     );
   }
 
-  Widget imageSlide(String url) =>
-      Image.asset(url, width: introImageWidth, height: introImageHeight, fit: BoxFit.cover);
+  Widget imageSlide(String url) => Image.asset(url,
+      width: introImageWidth, height: introImageHeight, fit: BoxFit.cover);
 
   Widget smallText(String text) => Expanded(
         child: Text(
@@ -129,7 +121,6 @@ class IntoMainPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: margin30.w),
       child: Align(
         alignment: Alignment.topLeft,
-        child: Text(title,
-            style: TextStyleUtils.primaryTextBold),
+        child: Text(title, style: TextStyleUtils.primaryTextBold),
       ));
 }

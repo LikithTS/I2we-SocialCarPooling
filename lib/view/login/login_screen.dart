@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
+import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/color.dart';
 import '../../util/margin_confiq.dart';
@@ -84,8 +85,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       )),
                 ),
                 addVerticalSpace(10),
-                smallText(
-                    "Don’t have an account? Register Now", Alignment.center),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: SignUpPage()));
+                  },
+                  child: smallText(
+                      "Don’t have an account? Register Now", Alignment.center),
+                ),
                 addVerticalSpace(30),
                 Center(
                   child: smallText(
