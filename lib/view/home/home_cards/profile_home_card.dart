@@ -21,45 +21,54 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Card(
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.all(10.0),
-          child: Wrap(
-            direction: Axis.horizontal,
+    return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
             children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                      radius: 38,
-                      backgroundImage: NetworkImage(
-                          "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
-                  const SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              primaryTextWidgetLeft(context, DemoLocalizations.of(context)?.getText("my_profile")),
+              Card(
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(10.0),
+                  child: Wrap(
+                    direction: Axis.horizontal,
                     children: [
-                      primaryThemeTextWidget(context, profileName),
-                      primaryTextNormal(context, DemoLocalizations.of(context)?.getText("complete_profile")),
+                      Row(
+                        children: [
+                          const CircleAvatar(
+                              radius: 38,
+                              backgroundImage: NetworkImage(
+                                  "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                primaryThemeTextWidget(context, profileName),
+                                primaryTextNormal(context, DemoLocalizations.of(context)?.getText("complete_profile")),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          CircularPercentIndicator(
+                              radius: 75,
+                              lineWidth: 8,
+                              percent: profileCompletionPercentage,
+                              progressColor: progressThemeColor,
+                              backgroundColor: lightGreyColor,
+                              circularStrokeCap: CircularStrokeCap.round,
+                              center: primaryThemeTextWidget(context,
+                                  '${getPercentage(profileCompletionPercentage)}%'))
+                        ],
+                      ),
                     ],
                   ),
-                  const Spacer(),
-                  CircularPercentIndicator(
-                      radius: 75,
-                      lineWidth: 8,
-                      percent: profileCompletionPercentage,
-                      progressColor: progressThemeColor,
-                      backgroundColor: lightGreyColor,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      center: primaryThemeTextWidget(context,
-                          '${getPercentage(profileCompletionPercentage)}%'))
-                ],
+                ),
               ),
             ],
-          ),
-        ),
-      ),
+          )
+        )
     );
   }
 }

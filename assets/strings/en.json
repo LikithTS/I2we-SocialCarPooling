@@ -5,5 +5,14 @@
   "add_car_details_description" : "Add your car details to host a Ride and make friends and enjoy the ride",
   "complete_profile" : "Add Details to complete Profile",
   "complete_questionnaire" : "Complete Questionnaire",
-  "questionnaire_description" : "Select minimum 2 options each to complete questionnaires. To get best ride match."
+  "questionnaire_description" : "Select minimum 2 options each to complete questionnaires. To get best ride match.",
+  "my_cars_title" : "My Cars",
+  "my_profile" : "My Profile",
+  "my_questioners" : "My Questioners",
+  "recent_rides" : "Recent Rides",
+  "upcoming_rides" : "Upcoming Rides",
+  "seats" : "Seats",
+  "available" : "Available",
+  "offered" : "Offering",
+  "set_default" : "Set Default : "
 }

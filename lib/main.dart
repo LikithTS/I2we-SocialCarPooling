@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
 import 'package:socialcarpooling/view/home/home_cards/add_car_home_view.dart';
 import 'package:socialcarpooling/util/dimens.dart';
+import 'package:socialcarpooling/view/home/home_cards/car_home_view.dart';
 import 'package:socialcarpooling/view/splash/splash_page.dart';
 
 void main() {
