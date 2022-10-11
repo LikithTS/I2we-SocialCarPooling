@@ -59,13 +59,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      const LoginTextForm(
+                      LoginTextForm(
                         hint: "Mobile Number",
+                        formValidator: (value) {
+                          if (value!.isEmpty || value.isEmpty) {
+                            return "Mobile Number Cannot be Empty";
+                          }
+                          return null;
+                        },
                         suffixIcon: Icons.check_circle,
                         prefixIcon: Icons.mobile_friendly,
                       ),
                       addVerticalSpace(10),
-                      const LoginTextForm(
+                      LoginTextForm(
+                        formValidator: (value) {
+                          if (value!.isEmpty || value.isEmpty) {
+                            return "Password Cannot be Empty";
+                          }
+                          return null;
+                        },
                         hint: "Password",
                         suffixIcon: Icons.visibility,
                         prefixIcon: Icons.lock,
