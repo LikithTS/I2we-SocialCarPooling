@@ -7,6 +7,7 @@ import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 import 'package:socialcarpooling/widgets/text_widgets.dart';
@@ -59,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         context,
         PageTransition(
             type: PageTransitionType.leftToRight,
-            child:VerifyOtpPage(mobileNo: mobile,)));
+            child:SignUpAddress(mobileNo: mobile,)));
 
   }
 
