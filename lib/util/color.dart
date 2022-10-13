@@ -18,3 +18,4 @@ const Color textThemeColor = Color(0Xff147CF2);
 const Color textGreyColor = Color(0Xff707070);
 const Color progressThemeColor = Color(0Xff458CFC);
 const Color lightGreyColor = Color(0Xffe6e1e1);
+const Color homePageBackgroundColor = Color(0xfff7f7f9);

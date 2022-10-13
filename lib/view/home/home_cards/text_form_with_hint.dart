@@ -1,18 +1,23 @@
+
+
 import 'package:flutter/material.dart';
 
 import '../../../util/color.dart';
 
-class HomeTextIconForm extends StatelessWidget {
-  final String hint;
-  final IconData prefixIcon;
+class TextFormWithHintSupport extends StatelessWidget {
+  final String text;
+  final IconData iconData;
 
-  const HomeTextIconForm(
-      {Key? key, required this.hint, required this.prefixIcon})
-      : super(key: key);
+  const TextFormWithHintSupport({
+    Key? key,
+    required this.text,
+    required this.iconData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 160,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.0),
@@ -26,9 +31,9 @@ class HomeTextIconForm extends StatelessWidget {
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
-            hintText: hint,
+            hintText: text,
             prefixIcon: Icon(
-              prefixIcon,
+              iconData,
               color: primaryLightColor,
             )),
       ),

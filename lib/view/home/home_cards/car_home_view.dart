@@ -37,10 +37,13 @@ class _State extends State<HomeCarCard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           children: [
-            primaryTextWidgetLeft(context, DemoLocalizations.of(context)?.getText("my_cars_title")),
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+              child: primaryTextWidgetLeft(context, DemoLocalizations.of(context)?.getText("my_cars_title")),
+            ),
             Card(
               child: Container(
                 width: double.infinity,

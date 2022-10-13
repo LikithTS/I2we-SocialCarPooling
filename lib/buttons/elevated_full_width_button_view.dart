@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-Widget elevatedButtonView(String buttonName) => ElevatedButton(
+Widget elevatedDynamicWidthButtonView(String? buttonName, double width) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        minimumSize: const Size(150, 40)),
+        minimumSize: Size(width, 40)),
     onPressed: () {
       onRightButtonClicked();
     },
     child: Text(
-      buttonName,
+      buttonName!,
       style: const TextStyle(
         color: Colors.white,
         fontSize: 18,

@@ -128,7 +128,7 @@ Widget primaryTextWidgetLeft(BuildContext context, String? text) => Container(
       alignment: Alignment.topLeft,
       child: Text(text!,
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 17.sp,
             fontWeight: FontWeight.w500,
             color: Colors.black,
             decoration: TextDecoration.none,

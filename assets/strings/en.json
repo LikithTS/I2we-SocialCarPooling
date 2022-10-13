@@ -14,5 +14,17 @@
   "seats" : "Seats",
   "available" : "Available",
   "offered" : "Offering",
-  "set_default" : "Set Default : "
+  "set_default" : "Set Default : ",
+  "start_address" : "Enter start address",
+  "destination_address" : "Enter destination address",
+  "time" : "Time",
+  "date" : "Date",
+  "seats_offered" : "Offering Seats",
+  "amount" : "Amount",
+  "find_ride" : "Find Ride",
+  "post_ride" : "Post Ride",
+  "car_type" : "Car Type",
+  "home" : "Home",
+  "driver_tab" : "As Driver",
+  "rider_tab" : "As Rider"
 }
