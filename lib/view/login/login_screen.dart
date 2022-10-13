@@ -6,8 +6,7 @@ import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
-import '../../util/color.dart';
-import '../../util/margin_confiq.dart';
+import '../../widgets/button_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -93,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 20.0),
-                        child: _buildButton("Login", login),
+                        child: primaryButtonWithCallBack("Login", login),
                       )),
                 ),
                 addVerticalSpace(10),
@@ -128,32 +127,5 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         PageTransition(
             type: PageTransitionType.bottomToTop, child: HomePage()));
-  }
-
-  Widget _buildButton(String title, VoidCallback callback) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(margin10)),
-        ), // <-- Radius
-        primary: title == 'Skip' ? Colors.white : primaryLightColor,
-        textStyle: TextStyle(
-            fontSize: 20.sp, fontFamily: 'assets/fonts/poppins_medium.ttf'),
-        side: title == 'Skip'
-            ? BorderSide(width: 1.0, color: borderColor)
-            : BorderSide(width: 0, color: primaryLightColor),
-      ),
-      onPressed: callback,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          title,
-          style: TextStyle(
-              color: title == 'Skip' ? borderColor : Colors.white,
-              decoration: TextDecoration.none,
-              fontFamily: 'assets/fonts/poppins_medium.ttf'),
-        ),
-      ),
-    );
   }
 }
