@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../util/CPString.dart';
@@ -40,15 +42,18 @@ class _VerifiedPageState extends State<VerifiedPage> {
               SizedBox(height: 20,),
               Text(CPString.thankYou,style: TextStyleUtils.primaryTextBold.copyWith(fontSize: fontSize27),textAlign: TextAlign.center,),
               SizedBox(height: 20,),
-              Text(CPString.registerSuccess,style: TextStyleUtils.primaryTextMedium.copyWith(fontSize: fontSize20),textAlign: TextAlign.center,),
+              Text(CPString.registrationSuccess,style: TextStyleUtils.primaryTextMedium.copyWith(fontSize: fontSize20),textAlign: TextAlign.center,),
               Container(
                 width: deviceWidth(context),
                 margin: EdgeInsets.only(left: 30,right: 30,top: 70,bottom: 10),
                 padding: EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                        QuestionariePage()), (Route<dynamic> route) => false);
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.leftToRight,
+                            child:WelcomePage()));
                   },
                   style: ElevatedButton.styleFrom(
                     primary: primaryLightColor,

@@ -8,6 +8,7 @@ import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
+import 'package:socialcarpooling/view/map/location_page.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/string_url.dart';
@@ -31,7 +32,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child:IntoMainPage())));
+                child:LocationPage())));
   }
   @override
   Widget build(BuildContext context) {
