@@ -20,7 +20,6 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  static const LatLng sourceLocation = LatLng(13.0827, 80.2707);
   Completer<GoogleMapController> _controller = Completer();
 
   double? latitude;
