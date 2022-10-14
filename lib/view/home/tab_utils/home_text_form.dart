@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginTextForm extends StatelessWidget {
+import '../../../util/color.dart';
+
+class HomeTextIconForm extends StatelessWidget {
   final String hint;
   final IconData prefixIcon;
-  final IconData suffixIcon;
-  final String? Function(String?)? formValidator;
 
-  const LoginTextForm(
-      {Key? key,
-      required this.hint,
-      required this.prefixIcon,
-      required this.suffixIcon,
-      required this.formValidator})
+  const HomeTextIconForm(
+      {Key? key, required this.hint, required this.prefixIcon})
       : super(key: key);
 
   @override
@@ -19,23 +15,21 @@ class LoginTextForm extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: new BorderRadius.circular(5.0),
-          boxShadow: [
+          borderRadius: BorderRadius.circular(5.0),
+          boxShadow: const [
             BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
         textAlign: TextAlign.start,
-        validator: formValidator,
         decoration: InputDecoration(
             fillColor: Colors.grey,
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(width: 1, color: Colors.blue),
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: hint,
-            suffixIcon: Icon(suffixIcon, color: Colors.green),
             prefixIcon: Icon(
               prefixIcon,
-              color: Colors.grey,
+              color: primaryLightColor,
             )),
       ),
     );

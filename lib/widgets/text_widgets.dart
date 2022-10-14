@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/font_size.dart';
 
@@ -51,7 +50,9 @@ Widget primaryThemeTextNormal(BuildContext context, String? text) => Container(
         color: textThemeColor,
         decoration: TextDecoration.none,
         fontFamily: CPString.fontFamilyPoppins,
-      )),
+      ),
+    maxLines: 2,
+  ),
 );
 
 Widget primaryTextNormalTwoLine(BuildContext context, String? text) => Container(
@@ -85,5 +86,56 @@ Widget primaryTextNormal(BuildContext context, String? text) => Center(
     ),
   ),
 );
+
+Widget primaryTextSmall(BuildContext context, String? text) => Center(
+  child: Align(
+    alignment: Alignment.topLeft,
+    child: Expanded(
+      child: Text(
+        text!,
+        style: const TextStyle(
+            fontSize: 8,
+            fontWeight: FontWeight.normal,
+            color: textGreyColor,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins'),
+        maxLines: 1,
+      ),
+    ),
+  ),
+);
+
+Widget secondaryTextSmall(BuildContext context, String? text) => Center(
+  child: Align(
+    alignment: Alignment.topLeft,
+    child: Expanded(
+      child: Text(
+        text!,
+        style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.normal,
+            color: textGreyColor,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins'),
+        maxLines: 1,
+      ),
+    ),
+  ),
+);
+
+Widget primaryTextWidgetLeft(BuildContext context, String? text) => Container(
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: Text(text!,
+          style: TextStyle(
+            fontSize: 17.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins',
+            overflow: TextOverflow.ellipsis,
+          )),
+    ));
+
 
 
