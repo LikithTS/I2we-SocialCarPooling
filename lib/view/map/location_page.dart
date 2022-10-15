@@ -12,6 +12,7 @@ import 'package:socialcarpooling/widgets/button_widgets.dart';
 import '../../util/CPString.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
+import '../../widgets/google_map.dart';
 
 class LocationPage extends StatefulWidget {
   const LocationPage({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _LocationPageState extends State<LocationPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            _googleMap(context),
+            googleMap(context,latitude!,longitude!,_controller),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -170,34 +171,6 @@ class _LocationPageState extends State<LocationPage> {
     );
   }
 
-  Widget _googleMap(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: latitude == null && longitude == null
-          ? Container(
-              width: 50,
-              height: 50,
-              child: Align(alignment:Alignment.center,child: CircularProgressIndicator()))
-          : GoogleMap(
-              mapType: MapType.terrain,
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(latitude!, longitude!), zoom: 15),
-              markers: {
-                Marker(
-                    markerId: MarkerId('Source'),
-                    position: LatLng(latitude!, longitude!))
-              },
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-    );
-  }
   void _gotoChangePage() {
    /* Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
         HomePage()), (Route<dynamic> route) => false);*/
