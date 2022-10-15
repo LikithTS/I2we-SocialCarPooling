@@ -6,11 +6,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/view/map/search_location_view.dart';
 import 'package:socialcarpooling/widgets/button_widgets.dart';
 
 import '../../util/CPString.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
+import '../../widgets/google_map.dart';
 
 class LocationPage extends StatefulWidget {
   const LocationPage({Key? key}) : super(key: key);
@@ -73,19 +75,43 @@ class _LocationPageState extends State<LocationPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            _googleMap(context),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10)),
-              child: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
+            googleMap(context,latitude!,longitude!,_controller),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(10)),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            ),
+            SearchLocationView(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: EdgeInsets.only(top: 15,bottom: 200),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(10)),
+                  child: Icon(
+                    Icons.my_location,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                   // Navigator.pop(context);
+                    getLocation();
+                  },
+                ),
+              ),
             ),
             Positioned(
                 bottom: 0,
@@ -145,34 +171,6 @@ class _LocationPageState extends State<LocationPage> {
     );
   }
 
-  Widget _googleMap(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: latitude == null && longitude == null
-          ? Container(
-              width: 50,
-              height: 50,
-              child: Align(alignment:Alignment.center,child: CircularProgressIndicator()))
-          : GoogleMap(
-              mapType: MapType.terrain,
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(latitude!, longitude!), zoom: 15),
-              markers: {
-                Marker(
-                    markerId: MarkerId('Source'),
-                    position: LatLng(latitude!, longitude!))
-              },
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-    );
-  }
   void _gotoChangePage() {
    /* Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
         HomePage()), (Route<dynamic> route) => false);*/

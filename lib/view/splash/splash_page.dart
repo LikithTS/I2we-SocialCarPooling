@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
 import 'package:socialcarpooling/view/map/location_page.dart';
@@ -14,6 +15,7 @@ import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
+import '../map/search_location_view.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
@@ -32,7 +34,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child:LocationPage())));
+                child:SignUpPage())));
   }
   @override
   Widget build(BuildContext context) {
