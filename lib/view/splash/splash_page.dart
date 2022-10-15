@@ -14,6 +14,7 @@ import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
+import '../map/search_location_view.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
