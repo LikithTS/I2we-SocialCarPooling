@@ -119,7 +119,7 @@ class _QuestionarieState extends State<QuestionariePage>
             elevation: 0,
             leading: IconButton(
                 onPressed: () {
-
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(
                   Icons.arrow_back,

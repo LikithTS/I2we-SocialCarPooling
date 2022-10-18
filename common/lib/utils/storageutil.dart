@@ -30,4 +30,16 @@ class PreferencesUtil {
     if (_preferences == null) return null;
     return _preferences?.setString(key, value);
   }
+
+  // get Boolean
+  static bool getBoolean(String key, {bool defValue = false}) {
+    if (_preferences == null) return defValue;
+    return _preferences?.getBool(key) ?? defValue;
+  }
+
+  // put Boolean
+  static Future<bool>? putBoolean(String key, bool value) {
+    if (_preferences == null) return null;
+    return _preferences?.setBool(key, value);
+  }
 }

@@ -5,19 +5,20 @@ import 'package:dio/dio.dart';
 class LoggingInterceptors extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    log(
-        "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
+      log(
+          "--> ${options.method.isNotEmpty
+              ? options.method.toUpperCase()
+              : 'METHOD'} ${"${options.baseUrl}${options.path}"}");
+
     log("Headers:");
     options.headers.forEach((k, v) => log('$k: $v'));
-    if (options.queryParameters != null) {
-      log("queryParameters:");
-      options.queryParameters.forEach((k, v) => log('$k: $v'));
-    }
+    log("queryParameters:");
+    options.queryParameters.forEach((k, v) => log('$k: $v'));
     if (options.data != null) {
       log("Body: ${options.data}");
     }
     log(
-        "--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}");
+        "--> END ${options.method.isNotEmpty ? options.method.toUpperCase() : 'METHOD'}");
     handler.next(options);
   }
 
