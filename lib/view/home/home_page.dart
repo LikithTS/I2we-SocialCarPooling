@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/util/constant.dart';
@@ -8,6 +12,7 @@ import 'package:socialcarpooling/view/home/home_cards/car_home_view.dart';
 import 'package:socialcarpooling/view/home/home_cards/profile_home_card.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
+
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import 'home_cards/driver_widget_view.dart';
@@ -25,11 +30,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   late final TabController tabController;
+  HomeRepository homeRepository = HomeRepository();
+  late HomeResponse homeResponseData;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    Future<dynamic> future = homeRepository.home();
+    future
+        .then((value) =>
+            {log("Home Response is  $value"), handleHomeResponseData(value)})
+        .catchError((onError) {
+      log("Home Response error is  $onError");
+      // handleErrorResponse(onError);
+    });
   }
 
   @override
@@ -104,7 +119,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               child: Column(
                                 children: [
                                   Container(
-                                    margin: const EdgeInsets.only(top: 5, bottom: 30),
+                                    margin: const EdgeInsets.only(
+                                        top: 5, bottom: 30),
                                     height: 2,
                                     width: 50,
                                     decoration: BoxDecoration(
@@ -112,7 +128,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         color: Colors.grey),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0),
                                     child: TabBar(
                                       unselectedLabelColor: textGreyColor,
                                       unselectedLabelStyle: TextStyle(
@@ -137,8 +154,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ),
                                       controller: tabController,
                                       tabs: [
-                                        Text(DemoLocalizations.of(context)!.getText("driver_tab")),
-                                        Text(DemoLocalizations.of(context)!.getText("rider_tab"))
+                                        Text(DemoLocalizations.of(context)!
+                                            .getText("driver_tab")),
+                                        Text(DemoLocalizations.of(context)!
+                                            .getText("rider_tab"))
                                       ],
                                     ),
                                   ),
@@ -157,7 +176,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ),
                                   UpcomingRides(
                                     carIcon: 'assets/images/car_pool.png',
-                                    startAddress: "Maruthi Nagar",
+                                    startAddress: homeResponseData.upcomingRides![0].startDestinationFormattedAddress ?? '',
                                     endAddress: "Philips, Manyata",
                                     rideType: Constant.AS_HOST,
                                     amount: 100,
@@ -193,7 +212,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       numberOfSeatsOffered: 4,
                                       numberOfSeatsAvailable: 5,
                                       defaultStatus: true),
-                                   const AddCarCard()
+                                  const AddCarCard()
                                 ],
                               ),
                             ),
@@ -215,4 +234,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           )
         ],
       );
+
+  handleHomeResponseData(value) {
+    homeResponseData = value;
+  }
 }
