@@ -1,7 +1,7 @@
 class Constant {
   static const String Yet_Constant = "Yet to be implemented";
-  static const String AS_RIDER = "As Rider";
-  static const String AS_HOST = "As Host";
+  static const String AS_RIDER = "AS_PASSENGER";
+  static const String AS_HOST = "AS_DRIVER";
   static const String CAR_TYPE_MINI = "Mini";
   static const String CAR_TYPE_SEDAN = "Sedan";
   static const String CAR_TYPE_SUV = "SUV";

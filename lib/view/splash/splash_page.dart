@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +64,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   getNextPage() {
     if (CPSessionManager().isUserLoggedIn()) {
-      return HomePage();
+      return HomePage(homeRepository: HomeRepository());
     } else if (CPSessionManager().isIntroPageVisited()) {
       return LoginScreen(userRepository: LoginRepository());
     } else {

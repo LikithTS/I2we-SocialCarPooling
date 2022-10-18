@@ -30,7 +30,7 @@ class AddCarCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         const CircleAvatar(
-                          radius: 38,
+                          radius: 30,
                           backgroundImage: AssetImage('assets/images/add_car.png'),
                         ),
                         const SizedBox(width: 20),

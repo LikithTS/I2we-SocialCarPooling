@@ -1,3 +1,4 @@
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -114,6 +115,6 @@ class _WelcomePageState extends State<WelcomePage> {
   }
   void _gotoHomePage() {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        HomePage()), (Route<dynamic> route) => false);
+        HomePage(homeRepository: HomeRepository())), (Route<dynamic> route) => false);
   }
 }

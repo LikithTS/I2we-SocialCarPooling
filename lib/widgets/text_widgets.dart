@@ -35,8 +35,8 @@ Widget secondaryTextWidget(BuildContext context, String? text) => Container(
 Widget primaryThemeTextWidget(BuildContext context, String? text) => Container(
   child: Text(text! ,
       style: TextStyle(
-          fontSize: fontSize17,
-          fontWeight: FontWeight.bold,
+          fontSize: fontSize16,
+          fontWeight: FontWeight.normal,
           color: textThemeColor,
           decoration: TextDecoration.none,
           fontFamily: CPString.fontFamilyPoppins)),
@@ -46,7 +46,7 @@ Widget primaryThemeTextNormal(BuildContext context, String? text) => Container(
   child: Text(text!,
       style: TextStyle(
         fontSize: 14.sp,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
         color: textThemeColor,
         decoration: TextDecoration.none,
         fontFamily: CPString.fontFamilyPoppins,
@@ -59,7 +59,7 @@ Widget primaryTextNormalTwoLine(BuildContext context, String? text) => Container
   child: Text(text!,
     style: TextStyle(
       fontSize: 14.sp,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
       color: textGreyColor,
       decoration: TextDecoration.none,
       fontFamily: CPString.fontFamilyPoppins,

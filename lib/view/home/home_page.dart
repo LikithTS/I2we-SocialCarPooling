@@ -20,12 +20,16 @@ import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/google_map.dart';
 import 'home_cards/driver_widget_view.dart';
+import 'home_cards/home_screen_res_view.dart';
 import 'home_cards/questionnaire_home_card.dart';
 import 'home_cards/rider_widget_view.dart';
 import 'home_cards/upcoming_rides_card.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+
+  final HomeRepository homeRepository;
+
+  const HomePage({Key? key, required this.homeRepository}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,11 +38,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   late final TabController tabController;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
   double? latitude;
   double? longitude;
   late LatLng currentPosition;
+  HomeRepository get _homeRepository => widget.homeRepository;
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
@@ -73,8 +78,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
-
-  HomeRepository homeRepository = HomeRepository();
   late HomeResponse homeResponseData;
 
   @override
@@ -82,15 +85,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
-
-    Future<dynamic> future = homeRepository.home();
-    future
-        .then((value) =>
-            {log("Home Response is  $value"), handleHomeResponseData(value)})
-        .catchError((onError) {
-      log("Home Response error is  $onError");
-      // handleErrorResponse(onError);
-    });
+    // getHomeDetailsApi();
   }
 
   @override
@@ -180,12 +175,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               color: textGreyColor,
                                               fontFamily: 'Poppins',
                                               fontWeight: FontWeight.normal,
-                                              fontSize: 20.sp),
+                                              fontSize: 18.sp),
                                           labelStyle: TextStyle(
                                               color: Colors.white,
                                               fontFamily: 'Poppins',
                                               fontWeight: FontWeight.normal,
-                                              fontSize: 20.sp),
+                                              fontSize: 18.sp),
                                           indicatorSize: TabBarIndicatorSize.tab,
                                           indicator: BoxDecoration(
                                             borderRadius: BorderRadius.circular(5),
@@ -216,45 +211,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               ]),
                                         ),
                                       ),
-                                      UpcomingRides(
-                                        carIcon: 'assets/images/car_pool.png',
-                                        startAddress: "Maruthi Nagar",
-                                        endAddress: "Philips, Manyata",
-                                        rideType: Constant.AS_HOST,
-                                        amount: 100,
-                                        dateTime: DateTime.now(),
-                                        seatsOffered: "4",
-                                        carType: Constant.CAR_TYPE_SEDAN,
-                                        coRidersCount: "2",
-                                        leftButtonText: Constant.BUTTON_CANCEL,
-                                        rideStatus: Constant.RIDE_SCHEDULED,
+
+                                      FutureBuilder<dynamic>(
+                                        future: _homeRepository.home(), // a Future<String> or null
+                                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.none: return Text('No Internet!!');
+                                            case ConnectionState.waiting: return Text('Please wait... Loading details');
+                                            default:
+                                              if (snapshot.hasError) {
+                                                return Text('Error: ${snapshot.error}');
+                                              } else {
+                                                return loadHomePageData(snapshot.data);
+                                              }
+                                          }
+                                        },
                                       ),
-                                      RecentRides(
-                                        carIcon: 'assets/images/car_pool.png',
-                                        startAddress: "Maruthi Nagar",
-                                        endAddress: "Philips, Manyata",
-                                        rideType: Constant.AS_HOST,
-                                        amount: 100,
-                                        dateTime: DateTime.now(),
-                                        seatsOffered: "4",
-                                        carType: Constant.CAR_TYPE_SEDAN,
-                                        coRidersCount: "2",
-                                        leftButtonText: Constant.BUTTON_CANCEL,
-                                        rideStatus: Constant.RIDE_COMPLETED,
-                                      ),
-                                      const QuestionnaireCard(
-                                          questionnairesCompletionPercentage: 0.30),
-                                      const ProfileCard(
-                                          profileName: "Likith",
-                                          profileCompletionPercentage: 0.20),
-                                      const HomeCarCard(
-                                          carType: Constant.CAR_TYPE_SEDAN,
-                                          carName: "Ciaz",
-                                          carNumber: "KA05MU2778",
-                                          numberOfSeatsOffered: 4,
-                                          numberOfSeatsAvailable: 5,
-                                          defaultStatus: true),
-                                      const AddCarCard()
                                     ],
                                   ),
                                 ),
@@ -277,8 +249,5 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           )
         ],
       );
-
-  handleHomeResponseData(value) {
-    homeResponseData = value;
-  }
 }
+

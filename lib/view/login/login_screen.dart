@@ -1,3 +1,4 @@
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
@@ -168,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
           context,
           PageTransition(
-              type: PageTransitionType.bottomToTop, child: HomePage()));
+              type: PageTransitionType.bottomToTop, child: HomePage(homeRepository: HomeRepository())));
     } else {
       // ErrorResponse errorResponse = value;
       // setState(() {

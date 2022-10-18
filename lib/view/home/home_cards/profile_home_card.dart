@@ -7,7 +7,7 @@ import '../../../widgets/text_widgets.dart';
 
 class ProfileCard extends StatelessWidget {
   final String profileName;
-  final double profileCompletionPercentage;
+  final int profileCompletionPercentage;
 
   const ProfileCard(
       {Key? key,
@@ -40,7 +40,7 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         children: [
                           const CircleAvatar(
-                              radius: 38,
+                              radius: 30,
                               backgroundImage: NetworkImage(
                                   "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
                           const SizedBox(width: 20),
@@ -55,14 +55,14 @@ class ProfileCard extends StatelessWidget {
                           ),
                           const Spacer(),
                           CircularPercentIndicator(
-                              radius: 75,
-                              lineWidth: 8,
-                              percent: profileCompletionPercentage,
+                              radius: 55,
+                              lineWidth: 6,
+                              percent: profileCompletionPercentage/100,
                               progressColor: progressThemeColor,
                               backgroundColor: lightGreyColor,
                               circularStrokeCap: CircularStrokeCap.round,
                               center: primaryThemeTextWidget(context,
-                                  '${getPercentage(profileCompletionPercentage)}%'))
+                                  '${getPercentage(profileCompletionPercentage/100)}%'))
                         ],
                       ),
                     ],
