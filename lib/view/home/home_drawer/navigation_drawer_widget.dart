@@ -1,8 +1,15 @@
+import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+
+import '../../../util/CPSessionManager.dart';
+import '../../login/login_screen.dart';
 
 import '../../../utils/Localization.dart';
 import '../../myvehicle/my_vehicle_start_page.dart';
@@ -96,10 +103,9 @@ class NavigationDrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMenuItem(
-      {required String text,
-      required IconData icon,
-      required VoidCallback onClicked}) {
+  Widget buildMenuItem({required String text,
+    required IconData icon,
+    required VoidCallback onClicked}) {
     const iconColor = Colors.blue;
     return ListTile(
       visualDensity: VisualDensity(vertical: -3),
@@ -122,21 +128,46 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => HomePage(homeRepository: HomeRepository())));
         break;
       case 3:
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MyVehicleStartPage()));
         break;
+      case 3:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const QuestionariePage()));
+        break;
+      case 11:
+        onLogoutButtonPressed(context);
+        break;
+    }
+  }
+
+  void onLogoutButtonPressed(BuildContext context) {
+    LoginRepository()
+        .logout()
+        .then((value) => {
+          handleResponseData(value, context)
+  }
+    );
+  }
+
+  handleResponseData(value, BuildContext context) {
+    if (value is SuccessResponse) {
+      CPSessionManager().handleUserLogout();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(
+          builder: (context) =>
+              LoginScreen(userRepository: LoginRepository())));
     }
   }
 }
 
-Widget buildHeader(
-        {required String profile_percentage,
-        required String name,
-        required String profileImage,
-        required VoidCallback onClicked}) =>
+Widget buildHeader({required String profile_percentage,
+  required String name,
+  required String profileImage,
+  required VoidCallback onClicked}) =>
     InkWell(
       onTap: onClicked,
       child: Container(
@@ -159,22 +190,22 @@ Widget buildHeader(
     );
 
 Widget tileText(String text, Alignment alignment,
-        {TextAlign? textAlign, Color? textColor, double? fontSize}) =>
+    {TextAlign? textAlign, Color? textColor, double? fontSize}) =>
     Container(
         child: Align(
-      alignment: alignment,
-      child: Expanded(
-        child: Text(
-          text,
-          textAlign: textAlign ?? TextAlign.start,
-          style: TextStyle(
-              fontSize: fontSize ?? 19.sp,
-              height: 1.3,
-              color: textColor ?? Colors.black,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              fontFamily: 'Poppins'),
-          maxLines: 1,
-        ),
-      ),
-    ));
+          alignment: alignment,
+          child: Expanded(
+            child: Text(
+              text,
+              textAlign: textAlign ?? TextAlign.start,
+              style: TextStyle(
+                  fontSize: fontSize ?? 19.sp,
+                  height: 1.3,
+                  color: textColor ?? Colors.black,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'Poppins'),
+              maxLines: 1,
+            ),
+          ),
+        ));

@@ -1,3 +1,4 @@
+import 'package:common/network/repository/LoginRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
@@ -8,6 +9,8 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/intro/intro_page.dart';
 import 'package:socialcarpooling/view/login/login_screen.dart';
+
+import '../../util/CPSessionManager.dart';
 
 class IntoMainPage extends StatelessWidget {
   const IntoMainPage({Key? key}) : super(key: key);
@@ -98,10 +101,11 @@ class IntoMainPage extends StatelessWidget {
             )),
       ],
       onIntroCompleted: () {
+        CPSessionManager().onIntroPageVisited(true);
         Navigator.pushReplacement(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop, child: LoginScreen()));
+                type: PageTransitionType.bottomToTop, child: LoginScreen(userRepository: LoginRepository())));
       },
     );
   }

@@ -4,6 +4,7 @@ const Color primaryColor = Color(0Xff2A5DBF);
 const Color primaryLightColor = Color(0Xff178FE3);
 const Color borderColor = Color(0Xff707070);
 const Color hintColor = Color(0XffA2A2A2);
+const Color greyColor = Color(0XffC2C2C2);
 
 const Color toolbarTitleColor = Color(0Xff2A5DBF);
 const Color chipSetBGUnSelectedColor = Color(0xfff3f5f9);

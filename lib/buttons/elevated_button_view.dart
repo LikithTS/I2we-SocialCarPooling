@@ -14,7 +14,7 @@ Widget elevatedButtonView(String buttonName) => ElevatedButton(
       style: const TextStyle(
         color: Colors.white,
         fontSize: 18,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
         letterSpacing: 1.2,
         fontFamily: 'PoppinsBold',
       ),

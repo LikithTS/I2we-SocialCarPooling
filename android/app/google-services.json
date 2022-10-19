@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "636673137095",
+    "project_id": "socialcarpooling-d919d",
+    "storage_bucket": "socialcarpooling-d919d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636673137095:android:65c458e6e075041ab9e1e2",
+        "android_client_info": {
+          "package_name": "com.ride.socialcarpooling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636673137095-llpttmtcvc5muhm0s83rvprrbpn1n5vm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ride.socialcarpooling",
+            "certificate_hash": "0073f0b175efceac4f8d8554d668826cb0a30273"
+          }
+        },
+        {
+          "client_id": "636673137095-75llpmtq66u6589jtke3usr1bge8jp01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVdnp6BOlWZWoqs7KpXnrCLeZqLivVH1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636673137095-75llpmtq66u6589jtke3usr1bge8jp01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

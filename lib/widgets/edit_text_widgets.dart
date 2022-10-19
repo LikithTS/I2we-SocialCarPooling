@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/Validation.dart';
@@ -42,6 +40,14 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
           else if(flag==3 && !inputValidationMixin.isEmailValid(value))
             {
               return CPString.emailValidError;
+            }
+          else if(flag==4 && !inputValidationMixin.isZipValid(value))
+            {
+              return CPString.zipCodeError;
+            }
+          else if(flag==5 && inputValidationMixin.isNullString(value))
+            {
+              return CPString.stringError;
             }
           return null;
         },

@@ -47,8 +47,12 @@ dependencies:
   #image catch
   cached_network_image: ^3.2.1
 
+  #BLOC
+  #bloc: ^8.0.0
+  flutter_bloc: ^8.0.0
+  equatable: ^0.1.6
+
   #Service
-  provider: ^5.0.0
   http: ^0.13.4
   dio: ^4.0.6
   json_annotation: ^4.0.1
@@ -80,6 +84,11 @@ dependencies:
    #flar animations:
   flare_flutter: ^3.0.2
   get: ^4.6.5
+
+   #Google Map
+  google_maps_flutter: ^2.1.12
+  geolocator: ^9.0.1
+  geocoding: ^2.0.4
 
 dev_dependencies:
   flutter_test:

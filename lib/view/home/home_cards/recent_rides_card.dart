@@ -17,7 +17,7 @@ class RecentRides extends StatelessWidget {
   final String rideType;
   final int amount;
   final DateTime dateTime;
-  final String seatsOffered;
+  final int seatsOffered;
   final String carType;
   final String coRidersCount;
   final String leftButtonText;
@@ -110,7 +110,13 @@ class RecentRides extends StatelessWidget {
                                   left: 10, right: 10, top: 5, bottom: 5),
                               child: Column(
                                 children: [
-                                  rideTypeView(rideType),
+                                  if (rideType == Constant.AS_HOST) ...[
+                                    rideTypeView(DemoLocalizations.of(context)
+                                        ?.getText("as_host")),
+                                  ] else ...[
+                                    rideTypeView(DemoLocalizations.of(context)
+                                        ?.getText("as_rider")),
+                                  ],
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -136,7 +142,7 @@ class RecentRides extends StatelessWidget {
                             timeView(Icons.schedule, getFormattedTime(dateTime)),
                             if (rideType == Constant.AS_HOST) ...[
                               timeView(Icons.airline_seat_recline_normal,
-                                  seatsOffered),
+                                  seatsOffered.toString()),
                             ] else ...[
                               timeView(Icons.directions_car, carType),
                             ]

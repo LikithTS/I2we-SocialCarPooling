@@ -47,7 +47,7 @@ Widget showRiderWidget(BuildContext context) {
         ),
         addVerticalSpace(10),
         elevatedDynamicWidthButtonView(
-            DemoLocalizations.of(context)?.getText("post_ride"), width)
+            DemoLocalizations.of(context)?.getText("find_ride"), width)
       ],
     ),
   );
