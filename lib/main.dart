@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     initConfiguration();
     return MultiProvider(
-        providers: [
+      providers: [
         ChangeNotifierProvider(create: (context) => AddressProvider()),
     ],
     child: ScreenUtilInit(
