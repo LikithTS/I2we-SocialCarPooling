@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
+import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
+import 'package:socialcarpooling/view/map/location_page.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
 import '../../../utils/Localization.dart';
@@ -14,14 +17,14 @@ Widget showRiderWidget(BuildContext context) {
     child: Column(
       children: [
         addVerticalSpace(10),
-        HomeTextIconForm(
+        HomeTextIconFormClick(
             hint: DemoLocalizations.of(context)!.getText("start_address"),
-            prefixIcon: Icons.my_location),
+            prefixIcon: Icons.my_location,userType: 'rider',flagAddress: true,),
         addVerticalSpace(12),
-        HomeTextIconForm(
+        HomeTextIconFormClick(
             hint:
             DemoLocalizations.of(context)!.getText("destination_address"),
-            prefixIcon: Icons.location_on),
+            prefixIcon: Icons.location_on,userType: 'rider',flagAddress: false,),
         addVerticalSpace(12),
         HomeTextIconForm(
             hint: DemoLocalizations.of(context)!.getText("car_type"),
@@ -51,4 +54,14 @@ Widget showRiderWidget(BuildContext context) {
       ],
     ),
   );
+
 }
+
+ /*onClickStartLocation(context)
+{
+ *//* Navigator.push(
+      context,
+      PageTransition(
+          type: PageTransitionType.leftToRight,
+          child:LocationPage()));*//*
+}*/

@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
+import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
+import '../../../util/enum_user.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 import '../tab_utils/home_icon_text_form.dart';
@@ -15,14 +17,14 @@ Widget showDriverWidget(BuildContext context) {
     child: Column(
       children: [
         addVerticalSpace(5),
-        HomeTextIconForm(
+        HomeTextIconFormClick(
             hint: DemoLocalizations.of(context)!.getText("start_address"),
-            prefixIcon: Icons.my_location),
+            prefixIcon: Icons.my_location,userType:'driver',flagAddress: true,),
         addVerticalSpace(12),
-        HomeTextIconForm(
+        HomeTextIconFormClick(
             hint:
             DemoLocalizations.of(context)!.getText("destination_address"),
-            prefixIcon: Icons.location_on),
+            prefixIcon: Icons.location_on,userType:'driver',flagAddress: false,),
         addVerticalSpace(12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

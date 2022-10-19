@@ -34,7 +34,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child:SignUpPage())));
+                child:HomePage())));
   }
   @override
   Widget build(BuildContext context) {

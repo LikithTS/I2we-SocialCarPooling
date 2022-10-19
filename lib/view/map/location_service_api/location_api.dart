@@ -43,7 +43,7 @@ class LocationApi extends ChangeNotifier {
                   name: placeMaker.name!,
                   street: placeMaker.street!,
                   locality: placeMaker.locality!,
-                  country: placeMaker.country!));
+                  country: placeMaker.country!,latitude:location.latitude,longitude: location.longitude));
             });
           });
         } on Exception catch (e) {
