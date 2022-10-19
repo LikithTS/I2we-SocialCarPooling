@@ -122,7 +122,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
                     width: size.width,
-                    child: primaryButtonWithCallBack(
+                    child: primaryButton(
                         DemoLocalizations.of(context)?.getText("add_car") ?? "",
                         addCar),
                   ),

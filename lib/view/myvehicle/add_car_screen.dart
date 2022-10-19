@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
 import '../../widgets/button_widgets.dart';
-import '../home/home_page.dart';
 
 class AddCarScreen extends StatefulWidget {
   const AddCarScreen({Key? key}) : super(key: key);
@@ -352,7 +350,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                         padding: const EdgeInsets.all(20.0),
                         child: SizedBox(
                           width: size.width,
-                          child: primaryButtonWithCallBack(
+                          child: primaryButton(
                               DemoLocalizations.of(context)?.getText("done") ??
                                   "",
                               addCar),
@@ -420,12 +418,7 @@ class AddCarScreenState extends State<AddCarScreen> {
     );
   }
 
-  void addCar() {
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.bottomToTop, child: HomePage()));
-  }
+  void addCar() {}
 
   void changeColor() {
     setState(() {
