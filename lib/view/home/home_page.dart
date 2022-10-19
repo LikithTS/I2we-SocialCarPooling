@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'dart:developer';
+
+import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,12 +24,16 @@ import '../../util/margin_confiq.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/google_map.dart';
 import 'home_cards/driver_widget_view.dart';
+import 'home_cards/home_screen_res_view.dart';
 import 'home_cards/questionnaire_home_card.dart';
 import 'home_cards/rider_widget_view.dart';
 import 'home_cards/upcoming_rides_card.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+
+  final HomeRepository homeRepository;
+
+  const HomePage({Key? key, required this.homeRepository}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,11 +42,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   late final TabController tabController;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
   double? latitude;
   double? longitude;
   late LatLng currentPosition;
+  HomeRepository get _homeRepository => widget.homeRepository;
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
@@ -73,12 +82,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
+  late HomeResponse homeResponseData;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
+    // getHomeDetailsApi();
   }
 
   @override
@@ -89,187 +100,149 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             key: _key,
             drawer: const NavigationDrawerWidget(),
             body: Container(
-              child: Stack(
-                children: [
-                  latitude == null && longitude == null
-                      ? Container(
-                          width: deviceWidth(context),
-                          height: deviceHeight(context),
-                          child: Container(
-                            width: margin50,
-                            height: margin50,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        )
-                      : googleMap(context, latitude!, longitude!, _controller),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Row(
-                        children: [
-                          BorderIcon(
-                            height: 50,
-                            width: 50,
-                            child: IconButton(
-                              icon: const Icon(Icons.menu),
-                              color: Colors.blue,
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                _key.currentState?.openDrawer();
-                              },
-                            ),
-                          ),
-                          const Spacer(),
-                          BorderIcon(
-                            height: 50,
-                            width: 50,
-                            child: IconButton(
-                              icon: const Icon(Icons.message),
-                              color: Colors.blue,
-                              padding: EdgeInsets.zero,
-                              onPressed: () {},
-                            ),
-                          ),
-                          addHorizontalSpace(10),
-                          BorderIcon(
-                            height: 50,
-                            width: 50,
-                            child: IconButton(
-                              icon: const Icon(Icons.alarm),
-                              padding: EdgeInsets.zero,
-                              color: Colors.blue,
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  DraggableScrollableSheet(
-                    minChildSize: 0.5,
-                    maxChildSize: 0.9,
-                    initialChildSize: 0.5,
-                    builder: (BuildContext context,
-                        ScrollController myScrollController) {
-                      return ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(30)),
-                        child: Container(
-                          color: homePageBackgroundColor,
-                          child: SingleChildScrollView(
-                            controller: myScrollController,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 5, bottom: 30),
-                                    height: 2,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.grey),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8.0),
-                                    child: TabBar(
-                                      unselectedLabelColor: textGreyColor,
-                                      unselectedLabelStyle: TextStyle(
-                                          color: textGreyColor,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 20.sp),
-                                      labelStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 20.sp),
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      indicator: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        shape: BoxShape.rectangle,
-                                        color: primaryLightColor,
-                                        // Other flags
-                                        // indicatorRadius: 1,
-                                        // insets: EdgeInsets.all(1),
-                                        // padding: EdgeInsets.all(10)
-                                      ),
-                                      controller: tabController,
-                                      tabs: [
-                                        Text(DemoLocalizations.of(context)!
-                                            .getText("driver_tab")),
-                                        Text(DemoLocalizations.of(context)!
-                                            .getText("rider_tab"))
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: SizedBox(
-                                      width: double.maxFinite,
-                                      height: 320,
-                                      child: TabBarView(
-                                          controller: tabController,
-                                          children: [
-                                            showDriverWidget(context),
-                                            showRiderWidget(context)
-                                          ]),
-                                    ),
-                                  ),
-                                  UpcomingRides(
-                                    carIcon: 'assets/images/car_pool.png',
-                                    startAddress: "Maruthi Nagar",
-                                    endAddress: "Philips, Manyata",
-                                    rideType: Constant.AS_HOST,
-                                    amount: 100,
-                                    dateTime: DateTime.now(),
-                                    seatsOffered: "4",
-                                    carType: Constant.CAR_TYPE_SEDAN,
-                                    coRidersCount: "2",
-                                    leftButtonText: Constant.BUTTON_CANCEL,
-                                    rideStatus: Constant.RIDE_SCHEDULED,
-                                  ),
-                                  RecentRides(
-                                    carIcon: 'assets/images/car_pool.png',
-                                    startAddress: "Maruthi Nagar",
-                                    endAddress: "Philips, Manyata",
-                                    rideType: Constant.AS_HOST,
-                                    amount: 100,
-                                    dateTime: DateTime.now(),
-                                    seatsOffered: "4",
-                                    carType: Constant.CAR_TYPE_SEDAN,
-                                    coRidersCount: "2",
-                                    leftButtonText: Constant.BUTTON_CANCEL,
-                                    rideStatus: Constant.RIDE_COMPLETED,
-                                  ),
-                                  const QuestionnaireCard(
-                                      questionnairesCompletionPercentage: 0.30),
-                                  const ProfileCard(
-                                      profileName: "Likith",
-                                      profileCompletionPercentage: 0.20),
-                                  const HomeCarCard(
-                                      carType: Constant.CAR_TYPE_SEDAN,
-                                      carName: "Ciaz",
-                                      carNumber: "KA05MU2778",
-                                      numberOfSeatsOffered: 4,
-                                      numberOfSeatsAvailable: 5,
-                                      defaultStatus: true),
-                                  const AddCarCard()
-                                ],
+                  child: Stack(
+                    children: [
+                      googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Row(
+                            children: [
+                              BorderIcon(
+                                height: 50,
+                                width: 50,
+                                child: IconButton(
+                                  icon: const Icon(Icons.menu),
+                                  color: Colors.blue,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    _key.currentState?.openDrawer();
+                                  },
+                                ),
                               ),
-                            ),
+                              const Spacer(),
+                              BorderIcon(
+                                height: 50,
+                                width: 50,
+                                child: IconButton(
+                                  icon: const Icon(Icons.message),
+                                  color: Colors.blue,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {},
+                                ),
+                              ),
+                              addHorizontalSpace(10),
+                              BorderIcon(
+                                height: 50,
+                                width: 50,
+                                child: IconButton(
+                                  icon: const Icon(Icons.alarm),
+                                  padding: EdgeInsets.zero,
+                                  color: Colors.blue,
+                                  onPressed: () {},
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
+                      ),
+                      DraggableScrollableSheet(
+                        minChildSize: 0.5,
+                        maxChildSize: 0.9,
+                        initialChildSize: 0.5,
+                        builder: (BuildContext context,
+                            ScrollController myScrollController) {
+                          return ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(30)),
+                            child: Container(
+                              color: homePageBackgroundColor,
+                              child: SingleChildScrollView(
+                                controller: myScrollController,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 5, bottom: 30),
+                                        height: 2,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Colors.grey),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                        child: TabBar(
+                                          unselectedLabelColor: textGreyColor,
+                                          unselectedLabelStyle: TextStyle(
+                                              color: textGreyColor,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18.sp),
+                                          labelStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18.sp),
+                                          indicatorSize: TabBarIndicatorSize.tab,
+                                          indicator: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            shape: BoxShape.rectangle,
+                                            color: primaryLightColor,
+                                            // Other flags
+                                            // indicatorRadius: 1,
+                                            // insets: EdgeInsets.all(1),
+                                            // padding: EdgeInsets.all(10)
+                                          ),
+                                          controller: tabController,
+                                          tabs: [
+                                            Text(DemoLocalizations.of(context)!.getText("driver_tab")),
+                                            Text(DemoLocalizations.of(context)!.getText("rider_tab"))
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: SizedBox(
+                                          width: double.maxFinite,
+                                          height: 320,
+                                          child: TabBarView(
+                                              controller: tabController,
+                                              children: [
+                                                showDriverWidget(context),
+                                                showRiderWidget(context)
+                                              ]),
+                                        ),
+                                      ),
+
+                                      FutureBuilder<dynamic>(
+                                        future: _homeRepository.home(), // a Future<String> or null
+                                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.none: return Text('No Internet!!');
+                                            case ConnectionState.waiting: return Text('Please wait... Loading details');
+                                            default:
+                                              if (snapshot.hasError) {
+                                                return Text('Error: ${snapshot.error}');
+                                              } else {
+                                                return loadHomePageData(snapshot.data);
+                                              }
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+
             )));
   }
 
@@ -282,3 +255,4 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
       );
 }
+

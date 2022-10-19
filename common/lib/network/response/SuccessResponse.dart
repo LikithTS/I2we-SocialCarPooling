@@ -1,40 +1,43 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:convert';
 
-part 'SuccessResponse.g.dart';
+SuccessResponse successResponseFromJson(String str) =>
+    SuccessResponse.fromJson(json.decode(str));
 
-@JsonSerializable()
+String successResponseToJson(SuccessResponse data) =>
+    json.encode(data.toJson());
+
 class SuccessResponse {
   SuccessResponse({
-    int? status,
-    List<dynamic>? responseData,
-    String? message,
+    int? statusCode,
+    List<dynamic>? data,
   }) {
-    _status = status;
-    _responseData = responseData;
-    _message = message;
+    _statusCode = statusCode;
+    _data = data;
   }
 
-  int? _status;
-  List<dynamic>? _responseData;
-  String? _message;
+  SuccessResponse.fromJson(dynamic json) {
+    _statusCode = json['statusCode'];
+    if (json['data'] != null) {
+      _data = [];
+      json['data'].forEach((v) {
+        _data?.add(v);
+      });
+    }
+  }
 
-  int? get status => _status;
+  int? _statusCode;
+  List<dynamic>? _data;
 
-  List<dynamic>? get responseData => _responseData;
+  int? get statusCode => _statusCode;
 
-  String? get message => _message;
+  List<dynamic>? get data => _data;
 
-  factory SuccessResponse.fromJson(Map<String, dynamic> json) => _$SuccessResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SuccessResponseToJson(this);
-
-  // Map<String, dynamic> toJson() {
-  //   final map = <String, dynamic>{};
-  //   map['status'] = _status;
-  //   if (_responseData != null) {
-  //     map['responseData'] = _responseData?.map((v) => v.toJson()).toList();
-  //   }
-  //   map['message'] = _message;
-  //   return map;
-  // }
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['statusCode'] = _statusCode;
+    if (_data != null) {
+      map['data'] = _data?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
 }

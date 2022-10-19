@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-Widget rideTypeView(String rideType) =>  Text(
-  rideType,
+Widget rideTypeView(String? rideType) =>  Text(
+  rideType!,
   style: const TextStyle(
     color: Colors.pinkAccent,
     fontSize: 12,

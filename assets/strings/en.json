@@ -21,10 +21,12 @@
   "date" : "Date",
   "seats_offered" : "Offering Seats",
   "amount" : "Amount",
-  "find_ride" : "Find Ride",
-  "post_ride" : "Post Ride",
+  "find_ride" : "FIND RIDE",
+  "post_ride" : "POST RIDE",
   "car_type" : "Car Type",
   "home" : "Home",
   "driver_tab" : "As Driver",
-  "rider_tab" : "As Rider"
+  "rider_tab" : "As Rider",
+  "as_host" : "As Host",
+  "as_rider" : "As Rider"
 }

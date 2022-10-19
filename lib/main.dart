@@ -1,3 +1,4 @@
+import 'package:common/utils/storageutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,36 +17,40 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    initConfiguration();
+    return MultiProvider(
+        providers: [
+        ChangeNotifierProvider(create: (context) => AddressProvider()),
+    ],
+    child: ScreenUtilInit(
+      designSize: Size(screenWidth, screenHeight),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          locale: const Locale('en'),
+          localizationsDelegates: const [DemoLocalizationsDelegate()],
+          supportedLocales: const [Locale('en', '')],
+          theme: ThemeData(
+            textTheme: GoogleFonts.poppinsTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          home: child,
+        );
+      },
+      child: const SplashScreenPage(),
+    ));
+  }
+
+  void initConfiguration() {
+    PreferencesUtil.getInstance();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.blue));
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AddressProvider()),
-      ],
-      child: ScreenUtilInit(
-        designSize: Size(screenWidth, screenHeight),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            locale: const Locale('en'),
-            localizationsDelegates: const [DemoLocalizationsDelegate()],
-            supportedLocales: const [Locale('en', '')],
-            theme: ThemeData(
-              textTheme: GoogleFonts.poppinsTextTheme(
-                Theme.of(context).textTheme,
-              ),
-            ),
-            home: child,
-          );
-        },
-        child: SplashScreenPage(),
-      ),
-    );
+        const SystemUiOverlayStyle(statusBarColor: Colors.blue));
   }
 }

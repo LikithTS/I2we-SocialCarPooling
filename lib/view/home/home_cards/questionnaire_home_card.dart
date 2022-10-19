@@ -46,7 +46,7 @@ class QuestionnaireCard extends StatelessWidget {
                           ),
                         ),
                         const CircleAvatar(
-                          radius: 30,
+                          radius: 25,
                           backgroundImage:
                           AssetImage('assets/images/circle_right_arrow.png'),
                         )
