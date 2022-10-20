@@ -1,6 +1,10 @@
+
+import 'dart:developer';
+
 import 'package:common/network/model/QuestionarieCategory.dart';
-import 'package:common/network/model/Subcategory.dart';
-import 'package:common/utils/FileUtils.dart';
+import 'package:common/network/model/QuestionarieResponse.dart';
+import 'package:common/network/model/SubCategories.dart';
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
@@ -37,8 +41,14 @@ class _QuestionarieState extends State<QuestionariePage>
   }
 
   void fetchCategories() async {
-    List<Questionarie>? categoryList = await FileUtils.readQuestionariesData();
-    _onCategoriesUpdated(categoryList!);
+    HomeRepository()
+        .getQuestionarieData()
+        .then((value) => handleQuestionResponseData(value))
+        .catchError((onError) {
+      handleErrorResponseData(onError);
+    });
+    // List<Questionarie>? categoryList = await FileUtils.readQuestionariesData();
+    // _onCategoriesUpdated(categoryList!);
   }
 
   void _onCategoriesUpdated(dynamic val) {
@@ -131,7 +141,7 @@ class _QuestionarieState extends State<QuestionariePage>
   getSubCategories(List<Questionarie> categories) {
     List<Widget> widgets = [];
     for (var element in categories) {
-      List<Subcategory>? subcategories = element.subcategory;
+      List<SubCategories>? subcategories = element.subcategory;
       var wrap = Container(
           padding: const EdgeInsets.all(20),
           child: Wrap(
@@ -158,25 +168,33 @@ class _QuestionarieState extends State<QuestionariePage>
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
+  void handleQuestionResponseData(value) {
+    if(value is QuestionarieResponse){
+    _onCategoriesUpdated(value.questionarie);
+    }
+  }
+
+  void handleErrorResponseData(onError) {
+    log("onError ${onError}");
+  }
 }
 
 class QuestionariChipSet extends StatefulWidget {
-  final Subcategory subcategories;
+  final SubCategories subcategories;
 
   const QuestionariChipSet({Key? key, required this.subcategories})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      QuestionariChipSetState(subcategories: subcategories);
+  State<StatefulWidget> createState() => QuestionariChipSetState();
 }
 
 class QuestionariChipSetState extends State<QuestionariChipSet> {
-  final Subcategory subcategories;
 
-  QuestionariChipSetState({required this.subcategories});
+  QuestionariChipSetState();
 
-  chipNameText(String name, int id) => Text(
+  chipNameText(String name, String id) => Text(
         name,
         style: TextStyleUtils.primaryTextRegular.copyWith(
             fontSize: textsize14sp,
@@ -188,14 +206,14 @@ class QuestionariChipSetState extends State<QuestionariChipSet> {
   @override
   Widget build(BuildContext context) {
     return InputChip(
-      label: chipNameText(subcategories.name!, subcategories.id!),
+      label: chipNameText(widget.subcategories.name!, widget.subcategories.id!),
       selectedColor: chipSetBGSelectedColor,
       disabledColor: chipSetBGUnSelectedColor,
       showCheckmark: false,
-      selected: CPSessionManager().isCategoryItemsSelected(subcategories.id!),
+      selected: CPSessionManager().isCategoryItemsSelected(widget.subcategories.id!),
       onSelected: (bool value) {
         setState(() {
-          CPSessionManager().saveSelectedCategoryIds(subcategories.id!, value);
+          CPSessionManager().saveSelectedCategoryIds(widget.subcategories.id!, value);
         });
       },
     );
