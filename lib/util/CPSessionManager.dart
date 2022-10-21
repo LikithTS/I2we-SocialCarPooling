@@ -19,13 +19,13 @@ class CPSessionManager{
 
   }
 
-  Set<int> categoryIds = HashSet();
+  Set<String> categoryIds = HashSet();
 
-  void saveSelectedCategoryIds(int id, bool selected) {
+  void saveSelectedCategoryIds(String id, bool selected) {
     selected ? categoryIds.add(id) : categoryIds.remove(id);
   }
 
-  bool isCategoryItemsSelected(int id) {
+  bool isCategoryItemsSelected(String id) {
     return categoryIds.contains(id);
   }
 

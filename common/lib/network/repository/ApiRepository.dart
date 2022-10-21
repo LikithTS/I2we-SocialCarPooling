@@ -12,7 +12,7 @@ class ApiRepository {
     if (responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
         responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
       try {
-        log("response: ${responseData.data}");
+        log("response: ${responseData.data.toString()}");
         var successResponse = SuccessResponse.fromJson(responseData.data);
         if (successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
             successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {

@@ -11,9 +11,9 @@ class QuestionarieResponse {
 }
 
   QuestionarieResponse.fromJson(dynamic json) {
-    if (json['questionarie'] != null) {
+    if (json['data'] != null) {
       _questionarie = [];
-      json['questionarie'].forEach((v) {
+      json['data'].forEach((v) {
         _questionarie?.add(Questionarie.fromJson(v));
       });
     }
@@ -25,7 +25,7 @@ class QuestionarieResponse {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_questionarie != null) {
-      map['questionarie'] = _questionarie?.map((v) => v.toJson()).toList();
+      map['data'] = _questionarie?.map((v) => v.toJson()).toList();
     }
     return map;
   }

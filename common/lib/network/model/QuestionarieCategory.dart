@@ -1,15 +1,16 @@
 import 'dart:convert';
 
-import 'Subcategory.dart';
+import 'package:common/network/model/SubCategories.dart';
+
 
 Questionarie questionarieFromJson(String str) => Questionarie.fromJson(json.decode(str));
 String questionarieToJson(Questionarie data) => json.encode(data.toJson());
 class Questionarie {
   Questionarie({
-      String? category, 
-      int? id, 
+      String? category,
+    String? id,
       bool? enabled, 
-      List<Subcategory>? subcategory,}){
+      List<SubCategories>? subcategory,}){
     _category = category;
     _id = id;
     _enabled = enabled;
@@ -20,22 +21,22 @@ class Questionarie {
     _category = json['category'];
     _id = json['id'];
     _enabled = json['enabled'];
-    if (json['subcategory'] != null) {
+    if (json['subCategories'] != null) {
       _subcategory = [];
-      json['subcategory'].forEach((v) {
-        _subcategory?.add(Subcategory.fromJson(v));
+      json['subCategories'].forEach((v) {
+        _subcategory?.add(SubCategories.fromJson(v));
       });
     }
   }
   String? _category;
-  int? _id;
+  String? _id;
   bool? _enabled;
-  List<Subcategory>? _subcategory;
+  List<SubCategories>? _subcategory;
 
   String? get category => _category;
-  int? get id => _id;
+  String? get id => _id;
   bool? get enabled => _enabled;
-  List<Subcategory>? get subcategory => _subcategory;
+  List<SubCategories>? get subcategory => _subcategory;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -43,7 +44,7 @@ class Questionarie {
     map['id'] = _id;
     map['enabled'] = _enabled;
     if (_subcategory != null) {
-      map['subcategory'] = _subcategory?.map((v) => v.toJson()).toList();
+      map['subCategories'] = _subcategory?.map((v) => v.toJson()).toList();
     }
     return map;
   }

@@ -7,4 +7,5 @@ class ApiConstant {
   static const String SIGN_IN_API_PATH = "user/signup";
   static const String SEND_OTP_API_PATH = "user/send-otp";
   static const String VERIFY_OTP_API_PATH = "user/validate-otp";
+  static const String QUESTIONARIE_API_PATH = "questionnarie";
 }
