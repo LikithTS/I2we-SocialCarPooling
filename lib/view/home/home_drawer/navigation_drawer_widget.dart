@@ -11,6 +11,9 @@ import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 import '../../../util/CPSessionManager.dart';
 import '../../login/login_screen.dart';
 
+import '../../../utils/Localization.dart';
+import '../../myvehicle/my_vehicle_start_page.dart';
+
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
 
@@ -33,57 +36,67 @@ class NavigationDrawerWidget extends StatelessWidget {
                 profileImage: profileImage,
                 onClicked: () => {}),
             buildMenuItem(
-                text: 'Home',
+                text: DemoLocalizations.of(context)?.getText("home") ?? "",
                 icon: Icons.home,
                 onClicked: () => selectedItem(context, 0)),
             buildMenuItem(
-                text: 'My Rides',
+                text: DemoLocalizations.of(context)?.getText("my_rides") ?? "",
                 icon: Icons.directions_car,
                 onClicked: () => selectedItem(context, 1)),
             buildMenuItem(
-                text: 'History',
+                text: DemoLocalizations.of(context)?.getText("history") ?? "",
                 icon: Icons.history,
                 onClicked: () => selectedItem(context, 2)),
             buildMenuItem(
-                text: 'My Vechicle',
+                text:
+                    DemoLocalizations.of(context)?.getText("my_vehicle") ?? "",
                 icon: Icons.car_crash_sharp,
-                onClicked: () => selectedItem(context, 2)),
-            buildMenuItem(
-                text: 'My Questionaries',
-                icon: Icons.help,
                 onClicked: () => selectedItem(context, 3)),
             buildMenuItem(
-                text: 'Rating & Reviews',
-                icon: Icons.stars,
+                text: DemoLocalizations.of(context)
+                        ?.getText("my_questionaries") ??
+                    "",
+                icon: Icons.help,
                 onClicked: () => selectedItem(context, 4)),
             buildMenuItem(
-                text: 'Feedback',
-                icon: Icons.forum,
+                text: DemoLocalizations.of(context)
+                        ?.getText("ratings_and_reviews") ??
+                    "",
+                icon: Icons.stars,
                 onClicked: () => selectedItem(context, 5)),
             buildMenuItem(
-                text: 'Subscription',
-                icon: Icons.subscriptions,
+                text: DemoLocalizations.of(context)?.getText("feedback") ?? "",
+                icon: Icons.forum,
                 onClicked: () => selectedItem(context, 6)),
             buildMenuItem(
-                text: 'Terms & Conditions',
-                icon: Icons.description,
+                text: DemoLocalizations.of(context)?.getText("subscription") ??
+                    "",
+                icon: Icons.subscriptions,
                 onClicked: () => selectedItem(context, 7)),
             buildMenuItem(
-                text: 'Privacy Policy',
-                icon: Icons.screen_lock_portrait,
+                text: DemoLocalizations.of(context)
+                        ?.getText("terms_and_conditions") ??
+                    "",
+                icon: Icons.description,
                 onClicked: () => selectedItem(context, 8)),
             buildMenuItem(
-                text: 'Help',
-                icon: Icons.help,
+                text:
+                    DemoLocalizations.of(context)?.getText("privacy_policy") ??
+                        "",
+                icon: Icons.screen_lock_portrait,
                 onClicked: () => selectedItem(context, 9)),
             buildMenuItem(
-                text: 'About us',
-                icon: Icons.info,
+                text: DemoLocalizations.of(context)?.getText("help") ?? "",
+                icon: Icons.help,
                 onClicked: () => selectedItem(context, 10)),
             buildMenuItem(
-                text: 'Logout',
-                icon: Icons.logout,
+                text: DemoLocalizations.of(context)?.getText("about_us") ?? "",
+                icon: Icons.info,
                 onClicked: () => selectedItem(context, 11)),
+            buildMenuItem(
+                text: DemoLocalizations.of(context)?.getText("logout") ?? "",
+                icon: Icons.logout,
+                onClicked: () => selectedItem(context, 12)),
           ],
         ),
       ),
@@ -117,7 +130,9 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage(homeRepository: HomeRepository())));
         break;
-      case 1:
+      case 3:
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => MyVehicleStartPage()));
         break;
       case 3:
         Navigator.push(
