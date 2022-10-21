@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../util/CPString.dart';
 import '../../util/TextStylesUtil.dart';
@@ -115,6 +116,6 @@ class _WelcomePageState extends State<WelcomePage> {
   }
   void _gotoHomePage() {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        HomePage(homeRepository: HomeRepository())), (Route<dynamic> route) => false);
+        QuestionariePage()), (Route<dynamic> route) => false);
   }
 }

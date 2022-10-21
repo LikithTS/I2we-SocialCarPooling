@@ -97,12 +97,10 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                                         context,
                                                         '${places.name} , ${places.street} , ${places.country}');
 
-                                                    ProviderPreference().putLat(
+                                                    ProviderPreference().putLatLng(
                                                         context,
-                                                        '${places.latitude}');
-                                                    ProviderPreference().putLong(
-                                                        context,
-                                                        '${places.longitude}');
+                                                        LatLng(places.latitude, places.longitude));
+
                                                   },
                                                   title: Text(
                                                     '${places.name} : ${places.street}',

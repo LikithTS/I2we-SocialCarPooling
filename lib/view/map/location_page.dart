@@ -44,9 +44,8 @@ class _LocationPageState extends State<LocationPage> {
       latitude = position.latitude;
       longitude = position.longitude;
       Provider.of<AddressProvider>(context, listen: false)
-          .changeLat(latitude ?? 0.0);
-      Provider.of<AddressProvider>(context, listen: false)
-          .changeLong(longitude ?? 0.0);
+          .changeLatLng(LatLng(latitude ?? 0.0, longitude??0.0));
+
       _markers.clear();
       _markers.add(Marker(
           markerId: MarkerId('Home'),
@@ -107,8 +106,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
-    var latProvider = Provider.of<AddressProvider>(context).lat;
-    var longProvider = Provider.of<AddressProvider>(context).lng;
+    var latLngProvider = Provider.of<AddressProvider>(context).latLng;
     List<String> result = address.split(',');
 
     return Scaffold(
@@ -127,7 +125,7 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                     ),
                   )
-                : googleMap(context, latProvider, longProvider, _controller),
+                : googleMap(context, LatLng(latitude!, longitude!), _controller),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -205,17 +203,28 @@ class _LocationPageState extends State<LocationPage> {
                         padding: EdgeInsets.all(10),
                         child: ElevatedButton(
                           onPressed: () {
-                            widget.flagAddress?
-                            widget.userType.toString() == 'driver'
-                                ? ProviderPreference()
-                                    .putStartDriverAddress(context, address)
-                                : ProviderPreference()
-                                    .putStartRiderAddress(context, address):
-                            widget.userType.toString() == 'driver'
-                                ? ProviderPreference()
-                                .putEndDriverAddress(context, address)
-                                : ProviderPreference()
-                                .putEndRiderAddress(context, address);
+                            widget.flagAddress
+                                ? widget.userType.toString() == 'driver'
+                                    ? ProviderPreference()
+                                        .putStartDriverAddress(context, address)
+                                    : ProviderPreference()
+                                        .putStartRiderAddress(context, address)
+                                : widget.userType.toString() == 'driver'
+                                    ? ProviderPreference()
+                                        .putEndDriverAddress(context, address)
+                                    : ProviderPreference()
+                                        .putEndRiderAddress(context, address);
+                            widget.flagAddress
+                                ? widget.userType.toString() == 'driver'
+                                    ? ProviderPreference()
+                                        .putDriverStartLatLng(context, latLngProvider)
+                                    : ProviderPreference()
+                                        .putDriverStartLatLng(context, latLngProvider)
+                                : widget.userType.toString() == 'driver'
+                                    ? ProviderPreference()
+                                        .putDriverDestLatLng(context, latLngProvider)
+                                    : ProviderPreference()
+                                        .putDriverDestLatLng(context, latLngProvider);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
@@ -249,7 +258,7 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   Widget googleMap(
-      BuildContext context, double latitude, double longitude, _controller) {
+      BuildContext context, LatLng latLng, _controller) {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -259,7 +268,7 @@ class _LocationPageState extends State<LocationPage> {
         myLocationButtonEnabled: false,
         myLocationEnabled: true,
         initialCameraPosition:
-            CameraPosition(target: LatLng(latitude, longitude), zoom: 15),
+            CameraPosition(target: latLng, zoom: 15),
         markers: _markers,
         onCameraMove: (_position) =>
             _updatePosition(_position, latitude, longitude),

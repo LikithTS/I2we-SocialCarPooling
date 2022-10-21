@@ -17,6 +17,7 @@ import 'package:socialcarpooling/view/home/home_cards/car_home_view.dart';
 import 'package:socialcarpooling/view/home/home_cards/profile_home_card.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
+import 'package:socialcarpooling/view/map/test_map.dart';
 import '../../provider/address_provider.dart';
 import '../../util/color.dart';
 import '../../util/configuration.dart';
@@ -102,7 +103,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             body: Container(
                   child: Stack(
                     children: [
-                      latitude == null && longitude == null
+                      MapPage()
+                     /* latitude == null && longitude == null
                           ? Container(
                         width: deviceWidth(context),
                         height: deviceHeight(context),
@@ -113,7 +115,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             child: CircularProgressIndicator(),
                           ),
                         ),
-                      ) :  googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller),
+                      ) :  googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller)*/,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(

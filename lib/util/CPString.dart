@@ -20,6 +20,7 @@ class CPString{
   static const String welcometempText = "To give best experience for user, we required Few information or interest of yours.";
   static const String takeMinute = "Its takes less than a Minute";
   static const String working_task = "Working on the task";
+  static const String work = "Work";
   static const String fontFamilyPoppins = "Poppins";
   static const String registration = "Registration";
   static const String continueString = "Continue";
@@ -55,9 +56,10 @@ class CPString{
   static const String emailValidError = "Enter valid email";
   static const String nameError = "Enter valid Name";
   static const String emailError = "Email can not empty";
+  static const String workError = "Work can not empty";
   static const String passwordError = "Password can not empty";
   static const String cPasswordError = "Confirm Password can not empty";
-  static const String passwordValidError = "Please enter 6 character Password";
+  static const String passwordValidError = "Please Enter valid password";
   static const String cPasswordValidError = "Please enter same as password and confirm password";
   static const String registerSuccess = "The registration successful";
   static const String signupAgree = "By Signing up ,you agree with our ";

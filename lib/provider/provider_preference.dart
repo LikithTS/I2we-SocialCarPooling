@@ -36,19 +36,23 @@ class ProviderPreference{
         listen: false)
         .changeEndRiderAddress(address);
   }
-  void putLat(context,lat)
+  void putDriverStartLatLng(context,latLng)
   {
     Provider.of<AddressProvider>(context,
         listen: false)
-        .changeLat(lat);
+        .changeDriverStartLatLong(latLng);
   }
-
-  void putLong(context,long)
+  void putDriverDestLatLng(context,latLng)
   {
     Provider.of<AddressProvider>(context,
         listen: false)
-        .changeLong(long);
+        .changeDriverDestLatLong(latLng);
   }
-
+  void putLatLng(context,latLng)
+  {
+    Provider.of<AddressProvider>(context,
+        listen: false)
+        .changeLatLng(latLng);
+  }
 
 }

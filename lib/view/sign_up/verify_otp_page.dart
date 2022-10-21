@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:ffi';
 
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/SigninRepository.dart';
+import 'package:common/network/request/SendOtpApi.dart';
+import 'package:common/network/request/ValidOtpApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
@@ -20,23 +25,31 @@ import '../../widgets/image_widgets.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   final String mobileNo;
+
   const VerifyOtpPage({Key? key, required this.mobileNo}) : super(key: key);
 
   @override
   State<VerifyOtpPage> createState() => _VerifyOtpPageState();
 }
 
-class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin {
+class _VerifyOtpPageState extends State<VerifyOtpPage>
+    with InputValidationMixin {
   TextEditingController mobileNoController = TextEditingController();
-  int secondsRemaining = 10;
+  int secondsRemaining = 30;
   bool enableResend = false;
   Timer? timer;
 
+  TextEditingController otpString1Controller =TextEditingController();
+  TextEditingController otpString2Controller =TextEditingController();
+  TextEditingController otpString3Controller =TextEditingController();
+  TextEditingController otpString4Controller =TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    mobileNoController.text=widget.mobileNo;
+    mobileNoController.text = widget.mobileNo;
+    SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: widget.mobileNo);
+    sendOtp(sendOtpApi);
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -48,8 +61,49 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
         });
       }
     });
-
   }
+
+  void sendOtp(SendOtpApi sendOtpApi) {
+    Future<dynamic> future = SigninRepository().sendOtp(api: sendOtpApi);
+    future.then((value) => {handleResponseData(value)});
+    //     .catchError((onError) {
+    //   handleErrorResponse(onError);
+    // });
+  }
+
+  void validOtp(ValidOtpApi validOtpApi) {
+    Future<dynamic> future = SigninRepository().validOtp(api: validOtpApi);
+    future.then((value) => {handleValidOtpResponseData(value)});
+    //     .catchError((onError) {
+    //   handleErrorResponse(onError);
+    // });
+  }
+
+  handleResponseData(value) {
+    if (value is SuccessResponse) {
+      print("Success ${value.statusCode}");
+
+    } else {
+      ErrorResponse errorResponse = value;
+      print('Error ${errorResponse.errorMessage}');
+    }
+  }
+
+  handleValidOtpResponseData(value) {
+    if (value is SuccessResponse) {
+      print("Success ${value.statusCode}");
+      Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.leftToRight,
+              child: VerifiedPage()));
+
+    } else {
+      ErrorResponse errorResponse = value;
+      print('Error ${errorResponse.errorMessage}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +115,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
               child: Column(
                 children: [
                   headerLayout(context, CPString.verifyOTP),
-                 Text(
-                        CPString.verifyOTPTitle,
-                        style: TextStyleUtils.primaryTextMedium
-                            .copyWith(fontSize: 14),
-                      ),
+                  Text(
+                    CPString.verifyOTPTitle,
+                    style:
+                        TextStyleUtils.primaryTextMedium.copyWith(fontSize: 14),
+                  ),
                   SizedBox(
                     height: 50,
                   ),
@@ -82,12 +136,19 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                             CPString.mobileNo,
                             mobileNoController,
                             CPString.mobileError,
-                            Icons.mobile_screen_share_outlined,4,this,widget.mobileNo),
+                            Icons.mobile_screen_share_outlined,
+                            4,
+                            this,
+                            widget.mobileNo),
                       ),
                       Positioned(
                           right: 40,
                           bottom: 15,
-                          child: Text('Edit',style: TextStyleUtils.primaryTextMedium.copyWith(color: primaryColor,fontSize: fontSize16),))
+                          child: Text(
+                            'Edit',
+                            style: TextStyleUtils.primaryTextMedium.copyWith(
+                                color: primaryColor, fontSize: fontSize16),
+                          ))
                     ],
                   ),
                   Container(
@@ -108,6 +169,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                               height: 64,
                               width: 64,
                               child: TextFormField(
+                                controller: otpString1Controller,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 inputFormatters: [
@@ -124,7 +186,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                                     FocusScope.of(context).nextFocus();
                                   }
                                 },
-                                onSaved: (pin) {},
+                                onSaved: (pin) {
+                                },
                               ),
                             ),
                           ),
@@ -141,6 +204,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                               height: 64,
                               width: 64,
                               child: TextFormField(
+                                controller: otpString2Controller,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 inputFormatters: [
@@ -157,7 +221,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                                     FocusScope.of(context).nextFocus();
                                   }
                                 },
-                                onSaved: (pin) {},
+                                onSaved: (pin) {
+                                },
                               ),
                             ),
                           ),
@@ -174,6 +239,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                               height: 64,
                               width: 64,
                               child: TextFormField(
+                                controller: otpString3Controller,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 inputFormatters: [
@@ -190,7 +256,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                                     FocusScope.of(context).nextFocus();
                                   }
                                 },
-                                onSaved: (pin) {},
+                                onSaved: (pin) {
+                                },
                               ),
                             ),
                           ),
@@ -207,6 +274,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                               height: 64,
                               width: 64,
                               child: TextFormField(
+                                controller: otpString4Controller,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 inputFormatters: [
@@ -223,7 +291,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                                     FocusScope.of(context).nextFocus();
                                   }
                                 },
-                                onSaved: (pin) {},
+                                onSaved: (pin) {
+                                },
                               ),
                             ),
                           ),
@@ -234,74 +303,81 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
                   SizedBox(
                     height: 20,
                   ),
-                 /* ElevatedButton(
+                  /* ElevatedButton(
                     child: Text('Resend Code'),
                     onPressed: enableResend ? _resendCode : null,
                   ),*/
-                  secondsRemaining!=0?  RichText(
-                      overflow: TextOverflow.clip,
-                      textAlign: TextAlign.end,
-                      textDirection: TextDirection.rtl,
-                      softWrap: true,
-                      maxLines: 1,
-                      textScaleFactor: 1,
-                      text: TextSpan(
-                        text: CPString.resendOtpIn,
-                        style: TextStyleUtils.primaryTextRegular.copyWith(
-                          color: borderColor,
-                          fontSize: fontSize14,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: '00:${secondsRemaining.toString().padLeft(2, '0')} Sec',
-                            style: TextStyleUtils.primaryTextSemiBold.copyWith(
-                              color: primaryColor,
-                              fontSize: fontSize16,
+                  secondsRemaining != 0
+                      ? RichText(
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.end,
+                          textDirection: TextDirection.rtl,
+                          softWrap: true,
+                          maxLines: 1,
+                          textScaleFactor: 1,
+                          text: TextSpan(
+                            text: CPString.resendOtpIn,
+                            style: TextStyleUtils.primaryTextRegular.copyWith(
+                              color: borderColor,
+                              fontSize: fontSize14,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    '00:${secondsRemaining.toString().padLeft(2, '0')} Sec',
+                                style:
+                                    TextStyleUtils.primaryTextSemiBold.copyWith(
+                                  color: primaryColor,
+                                  fontSize: fontSize16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : InkWell(
+                          onTap: enableResend ? _resendCode : null,
+                          child: RichText(
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.end,
+                            textDirection: TextDirection.rtl,
+                            softWrap: true,
+                            maxLines: 1,
+                            textScaleFactor: 1,
+                            text: TextSpan(
+                              text: CPString.dontreciveOtp,
+                              style: TextStyleUtils.primaryTextRegular.copyWith(
+                                color: borderColor,
+                                fontSize: fontSize14,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: CPString.resendOTP,
+                                  style: TextStyleUtils.primaryTextSemiBold
+                                      .copyWith(
+                                    color: primaryColor,
+                                    fontSize: fontSize16,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                  ):InkWell(
-                    onTap:enableResend ? _resendCode : null,
-                    child:RichText(
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.end,
-                    textDirection: TextDirection.rtl,
-                    softWrap: true,
-                    maxLines: 1,
-                    textScaleFactor: 1,
-                    text: TextSpan(
-                      text: CPString.dontreciveOtp,
-                      style: TextStyleUtils.primaryTextRegular.copyWith(
-                        color: borderColor,
-                        fontSize: fontSize14,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: CPString.resendOTP,
-                          style: TextStyleUtils.primaryTextSemiBold.copyWith(
-                            color: primaryColor,
-                            fontSize: fontSize16,
-                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  ),
                   Container(
                     width: deviceWidth(context),
                     padding: EdgeInsets.symmetric(horizontal: margin20),
                     margin: EdgeInsets.only(top: margin20),
                     child: ElevatedButton(
                       onPressed: () {
-                        /* if (_formKey.currentState!.validate()) {
-                              _registration(fullNameController.text);
-                            }*/
+
                         Navigator.push(
                             context,
                             PageTransition(
                                 type: PageTransitionType.leftToRight,
-                                child:VerifiedPage()));
+                                child: VerifiedPage()));
+                       /* var otpText=otpString1Controller.text.toString()+otpString2Controller.text.toString()+otpString3Controller.text.toString()+otpString4Controller.text.toString();
+                       // print("OTP Text: $otpText");
+                        ValidOtpApi validOtpApi = ValidOtpApi(phoneNumber: mobileNoController.text.toString(), otp: otpText);
+                        validOtp(validOtpApi);*/
                       },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
@@ -359,18 +435,18 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with InputValidationMixin
       )),
     );
   }
+
   void _resendCode() {
     //other code here
-    setState((){
+    setState(() {
       secondsRemaining = 10;
       enableResend = false;
     });
   }
 
   @override
-  dispose(){
+  dispose() {
     timer?.cancel();
     super.dispose();
   }
-
 }

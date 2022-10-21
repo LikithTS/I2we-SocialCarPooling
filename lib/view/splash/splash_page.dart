@@ -63,13 +63,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
 
   getNextPage() {
-    /*if (CPSessionManager().isUserLoggedIn()) {
+    if (CPSessionManager().isUserLoggedIn()) {
       return HomePage(homeRepository: HomeRepository());
     } else if (CPSessionManager().isIntroPageVisited()) {
       return LoginScreen(userRepository: LoginRepository());
     } else {
       return const IntoMainPage();
-    }*/
-    return HomePage(homeRepository: HomeRepository());
+    }
   }
 }

@@ -7,8 +7,9 @@ class AddressProvider extends ChangeNotifier {
   String endDriverAddress = '';
   String startRiderAddress = '';
   String endRiderAddress = '';
-  double lat = 0;
-  double lng = 0;
+  LatLng latLng=LatLng(0.0, 0.0);
+  LatLng driverStartLatLng=LatLng(0.0, 0.0);
+  LatLng driverDestLatLng=LatLng(0.0, 0.0);
 
   changeAddress(String newAddress) {
     address = newAddress;
@@ -30,12 +31,17 @@ class AddressProvider extends ChangeNotifier {
     endRiderAddress = newAddress;
     notifyListeners();
   }
-  changeLat(double newLat) {
-    lat = newLat;
+  changeLatLng(LatLng newLatLng) {
+    latLng = newLatLng;
     notifyListeners();
   }
-  changeLong(double newLong) {
-    lng = newLong;
+
+  changeDriverStartLatLong(LatLng newLatLng) {
+    driverStartLatLng = newLatLng;
+    notifyListeners();
+  }
+  changeDriverDestLatLong(LatLng newLatLng) {
+    driverDestLatLng = newLatLng;
     notifyListeners();
   }
 }

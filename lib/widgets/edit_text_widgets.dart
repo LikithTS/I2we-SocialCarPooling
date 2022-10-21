@@ -16,7 +16,12 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: TextFormField(
         controller: _controller,
+        keyboardType: flag==2&&flag==4?TextInputType.number:TextInputType.text,
         decoration:  InputDecoration(
+          fillColor: Colors.grey,
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.blue),
+          ),
           prefixIcon: Icon(icon,color: primaryColor,),
           border: InputBorder.none,
           labelText: textString,
@@ -26,10 +31,10 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
         ),
         validator: (value) {
          // print('value $value :$flag : ${inputValidationMixin.isNameString(value)}');
-          if (value!.isEmpty) {
+        /*  if (value!.isEmpty) {
             return errorText;
-          }
-          else if(flag==1 && inputValidationMixin.isNameString(value))
+          }*/
+          if(flag==1 && inputValidationMixin.isNameString(value))
             {
               return CPString.nameError;
             }
@@ -37,7 +42,11 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
             {
               return CPString.mobileValidError;
             }
-          else if(flag==3 && !inputValidationMixin.isEmailValid(value))
+          else if(flag==4 && !inputValidationMixin.isZipValid(value!))
+          {
+            return CPString.zipCodeError;
+          }
+          /*else if(flag==3 && !inputValidationMixin.isEmailValid(value))
             {
               return CPString.emailValidError;
             }
@@ -48,7 +57,7 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
           else if(flag==5 && inputValidationMixin.isNullString(value))
             {
               return CPString.stringError;
-            }
+            }*/
           return null;
         },
       ),
