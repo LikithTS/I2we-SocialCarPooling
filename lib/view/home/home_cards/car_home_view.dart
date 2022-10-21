@@ -1,6 +1,8 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 
 import '../../../utils/Localization.dart';
@@ -120,15 +122,25 @@ class _State extends State<HomeCarCard> {
                                 child: Row(
                                   children: [
                                     secondaryTextSmall(context, DemoLocalizations.of(context)?.getText("set_default")),
-                                    Switch(
-                                        value: setDefaultCar,
-                                        onChanged: (value) {
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                      child: FlutterSwitch(
+                                        activeColor: Colors.blue,
+                                        width: 70.0,
+                                        height: 30.0,
+                                        valueFontSize: 10.0,
+                                        toggleSize: 20.0,
+                                        value: widget.defaultStatus,
+                                        borderRadius: 30.0,
+                                        padding: 8.0,
+                                        showOnOff: true,
+                                        onToggle: (val) {
                                           setState(() {
-                                            setDefaultCar = value;
-                                            print(setDefaultCar);
+                                            log("Switch value $val");
                                           });
-                                        }
-                                    )
+                                        },
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )

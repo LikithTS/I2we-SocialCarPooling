@@ -1,5 +1,6 @@
 
 
+import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 
 import '../../../util/constant.dart';
@@ -10,7 +11,7 @@ import 'questionnaire_home_card.dart';
 import 'recent_rides_card.dart';
 import 'upcoming_rides_card.dart';
 
-Widget loadHomePageData(data) {
+Widget loadHomePageData(HomeResponse data) {
   return Column(
     children: [
       UpcomingRides(
@@ -46,14 +47,17 @@ Widget loadHomePageData(data) {
       ProfileCard(
           profileName: data.profile?.name ?? "",
           profileCompletionPercentage: data.profile?.percentageOfCompletion ??  100),
-      HomeCarCard(
-          carType: data.myCars?.firstWhere((element) => true).carType ?? Constant.CAR_TYPE_MINI,
-          carName: data.myCars?.firstWhere((element) => true).carName ?? "",
-          carNumber: data.myCars?.firstWhere((element) => true).regNumber ?? "",
-          numberOfSeatsOffered: data.myCars?.firstWhere((element) => true).offeringSeat ?? 2,
-          numberOfSeatsAvailable: data.myCars?.firstWhere((element) => true).seatingCapacity ?? 2,
-          defaultStatus: true),
-      const AddCarCard()
+      if(data.myCars!.isNotEmpty) ...[
+        HomeCarCard(
+            carType: data.myCars?.firstWhere((element) => true).carType ?? Constant.CAR_TYPE_MINI,
+            carName: data.myCars?.firstWhere((element) => true).carName ?? "",
+            carNumber: data.myCars?.firstWhere((element) => true).regNumber ?? "",
+            numberOfSeatsOffered: data.myCars?.firstWhere((element) => true).offeringSeat ?? 2,
+            numberOfSeatsAvailable: data.myCars?.firstWhere((element) => true).seatingCapacity ?? 2,
+            defaultStatus: true),
+      ] else ... [
+        const AddCarCard()
+      ]
     ],
   );
 }
