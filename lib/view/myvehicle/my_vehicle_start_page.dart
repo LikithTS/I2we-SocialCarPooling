@@ -73,7 +73,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                             primaryTextLightWidgetLeft(
                                 context,
                                 DemoLocalizations.of(context)
-                                        ?.getText("add_car_desc_one") ??
+                                        ?.getText("add_car_details_one") ??
                                     "")
                           ]),
                       addVerticalSpace(10),
@@ -92,7 +92,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                             primaryTextLightWidgetLeft(
                                 context,
                                 DemoLocalizations.of(context)
-                                        ?.getText("add_car_desc_two") ??
+                                        ?.getText("add_car_details_two") ??
                                     "")
                           ]),
                       addVerticalSpace(10),
@@ -111,7 +111,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                             primaryTextLightWidgetLeft(
                                 context,
                                 DemoLocalizations.of(context)
-                                        ?.getText("add_car_desc_three") ??
+                                        ?.getText("add_car_details_three") ??
                                     "")
                           ]),
                     ],
@@ -123,7 +123,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   child: SizedBox(
                     width: size.width,
                     child: primaryButton(
-                        DemoLocalizations.of(context)?.getText("add_car") ?? "",
+                        DemoLocalizations.of(context)?.getText("add_car_button") ?? "",
                         addCar),
                   ),
                 )

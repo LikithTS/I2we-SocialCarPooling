@@ -1,3 +1,4 @@
+import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../../util/CPSessionManager.dart';
@@ -54,7 +56,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                 onClicked: () => selectedItem(context, 3)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)
-                        ?.getText("my_questionaries") ??
+                        ?.getText("my_questioners") ??
                     "",
                 icon: Icons.help,
                 onClicked: () => selectedItem(context, 4)),
@@ -131,10 +133,15 @@ class NavigationDrawerWidget extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => HomePage(homeRepository: HomeRepository())));
         break;
       case 3:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MyVehicleStartPage()));
+        if(CPSessionManager().getIfCarDetailsAdded()) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => AllCarDetailsPage(carRepository: CarRepository())));
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const MyVehicleStartPage()));
+        }
         break;
-      case 3:
+      case 4:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;

@@ -28,5 +28,22 @@
   "driver_tab" : "As Driver",
   "rider_tab" : "As Rider",
   "as_host" : "As Host",
-  "as_rider" : "As Rider"
+  "as_rider" : "As Rider",
+  "my_rides" : "My Rides",
+  "history" : "History",
+  "my_vehicle" : "My Vehicle",
+  "ratings_and_reviews" : "Rating & Reviews",
+  "feedback" : "Feedback",
+  "subscription" : "Subscription",
+  "terms_and_conditions" : "Terms & Conditions",
+  "privacy_policy" : "Privacy Policy",
+  "help" : "Help",
+  "about_us" : "About Us",
+  "logout" : "Logout",
+  "add_car" : "Add Car",
+  "add_car_details_one" : "Add your car details to host a ride",
+  "add_car_details_two" : "Make more friends by hosting",
+  "add_car_details_three" : "Enjoy the ride",
+  "add_car_button" : "ADD CAR"
+
 }

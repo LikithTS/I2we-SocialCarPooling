@@ -4,4 +4,5 @@ class ApiConstant {
   static const String LOGOUT_API_PATH = "user/logout";
   static const String HOME_API_PATH = "home";
   static const String QUESTIONARIE_API_PATH = "questionnarie";
+  static const String CAR_API_PATH = "car/all";
 }

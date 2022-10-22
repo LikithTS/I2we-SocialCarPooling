@@ -2,6 +2,7 @@
 
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/CPSessionManager.dart';
 
 import '../../../util/constant.dart';
 import 'add_car_home_view.dart';
@@ -12,6 +13,11 @@ import 'recent_rides_card.dart';
 import 'upcoming_rides_card.dart';
 
 Widget loadHomePageData(HomeResponse data) {
+  if(data.myCars!.isNotEmpty) {
+    CPSessionManager().setIfCarDetailsAdded(true);
+  } else {
+    CPSessionManager().setIfCarDetailsAdded(false);
+  }
   return Column(
     children: [
       UpcomingRides(

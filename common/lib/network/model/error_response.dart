@@ -39,4 +39,10 @@ class ErrorResponse {
     map['errorMessage'] = _errorMessage;
     return map;
   }
+
+  List<dynamic> toList() {
+    List errorResponse = [];
+    errorResponse.add(ErrorResponse());
+    return errorResponse;
+  }
 }

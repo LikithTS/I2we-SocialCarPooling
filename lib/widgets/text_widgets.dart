@@ -74,17 +74,15 @@ Widget primaryTextNormalTwoLine(BuildContext context, String? text) =>
 Widget primaryTextNormal(BuildContext context, String? text) => Center(
       child: Align(
         alignment: Alignment.topLeft,
-        child: Expanded(
-          child: Text(
-            text!,
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: textGreyColor,
-                decoration: TextDecoration.none,
-                fontFamily: CPString.fontFamilyPoppins),
-            maxLines: 3,
-          ),
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: textGreyColor,
+              decoration: TextDecoration.none,
+              fontFamily: CPString.fontFamilyPoppins),
+          maxLines: 3,
         ),
       ),
     );
@@ -92,17 +90,15 @@ Widget primaryTextNormal(BuildContext context, String? text) => Center(
 Widget primaryTextSmall(BuildContext context, String? text) => Center(
       child: Align(
         alignment: Alignment.topLeft,
-        child: Expanded(
-          child: Text(
-            text!,
-            style: const TextStyle(
-                fontSize: 8,
-                fontWeight: FontWeight.normal,
-                color: textGreyColor,
-                decoration: TextDecoration.none,
-                fontFamily: 'Poppins'),
-            maxLines: 1,
-          ),
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 8,
+              fontWeight: FontWeight.normal,
+              color: textGreyColor,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          maxLines: 1,
         ),
       ),
     );
@@ -110,17 +106,15 @@ Widget primaryTextSmall(BuildContext context, String? text) => Center(
 Widget secondaryTextSmall(BuildContext context, String? text) => Center(
       child: Align(
         alignment: Alignment.topLeft,
-        child: Expanded(
-          child: Text(
-            text!,
-            style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                color: textGreyColor,
-                decoration: TextDecoration.none,
-                fontFamily: 'Poppins'),
-            maxLines: 1,
-          ),
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              color: textGreyColor,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          maxLines: 1,
         ),
       ),
     );
