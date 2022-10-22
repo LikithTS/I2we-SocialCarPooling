@@ -35,9 +35,9 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   child: Row(
                     children: [
                       Icon(Icons.arrow_back),
-                      headerText(
-                          DemoLocalizations.of(context)?.getText("my_cars") ??
-                              "")
+                      headerText(DemoLocalizations.of(context)
+                              ?.getText("my_cars_title") ??
+                          "")
                     ],
                   ),
                 ),
@@ -122,8 +122,10 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
                     width: size.width,
-                    child: primaryButton(
-                        DemoLocalizations.of(context)?.getText("add_car_button") ?? "",
+                    child: primaryButtonWithCallBack(
+                        DemoLocalizations.of(context)
+                                ?.getText("add_car_button") ??
+                            "",
                         addCar),
                   ),
                 )
