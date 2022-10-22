@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/request/loginapi.dart';
@@ -152,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login(String phoneNumber, String password) {
-    print("login Data: ${phoneNumber}");
+    log("login Data: $phoneNumber");
     LoginApi api = LoginApi(phoneNumber: phoneNumber, password: password);
     Future<dynamic> future = _userRepository.login(api: api);
     future.then((value) => {handleResponseData(value)});

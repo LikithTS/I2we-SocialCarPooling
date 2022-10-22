@@ -17,3 +17,4 @@ double fontSize20 = 20.sp;
 double fontSize18 = 18.sp;
 double fontSize27 = 27.sp;
 double fontSize29 = 29.sp;
+double fontSize33 = 33.sp;

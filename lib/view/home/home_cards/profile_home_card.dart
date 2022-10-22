@@ -45,6 +45,7 @@ class ProfileCard extends StatelessWidget {
                                   "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
                           const SizedBox(width: 20),
                           Expanded(
+                            flex: 5,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -8,6 +8,7 @@ class CPSessionManager{
   final String AUTH_TOKEN = "user_auth_token";
   final String AUTH_REFRESH_TOKEN = "user_auth_refersh_token";
   final String INTRO_PAGE_VISITED = "intro_page_visited";
+  final String CAR_DETAILS_AVAILABLE = "car_details_available";
 
   static final CPSessionManager _instance = CPSessionManager._internal();
 
@@ -65,6 +66,14 @@ class CPSessionManager{
   void handleUserLogout() {
     setAuthToken("");
     setAuthRefreshToken("");
+  }
+  
+  bool getIfCarDetailsAdded() {
+    return PreferencesUtil.getBoolean(CAR_DETAILS_AVAILABLE);
+  }
+  
+  void setIfCarDetailsAdded(bool value) {
+    PreferencesUtil.putBoolean(CAR_DETAILS_AVAILABLE, value);
   }
 
 }
