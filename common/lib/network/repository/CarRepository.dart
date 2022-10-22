@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:common/network/apiclient.dart';
+import 'package:common/network/request/drivingStatusApi.dart';
+import 'package:common/network/response/AuthResponse.dart';
 import 'package:dio/dio.dart';
 
 import '../ApiConstant.dart';
@@ -24,4 +26,18 @@ class CarRepository extends ApiRepository {
       return carResponseList;
     }
   }
+
+  Future<dynamic> carDrivingStatusUpdate({required DrivingStatusApi api}) async {
+    Response userData = await APIClient()
+        .getDioInstance()
+        .post(ApiConstant.CAR_DRVING_STATUS, data: api.toJson());
+    dynamic response = handleAPIResponseData(userData);
+    if (response is ErrorResponse) {
+      return response;
+    } else {
+      var authResponse = AuthResponse.fromJson(response[0]);
+      return authResponse;
+    }
+  }
+
 }

@@ -24,7 +24,7 @@ class _AllCarDetailsPageState extends State<AllCarDetailsPage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            return MyCarsScreen(snapshot.data);
+            return MyCarsScreen(snapshot.data, CarRepository());
           }
         },
       ),
