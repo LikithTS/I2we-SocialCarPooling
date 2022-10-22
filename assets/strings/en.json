@@ -69,7 +69,23 @@
   "no": "NO",
   "yes": "YES",
   "really" :"Really",
-  "close_app_alert_desc":"Do you want to close app?"
+  "close_app_alert_desc":"Do you want to close app?",
+  "profile": "Profile",
+  "get_verified": "Get Verified",
+  "profile_screen_verification_pending_desc": "We ask everyone few details before ride or hosting a ride, so get a head start by doing it now",
+  "pending": "Pending",
+  "profile_completed": "Profile Completed",
+  "view_details": "View Details",
+  "verify_pending": "Verification is pending",
+  "bio": "Bio",
+  "edit": "Edit",
+  "languages": "Languages"
+
+
+
+
+
+
 
 
 

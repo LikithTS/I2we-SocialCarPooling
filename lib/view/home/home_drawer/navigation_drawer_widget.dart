@@ -14,6 +14,7 @@ import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
+import '../../profile/my_profile_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -35,7 +36,12 @@ class NavigationDrawerWidget extends StatelessWidget {
                 name: name,
                 profile_percentage: profile_percentage,
                 profileImage: profileImage,
-                onClicked: () => {}),
+                onClicked: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyProfileScreen()))
+                    }),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("home") ?? "",
                 icon: Icons.home,
