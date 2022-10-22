@@ -6,6 +6,7 @@ import 'package:common/utils/storageutil.dart';
 class CPSessionManager{
   //Auth Token
   final String AUTH_TOKEN = "user_auth_token";
+  final String USER_NAME = "user_name";
   final String AUTH_REFRESH_TOKEN = "user_auth_refersh_token";
   final String INTRO_PAGE_VISITED = "intro_page_visited";
   final String CAR_DETAILS_AVAILABLE = "car_details_available";
@@ -40,6 +41,14 @@ class CPSessionManager{
 
   void setAuthToken(String auth_token) {
     PreferencesUtil.putString(AUTH_TOKEN, auth_token);
+  }
+
+  String getUserName() {
+    return PreferencesUtil.getString(USER_NAME);
+  }
+
+  void setUserName(String user_name) {
+    PreferencesUtil.putString(USER_NAME, user_name);
   }
 
   String getAuthRefreshToken() {

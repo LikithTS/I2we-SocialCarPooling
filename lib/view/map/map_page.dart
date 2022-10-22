@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../util/configuration.dart';
+import '../../util/margin_confiq.dart';
 
 /*const LatLng SOURCE_LOCATION = LatLng(13.0714, 80.2417);
 const LatLng DEST_LOCATION = LatLng(13.0569, 80.2425);*/
@@ -35,30 +38,63 @@ class _MapPageState extends State<MapPage> {
 
   Set<Polyline> allPolylinesByPosition = {};
 
-  LocationData? currentLocation;
+  LatLng? currentLocation;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //set up initial location
-    this.getCurrentLocation();
+    this.getLocation();
     //this.setInitLocation();
-    Future.delayed(Duration.zero,(){
-      sourceLocation = Provider.of<AddressProvider>(context,listen: false).driverStartLatLng;
-      print('Source Data'+sourceLocation!.latitude.toString()+" Source Data ${sourceLocation!.longitude.toString()}");
-      destinationLocation = Provider.of<AddressProvider>(context,listen: false).driverDestLatLng;
-      print('Dest Data'+sourceLocation!.latitude.toString()+" Dest Data ${sourceLocation!.longitude.toString()}");
-
+    Future.delayed(Duration.zero, () {
+      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
+          .driverStartLatLng;
+      print('Source Data' +
+          sourceLocation!.latitude.toString() +
+          " Source Data ${sourceLocation!.longitude.toString()}");
+      destinationLocation =
+          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+      print('Dest Data' +
+          sourceLocation!.latitude.toString() +
+          " Dest Data ${sourceLocation!.longitude.toString()}");
     });
     this.setSourceAndDestMakerIcon();
     this.getPolyPoints();
     //set up makers icons
   }
 
-  void getCurrentLocation() {
-    Location location = Location();
-    location.getLocation().then((location) => {currentLocation = location});
+  void getLocation() async {
+    Position position = await getGeoLocationCoOrdinates();
+    setState(() {
+      currentLocation = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  Future<Position> getGeoLocationCoOrdinates() async {
+    bool isServiceEnabled;
+    LocationPermission permission;
+
+    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!isServiceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location Services are not enabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location Permission are not enabled');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location Permission are denied permanently');
+    }
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
   void setSourceAndDestMakerIcon() async {
@@ -79,7 +115,8 @@ class _MapPageState extends State<MapPage> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         'AIzaSyDYorBkcy6CwXJQZjAmv0_2EJyAQMFwQNM',
         PointLatLng(sourceLocation!.latitude, sourceLocation!.longitude),
-        PointLatLng(destinationLocation!.latitude, destinationLocation!.longitude));
+        PointLatLng(
+            destinationLocation!.latitude, destinationLocation!.longitude));
 
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) =>
@@ -94,24 +131,33 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
- /* void setInitLocation() {
+  /* void setInitLocation() {
     Future.delayed(Duration.zero, () async {
       Provider.of<SettingsProvider>(context,
           listen: false)
           .changeLanguage(isLanguageFlag);
     }
-     *//* sourceLocation =
+     */ /* sourceLocation =
         LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);
     destinationLocation =
-        LatLng(DEST_LOCATION.latitude, DEST_LOCATION.longitude);*//*
+        LatLng(DEST_LOCATION.latitude, DEST_LOCATION.longitude);*/ /*
   }*/
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: currentLocation == null
-          ? Center(child: Text('Loading'),)
+          ? Container(
+              width: deviceWidth(context),
+              height: deviceHeight(context),
+              child: Container(
+                width: margin50,
+                height: margin50,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
           : Stack(
               children: [
                 Container(
@@ -123,8 +169,9 @@ class _MapPageState extends State<MapPage> {
                     tiltGesturesEnabled: false,
                     markers: _markers,
                     mapType: MapType.terrain,
-                    initialCameraPosition:  CameraPosition(
-                        target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(currentLocation!.latitude,
+                            currentLocation!.longitude),
                         zoom: CAMERA_ZOOM,
                         tilt: CAMERA_TILT,
                         bearing: CAMERA_BEARING),
@@ -145,7 +192,7 @@ class _MapPageState extends State<MapPage> {
       _markers.add(Marker(
           markerId: MarkerId('CurrentPin'),
           position:
-              LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+              LatLng(currentLocation!.latitude, currentLocation!.longitude),
           icon: currentIcon!));
       _markers.add(Marker(
           markerId: MarkerId('SourcePin'),

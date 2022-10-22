@@ -11,8 +11,8 @@ Widget headerLayout(BuildContext context,String text) =>  Padding(
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(onTap:(){
-          Navigator.pop(context);
-        },child: SvgPicture.asset('assets/svgimages/arrow_left.svg')),
+          Navigator.of(context).pop();
+          },child: SvgPicture.asset('assets/svgimages/arrow_left.svg')),
       ),
       SizedBox(width: 10,),
       Container(

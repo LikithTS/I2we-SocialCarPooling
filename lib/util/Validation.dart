@@ -21,6 +21,6 @@ mixin InputValidationMixin {
       return false;
     }
   }
-  bool isNameString(String? value) =>RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\s0-9-]').hasMatch(value!);
+  bool isNameString(String? value) =>RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\s0-9-] ').hasMatch(value!);
 
 }
