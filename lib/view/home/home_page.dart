@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
@@ -16,7 +17,11 @@ import 'package:socialcarpooling/view/home/home_cards/car_home_view.dart';
 import 'package:socialcarpooling/view/home/home_cards/profile_home_card.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
+import 'package:socialcarpooling/view/map/map_page.dart';
+import '../../provider/address_provider.dart';
 import '../../util/color.dart';
+import '../../util/configuration.dart';
+import '../../util/margin_confiq.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/google_map.dart';
 import 'home_cards/driver_widget_view.dart';
@@ -90,6 +95,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
             key: _key,
@@ -97,7 +103,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             body: Container(
                   child: Stack(
                     children: [
-                      googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller),
+                      MapPage()
+                     /* latitude == null && longitude == null
+                          ? Container(
+                        width: deviceWidth(context),
+                        height: deviceHeight(context),
+                        child: Container(
+                          width: margin50,
+                          height: margin50,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ) :  googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller)*/,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(

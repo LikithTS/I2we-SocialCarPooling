@@ -1,3 +1,4 @@
+import 'package:common/network/request/signinapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -29,39 +30,45 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController mobileNoController = TextEditingController();
   TextEditingController emailNoController = TextEditingController();
+  TextEditingController workController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
   late bool _passwordVisible;
   late bool _cpasswordVisible;
+  RegExp regex =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
 
   int genderId = 0;
-  String selectedValue = "Gender";
+  String selectedValueGender = "Gender";
   String selectedValueEducation = "Education";
   String selectedValueWork = "Work";
+  String dob = "";
 
-  Future _registration(name,mobile) async {
-    /*baseResponse = await DioClient().registrationRequest(
+  Future _registration(name, mobile) async {
+    SignInApi api = SignInApi(
         name: name,
-        mobile_no: mobile_no,
-        email: email,
+        education: selectedValueEducation,
+        gender: selectedValueGender,
+        email: emailNoController.text.toString(),
+        age: 20,
         dob: dob,
-        village_id: village_id);
-    print('Base Response : ${baseResponse}');
-
-    if (baseResponse!.code == 1) {
-      _showToast('Registration Successfully');
-      Navigator.pop(context);
-    } else {
-      _showSnackbar(baseResponse!.message);
-    }*/
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        pincode: '',
+        phoneNumber: mobile,
+        work: workController.text.toString(),
+        password: passwordController.text.toString());
     Navigator.push(
         context,
         PageTransition(
             type: PageTransitionType.leftToRight,
-            child:SignUpAddress(mobileNo: mobile,)));
-
+            child: SignUpAddress(
+              signInApi: api,
+            )));
   }
 
   @override
@@ -70,6 +77,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     _passwordVisible = false;
     _cpasswordVisible = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               SizedBox(
                 height: 10,
               ),
-            /*  Row(
+              /*  Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -94,8 +102,15 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               headerLayout(context, CPString.signUp),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: inputEditTextWithPrefixWidget(context, CPString.fullName,
-                    fullNameController, CPString.fullNameError, Icons.person,1,this,''),
+                child: inputEditTextWithPrefixWidget(
+                    context,
+                    CPString.fullName,
+                    fullNameController,
+                    CPString.fullNameError,
+                    Icons.person,
+                    1,
+                    this,
+                    ''),
               ),
               const SizedBox(
                 height: 10,
@@ -107,15 +122,25 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     CPString.mobileNo,
                     mobileNoController,
                     CPString.mobileError,
-                    Icons.mobile_screen_share_outlined,2,this,''),
+                    Icons.mobile_screen_share_outlined,
+                    2,
+                    this,
+                    ''),
               ),
               const SizedBox(
                 height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: inputEditTextWithPrefixWidget(context, CPString.email,
-                    emailNoController, CPString.emailError, Icons.email,3,this,''),
+                child: inputEditTextWithPrefixWidget(
+                    context,
+                    CPString.email,
+                    emailNoController,
+                    CPString.emailError,
+                    Icons.email,
+                    3,
+                    this,
+                    ''),
               ),
               const SizedBox(
                 height: 10,
@@ -141,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                                 child: Container(
                                   child: DropdownButton(
                                     isExpanded: true,
-                                    value: selectedValue,
+                                    value: selectedValueGender,
                                     hint: const Text(
                                       CPString.gender,
                                       style: TextStyleUtils.primaryTextMedium,
@@ -155,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                                     }).toList(),
                                     onChanged: (value) {
                                       setState(() {
-                                        selectedValue = value.toString();
+                                        selectedValueGender = value.toString();
                                       });
                                     },
                                     icon: SvgPicture.asset(
@@ -183,6 +208,11 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         child: TextFormField(
                           controller: dateController,
                           decoration: const InputDecoration(
+                            fillColor: Colors.grey,
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.blue),
+                            ),
                             suffixIcon: Icon(
                               Icons.edit,
                               color: primaryColor,
@@ -209,24 +239,34 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   )
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline,),
-                    SizedBox(width: 5,),
+                    Icon(
+                      Icons.error_outline,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Container(
-                      margin: EdgeInsets.only(top: 5),
-                        child: Text(CPString.passwordInfo,style: TextStyleUtils.primaryTextRegular.copyWith(fontSize: 14),))
+                        margin: EdgeInsets.only(top: 5),
+                        child: Text(
+                          CPString.passwordInfo,
+                          style: TextStyleUtils.primaryTextRegular
+                              .copyWith(fontSize: 14),
+                        ))
                   ],
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
-                padding:  EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -239,18 +279,26 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                        ),
                         labelText: CPString.password,
                         hintText: CPString.password,
                         labelStyle: TextStyleUtils.hintTextStyle,
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.lock,color: primaryColor,),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: primaryColor,
+                        ),
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon
                             Icons.visibility,
-                            color:_passwordVisible? Colors.black:primaryColor,
+                            color:
+                                _passwordVisible ? Colors.black : primaryColor,
                           ),
                           onPressed: () {
                             // Update the state i.e. toogle the state of passwordVisible variable
@@ -263,13 +311,13 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return CPString.passwordError;
+                        } else {
+                          if (!regex.hasMatch(value)) {
+                            return CPString.passwordValidError;
+                          } else {
+                            return null;
+                          }
                         }
-                        else if(isPasswordValid(value))
-                        {
-                          return CPString.passwordValidError;
-
-                        }
-                        return null;
                       },
                     ),
                   ),
@@ -277,7 +325,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
-                padding:  EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -290,18 +338,26 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       controller: cpasswordController,
                       obscureText: !_cpasswordVisible,
                       decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                        ),
                         labelText: CPString.confirmPassword,
                         hintText: CPString.confirmPassword,
                         labelStyle: TextStyleUtils.hintTextStyle,
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.lock,color: primaryColor,),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: primaryColor,
+                        ),
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon
                             Icons.visibility,
-                            color:_cpasswordVisible? Colors.black:primaryColor,
+                            color:
+                                _cpasswordVisible ? Colors.black : primaryColor,
                           ),
                           onPressed: () {
                             // Update the state i.e. toogle the state of passwordVisible variable
@@ -314,13 +370,10 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return CPString.cPasswordError;
-                        }
-                        else if(isPasswordValid(value))
-                        {
+                        } else if (isPasswordValid(value)) {
                           return CPString.passwordValidError;
-                        }
-                        else if(passwordController.text.toString()!=value)
-                        {
+                        } else if (passwordController.text.toString() !=
+                            value) {
                           return CPString.cPasswordValidError;
                         }
                         return null;
@@ -329,7 +382,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   ),
                 ),
               ),
-              Container(
+              /*  Container(
                 margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Card(
@@ -376,6 +429,18 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         ),
                       )),
                 ),
+              ),*/
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: inputEditTextWithPrefixWidget(
+                    context,
+                    CPString.work,
+                    workController,
+                    CPString.emailError,
+                    Icons.work,
+                    3,
+                    this,
+                    ''),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
@@ -425,12 +490,14 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 30,right: 30,top: 10,bottom: 10),
+                margin:
+                    EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
                 padding: EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _registration(fullNameController.text,mobileNoController.text);
+                      _registration(
+                          fullNameController.text, mobileNoController.text);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -441,7 +508,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     elevation: margin2,
                   ),
                   child: Padding(
-                   padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     child: Text(
                       CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),
@@ -466,9 +533,9 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     if (picker != null) {
       setState(() {
         String formattedDate = DateFormat('dd,MMM,yyyy').format(picker);
+        dob = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(picker);
         dateController.text = formattedDate;
       });
     }
   }
-
 }
