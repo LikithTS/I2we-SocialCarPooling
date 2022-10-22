@@ -38,12 +38,23 @@
   "terms_and_conditions" : "Terms & Conditions",
   "privacy_policy" : "Privacy Policy",
   "help" : "Help",
-  "about_us" : "About Us",
+  "about_us" : "About us",
   "logout" : "Logout",
   "add_car" : "Add Car",
   "add_car_details_one" : "Add your car details to host a ride",
   "add_car_details_two" : "Make more friends by hosting",
   "add_car_details_three" : "Enjoy the ride",
-  "add_car_button" : "ADD CAR"
+  "add_car_button" : "ADD CAR",
+  "car_info": "Car Info",
+  "car_name": "Car Name",
+  "register_number": "Register Number",
+  "electric_vehicle": "Electric Vehicle :",
+  "available_seats": "Available Seats",
+  "offering_seats": "Offering Seats",
+  "upload_document": "Upload document",
+  "add_photos": "Add photos",
+  "upload_car_images": "Upload Car Images",
+  "done": "Done",
+  "car_info_desc": "Add car to schedule ride."
 
 }

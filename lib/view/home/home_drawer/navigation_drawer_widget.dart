@@ -11,10 +11,9 @@ import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../../util/CPSessionManager.dart';
-import '../../login/login_screen.dart';
-
 import '../../../utils/Localization.dart';
-import '../../myvehicle/my_vehicle_start_page.dart';
+import '../../login/login_screen.dart';
+import '../../myvehicle/my_cart_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -105,9 +104,10 @@ class NavigationDrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMenuItem({required String text,
-    required IconData icon,
-    required VoidCallback onClicked}) {
+  Widget buildMenuItem(
+      {required String text,
+      required IconData icon,
+      required VoidCallback onClicked}) {
     const iconColor = Colors.blue;
     return ListTile(
       visualDensity: VisualDensity(vertical: -3),
@@ -130,7 +130,10 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage(homeRepository: HomeRepository())));
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HomePage(homeRepository: HomeRepository())));
         break;
       case 3:
         if(CPSessionManager().getIfCarDetailsAdded()) {
@@ -138,7 +141,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               MaterialPageRoute(builder: (context) => AllCarDetailsPage(carRepository: CarRepository())));
         } else {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const MyVehicleStartPage()));
+              MaterialPageRoute(builder: (context) => const MyCarsScreen()));
         }
         break;
       case 4:
@@ -154,27 +157,26 @@ class NavigationDrawerWidget extends StatelessWidget {
   void onLogoutButtonPressed(BuildContext context) {
     LoginRepository()
         .logout()
-        .then((value) => {
-          handleResponseData(value, context)
-  }
-    );
+        .then((value) => {handleResponseData(value, context)});
   }
 
   handleResponseData(value, BuildContext context) {
     if (value is SuccessResponse) {
       CPSessionManager().handleUserLogout();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(
-          builder: (context) =>
-              LoginScreen(userRepository: LoginRepository())));
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  LoginScreen(userRepository: LoginRepository())));
     }
   }
 }
 
-Widget buildHeader({required String profile_percentage,
-  required String name,
-  required String profileImage,
-  required VoidCallback onClicked}) =>
+Widget buildHeader(
+        {required String profile_percentage,
+        required String name,
+        required String profileImage,
+        required VoidCallback onClicked}) =>
     InkWell(
       onTap: onClicked,
       child: Container(
@@ -197,22 +199,22 @@ Widget buildHeader({required String profile_percentage,
     );
 
 Widget tileText(String text, Alignment alignment,
-    {TextAlign? textAlign, Color? textColor, double? fontSize}) =>
+        {TextAlign? textAlign, Color? textColor, double? fontSize}) =>
     Container(
         child: Align(
-          alignment: alignment,
-          child: Expanded(
-            child: Text(
-              text,
-              textAlign: textAlign ?? TextAlign.start,
-              style: TextStyle(
-                  fontSize: fontSize ?? 19.sp,
-                  height: 1.3,
-                  color: textColor ?? Colors.black,
-                  fontWeight: FontWeight.normal,
-                  decoration: TextDecoration.none,
-                  fontFamily: 'Poppins'),
-              maxLines: 1,
-            ),
-          ),
-        ));
+      alignment: alignment,
+      child: Expanded(
+        child: Text(
+          text,
+          textAlign: textAlign ?? TextAlign.start,
+          style: TextStyle(
+              fontSize: fontSize ?? 19.sp,
+              height: 1.3,
+              color: textColor ?? Colors.black,
+              fontWeight: FontWeight.normal,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          maxLines: 1,
+        ),
+      ),
+    ));
