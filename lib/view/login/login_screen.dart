@@ -15,6 +15,7 @@ import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/color.dart';
 import '../../util/margin_confiq.dart';
+import '../../utils/Localization.dart';
 
 class LoginScreen extends StatefulWidget {
   final LoginRepository userRepository;
@@ -55,17 +56,23 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               addVerticalSpace(25),
-              headerText("Keep Connected"),
+              headerText(
+                  DemoLocalizations.of(context)?.getText("Keep_Connected") ??
+                      ""),
               addVerticalSpace(6),
               smallText(
-                  "A carpool is simple. It’s an arrangement between two or more people to make",
+                  DemoLocalizations.of(context)?.getText("login_desc_1") ?? "",
                   Alignment.topLeft),
               addVerticalSpace(25),
               Center(
                   child: Image.asset("assets/images/login_image.png",
                       width: 200.w, height: 200.h, fit: BoxFit.fill)),
               addVerticalSpace(20),
-              smallText("Sign with social networks", Alignment.center),
+              smallText(
+                  DemoLocalizations.of(context)
+                          ?.getText("Sign_with_social_networks") ??
+                      "",
+                  Alignment.center),
               addVerticalSpace(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -85,8 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     LoginTextForm(
                       editingController: phoneNumberController,
-                      hint: "Mobile Number",
-                      lableText: "Mobile Number",
+                      hint: DemoLocalizations.of(context)
+                              ?.getText("mobile_number") ??
+                          "",
+                      lableText: DemoLocalizations.of(context)
+                              ?.getText("mobile_number") ??
+                          "",
                       formValidator: (value) {
                         if (value!.isEmpty || value.isEmpty) {
                           return "Mobile Number Cannot be Empty";
@@ -105,15 +116,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                      lableText: "Password",
-                      hint: "Password",
+                      lableText:
+                          DemoLocalizations.of(context)?.getText("password") ??
+                              "",
+                      hint:
+                          DemoLocalizations.of(context)?.getText("password") ??
+                              "",
                       suffixIcon: Icons.visibility,
                       prefixIcon: Icons.lock,
                     )
                   ],
                 ),
               ),
-              smallText("Forgot Password?", Alignment.topRight),
+              smallText(
+                  DemoLocalizations.of(context)?.getText("forgot_password") ??
+                      "",
+                  Alignment.topRight),
               Center(
                 child: SizedBox(
                     height: 60,
@@ -136,16 +154,65 @@ class _LoginScreenState extends State<LoginScreen> {
                           type: PageTransitionType.bottomToTop,
                           child: SignUpPage()));
                 },
-                child: smallText(
-                    "Don’t have an account? Register Now", Alignment.center),
+                child: RichText(
+                  text: TextSpan(children: [
+                    WidgetSpan(
+                      child: smallText(
+                          DemoLocalizations.of(context)
+                                  ?.getText("register_now") ??
+                              "",
+                          Alignment.center),
+                    ),
+                    WidgetSpan(
+                      child: GestureDetector(
+                        onTap: () {
+                          print("Register now" "pressed");
+                        },
+                        child: Container(
+                          child: smallSpanText(
+                              DemoLocalizations.of(context)
+                                      ?.getText("register_now_span") ??
+                                  "",
+                              Alignment.center,
+                              TextAlign.start),
+                        ),
+                      ),
+                    )
+                  ]),
+                ),
               ),
-              addVerticalSpace(30),
+              addVerticalSpace(15),
               Center(
-                child: smallText(
-                    "By signing up, you are agree with our Terms & Conditions",
-                    Alignment.center,
-                    TextAlign.center),
-              )
+                  child: RichText(
+                text: TextSpan(children: [
+                  WidgetSpan(
+                    child: Container(
+                      child: smallText(
+                          DemoLocalizations.of(context)
+                                  ?.getText("term_and_conditions") ??
+                              "",
+                          Alignment.center,
+                          TextAlign.center),
+                    ),
+                  ),
+                  WidgetSpan(
+                    child: GestureDetector(
+                      onTap: () {
+                        print("Terms & Conditions" "pressed");
+                      },
+                      child: Container(
+                        child: smallSpanText(
+                            DemoLocalizations.of(context)
+                                    ?.getText("term_and_conditions_span") ??
+                                "",
+                            Alignment.center,
+                            TextAlign.center),
+                      ),
+                    ),
+                  )
+                ]),
+              )),
+              addVerticalSpace(20)
             ],
           ),
         ),
@@ -171,7 +238,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
           context,
           PageTransition(
-              type: PageTransitionType.bottomToTop, child: HomePage(homeRepository: HomeRepository())));
+              type: PageTransitionType.bottomToTop,
+              child: HomePage(homeRepository: HomeRepository())));
     } else {
       // ErrorResponse errorResponse = value;
       // setState(() {
