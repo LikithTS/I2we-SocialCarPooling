@@ -17,21 +17,17 @@ class _AllCarDetailsPageState extends State<AllCarDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: _carRepository.carDetails(),
-      builder: (context, AsyncSnapshot<dynamic> snapshot) {
-
-        switch (snapshot.connectionState) {
-          case ConnectionState.none: return Text('No Internet!!');
-          case ConnectionState.waiting: return Text('Please wait... Loading details');
-          default:
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return MyCarsScreen(snapshot.data);
-            }
-        }
-      },
+    return Scaffold(
+      body: FutureBuilder<List<dynamic>>(
+        future: _carRepository.carDetails(),
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return MyCarsScreen(snapshot.data);
+          }
+        },
+      ),
     );
   }
 }
