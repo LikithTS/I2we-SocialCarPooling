@@ -11,7 +11,7 @@ class ApiRepository {
   handleAPIResponseData(Response<dynamic> responseData) {
     if (responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS) {
       try {
-        log("response: ${responseData.data}");
+        log("response: ${responseData.data.toString()}");
         var successResponse = SuccessResponse.fromJson(responseData.data);
         if (successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS) {
           return successResponse.data;
