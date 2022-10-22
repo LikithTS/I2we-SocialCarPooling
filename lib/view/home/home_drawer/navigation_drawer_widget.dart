@@ -8,12 +8,13 @@ import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
+import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
-import '../../myvehicle/my_cart_screen.dart';
+import '../../myvehicle/my_car_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -141,7 +142,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               MaterialPageRoute(builder: (context) => AllCarDetailsPage(carRepository: CarRepository())));
         } else {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const MyCarsScreen()));
+              MaterialPageRoute(builder: (context) => const MyVehicleStartPage()));
         }
         break;
       case 4:

@@ -42,7 +42,7 @@ Widget smallLightText(String text, Alignment alignement,
           text,
           textAlign: textAlign ?? TextAlign.start,
           style: TextStyle(
-              fontSize: 5.sp,
+              fontSize: 7.sp,
               height: 1.3,
               color: Colors.black,
               fontWeight: FontWeight.normal,
@@ -65,7 +65,7 @@ Widget headerText(String title) => Container(
               fontFamily: 'Poppins')),
     ));
 
-Widget mycarTextWidget(String title, Color color, double size) => Text(title,
+Widget mycarTextWidget(String? title, Color color, double size) => Text(title!,
     style: TextStyle(
         fontSize: size,
         decoration: TextDecoration.none,
