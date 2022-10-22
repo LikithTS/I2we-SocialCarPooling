@@ -17,7 +17,7 @@ import 'package:socialcarpooling/view/home/home_cards/car_home_view.dart';
 import 'package:socialcarpooling/view/home/home_cards/profile_home_card.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
-import 'package:socialcarpooling/view/map/test_map.dart';
+import 'package:socialcarpooling/view/map/map_page.dart';
 import '../../provider/address_provider.dart';
 import '../../util/color.dart';
 import '../../util/configuration.dart';
