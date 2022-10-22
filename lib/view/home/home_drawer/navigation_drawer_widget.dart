@@ -14,7 +14,6 @@ import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
-import '../../myvehicle/my_car_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -55,9 +54,9 @@ class NavigationDrawerWidget extends StatelessWidget {
                 icon: Icons.car_crash_sharp,
                 onClicked: () => selectedItem(context, 3)),
             buildMenuItem(
-                text: DemoLocalizations.of(context)
-                        ?.getText("my_questioners") ??
-                    "",
+                text:
+                    DemoLocalizations.of(context)?.getText("my_questioners") ??
+                        "",
                 icon: Icons.help,
                 onClicked: () => selectedItem(context, 4)),
             buildMenuItem(
@@ -137,17 +136,22 @@ class NavigationDrawerWidget extends StatelessWidget {
                     HomePage(homeRepository: HomeRepository())));
         break;
       case 3:
-        if(CPSessionManager().getIfCarDetailsAdded()) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => AllCarDetailsPage(carRepository: CarRepository())));
+        if (CPSessionManager().getIfCarDetailsAdded()) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AllCarDetailsPage(carRepository: CarRepository())));
         } else {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const MyVehicleStartPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const MyVehicleStartPage()));
         }
         break;
       case 4:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const QuestionariePage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
       case 11:
         onLogoutButtonPressed(context);

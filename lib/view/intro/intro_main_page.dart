@@ -27,6 +27,7 @@ class IntoMainPage extends StatelessWidget {
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 imageSlide(StringUrl.introOne),
                 SizedBox(
@@ -105,7 +106,8 @@ class IntoMainPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop, child: LoginScreen(userRepository: LoginRepository())));
+                type: PageTransitionType.bottomToTop,
+                child: LoginScreen(userRepository: LoginRepository())));
       },
     );
   }
@@ -122,8 +124,7 @@ class IntoMainPage extends StatelessWidget {
       );
 
   Widget headerText(String title) => Container(
-      margin: EdgeInsets.symmetric(horizontal: margin30.w),
-      child: Align(
+          child: Align(
         alignment: Alignment.topLeft,
         child: Text(title, style: TextStyleUtils.primaryTextBold),
       ));

@@ -32,6 +32,28 @@ Widget smallText(String text, Alignment alignement, [TextAlign? textAlign]) =>
           ),
         ));
 
+Widget smallSpanText(String text, Alignment alignement,
+        [TextAlign? textAlign]) =>
+    Container(
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        child: Align(
+          alignment: alignement,
+          child: Expanded(
+            child: Text(
+              text,
+              textAlign: textAlign ?? TextAlign.start,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  height: 1.3,
+                  color: primaryColor,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.underline,
+                  fontFamily: 'Poppins'),
+              maxLines: 3,
+            ),
+          ),
+        ));
+
 Widget smallLightText(String text, Alignment alignement,
         [TextAlign? textAlign]) =>
     Container(

@@ -34,7 +34,12 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Icon(Icons.arrow_back),
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                       headerText(DemoLocalizations.of(context)
                               ?.getText("my_cars_title") ??
                           "")

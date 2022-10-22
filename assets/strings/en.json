@@ -55,6 +55,22 @@
   "add_photos": "Add photos",
   "upload_car_images": "Upload Car Images",
   "done": "Done",
-  "car_info_desc": "Add car to schedule ride."
+  "car_info_desc": "Add car to schedule ride.",
+  "term_and_conditions_span": "Terms & Conditions",
+  "term_and_conditions": "By signing up, you are agree with our",
+  "register_now_span": "Register Now",
+  "register_now": "Don’t have an account?",
+  "Keep_Connected": "Keep Connected",
+  "login_desc_1": "A carpool is simple. It’s an arrangement between two or more people to make",
+  "Sign_with_social_networks": "Sign with social networks",
+  "mobile_number": "Mobile Number",
+  "password":"Password",
+  "forgot_password":"Forgot Password?",
+  "no": "NO",
+  "yes": "YES",
+  "really" :"Really",
+  "close_app_alert_desc":"Do you want to close app?"
+
+
 
 }
