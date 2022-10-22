@@ -30,7 +30,12 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                   headerText(
                       DemoLocalizations.of(context)?.getText("my_cars") ?? "")
                 ],
@@ -38,16 +43,20 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
             ),
             Expanded(
               child: ListView.builder(
-// scrollDirection: Axis.horizontal,
                 itemCount: growableList.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
                     key: Key(growableList[index].toString()),
                     direction: DismissDirection.endToStart,
                     background: slideLeftBackground(),
+                    onDismissed: (DismissDirection direction) {
+                      if (direction == DismissDirection.endToStart) {
+                        print('Remove item');
+                      }
+                    },
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      height: 130,
+                      height: 150,
                       width: double.maxFinite,
                       child: Card(
                         elevation: 5,
@@ -70,20 +79,12 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: mycarTextWidget(
-                                        DemoLocalizations.of(context)
-                                                ?.getText("car_type") ??
-                                            "",
-                                        primaryColor,
-                                        18.sp),
+                                        "CAR TYPE", primaryColor, 18.sp),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: mycarTextWidget(
-                                        DemoLocalizations.of(context)
-                                                ?.getText("car_name") ??
-                                            "",
-                                        primaryColor,
-                                        10.sp),
+                                        "CAR NAME", Colors.black, 10.sp),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(8.0),
@@ -93,107 +94,92 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                 ],
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 0),
-                                        height: 50,
-                                        width: 170,
-                                        child: Card(
-                                          elevation: 5,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.drive_eta),
-                                                  smallText(
-                                                      DemoLocalizations.of(
-                                                                  context)
-                                                              ?.getText(
-                                                                  "seats") ??
-                                                          "",
-                                                      Alignment.center),
-                                                ],
-                                              ),
-                                              const RotatedBox(
-                                                quarterTurns: 1,
-                                                child: Divider(),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  primaryThemeTextNormal(
-                                                      context, "4"),
-                                                  smallText(
-                                                      DemoLocalizations.of(
-                                                                  context)
-                                                              ?.getText(
-                                                                  "available") ??
-                                                          "",
-                                                      Alignment.center),
-                                                ],
-                                              ),
-                                              const RotatedBox(
-                                                quarterTurns: 1,
-                                                child: Divider(),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  primaryThemeTextNormal(
-                                                      context, "3"),
-                                                  smallText(
-                                                      DemoLocalizations.of(
-                                                                  context)
-                                                              ?.getText(
-                                                                  "offered") ??
-                                                          "",
-                                                      Alignment.center)
-                                                ],
-                                              ),
-                                            ],
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 0, 0),
+                                          height: 50,
+                                          width: 170,
+                                          child: Card(
+                                            elevation: 5,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.drive_eta),
+                                                    smallLightText("seats",
+                                                        Alignment.center),
+                                                  ],
+                                                ),
+                                                const RotatedBox(
+                                                  quarterTurns: 1,
+                                                  child: Divider(),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    primaryThemeTextNormal(
+                                                        context, "4"),
+                                                    smallLightText("available",
+                                                        Alignment.center),
+                                                  ],
+                                                ),
+                                                const RotatedBox(
+                                                  quarterTurns: 1,
+                                                  child: Divider(),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    primaryThemeTextNormal(
+                                                        context, "3"),
+                                                    smallLightText("offered",
+                                                        Alignment.center)
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      smallText(
+                                          "set default :", Alignment.topLeft),
+                                      Container(
+                                        width: 40,
+                                        height: 30,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: CupertinoSwitch(
+                                            value: false,
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
                                           ),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    smallText(
-                                        DemoLocalizations.of(context)
-                                                ?.getText("set_default") ??
-                                            "",
-                                        Alignment.topLeft),
-                                    Container(
-                                      width: 40,
-                                      height: 30,
-                                      child: FittedBox(
-                                        fit: BoxFit.contain,
-                                        child: CupertinoSwitch(
-                                          value: false,
-                                          onChanged: (value) {
-                                            setState(() {});
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
