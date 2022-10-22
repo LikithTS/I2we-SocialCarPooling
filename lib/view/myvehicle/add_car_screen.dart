@@ -17,11 +17,16 @@ class AddCarScreen extends StatefulWidget {
 class AddCarScreenState extends State<AddCarScreen> {
   var set_default = false;
   var is_electric_vehicle = false;
-  Color color = Colors.blue;
-
+  String offeringState = "offering_seats";
+  String availableState = "available_seats";
+  List<Color> availableSeatsColor = [];
+  List<Color> offeringSeatsColor = [];
+  List<Color> availableSeatsTextColor = [];
+  List<Color> offeringSeatsTextColor = [];
   @override
   void initState() {
     super.initState();
+    setDefaultColors();
   }
 
   @override
@@ -43,9 +48,9 @@ class AddCarScreenState extends State<AddCarScreen> {
                   child: Row(
                     children: [
                       Icon(Icons.arrow_back),
-                      headerText(
-                          DemoLocalizations.of(context)?.getText("my_cars") ??
-                              "")
+                      headerText(DemoLocalizations.of(context)
+                              ?.getText("my_cars_title") ??
+                          "")
                     ],
                   ),
                 ),
@@ -176,7 +181,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                       FittedBox(
                         child: Row(
                           children: [
-                            buildslectionElevatedButton("1"),
+                            buildslectionElevatedButton(
+                                1,
+                                availableSeatsColor[0],
+                                availableSeatsTextColor[0],
+                                availableState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -184,7 +193,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("2"),
+                            buildslectionElevatedButton(
+                                2,
+                                availableSeatsColor[1],
+                                availableSeatsTextColor[1],
+                                availableState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -192,7 +205,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("3"),
+                            buildslectionElevatedButton(
+                                3,
+                                availableSeatsColor[2],
+                                availableSeatsTextColor[2],
+                                availableState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -200,7 +217,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("4"),
+                            buildslectionElevatedButton(
+                                4,
+                                availableSeatsColor[3],
+                                availableSeatsTextColor[3],
+                                availableState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -208,7 +229,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("5"),
+                            buildslectionElevatedButton(
+                                5,
+                                availableSeatsColor[4],
+                                availableSeatsTextColor[4],
+                                availableState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -216,7 +241,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("6"),
+                            buildslectionElevatedButton(
+                                6,
+                                availableSeatsColor[5],
+                                availableSeatsTextColor[5],
+                                availableState),
                           ],
                         ),
                       ),
@@ -237,7 +266,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                       FittedBox(
                         child: Row(
                           children: [
-                            buildslectionElevatedButton("1"),
+                            buildslectionElevatedButton(
+                                1,
+                                offeringSeatsColor[0],
+                                offeringSeatsTextColor[0],
+                                offeringState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -245,7 +278,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("2"),
+                            buildslectionElevatedButton(
+                                2,
+                                offeringSeatsColor[1],
+                                offeringSeatsTextColor[1],
+                                offeringState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -253,7 +290,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("3"),
+                            buildslectionElevatedButton(
+                                3,
+                                offeringSeatsColor[2],
+                                offeringSeatsTextColor[2],
+                                offeringState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -261,7 +302,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("4"),
+                            buildslectionElevatedButton(
+                                4,
+                                offeringSeatsColor[3],
+                                offeringSeatsTextColor[3],
+                                offeringState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -269,7 +314,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("5"),
+                            buildslectionElevatedButton(
+                                5,
+                                offeringSeatsColor[4],
+                                offeringSeatsTextColor[4],
+                                offeringState),
                             const SizedBox(
                               width: 20,
                               child: Divider(
@@ -277,7 +326,11 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 thickness: 2,
                               ),
                             ),
-                            buildslectionElevatedButton("6"),
+                            buildslectionElevatedButton(
+                                6,
+                                offeringSeatsColor[5],
+                                offeringSeatsTextColor[5],
+                                offeringState),
                           ],
                         ),
                       ),
@@ -350,7 +403,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                         padding: const EdgeInsets.all(20.0),
                         child: SizedBox(
                           width: size.width,
-                          child: primaryButton(
+                          child: primaryButtonWithCallBack(
                               DemoLocalizations.of(context)?.getText("done") ??
                                   "",
                               addCar),
@@ -386,7 +439,8 @@ class AddCarScreenState extends State<AddCarScreen> {
     );
   }
 
-  Widget buildslectionElevatedButton(String number) {
+  Widget buildslectionElevatedButton(
+      int number, Color bgColor, Color textColor, String state) {
     return SizedBox(
       width: 100,
       height: 100,
@@ -394,12 +448,12 @@ class AddCarScreenState extends State<AddCarScreen> {
         fit: BoxFit.contain,
         child: ElevatedButton(
           onPressed: () {
-            changeColor();
+            changeColor(state, number);
           },
           style: ButtonStyle(
             shape: MaterialStateProperty.all(CircleBorder()),
             backgroundColor:
-                MaterialStateProperty.all(color), // <-- Button color
+                MaterialStateProperty.all(bgColor), // <-- Button color
             overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
               if (states.contains(MaterialState.pressed)) {
                 return primaryLightColor;
@@ -409,8 +463,9 @@ class AddCarScreenState extends State<AddCarScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              number,
+              number.toString(),
               textAlign: TextAlign.center,
+              style: TextStyle(color: textColor),
             ),
           ),
         ),
@@ -420,9 +475,44 @@ class AddCarScreenState extends State<AddCarScreen> {
 
   void addCar() {}
 
-  void changeColor() {
+  void setDefaultColors() {
+    for (int i = 0; i <= 6; i++) {
+      availableSeatsColor.add(Colors.white);
+      availableSeatsTextColor.add(primaryColor);
+      offeringSeatsColor.add(Colors.white);
+      offeringSeatsTextColor.add(primaryColor);
+    }
+  }
+
+  void setDefaultOfferColorsBeforeUpdate() {
+    for (int i = 0; i <= 5; i++) {
+      offeringSeatsColor[i] = Colors.white;
+      offeringSeatsTextColor[i] = primaryColor;
+    }
+  }
+
+  void setDefaultAvailableColorsBeforeUpdate() {
+    for (int i = 0; i <= 5; i++) {
+      availableSeatsColor[i] = Colors.white;
+      availableSeatsTextColor[i] = primaryColor;
+    }
+  }
+
+  void changeColor(String state, int position) {
     setState(() {
-      color = Colors.blue;
+      if (state == offeringState) {
+        setDefaultOfferColorsBeforeUpdate();
+        for (int i = 0; i < position; i++) {
+          offeringSeatsColor[i] = primaryColor;
+          offeringSeatsTextColor[i] = Colors.white;
+        }
+      } else {
+        setDefaultAvailableColorsBeforeUpdate();
+        for (int i = 0; i < position; i++) {
+          availableSeatsColor[i] = primaryColor;
+          availableSeatsTextColor[i] = Colors.white;
+        }
+      }
     });
   }
 }

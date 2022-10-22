@@ -4,11 +4,14 @@ import 'package:common/network/response/CarDetailsResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
 
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
+import 'my_vehicle_start_page.dart';
 
 class MyCarsScreen extends StatelessWidget {
   final List<CarDetailsResponse> carList;
@@ -17,6 +20,7 @@ class MyCarsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return MaterialApp(
         home: SafeArea(
       child: Scaffold(
@@ -196,6 +200,21 @@ class MyCarsScreen extends StatelessWidget {
                   );
                 },
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SizedBox(
+                  width: size.width,
+                  child: primaryButtonWithCallBack(
+                      DemoLocalizations.of(context)
+                              ?.getText("add_car_button") ??
+                          "", () {
+                    Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: const MyVehicleStartPage()));
+                  })),
             ),
           ],
         ),
