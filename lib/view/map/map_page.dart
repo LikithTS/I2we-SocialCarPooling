@@ -44,7 +44,13 @@ class _MapPageState extends State<MapPage> {
     //set up initial location
     this.getCurrentLocation();
     //this.setInitLocation();
+    Future.delayed(Duration.zero,(){
+      sourceLocation = Provider.of<AddressProvider>(context,listen: false).driverStartLatLng;
+      print('Source Data'+sourceLocation!.latitude.toString()+" Source Data ${sourceLocation!.longitude.toString()}");
+      destinationLocation = Provider.of<AddressProvider>(context,listen: false).driverDestLatLng;
+      print('Dest Data'+sourceLocation!.latitude.toString()+" Dest Data ${sourceLocation!.longitude.toString()}");
 
+    });
     this.setSourceAndDestMakerIcon();
     this.getPolyPoints();
     //set up makers icons
@@ -102,13 +108,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero,(){
-      sourceLocation = Provider.of<AddressProvider>(context,listen: false).driverStartLatLng;
-      print('Source Data'+sourceLocation!.latitude.toString()+" Source Data ${sourceLocation!.longitude.toString()}");
-      destinationLocation = Provider.of<AddressProvider>(context,listen: false).driverDestLatLng;
-      print('Dest Data'+sourceLocation!.latitude.toString()+" Dest Data ${sourceLocation!.longitude.toString()}");
 
-    });
     return Scaffold(
       body: currentLocation == null
           ? Center(child: Text('Loading'),)

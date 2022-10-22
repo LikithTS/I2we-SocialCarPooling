@@ -107,6 +107,7 @@ class _LocationPageState extends State<LocationPage> {
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
+    print("Lat Long : ${latLngProvider.latitude} : ${latLngProvider.longitude}");
     List<String> result = address.split(',');
 
     return Scaffold(
