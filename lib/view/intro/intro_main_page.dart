@@ -114,15 +114,21 @@ class IntoMainPage extends StatelessWidget {
       width: introImageWidth, height: introImageHeight, fit: BoxFit.cover);
 
   Widget smallText(String text) => Expanded(
-        child: Text(
-          text,
-          style: TextStyleUtils.primaryTextRegular,
-          maxLines: 3,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: margin30),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              text,
+              style: TextStyleUtils.primaryTextRegular,
+              maxLines: 3,
+            ),
+          ),
         ),
       );
 
   Widget headerText(String title) => Container(
-      margin: EdgeInsets.symmetric(horizontal: margin30.w),
+      margin: EdgeInsets.symmetric(horizontal: margin30),
       child: Align(
         alignment: Alignment.topLeft,
         child: Text(title, style: TextStyleUtils.primaryTextBold),

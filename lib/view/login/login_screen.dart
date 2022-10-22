@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
               addVerticalSpace(10),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context,
                       PageTransition(
                           type: PageTransitionType.bottomToTop,

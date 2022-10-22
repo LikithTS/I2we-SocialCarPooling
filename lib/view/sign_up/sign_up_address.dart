@@ -195,7 +195,7 @@ class _SignUpAddressState extends State<SignUpAddress>
           context,
           PageTransition(
               type: PageTransitionType.leftToRight,
-              child: VerifyOtpPage(
+              child: VerifyOtpPage(userName: widget.signInApi.name,
                 mobileNo: widget.signInApi.phoneNumber,
               )));
       //print("Response Data : ${value.statusCode}");

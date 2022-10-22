@@ -16,6 +16,7 @@ import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
+import '../../util/CPSessionManager.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';
@@ -24,9 +25,10 @@ import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/image_widgets.dart';
 
 class VerifyOtpPage extends StatefulWidget {
+  final String userName;
   final String mobileNo;
 
-  const VerifyOtpPage({Key? key, required this.mobileNo}) : super(key: key);
+  const VerifyOtpPage({Key? key, required this.mobileNo, required this.userName}) : super(key: key);
 
   @override
   State<VerifyOtpPage> createState() => _VerifyOtpPageState();
@@ -43,6 +45,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   TextEditingController otpString2Controller =TextEditingController();
   TextEditingController otpString3Controller =TextEditingController();
   TextEditingController otpString4Controller =TextEditingController();
+  TextEditingController otpString5Controller =TextEditingController();
+  TextEditingController otpString6Controller =TextEditingController();
 
   @override
   void initState() {
@@ -81,7 +85,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
-      print("Success ${value.statusCode}");
+     // print("Success ${value.statusCode}");
 
     } else {
       ErrorResponse errorResponse = value;
@@ -157,146 +161,13 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 2,
-                          shadowColor: borderColor,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 64,
-                              width: 64,
-                              child: TextFormField(
-                                controller: otpString1Controller,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin) {
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 2,
-                          shadowColor: borderColor,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 64,
-                              width: 64,
-                              child: TextFormField(
-                                controller: otpString2Controller,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin) {
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 2,
-                          shadowColor: borderColor,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 64,
-                              width: 64,
-                              child: TextFormField(
-                                controller: otpString3Controller,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin) {
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 2,
-                          shadowColor: borderColor,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 64,
-                              width: 64,
-                              child: TextFormField(
-                                controller: otpString4Controller,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin) {
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
+                        otpCard(otpString1Controller),
+                        otpCard(otpString2Controller),
+                        otpCard(otpString3Controller),
+                        otpCard(otpString4Controller),
+                        otpCard(otpString5Controller),
+                        otpCard(otpString6Controller),
+
                       ],
                     ),
                   ),
@@ -368,16 +239,17 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                     margin: EdgeInsets.only(top: margin20),
                     child: ElevatedButton(
                       onPressed: () {
+                        CPSessionManager().setUserName(widget.userName);
 
-                        Navigator.push(
+                      /*  Navigator.push(
                             context,
                             PageTransition(
                                 type: PageTransitionType.leftToRight,
-                                child: VerifiedPage()));
-                       /* var otpText=otpString1Controller.text.toString()+otpString2Controller.text.toString()+otpString3Controller.text.toString()+otpString4Controller.text.toString();
-                       // print("OTP Text: $otpText");
+                                child: VerifiedPage()));*/
+                        var otpText=otpString1Controller.text.toString()+otpString2Controller.text.toString()+otpString3Controller.text.toString()+otpString4Controller.text.toString()+otpString5Controller.text.toString()+otpString6Controller.text.toString();
+                        print("OTP Text: $otpText");
                         ValidOtpApi validOtpApi = ValidOtpApi(phoneNumber: mobileNoController.text.toString(), otp: otpText);
-                        validOtp(validOtpApi);*/
+                        validOtp(validOtpApi);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
@@ -435,6 +307,42 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
       )),
     );
   }
+  Widget otpCard(TextEditingController controller) =>  Card(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    elevation: 2,
+    shadowColor: borderColor,
+    child: Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 48,
+        width: 48,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          textAlign: TextAlign.center,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(1),
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+          ),
+          onChanged: (value) {
+            if (value.length == 1) {
+              FocusScope.of(context).nextFocus();
+            }
+          },
+          onSaved: (pin) {
+          },
+        ),
+      ),
+    ),
+  );
+
 
   void _resendCode() {
     //other code here

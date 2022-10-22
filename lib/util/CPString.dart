@@ -7,9 +7,10 @@ class CPString{
   static const String please_wait = "Please Wait";
   static const String welcome = "Hi, Welcome";
   static const String saveFuel = "Save Fuel";
-  static const String hiUserName = "Hi, User Name";
+  static const String hiUserName = "Hi, ";
   static const String SaveEnvironment = "Save Environment";
   static const String skip = "Skip";
+  static const String ok = "ok";
   static const String done = "Done";
   static const String next = "Next";
   static const String yes = "Yes";
@@ -43,7 +44,7 @@ class CPString{
   static const String registrationSuccess = "The registration successful";
   static const String verifyOTPTitle = "Enter OTP sent to registered phone number";
   static const String confirmPassword = "Confirm Password";
-  static const String selectDate = "Select date";
+  static const String selectDate = "DOB";
   static const String fullNameError = "Full Name can not empty";
   static const String stringError = "Filed can not empty";
   static const String addressError = "Address Line One can not empty";
