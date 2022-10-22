@@ -85,7 +85,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
-      print("Success ${value.statusCode}");
+     // print("Success ${value.statusCode}");
 
     } else {
       ErrorResponse errorResponse = value;
