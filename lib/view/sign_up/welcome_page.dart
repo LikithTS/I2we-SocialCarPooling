@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
@@ -18,6 +19,15 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+
+  String userName='';
+
+  @override
+  void initState() {
+    super.initState();
+    userName=CPSessionManager().getUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +45,7 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: margin10,
               ),
-              headerText(CPString.hiUserName),
+              headerText(CPString.hiUserName+userName),
               SizedBox(
                 height: margin10,
               ),

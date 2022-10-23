@@ -9,4 +9,5 @@ class ApiConstant {
   static const String VERIFY_OTP_API_PATH = "user/validate-otp";
   static const String QUESTIONARIE_API_PATH = "questionnarie";
   static const String CAR_API_PATH = "car/all";
+  static const String CAR_DRVING_STATUS = "car/change-status";
 }

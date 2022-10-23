@@ -10,12 +10,14 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 import 'package:socialcarpooling/widgets/text_widgets.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';
+import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -254,13 +256,19 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     SizedBox(
                       width: 5,
                     ),
-                    Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: Text(
-                          CPString.passwordInfo,
-                          style: TextStyleUtils.primaryTextRegular
-                              .copyWith(fontSize: 14),
-                        ))
+                    InkWell(
+                      onTap:(){
+                        print("Click");
+                        alertWidgets(context,CPString.passwordInfo,DemoLocalizations.of(context)?.getText("password_info"));
+                    },
+                      child: Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            CPString.passwordInfo,
+                            style: TextStyleUtils.primaryTextRegular
+                                .copyWith(fontSize: 14),
+                          )),
+                    )
                   ],
                 ),
               ),

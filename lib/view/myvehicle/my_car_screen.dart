@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:common/network/repository/CarRepository.dart';
+import 'package:common/network/request/drivingStatusApi.dart';
 import 'package:common/network/response/CarDetailsResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
 
@@ -13,10 +16,29 @@ import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
 import 'my_vehicle_start_page.dart';
 
-class MyCarsScreen extends StatelessWidget {
+class MyCarsScreen extends StatefulWidget {
   final List<CarDetailsResponse> carList;
+  final CarRepository carRepository;
 
-  const MyCarsScreen(this.carList, {Key? key}) : super(key: key);
+  const MyCarsScreen(this.carList, this.carRepository, {Key? key}) : super(key: key);
+  @override
+  State<MyCarsScreen> createState() => _MyCarsScreenState();
+
+}
+
+class _MyCarsScreenState extends State<MyCarsScreen> {
+
+  CarRepository get _carRepository => widget.carRepository;
+
+  void changeDefaultStateOfCar(String id, bool value) {
+    DrivingStatusApi api = DrivingStatusApi(carId: id);
+    Future<dynamic> future = _carRepository.carDrivingStatusUpdate(api: api);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    log("Driving status changed successfully");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +49,7 @@ class MyCarsScreen extends StatelessWidget {
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -46,10 +68,10 @@ class MyCarsScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: carList.length,
+                itemCount: widget.carList.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
-                    key: Key(carList[index].toString()),
+                    key: Key(widget.carList[index].toString()),
                     direction: DismissDirection.endToStart,
                     background: slideLeftBackground(),
                     onDismissed: (DismissDirection direction) {
@@ -77,14 +99,14 @@ class MyCarsScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  mycarTextWidget(carList[index].carType,
+                                  mycarTextWidget(widget.carList[index].carType,
                                       primaryColor, 18.sp),
-                                  mycarTextWidget(carList[index].carName,
+                                  mycarTextWidget(widget.carList[index].carName,
                                       Colors.black, 12.sp),
-                                  mycarTextWidget(carList[index].regNumber,
+                                  mycarTextWidget(widget.carList[index].regNumber,
                                       primaryColor, 13.sp)
                                 ],
                               ),
@@ -92,7 +114,7 @@ class MyCarsScreen extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Column(
                                     children: [
@@ -107,11 +129,11 @@ class MyCarsScreen extends StatelessWidget {
                                             elevation: 5,
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     const Icon(
                                                       Icons
@@ -128,11 +150,11 @@ class MyCarsScreen extends StatelessWidget {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     primaryThemeTextNormal(
                                                         context,
-                                                        carList[index]
+                                                        widget.carList[index]
                                                             .seatingCapacity
                                                             .toString()),
                                                     smallLightText("available",
@@ -145,11 +167,11 @@ class MyCarsScreen extends StatelessWidget {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     primaryThemeTextNormal(
                                                         context,
-                                                        carList[index]
+                                                        widget.carList[index]
                                                             .offeringSeat
                                                             .toString()),
                                                     smallLightText("offered",
@@ -165,25 +187,33 @@ class MyCarsScreen extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        20.0, 8.0, 8.0, 8.0),
+                                        40.0, 8.0, 8.0, 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       children: [
                                         smallTextWithNoMargin(
                                             "set default :", Alignment.topLeft),
-                                        Container(
-                                          width: 40,
-                                          height: 30,
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: CupertinoSwitch(
-                                              value: carList[index]
-                                                      .drivingStatus ??
-                                                  false,
-                                              onChanged: (value) {
-                                                log("Default value changed $value");
-                                              },
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8.0),
+                                          child: SizedBox(
+                                            width: 50,
+                                            height: 30,
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: CupertinoSwitch(
+                                                // This bool value toggles the switch.
+                                                value: widget.carList[index]
+                                                    .drivingStatus ?? false,
+                                                onChanged: (bool value) {
+                                                  // This is called when the user toggles the switch.
+                                                  setState(() {
+                                                    log("Cupertion switch $value");
+                                                    widget.carList[index].drivingStatus = value;
+                                                    changeDefaultStateOfCar(widget.carList[index].id!, value);
+                                                  });
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ),

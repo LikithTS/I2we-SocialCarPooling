@@ -106,8 +106,7 @@ class IntoMainPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop,
-                child: LoginScreen(userRepository: LoginRepository())));
+                type: PageTransitionType.bottomToTop, child: LoginScreen(userRepository: LoginRepository())));
       },
     );
   }
@@ -116,10 +115,16 @@ class IntoMainPage extends StatelessWidget {
       width: introImageWidth, height: introImageHeight, fit: BoxFit.cover);
 
   Widget smallText(String text) => Expanded(
-        child: Text(
-          text,
-          style: TextStyleUtils.primaryTextRegular,
-          maxLines: 3,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: margin30),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              text,
+              style: TextStyleUtils.primaryTextRegular,
+              maxLines: 3,
+            ),
+          ),
         ),
       );
 

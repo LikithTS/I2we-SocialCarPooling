@@ -1,5 +1,6 @@
 
 
+import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/CPSessionManager.dart';
@@ -55,12 +56,14 @@ Widget loadHomePageData(HomeResponse data) {
           profileCompletionPercentage: data.profile?.percentageOfCompletion ??  100),
       if(data.myCars!.isNotEmpty) ...[
         HomeCarCard(
+            carId: data.myCars?.firstWhere((element) => true).id ?? "",
             carType: data.myCars?.firstWhere((element) => true).carType ?? Constant.CAR_TYPE_MINI,
             carName: data.myCars?.firstWhere((element) => true).carName ?? "",
             carNumber: data.myCars?.firstWhere((element) => true).regNumber ?? "",
             numberOfSeatsOffered: data.myCars?.firstWhere((element) => true).offeringSeat ?? 2,
             numberOfSeatsAvailable: data.myCars?.firstWhere((element) => true).seatingCapacity ?? 2,
-            defaultStatus: true),
+            defaultStatus: data.myCars?.firstWhere((element) => true).drivingStatus ?? false,
+            carRepository: CarRepository(),),
       ] else ... [
         const AddCarCard()
       ]
