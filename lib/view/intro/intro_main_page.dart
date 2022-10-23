@@ -106,7 +106,8 @@ class IntoMainPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop, child: LoginScreen(userRepository: LoginRepository())));
+                type: PageTransitionType.bottomToTop,
+                child: LoginScreen(userRepository: LoginRepository())));
       },
     );
   }
