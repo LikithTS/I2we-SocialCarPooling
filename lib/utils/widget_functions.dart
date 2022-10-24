@@ -95,6 +95,7 @@ Widget mycarTextWidget(String? title, Color color, double size) => Container(
                 fontSize: size,
                 decoration: TextDecoration.none,
                 color: color,
+
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins')),
       ),

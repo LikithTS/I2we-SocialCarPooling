@@ -1,3 +1,4 @@
+import 'package:common/network/repository/CarRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
@@ -146,6 +147,6 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
     Navigator.pushReplacement(
         context,
         PageTransition(
-            type: PageTransitionType.bottomToTop, child: const AddCarScreen()));
+            type: PageTransitionType.bottomToTop, child: AddCarScreen(carRepository: CarRepository())));
   }
 }
