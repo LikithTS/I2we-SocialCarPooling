@@ -191,7 +191,9 @@ class _MapPageState extends State<MapPage> {
           markerId: MarkerId('SourcePin'),
           position: sourceLocation,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)));
-
+      _markers.add(Marker(
+          markerId: MarkerId('DestinationPin'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)));
     });
   }*/
   Set<Marker> filterData() {
