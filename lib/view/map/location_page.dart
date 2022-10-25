@@ -16,7 +16,6 @@ import '../../provider/provider_preference.dart';
 import '../../util/CPString.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
-import '../../widgets/google_map.dart';
 
 class LocationPage extends StatefulWidget {
   final bool flagAddress;
@@ -40,11 +39,17 @@ class _LocationPageState extends State<LocationPage> {
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
+    var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
+        position.latitude, position.longitude,
+        localeIdentifier: "en");
+
     setState(() {
       latitude = position.latitude;
       longitude = position.longitude;
       Provider.of<AddressProvider>(context, listen: false)
-          .changeLatLng(LatLng(latitude ?? 0.0, longitude??0.0));
+          .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+      ProviderPreference().putAddress(context,
+          '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
 
       _markers.clear();
       _markers.add(Marker(
@@ -107,7 +112,6 @@ class _LocationPageState extends State<LocationPage> {
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
-    print("Lat Long : ${latLngProvider.latitude} : ${latLngProvider.longitude}");
     List<String> result = address.split(',');
 
     return Scaffold(
@@ -126,7 +130,8 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                     ),
                   )
-                : googleMap(context, LatLng(latitude!, longitude!), _controller),
+                : googleMap(
+                    context, LatLng(latitude!, longitude!), _controller),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -217,16 +222,17 @@ class _LocationPageState extends State<LocationPage> {
                                         .putEndRiderAddress(context, address);
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putDriverStartLatLng(context, latLngProvider)
-                                    : ProviderPreference()
-                                        .putDriverStartLatLng(context, latLngProvider)
+                                    ? ProviderPreference().putDriverStartLatLng(
+                                        context, latLngProvider)
+                                    : ProviderPreference().putRiderStartLatLng(
+                                        context, latLngProvider)
                                 : widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putDriverDestLatLng(context, latLngProvider)
-                                    : ProviderPreference()
-                                        .putDriverDestLatLng(context, latLngProvider);
-                            Navigator.pop(context);
+                                    ? ProviderPreference().putDriverDestLatLng(
+                                        context, latLngProvider)
+                                    : ProviderPreference().putRiderDestLatLng(
+                                        context, latLngProvider);
+
+                           Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: primaryColor,
@@ -258,8 +264,7 @@ class _LocationPageState extends State<LocationPage> {
         HomePage()), (Route<dynamic> route) => false);*/
   }
 
-  Widget googleMap(
-      BuildContext context, LatLng latLng, _controller) {
+  Widget googleMap(BuildContext context, LatLng latLng, _controller) {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -268,8 +273,7 @@ class _LocationPageState extends State<LocationPage> {
         zoomControlsEnabled: false,
         myLocationButtonEnabled: false,
         myLocationEnabled: true,
-        initialCameraPosition:
-            CameraPosition(target: latLng, zoom: 15),
+        initialCameraPosition: CameraPosition(target: latLng, zoom: 15),
         markers: _markers,
         onCameraMove: (_position) =>
             _updatePosition(_position, latitude, longitude),

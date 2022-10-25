@@ -34,7 +34,6 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
     var endDriverAddress =
         Provider.of<AddressProvider>(context).endDriverAddress;
     var endRiderAddress = Provider.of<AddressProvider>(context).endRiderAddress;
-    print("Start Driver : $startDriverAddress : Start Rider : $startRiderAddress : End Driver : $endDriverAddress : End Rider : $endRiderAddress");
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,

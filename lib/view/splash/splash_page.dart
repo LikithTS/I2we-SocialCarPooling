@@ -11,6 +11,7 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/login/login_screen.dart';
+import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 
 import '../../util/CPSessionManager.dart';
 import '../../util/string_url.dart';
@@ -63,12 +64,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
 
   getNextPage() {
-    if (CPSessionManager().isUserLoggedIn()) {
+   /* if (CPSessionManager().isUserLoggedIn()) {
       return HomePage(homeRepository: HomeRepository());
     } else if (CPSessionManager().isIntroPageVisited()) {
       return LoginScreen(userRepository: LoginRepository());
     } else {
       return const IntoMainPage();
-    }
+    }*/
+    return const WelcomePage();
+
   }
 }

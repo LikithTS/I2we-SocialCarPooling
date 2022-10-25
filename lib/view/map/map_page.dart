@@ -10,8 +10,6 @@ import 'package:provider/provider.dart';
 import '../../util/configuration.dart';
 import '../../util/margin_confiq.dart';
 
-/*const LatLng SOURCE_LOCATION = LatLng(13.0714, 80.2417);
-const LatLng DEST_LOCATION = LatLng(13.0569, 80.2425);*/
 const double CAMERA_ZOOM = 14;
 const double CAMERA_TILT = 80;
 const double CAMERA_BEARING = 30;
@@ -29,7 +27,7 @@ class _MapPageState extends State<MapPage> {
   BitmapDescriptor? sourceIcon;
   BitmapDescriptor? destinationIcon;
 
-  Set<Marker> _markers = Set();
+  final Set<Marker> _markers = {};
 
   LatLng? sourceLocation;
   LatLng? destinationLocation;
@@ -47,18 +45,7 @@ class _MapPageState extends State<MapPage> {
     //set up initial location
     this.getLocation();
     //this.setInitLocation();
-    Future.delayed(Duration.zero, () {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
-      print('Source Data' +
-          sourceLocation!.latitude.toString() +
-          " Source Data ${sourceLocation!.longitude.toString()}");
-      destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
-      print('Dest Data' +
-          sourceLocation!.latitude.toString() +
-          " Dest Data ${sourceLocation!.longitude.toString()}");
-    });
+
     this.setSourceAndDestMakerIcon();
     this.getPolyPoints();
     //set up makers icons
@@ -113,7 +100,7 @@ class _MapPageState extends State<MapPage> {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyDYorBkcy6CwXJQZjAmv0_2EJyAQMFwQNM',
+        'AIzaSyCHgDPkBitY9TLDasjyqQ0EhZGRQqrZp6M',
         PointLatLng(sourceLocation!.latitude, sourceLocation!.longitude),
         PointLatLng(
             destinationLocation!.latitude, destinationLocation!.longitude));
@@ -145,11 +132,15 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
+    destinationLocation = Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+    print("LatLong Map : $sourceLocation : $destinationLocation");
+
     return Scaffold(
       body: currentLocation == null
           ? Container(
               width: deviceWidth(context),
-              height: deviceHeight(context),
+              height: deviceHeight(context) * .5,
               child: Container(
                 width: margin50,
                 height: margin50,
@@ -161,13 +152,14 @@ class _MapPageState extends State<MapPage> {
           : Stack(
               children: [
                 Container(
+                  height: deviceHeight(context) * .5,
                   child: GoogleMap(
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                     compassEnabled: false,
                     zoomControlsEnabled: false,
                     tiltGesturesEnabled: false,
-                    markers: _markers,
+                    markers: filterData(),
                     mapType: MapType.terrain,
                     initialCameraPosition: CameraPosition(
                         target: LatLng(currentLocation!.latitude,
@@ -178,7 +170,7 @@ class _MapPageState extends State<MapPage> {
                     polylines: allPolylinesByPosition,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
-                      showPinOnMap();
+                     // showPinOnMap();
                     },
                   ),
                 ),
@@ -187,21 +179,41 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void showPinOnMap() {
+/*
+  void showPinOnMap(LatLng sourceLocation) {
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId('CurrentPin'),
           position:
               LatLng(currentLocation!.latitude, currentLocation!.longitude),
-          icon: currentIcon!));
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)));
+      _markers.add(Marker(
+          markerId: MarkerId('SourcePin'),
+          position: sourceLocation,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)));
+      _markers.add(Marker(
+          markerId: MarkerId('DestinationPin'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)));
+    });
+  }*/
+  Set<Marker> filterData() {
+    _markers.clear();
+
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('CurrentPin'),
+          position: LatLng(currentLocation!.latitude, currentLocation!.longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)));
       _markers.add(Marker(
           markerId: MarkerId('SourcePin'),
           position: sourceLocation!,
-          icon: sourceIcon!));
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)));
       _markers.add(Marker(
           markerId: MarkerId('DestinationPin'),
           position: destinationLocation!,
-          icon: destinationIcon!));
+          icon:
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)));
     });
+    return _markers;
   }
 }
