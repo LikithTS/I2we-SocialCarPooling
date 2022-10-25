@@ -6,12 +6,16 @@ import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.d
 import 'package:socialcarpooling/view/map/location_page.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
+import '../../../provider/driver_provider.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 import '../tab_utils/home_icon_text_form.dart';
+import 'package:provider/provider.dart';
+
 
 Widget showRiderWidget(BuildContext context) {
   double width = MediaQuery.of(context).size.width;
+
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(

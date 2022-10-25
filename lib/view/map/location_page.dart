@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
+import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
@@ -209,6 +210,9 @@ class _LocationPageState extends State<LocationPage> {
                         padding: EdgeInsets.all(10),
                         child: ElevatedButton(
                           onPressed: () {
+                            Provider.of<DriverProvider>(context,
+                                listen: false)
+                                .changeLanguage(true);
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
                                     ? ProviderPreference()
