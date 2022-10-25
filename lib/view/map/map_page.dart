@@ -145,7 +145,7 @@ class _MapPageState extends State<MapPage> {
       var languageProvider = Provider
           .of<DriverProvider>(context)
           .languageFlag;
-      print("Language Provider : $languageProvider");
+     // print("Language Provider : $languageProvider");
      if(sourceLocation!=null && destinationLocation!=null)
        {
          showPinOnMap(sourceLocation!, destinationLocation!);
