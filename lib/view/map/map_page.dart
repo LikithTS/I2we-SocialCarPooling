@@ -48,7 +48,7 @@ class _MapPageState extends State<MapPage> {
     //this.setInitLocation();
 
     this.setSourceAndDestMakerIcon();
-   // this.getPolyPoints();
+    // this.getPolyPoints();
     //set up makers icons
   }
 
@@ -97,7 +97,7 @@ class _MapPageState extends State<MapPage> {
         'assets/images/location_on.png');
   }
 
-  void getPolyPoints() async {
+  void getPolyPoints(sourceLocation,destinationLocation) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
@@ -107,11 +107,13 @@ class _MapPageState extends State<MapPage> {
             destinationLocation!.latitude, destinationLocation!.longitude));
 
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) =>
-          polylineCoordinates.add(LatLng(point.longitude, point.longitude)));
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.longitude, point.longitude));
+       // print("Poly Line Points : ${point.longitude}");
+      }
     }
     allPolylinesByPosition.add(Polyline(
-        polylineId: PolylineId(('routes')),
+        polylineId: const PolylineId(('routes')),
         points: polylineCoordinates,
         visible: true,
         width: 4,
@@ -119,37 +121,17 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-  /* void setInitLocation() {
-    Future.delayed(Duration.zero, () async {
-      Provider.of<SettingsProvider>(context,
-          listen: false)
-          .changeLanguage(isLanguageFlag);
-    }
-     */ /* sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);
-    destinationLocation =
-        LatLng(DEST_LOCATION.latitude, DEST_LOCATION.longitude);*/ /*
-  }*/
 
   @override
   Widget build(BuildContext context) {
-
-
-      sourceLocation = Provider
-          .of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
-      destinationLocation = Provider
-          .of<AddressProvider>(context, listen: false)
-          .driverDestLatLng;
-      print("LatLong Map : $sourceLocation : $destinationLocation");
-      var languageProvider = Provider
-          .of<DriverProvider>(context)
-          .languageFlag;
-      print("Language Provider : $languageProvider");
-     if(sourceLocation!=null && destinationLocation!=null)
-       {
-         showPinOnMap(sourceLocation!, destinationLocation!);
-       }
+    sourceLocation =
+        Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
+    destinationLocation =
+        Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+    var languageProvider = Provider.of<DriverProvider>(context).languageFlag;
+    if (sourceLocation!.latitude != 0.0) {
+      showPinOnMap(sourceLocation!, destinationLocation!);
+    }
     return Scaffold(
       body: currentLocation == null
           ? Container(
@@ -184,7 +166,7 @@ class _MapPageState extends State<MapPage> {
                     polylines: allPolylinesByPosition,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
-                      showPinOnMap(sourceLocation!,destinationLocation!);
+                      showPinOnMap(sourceLocation!, destinationLocation!);
                     },
                   ),
                 ),
@@ -193,23 +175,31 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void showPinOnMap(LatLng sourceLocation,LatLng destinationLocation) {
+  void showPinOnMap(LatLng sourceLocation, LatLng destinationLocation) {
     _markers.add(Marker(
         markerId: MarkerId('CurrentPin'),
-        position:
-        LatLng(currentLocation!.latitude, currentLocation!.longitude),
+        position: LatLng(currentLocation!.latitude, currentLocation!.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)));
-    _markers.add(Marker(
-        markerId: MarkerId('SourcePin'),
-        position: sourceLocation,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)));
-    _markers.add(Marker(
-        markerId: MarkerId('DestinationPin'),
-        position: destinationLocation,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)));
+    if (sourceLocation.latitude != 0.0) {
+      _markers.add(Marker(
+          markerId: MarkerId('SourcePin'),
+          position: sourceLocation,
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)));
+    }
+    if (destinationLocation.latitude != 0.0) {
+      _markers.add(Marker(
+          markerId: MarkerId('DestinationPin'),
+          position: destinationLocation,
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueGreen)));
+    }
+   /* if(sourceLocation.latitude!=0.0 && destinationLocation.latitude!=0.0)
+    {
+      getPolyPoints(sourceLocation, destinationLocation);
+    }*/
     setState(() {
 
     });
   }
-
 }
