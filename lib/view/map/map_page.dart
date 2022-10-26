@@ -194,10 +194,7 @@ class _MapPageState extends State<MapPage> {
           icon: BitmapDescriptor.defaultMarkerWithHue(
               BitmapDescriptor.hueGreen)));
     }
-   /* if(sourceLocation.latitude!=0.0 && destinationLocation.latitude!=0.0)
-    {
-      getPolyPoints(sourceLocation, destinationLocation);
-    }*/
+
     setState(() {
 
     });
