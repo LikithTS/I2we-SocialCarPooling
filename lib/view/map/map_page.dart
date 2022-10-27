@@ -6,12 +6,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:socialcarpooling/provider/driver_provider.dart';
 
 import '../../util/configuration.dart';
 import '../../util/margin_confiq.dart';
 
-/*const LatLng SOURCE_LOCATION = LatLng(13.0714, 80.2417);
-const LatLng DEST_LOCATION = LatLng(13.0569, 80.2425);*/
 const double CAMERA_ZOOM = 14;
 const double CAMERA_TILT = 80;
 const double CAMERA_BEARING = 30;
@@ -29,7 +28,7 @@ class _MapPageState extends State<MapPage> {
   BitmapDescriptor? sourceIcon;
   BitmapDescriptor? destinationIcon;
 
-  Set<Marker> _markers = Set();
+  final Set<Marker> _markers = {};
 
   LatLng? sourceLocation;
   LatLng? destinationLocation;
@@ -47,20 +46,9 @@ class _MapPageState extends State<MapPage> {
     //set up initial location
     this.getLocation();
     //this.setInitLocation();
-    Future.delayed(Duration.zero, () {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
-      print('Source Data' +
-          sourceLocation!.latitude.toString() +
-          " Source Data ${sourceLocation!.longitude.toString()}");
-      destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
-      print('Dest Data' +
-          sourceLocation!.latitude.toString() +
-          " Dest Data ${sourceLocation!.longitude.toString()}");
-    });
+
     this.setSourceAndDestMakerIcon();
-    this.getPolyPoints();
+   // this.getPolyPoints();
     //set up makers icons
   }
 
@@ -109,21 +97,23 @@ class _MapPageState extends State<MapPage> {
         'assets/images/location_on.png');
   }
 
-  void getPolyPoints() async {
+  void getPolyPoints(sourceLocation,destinationLocation) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyDYorBkcy6CwXJQZjAmv0_2EJyAQMFwQNM',
+        'AIzaSyCHgDPkBitY9TLDasjyqQ0EhZGRQqrZp6M',
         PointLatLng(sourceLocation!.latitude, sourceLocation!.longitude),
         PointLatLng(
             destinationLocation!.latitude, destinationLocation!.longitude));
 
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) =>
-          polylineCoordinates.add(LatLng(point.longitude, point.longitude)));
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.longitude, point.longitude));
+       // print("Poly Line Points : ${point.longitude}");
+      }
     }
     allPolylinesByPosition.add(Polyline(
-        polylineId: PolylineId(('routes')),
+        polylineId: const PolylineId(('routes')),
         points: polylineCoordinates,
         visible: true,
         width: 4,
@@ -131,25 +121,22 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-  /* void setInitLocation() {
-    Future.delayed(Duration.zero, () async {
-      Provider.of<SettingsProvider>(context,
-          listen: false)
-          .changeLanguage(isLanguageFlag);
-    }
-     */ /* sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);
-    destinationLocation =
-        LatLng(DEST_LOCATION.latitude, DEST_LOCATION.longitude);*/ /*
-  }*/
 
   @override
   Widget build(BuildContext context) {
+    sourceLocation =
+        Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
+    destinationLocation =
+        Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+    var languageProvider = Provider.of<DriverProvider>(context).languageFlag;
+    if (sourceLocation!.latitude != 0.0) {
+      showPinOnMap(sourceLocation!, destinationLocation!);
+    }
     return Scaffold(
       body: currentLocation == null
           ? Container(
               width: deviceWidth(context),
-              height: deviceHeight(context),
+              height: deviceHeight(context) * .5,
               child: Container(
                 width: margin50,
                 height: margin50,
@@ -161,6 +148,7 @@ class _MapPageState extends State<MapPage> {
           : Stack(
               children: [
                 Container(
+                  height: deviceHeight(context) * .5,
                   child: GoogleMap(
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
@@ -178,7 +166,7 @@ class _MapPageState extends State<MapPage> {
                     polylines: allPolylinesByPosition,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
-                      showPinOnMap();
+                      showPinOnMap(sourceLocation!, destinationLocation!);
                     },
                   ),
                 ),
@@ -187,21 +175,28 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void showPinOnMap() {
-    setState(() {
-      _markers.add(Marker(
-          markerId: MarkerId('CurrentPin'),
-          position:
-              LatLng(currentLocation!.latitude, currentLocation!.longitude),
-          icon: currentIcon!));
+  void showPinOnMap(LatLng sourceLocation, LatLng destinationLocation) {
+    _markers.add(Marker(
+        markerId: MarkerId('CurrentPin'),
+        position: LatLng(currentLocation!.latitude, currentLocation!.longitude),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)));
+    if (sourceLocation.latitude != 0.0) {
       _markers.add(Marker(
           markerId: MarkerId('SourcePin'),
-          position: sourceLocation!,
-          icon: sourceIcon!));
+          position: sourceLocation,
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)));
+    }
+    if (destinationLocation.latitude != 0.0) {
       _markers.add(Marker(
           markerId: MarkerId('DestinationPin'),
-          position: destinationLocation!,
-          icon: destinationIcon!));
+          position: destinationLocation,
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueGreen)));
+    }
+
+    setState(() {
+
     });
   }
 }

@@ -1,5 +1,4 @@
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 
@@ -36,17 +35,31 @@ class ProviderPreference{
         listen: false)
         .changeEndRiderAddress(address);
   }
-  void putDriverStartLatLng(context,latLng)
+  void putDriverStartLatLng(context,lat)
   {
     Provider.of<AddressProvider>(context,
         listen: false)
-        .changeDriverStartLatLong(latLng);
+        .changeDriverStartLatLong(lat);
   }
+
   void putDriverDestLatLng(context,latLng)
   {
     Provider.of<AddressProvider>(context,
         listen: false)
         .changeDriverDestLatLong(latLng);
+  }
+  void putRiderStartLatLng(context,lat)
+  {
+    Provider.of<AddressProvider>(context,
+        listen: false)
+        .changeRiderStartLatLong(lat);
+  }
+
+  void putRiderDestLatLng(context,latLng)
+  {
+    Provider.of<AddressProvider>(context,
+        listen: false)
+        .changeRiderDestLatLong(latLng);
   }
   void putLatLng(context,latLng)
   {

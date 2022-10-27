@@ -1,6 +1,19 @@
+import 'dart:developer';
+
+import 'package:common/network/repository/CarRepository.dart';
+import 'package:common/network/request/addCarApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
+import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
+import 'package:socialcarpooling/widgets/material_text_form.dart';
 
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
@@ -8,7 +21,9 @@ import '../../utils/widget_functions.dart';
 import '../../widgets/button_widgets.dart';
 
 class AddCarScreen extends StatefulWidget {
-  const AddCarScreen({Key? key}) : super(key: key);
+  final CarRepository carRepository;
+
+  const AddCarScreen({Key? key, required this.carRepository}) : super(key: key);
 
   @override
   State<AddCarScreen> createState() => AddCarScreenState();
@@ -17,16 +32,35 @@ class AddCarScreen extends StatefulWidget {
 class AddCarScreenState extends State<AddCarScreen> {
   var set_default = false;
   var is_electric_vehicle = false;
+  var availableSeats = 0;
+  var offeringSeats = 0;
+  var selectedCarType = "Car Type";
   String offeringState = "offering_seats";
   String availableState = "available_seats";
   List<Color> availableSeatsColor = [];
   List<Color> offeringSeatsColor = [];
   List<Color> availableSeatsTextColor = [];
   List<Color> offeringSeatsTextColor = [];
+
+  CarRepository get _carRepository => widget.carRepository;
+
+  final carNameController = TextEditingController();
+  final carRegNumberController = TextEditingController();
+  final carTypeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     setDefaultColors();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    carNameController.dispose();
+    carRegNumberController.dispose();
+    carTypeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,7 +76,7 @@ class AddCarScreenState extends State<AddCarScreen> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                addVerticalSpace(20),
+                addVerticalSpace(10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -90,7 +124,8 @@ class AddCarScreenState extends State<AddCarScreen> {
                           DemoLocalizations.of(context)?.getText("car_name") ??
                               "",
                           Icons.drive_eta,
-                          Icons.edit),
+                          Icons.edit,
+                          carNameController),
                       addVerticalSpace(10),
                       buildMaterialForm(
                           context,
@@ -98,14 +133,37 @@ class AddCarScreenState extends State<AddCarScreen> {
                                   ?.getText("register_number") ??
                               "",
                           Icons.text_snippet,
-                          Icons.edit),
+                          Icons.edit,
+                          carRegNumberController),
                       addVerticalSpace(10),
-                      buildMaterialForm(
-                          context,
-                          DemoLocalizations.of(context)?.getText("car_type") ??
-                              "",
-                          Icons.drive_eta,
-                          Icons.arrow_drop_down),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          isExpanded: true,
+                          value: selectedCarType,
+                          hint: Text(
+                            DemoLocalizations.of(context)
+                                    ?.getText("car_type") ??
+                                "",
+                            style: TextStyleUtils.primaryTextMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          items: carTypeList.map((list) {
+                            return DropdownMenuItem(
+                              value: list.toString(),
+                              child: Text(list),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCarType = value.toString();
+                            });
+                          },
+                          icon: SvgPicture.asset(
+                            StringUrl.downArrowImage,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ),
                       addVerticalSpace(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -426,24 +484,6 @@ class AddCarScreenState extends State<AddCarScreen> {
     );
   }
 
-  Material buildMaterialForm(BuildContext context, String labelText,
-      IconData prefixIcon, IconData suffixIcon) {
-    return Material(
-      elevation: 2.0,
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          labelText: labelText,
-          prefixIcon: Icon(prefixIcon, color: primaryLightColor),
-          suffixIcon: Icon(
-            suffixIcon,
-            color: primaryLightColor,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget buildslectionElevatedButton(
       int number, Color bgColor, Color textColor, String state) {
     return SizedBox(
@@ -453,6 +493,12 @@ class AddCarScreenState extends State<AddCarScreen> {
         fit: BoxFit.contain,
         child: ElevatedButton(
           onPressed: () {
+            log("Seats selected $state");
+            if (state == "available_seats") {
+              availableSeats = number;
+            } else {
+              offeringSeats = number;
+            }
             changeColor(state, number);
           },
           style: ButtonStyle(
@@ -478,7 +524,24 @@ class AddCarScreenState extends State<AddCarScreen> {
     );
   }
 
-  void addCar() {}
+  void addCar() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (offeringSeats > availableSeats) {
+      alertDialogView(context, "offering_seats_error");
+    } else if (selectedCarType == "Car Type") {
+      alertDialogView(context, "car_type_error");
+    } else {
+      addCarApi(
+          carRegNumberController.text,
+          is_electric_vehicle,
+          carNameController.text,
+          availableSeats,
+          [],
+          offeringSeats,
+          selectedCarType,
+          "");
+    }
+  }
 
   void setDefaultColors() {
     for (int i = 0; i <= 6; i++) {
@@ -519,5 +582,59 @@ class AddCarScreenState extends State<AddCarScreen> {
         }
       }
     });
+  }
+
+  void addCarApi(
+      String registrationNo,
+      bool isEv,
+      String carName,
+      int seatingCapacity,
+      List<String> carPictures,
+      int offeringSeats,
+      String carType,
+      String rcPicture) {
+    AddCarApi api = AddCarApi(
+        regNumber: registrationNo,
+        isEv: isEv,
+        carName: carName,
+        seatingCapacity: seatingCapacity,
+        carPicture: carPictures,
+        offeringSeats: offeringSeats,
+        carType: carType,
+        carRcPicture: rcPicture);
+
+    Future<dynamic> future = _carRepository.addNewCar(api: api);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    if (value is SuccessResponse) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              // Retrieve the text the that user has entered by using the
+              // TextEditingController.
+              content: Text(DemoLocalizations.of(context)
+                      ?.getText("add_car_successful") ??
+                  ""),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                      DemoLocalizations.of(context)?.getText("continue") ?? ""),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: AllCarDetailsPage(
+                                carRepository: CarRepository())));
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 }

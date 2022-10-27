@@ -10,4 +10,6 @@ class ApiConstant {
   static const String QUESTIONARIE_API_PATH = "questionnarie";
   static const String CAR_API_PATH = "car/all";
   static const String CAR_DRVING_STATUS = "car/change-status";
+  static const String ADD_NEW_CAR = "car/add";
+  static const String DELETE_CAR = "car/del";
 }

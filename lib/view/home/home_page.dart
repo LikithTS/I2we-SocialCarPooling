@@ -92,20 +92,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           body: Container(
             child: Stack(
               children: [
-                MapPage()
-                /* latitude == null && longitude == null
-                            ? Container(
-                          width: deviceWidth(context),
-                          height: deviceHeight(context),
-                          child: Container(
-                            width: margin50,
-                            height: margin50,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        ) :  googleMap(context,latitude ?? 0.0,longitude ?? 0.0,_controller)*/
-                ,
+                MapPage(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Material(

@@ -10,6 +10,8 @@ class AddressProvider extends ChangeNotifier {
   LatLng latLng=LatLng(0.0, 0.0);
   LatLng driverStartLatLng=LatLng(0.0, 0.0);
   LatLng driverDestLatLng=LatLng(0.0, 0.0);
+  LatLng riderStartLatLng=LatLng(0.0, 0.0);
+  LatLng riderDestLatLng=LatLng(0.0, 0.0);
 
   changeAddress(String newAddress) {
     address = newAddress;
@@ -42,6 +44,14 @@ class AddressProvider extends ChangeNotifier {
   }
   changeDriverDestLatLong(LatLng newLatLng) {
     driverDestLatLng = newLatLng;
+    notifyListeners();
+  }
+  changeRiderStartLatLong(LatLng newLatLng) {
+    riderStartLatLng = newLatLng;
+    notifyListeners();
+  }
+  changeRiderDestLatLong(LatLng newLatLng) {
+    riderDestLatLng = newLatLng;
     notifyListeners();
   }
 }

@@ -1,43 +1,97 @@
 import 'dart:developer';
 
 import 'package:common/network/repository/CarRepository.dart';
+import 'package:common/network/request/deleteCarApi.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
 import 'package:common/network/response/CarDetailsResponse.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
-import 'my_vehicle_start_page.dart';
 
 class MyCarsScreen extends StatefulWidget {
   final List<CarDetailsResponse> carList;
   final CarRepository carRepository;
 
-  const MyCarsScreen(this.carList, this.carRepository, {Key? key}) : super(key: key);
+  const MyCarsScreen(this.carList, this.carRepository, {Key? key})
+      : super(key: key);
+
   @override
   State<MyCarsScreen> createState() => _MyCarsScreenState();
-
 }
 
 class _MyCarsScreenState extends State<MyCarsScreen> {
 
   CarRepository get _carRepository => widget.carRepository;
+  var deleteCarIndex = -1;
+
+  void updateCarListDrivingStatus(int position, bool value) {
+    for(var i = 0; i < widget.carList.length; i++){
+        if(i == position) {
+          widget.carList[i]
+              .drivingStatus = value;
+        } else {
+          widget.carList[i]
+              .drivingStatus = !value;
+        }
+    }
+  }
 
   void changeDefaultStateOfCar(String id, bool value) {
     DrivingStatusApi api = DrivingStatusApi(carId: id);
+    // FutureBuilder<List<dynamic>>(
+    //     future: _carRepository.carDetails(),
+    //     builder: (context, AsyncSnapshot<dynamic> snapshot) {
+    //       if (!snapshot.hasData) {
+    //         return const Center(child: CircularProgressIndicator());
+    //       } else {
+    //         return MyCarsScreen(snapshot.data, CarRepository());
+    //       }
+    //     }
     Future<dynamic> future = _carRepository.carDrivingStatusUpdate(api: api);
-    future.then((value) => {handleResponseData(value)});
+    future.then((value) => {handleResponseData(value, "driving_status_update_response", false)});
   }
 
-  handleResponseData(value) {
-    log("Driving status changed successfully");
+  handleResponseData(value, String id, bool deleteItem) {
+    if (value is SuccessResponse) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              // Retrieve the text the that user has entered by using the
+              // TextEditingController.
+              content: Text(DemoLocalizations.of(context)
+                      ?.getText(id) ??
+                  ""),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                      DemoLocalizations.of(context)?.getText("continue") ?? ""),
+                  onPressed: () {
+                    setState(() {
+                      log("Delete car Index $deleteCarIndex");
+                      log("Delete item $deleteItem");
+                      if(deleteCarIndex != -1 && deleteItem) {
+                        widget.carList.removeAt(deleteCarIndex);
+                      }
+                      log("Car type list ${widget.carList.length}");
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   @override
@@ -71,11 +125,15 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                 itemCount: widget.carList.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
-                    key: Key(widget.carList[index].toString()),
+                    key: UniqueKey(),
                     direction: DismissDirection.endToStart,
                     background: slideLeftBackground(),
                     onDismissed: (DismissDirection direction) {
                       if (direction == DismissDirection.endToStart) {
+                        deleteCarIndex = index;
+                        delete(
+                            widget
+                                .carList[index].id!);
                         print('Remove item');
                       }
                     },
@@ -99,22 +157,24 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   mycarTextWidget(widget.carList[index].carType,
                                       primaryColor, 18.sp),
                                   mycarTextWidget(widget.carList[index].carName,
                                       Colors.black, 12.sp),
-                                  mycarTextWidget(widget.carList[index].regNumber,
-                                      primaryColor, 13.sp)
+                                  mycarTextWidget(
+                                      widget.carList[index].regNumber,
+                                      primaryColor,
+                                      13.sp)
                                 ],
                               ),
                             ),
                             Expanded(
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Column(
                                     children: [
@@ -129,11 +189,11 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                             elevation: 5,
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     const Icon(
                                                       Icons
@@ -150,7 +210,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     primaryThemeTextNormal(
                                                         context,
@@ -167,7 +227,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     primaryThemeTextNormal(
                                                         context,
@@ -187,15 +247,16 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        40.0, 8.0, 8.0, 8.0),
+                                        20.0, 8.0, 8.0, 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: [
                                         smallTextWithNoMargin(
                                             "set default :", Alignment.topLeft),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
                                           child: SizedBox(
                                             width: 50,
                                             height: 30,
@@ -204,13 +265,18 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                               child: CupertinoSwitch(
                                                 // This bool value toggles the switch.
                                                 value: widget.carList[index]
-                                                    .drivingStatus ?? false,
+                                                        .drivingStatus ??
+                                                    false,
                                                 onChanged: (bool value) {
                                                   // This is called when the user toggles the switch.
                                                   setState(() {
                                                     log("Cupertion switch $value");
-                                                    widget.carList[index].drivingStatus = value;
-                                                    changeDefaultStateOfCar(widget.carList[index].id!, value);
+                                                    FocusManager.instance.primaryFocus?.unfocus();
+                                                    updateCarListDrivingStatus(index, value);
+                                                    changeDefaultStateOfCar(
+                                                        widget
+                                                            .carList[index].id!,
+                                                        value);
                                                   });
                                                 },
                                               ),
@@ -243,7 +309,8 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                         context,
                         PageTransition(
                             type: PageTransitionType.bottomToTop,
-                            child: const MyVehicleStartPage()));
+                            child:
+                                AddCarScreen(carRepository: CarRepository())));
                   })),
             ),
           ],
@@ -252,7 +319,11 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
     ));
   }
 
-  void delete() {}
+  void delete(String carId) {
+    DeleteCarApi api = DeleteCarApi(carId: carId);
+    Future<dynamic> future = _carRepository.deleteCar(api: api);
+    future.then((value) => {handleResponseData(value, "delete_car_response_success", true)});
+  }
 }
 
 Widget slideRightBackground() {
