@@ -6,10 +6,8 @@ import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
 import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
-import '../../../util/enum_user.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
-import '../tab_utils/home_icon_text_form.dart';
 import 'package:provider/provider.dart';
 
 

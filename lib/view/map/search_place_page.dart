@@ -4,6 +4,7 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/directions.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 
 class SearchPlacePage extends StatefulWidget {
   const SearchPlacePage({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class SearchPlacePage extends StatefulWidget {
 }
 
 class _SearchPlacePageState extends State<SearchPlacePage> {
-  String googleApikey = "AIzaSyCHgDPkBitY9TLDasjyqQ0EhZGRQqrZp6M";
   GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
   LatLng startLocation = LatLng(12.9716, 77.5946);
@@ -47,7 +47,7 @@ class _SearchPlacePageState extends State<SearchPlacePage> {
                       onTap: () async {
                         var place = await PlacesAutocomplete.show(
                             context: context,
-                            apiKey: googleApikey,
+                            apiKey: CPString.apiKey,
                             mode: Mode.overlay,
                             types: [],
                             strictbounds: false,
@@ -64,7 +64,7 @@ class _SearchPlacePageState extends State<SearchPlacePage> {
                           });
 
                           //form google_maps_webservice package
-                          final plist = GoogleMapsPlaces(apiKey:googleApikey,
+                          final plist = GoogleMapsPlaces(apiKey:CPString.apiKey,
                             apiHeaders: await GoogleApiHeaders().getHeaders(),
                             //from google_api_headers package
                           );

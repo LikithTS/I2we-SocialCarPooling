@@ -68,6 +68,7 @@ class CPString{
   static const String resendOTP = "Resend OTP";
   static const String resendOtpIn='Resend OTP in ';
   static const String dontreciveOtp='Didn’t receive.Click here to ';
+  static const String apiKey='AIzaSyCHgDPkBitY9TLDasjyqQ0EhZGRQqrZp6M';
 
 
 }
