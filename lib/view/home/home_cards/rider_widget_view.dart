@@ -15,7 +15,9 @@ import 'package:provider/provider.dart';
 
 Widget showRiderWidget(BuildContext context) {
   double width = MediaQuery.of(context).size.width;
-
+  Provider.of<DriverProvider>(context,
+      listen: false)
+      .changeDriver(true);
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(

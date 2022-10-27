@@ -48,7 +48,7 @@ class _MapPageState extends State<MapPage> {
     //this.setInitLocation();
 
     this.setSourceAndDestMakerIcon();
-   // this.getPolyPoints();
+    // this.getPolyPoints();
     //set up makers icons
   }
 
@@ -97,7 +97,7 @@ class _MapPageState extends State<MapPage> {
         'assets/images/location_on.png');
   }
 
-  void getPolyPoints(sourceLocation,destinationLocation) async {
+  void getPolyPoints(sourceLocation, destinationLocation) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
@@ -109,7 +109,7 @@ class _MapPageState extends State<MapPage> {
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.longitude, point.longitude));
-       // print("Poly Line Points : ${point.longitude}");
+        // print("Poly Line Points : ${point.longitude}");
       }
     }
     allPolylinesByPosition.add(Polyline(
@@ -121,14 +121,21 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
-    sourceLocation =
-        Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
-    destinationLocation =
-        Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
-    var languageProvider = Provider.of<DriverProvider>(context).languageFlag;
+    var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
+
+    if (driverFlag) {
+      sourceLocation =
+          Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
+      destinationLocation =
+          Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
+    } else {
+      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
+          .driverStartLatLng;
+      destinationLocation =
+          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+    }
     if (sourceLocation!.latitude != 0.0) {
       showPinOnMap(sourceLocation!, destinationLocation!);
     }
@@ -195,8 +202,6 @@ class _MapPageState extends State<MapPage> {
               BitmapDescriptor.hueGreen)));
     }
 
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

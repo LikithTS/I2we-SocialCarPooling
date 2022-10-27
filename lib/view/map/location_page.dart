@@ -210,9 +210,14 @@ class _LocationPageState extends State<LocationPage> {
                         padding: EdgeInsets.all(10),
                         child: ElevatedButton(
                           onPressed: () {
-                            Provider.of<DriverProvider>(context,
-                                listen: false)
-                                .changeLanguage(true);
+                            widget.userType.toString() == 'driver'
+                                ? Provider.of<DriverProvider>(context,
+                                        listen: false)
+                                    .changeDriver(false)
+                                : Provider.of<DriverProvider>(context,
+                                        listen: false)
+                                    .changeDriver(true);
+
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
                                     ? ProviderPreference()
@@ -236,7 +241,7 @@ class _LocationPageState extends State<LocationPage> {
                                     : ProviderPreference().putRiderDestLatLng(
                                         context, latLngProvider);
 
-                           Navigator.pop(context);
+                            Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: primaryColor,
