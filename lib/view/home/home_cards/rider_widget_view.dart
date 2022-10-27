@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
 import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
-import 'package:socialcarpooling/view/map/location_page.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
 import '../../../provider/driver_provider.dart';
