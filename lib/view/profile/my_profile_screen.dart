@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
+import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
 
 import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
@@ -160,121 +163,143 @@ class MyProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                      height: 180,
-                      width: size.width / 2,
-                      child: Stack(
-                        alignment: Alignment.topLeft,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 20),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: lightBlue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: profileText(
-                                          DemoLocalizations.of(context)
-                                                  ?.getText(
-                                                      "profile_completed") ??
-                                              "",
-                                          14.sp,
-                                          const Color(0Xff707070)),
-                                    ),
-                                    addVerticalSpace(20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        profileText(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                child: ProfileUpdateScreen()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                        height: 180,
+                        width: size.width / 2,
+                        child: Stack(
+                          alignment: Alignment.topLeft,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20, left: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: lightBlue,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 18.0),
+                                        child: profileText(
                                             DemoLocalizations.of(context)
-                                                    ?.getText("view_details") ??
+                                                    ?.getText(
+                                                        "profile_completed") ??
                                                 "",
                                             14.sp,
-                                            Colors.black),
-                                        Icon(Icons.arrow_right)
-                                      ],
-                                    )
-                                  ]),
+                                            const Color(0Xff707070)),
+                                      ),
+                                      addVerticalSpace(20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          profileText(
+                                              DemoLocalizations.of(context)
+                                                      ?.getText(
+                                                          "view_details") ??
+                                                  "",
+                                              14.sp,
+                                              Colors.black),
+                                          Icon(Icons.arrow_right)
+                                        ],
+                                      )
+                                    ]),
+                              ),
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35),
-                                color: Colors.white),
-                            child: CircularPercentIndicator(
-                                radius: 60,
-                                lineWidth: 6,
-                                percent: 10 / 100,
-                                progressColor: primaryColor,
-                                backgroundColor: lightGreyColor,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                center: progressTextBlack(
-                                    "10%", 13.sp, primaryColor)),
-                          )
-                        ],
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(35),
+                                  color: Colors.white),
+                              child: CircularPercentIndicator(
+                                  radius: 60,
+                                  lineWidth: 6,
+                                  percent: 10 / 100,
+                                  progressColor: primaryColor,
+                                  backgroundColor: lightGreyColor,
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  center: progressTextBlack(
+                                      "10%", 13.sp, primaryColor)),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                      height: 180,
-                      width: size.width / 2,
-                      child: Stack(
-                        alignment: Alignment.topLeft,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 20),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: lightOrange,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: profileText(
-                                          DemoLocalizations.of(context)
-                                                  ?.getText("verify_pending") ??
-                                              "",
-                                          14.sp,
-                                          const Color(0Xff707070)),
-                                    ),
-                                    addVerticalSpace(20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        profileText("View Details", 14.sp,
-                                            Colors.black),
-                                        Icon(Icons.arrow_right)
-                                      ],
-                                    )
-                                  ]),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                child: ProfileBioUpdateScreen()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                        height: 180,
+                        width: size.width / 2,
+                        child: Stack(
+                          alignment: Alignment.topLeft,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20, left: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: lightOrange,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 18.0),
+                                        child: profileText(
+                                            DemoLocalizations.of(context)
+                                                    ?.getText(
+                                                        "verify_pending") ??
+                                                "",
+                                            14.sp,
+                                            const Color(0Xff707070)),
+                                      ),
+                                      addVerticalSpace(20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          profileText("View Details", 14.sp,
+                                              Colors.black),
+                                          Icon(Icons.arrow_right)
+                                        ],
+                                      )
+                                    ]),
+                              ),
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35),
-                                color: Colors.white),
-                            child: CircularPercentIndicator(
-                                radius: 60,
-                                lineWidth: 6,
-                                percent: 10 / 100,
-                                progressColor: orange,
-                                backgroundColor: lightGreyColor,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                center:
-                                    progressTextBlack("10%", 13.sp, orange)),
-                          )
-                        ],
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(35),
+                                  color: Colors.white),
+                              child: CircularPercentIndicator(
+                                  radius: 60,
+                                  lineWidth: 6,
+                                  percent: 10 / 100,
+                                  progressColor: orange,
+                                  backgroundColor: lightGreyColor,
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  center:
+                                      progressTextBlack("10%", 13.sp, orange)),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
