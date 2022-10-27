@@ -56,7 +56,6 @@
   "upload_car_images": "Upload Car Images",
   "done": "Done",
   "car_info_desc": "Add car to schedule ride.",
-  "password_info": "Should contains minimum 6 character\nUppercase and lowercase letter (A, z)\nNumeric character (0-9)\nSpecial character (any character your environment will accept that is not an uppercase or a lowercase letter or a numeric character — for example, !,#,<,>,?,\",:,`,~,%,^,*,(,),;, and so on)\n",
   "term_and_conditions_desc": "By signing up, you are agree with our",
   "register_now_span": "Register Now",
   "register_now": "Don’t have an account?",
@@ -88,5 +87,11 @@
   "term_and_conditions": "By Signing up, you are agree with our ",
   "term_and_conditions_span": "Terms & Condition",
   "car_type_error" : "Please select type of car",
-  "delete_car_response_success" : "Remove car successful"
+  "delete_car_response_success" : "Remove car successful",
+  "password_info": "Should contains minimum 6 character\nUppercase and lowercase letter (A, z)\nNumeric character (0-9)\nSpecial character (any character your environment will accept that is not an uppercase or a lowercase letter or a numeric character — for example, !,#,<,>,?,\",:,`,~,%,^,*,(,),;, and so on)\n",
+  "save": "Save",
+  "update_profile": "Update Profile",
+  "languages_known": "Languages Known",
+  "bio_char_limit": "250 characters"
+
 }
