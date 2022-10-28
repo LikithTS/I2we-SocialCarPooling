@@ -69,12 +69,14 @@ class _LocationPageState extends State<LocationPage> {
       zoom: 15,
     )));
 
-    setState(() {
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: LatLng(position.latitude, position.longitude)));
-    });
+    if (position.latitude != null) {
+      setState(() {
+        _markers.clear();
+        _markers.add(Marker(
+            markerId: MarkerId('Home'),
+            position: LatLng(position.latitude, position.longitude)));
+      });
+    }
   }
 
   Future<Position> getGeoLocationCoOrdinates() async {
@@ -217,6 +219,10 @@ class _LocationPageState extends State<LocationPage> {
                                 : Provider.of<DriverProvider>(context,
                                         listen: false)
                                     .changeDriver(true);
+
+                          var startLat=  Provider.of<AddressProvider>(context, listen: false)
+                                .driverStartLatLng;
+                          print("Start Lat : $startLat");
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
