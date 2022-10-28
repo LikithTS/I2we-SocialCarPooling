@@ -222,7 +222,7 @@ class _LocationPageState extends State<LocationPage> {
 
                           var startLat=  Provider.of<AddressProvider>(context, listen: false)
                                 .driverStartLatLng;
-                          print("Start Lat : $startLat");
+                          //print("Start Lat : $startLat");
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
