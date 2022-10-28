@@ -95,7 +95,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                                           '${places.name} , ${places.street} , ${places.country}';*/
                                                     ProviderPreference().putAddress(
                                                         context,
-                                                        '${places.name} , ${places.street} , ${places.country}');
+                                                        '${places.name} , ${places.street} , ${places.locality}');
 
                                                     ProviderPreference().putLatLng(
                                                         context,
