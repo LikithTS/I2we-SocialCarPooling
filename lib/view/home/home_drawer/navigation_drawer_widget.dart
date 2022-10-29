@@ -15,6 +15,7 @@ import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
+import '../rides/all_rides_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -141,6 +142,12 @@ class NavigationDrawerWidget extends StatelessWidget {
                 builder: (context) =>
                     HomePage(homeRepository: HomeRepository())));
         break;
+
+      case 1:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AllRidesScreen()));
+        break;
+
       case 3:
         if (CPSessionManager().getIfCarDetailsAdded()) {
           Navigator.push(
