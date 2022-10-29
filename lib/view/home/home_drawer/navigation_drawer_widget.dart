@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
@@ -15,7 +16,6 @@ import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
-import '../rides/all_rides_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -145,7 +145,7 @@ class NavigationDrawerWidget extends StatelessWidget {
 
       case 1:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AllRidesScreen()));
+            context, MaterialPageRoute(builder: (context) => MyRidesScreen()));
         break;
 
       case 3:
