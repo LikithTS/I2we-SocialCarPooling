@@ -54,45 +54,14 @@ class _MapScreenState extends State<MapScreen> {
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
-    if (sourceLocation!.latitude != 0.0) {
+    if (sourceLocation!=null&&sourceLocation!.latitude != 0.0) {
       _addMarker(sourceLocation!);
     }
-    if (destinationLocation!.latitude != 0.0) {
+    if (destinationLocation!=null&&destinationLocation!.latitude != 0.0) {
       _addMarker(destinationLocation!);
     }
     return Scaffold(
-     /* appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        title: Text(
-          'Google Map',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          if (_origin != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _origin!.position, zoom: 14.5, tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('ORIGIN')),
-          if (_destination != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _destination!.position,
-                        zoom: 14.5,
-                        tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('DEST')),
-        ],
-      ),*/
+
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -155,6 +124,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
+
       setState(() {
         _origin = Marker(
             markerId: MarkerId('orgin'),
@@ -166,7 +136,9 @@ class _MapScreenState extends State<MapScreen> {
         directionResponse = null;
       });
     } else {
+
       setState(() {
+
         _destination = Marker(
             markerId: MarkerId('destination'),
             infoWindow: InfoWindow(title: 'Destination'),
