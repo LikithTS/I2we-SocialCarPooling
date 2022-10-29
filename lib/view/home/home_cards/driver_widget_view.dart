@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
+import 'package:socialcarpooling/view/home/home_cards/date_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
+import 'package:socialcarpooling/view/home/home_cards/time_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
@@ -35,13 +37,13 @@ Widget showDriverWidget(BuildContext context) {
           children: [
             Expanded(
                 flex: 5,
-                child: TextFormWithHintSupport(
+                child: TimeSelectionWithHintSupport(
                     text: DemoLocalizations.of(context)!.getText("time"),
                     iconData: Icons.schedule)),
             addHorizontalSpace(12),
             Expanded(
                 flex: 5,
-                child: TextFormWithHintSupport(
+                child: DateSelectionWithHintSupport(
                     text: DemoLocalizations.of(context)!.getText("date"),
                     iconData: Icons.calendar_today)),
           ],
@@ -55,14 +57,16 @@ Widget showDriverWidget(BuildContext context) {
               child: TextFormWithHintSupport(
                   text:
                   DemoLocalizations.of(context)!.getText("seats_offered"),
-                  iconData: Icons.airline_seat_recline_extra),
+                  iconData: Icons.airline_seat_recline_extra,
+                  isNumber: true,),
             ),
             addHorizontalSpace(12),
             Expanded(
               flex: 5,
               child: TextFormWithHintSupport(
                   text: DemoLocalizations.of(context)!.getText("amount"),
-                  iconData: Icons.currency_rupee),
+                  iconData: Icons.currency_rupee,
+                  isNumber: true,),
             ),
           ],
         ),

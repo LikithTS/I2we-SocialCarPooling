@@ -7,11 +7,13 @@ import '../../../util/color.dart';
 class TextFormWithHintSupport extends StatelessWidget {
   final String text;
   final IconData iconData;
+  final bool isNumber;
 
   const TextFormWithHintSupport({
     Key? key,
     required this.text,
     required this.iconData,
+    required this.isNumber
   }) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class TextFormWithHintSupport extends StatelessWidget {
             BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
+        keyboardType: checkForInputType(isNumber),
         textAlign: TextAlign.start,
         decoration: InputDecoration(
             fillColor: Colors.grey,
@@ -38,5 +41,13 @@ class TextFormWithHintSupport extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  checkForInputType(bool isNumber) {
+    if(isNumber) {
+      return TextInputType.number;
+    } else {
+      TextInputType.text;
+    }
   }
 }

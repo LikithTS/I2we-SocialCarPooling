@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
@@ -96,6 +97,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                   height: deviceHeight(context)*.5,
+                    //Load Maps here
                     child: MapScreen()),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -134,7 +136,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             icon: const Icon(Icons.alarm),
                             padding: EdgeInsets.zero,
                             color: Colors.blue,
-                            onPressed: () {},
+                            onPressed: () {
+                              //For top Menu
+                            },
                           ),
                         ),
                       ],
@@ -194,8 +198,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                     controller: tabController,
                                     tabs: [
-                                      Text(DemoLocalizations.of(context)!
-                                          .getText("driver_tab")),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(DemoLocalizations.of(context)!
+                                            .getText("driver_tab")),
+                                      ),
                                       Text(DemoLocalizations.of(context)!
                                           .getText("rider_tab"))
                                     ],
@@ -210,7 +217,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         controller: tabController,
                                         children: [
                                           showDriverWidget(context),
-                                          showRiderWidget(context)
+                                          const RiderWidgetView()
                                         ]),
                                   ),
                                 ),

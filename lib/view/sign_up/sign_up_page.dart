@@ -1,5 +1,6 @@
 import 'package:common/network/request/signinapi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
@@ -284,10 +285,14 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Container(
                     child: TextFormField(
                       keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10)
+                      ],
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
                         fillColor: Colors.grey,
+                        counterText: "",
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(width: 1, color: Colors.blue),
                         ),
@@ -343,10 +348,14 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Container(
                     child: TextFormField(
                       keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10)
+                      ],
                       controller: cpasswordController,
                       obscureText: !_cpasswordVisible,
                       decoration: InputDecoration(
                         fillColor: Colors.grey,
+                        counterText: "",
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(width: 1, color: Colors.blue),
                         ),
