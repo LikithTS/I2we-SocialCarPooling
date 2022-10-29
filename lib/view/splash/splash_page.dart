@@ -5,6 +5,7 @@ import 'package:common/network/repository/LoginRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
@@ -17,6 +18,8 @@ import '../../util/CPSessionManager.dart';
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
+import 'package:provider/provider.dart';
+
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
@@ -39,6 +42,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () async {
+      Provider.of<DriverProvider>(context,
+          listen: false)
+          .changeDriver(false);
+
+    });
     return Scaffold(
         body: Stack(
       children: [

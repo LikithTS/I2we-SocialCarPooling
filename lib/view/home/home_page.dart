@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
-import 'package:socialcarpooling/view/map/map_page.dart';
+import 'package:socialcarpooling/view/map/map_screen.dart';
 
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
@@ -92,7 +93,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           body: Container(
             child: Stack(
               children: [
-                MapPage(),
+                Container(
+                  height: deviceHeight(context)*.5,
+                    child: MapScreen()),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Material(
