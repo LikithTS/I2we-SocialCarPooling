@@ -31,50 +31,49 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  Completer<GoogleMapController> _controller = Completer();
+  static const _initialCameraPosition =
+  CameraPosition(target: LatLng(13.0827, 80.2707), zoom: 14);
+  late GoogleMapController _googleMapController;
+  Marker? currentLocation;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _googleMapController.dispose();
+  }
 
   double? latitude;
   double? longitude;
   late LatLng currentPosition;
-  Set<Marker> _markers = {};
 
-  void getLocation() async {
+
+
+  void getGpsLocation() async {
     Position position = await getGeoLocationCoOrdinates();
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 15,
+        )));
     var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
         position.latitude, position.longitude,
         localeIdentifier: "en");
 
     setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
-      Provider.of<AddressProvider>(context, listen: false)
-          .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+      currentLocation = Marker(
+          markerId: MarkerId('currentLocation'),
+          infoWindow: InfoWindow(title: 'Current Location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          position: LatLng(position.latitude, position.longitude));
       ProviderPreference().putAddress(context,
           '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
-
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
     });
   }
 
-  void getGpsLocation() async {
-    GoogleMapController controller = await _controller.future;
-    Position position = await getGeoLocationCoOrdinates();
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        // on below line we have given positions of Location 5
-        CameraPosition(
-      target: LatLng(position.latitude, position.longitude),
-      zoom: 15,
-    )));
-
-    setState(() {
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: LatLng(position.latitude, position.longitude)));
-    });
+  @override
+  void initState() {
+    super.initState();
+    getGpsLocation();
   }
 
   Future<Position> getGeoLocationCoOrdinates() async {
@@ -104,35 +103,38 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getLocation();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var address = Provider.of<AddressProvider>(context).address;
-    var latLngProvider = Provider.of<AddressProvider>(context).latLng;
+    var address = Provider
+        .of<AddressProvider>(context)
+        .address;
+    var latLngProvider = Provider
+        .of<AddressProvider>(context)
+        .latLng;
     List<String> result = address.split(',');
+
+
+    if(latLngProvider.latitude!=0.0)
+      {
+        _addMarker(latLngProvider);
+      }
 
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            latitude == null && longitude == null
-                ? Container(
-                    width: deviceWidth(context),
-                    height: deviceHeight(context),
-                    child: Container(
-                      width: margin50,
-                      height: margin50,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  )
-                : googleMap(
-                    context, LatLng(latitude!, longitude!), _controller),
+            Container(
+              child: GoogleMap(
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                initialCameraPosition: _initialCameraPosition,
+                onMapCreated: (controller) =>
+                _googleMapController = controller,
+                markers: {
+                  if (currentLocation != null) currentLocation!,
+                },
+                //onLongPress: _addMarker,
+              ),
+            ),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -165,6 +167,9 @@ class _LocationPageState extends State<LocationPage> {
                   ),
                   onPressed: () {
                     // Navigator.pop(context);
+                   /* ProviderPreference().putLatLng(
+                        context,
+                        LatLng(0.0, 0.0));*/
                     getGpsLocation();
                   },
                 ),
@@ -212,34 +217,40 @@ class _LocationPageState extends State<LocationPage> {
                           onPressed: () {
                             widget.userType.toString() == 'driver'
                                 ? Provider.of<DriverProvider>(context,
-                                        listen: false)
-                                    .changeDriver(false)
+                                listen: false)
+                                .changeDriver(false)
                                 : Provider.of<DriverProvider>(context,
-                                        listen: false)
-                                    .changeDriver(true);
+                                listen: false)
+                                .changeDriver(true);
+
+                            var startLat = Provider
+                                .of<AddressProvider>(context,
+                                listen: false)
+                                .driverStartLatLng;
+                            //print("Start Lat : $startLat");
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putStartDriverAddress(context, address)
-                                    : ProviderPreference()
-                                        .putStartRiderAddress(context, address)
+                                ? ProviderPreference()
+                                .putStartDriverAddress(context, address)
+                                : ProviderPreference()
+                                .putStartRiderAddress(context, address)
                                 : widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putEndDriverAddress(context, address)
-                                    : ProviderPreference()
-                                        .putEndRiderAddress(context, address);
+                                ? ProviderPreference()
+                                .putEndDriverAddress(context, address)
+                                : ProviderPreference()
+                                .putEndRiderAddress(context, address);
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                    ? ProviderPreference().putDriverStartLatLng(
-                                        context, latLngProvider)
-                                    : ProviderPreference().putRiderStartLatLng(
-                                        context, latLngProvider)
+                                ? ProviderPreference().putDriverStartLatLng(
+                                context, latLngProvider)
+                                : ProviderPreference().putRiderStartLatLng(
+                                context, latLngProvider)
                                 : widget.userType.toString() == 'driver'
-                                    ? ProviderPreference().putDriverDestLatLng(
-                                        context, latLngProvider)
-                                    : ProviderPreference().putRiderDestLatLng(
-                                        context, latLngProvider);
+                                ? ProviderPreference().putDriverDestLatLng(
+                                context, latLngProvider)
+                                : ProviderPreference().putRiderDestLatLng(
+                                context, latLngProvider);
 
                             Navigator.pop(context);
                           },
@@ -273,40 +284,20 @@ class _LocationPageState extends State<LocationPage> {
         HomePage()), (Route<dynamic> route) => false);*/
   }
 
-  Widget googleMap(BuildContext context, LatLng latLng, _controller) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        mapType: MapType.terrain,
-        zoomControlsEnabled: false,
-        myLocationButtonEnabled: false,
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(target: latLng, zoom: 15),
-        markers: _markers,
-        onCameraMove: (_position) =>
-            _updatePosition(_position, latitude, longitude),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-    );
-  }
-
-  void _updatePosition(CameraPosition _position, latitude, longitude) async {
-    GoogleMapController controller = await _controller.future;
-    //print("Latitude $latitude : Longitude : $longitude");
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        // on below line we have given positions of Location 5
+  void _addMarker(LatLng pos) async {
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+      // on below line we have given positions of Location 5
         CameraPosition(
-      target: LatLng(latitude, longitude),
-      zoom: 15,
-    )));
-
+          target: LatLng(pos.latitude, pos.longitude),
+          zoom: 14,
+        )));
     setState(() {
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'), position: LatLng(latitude, longitude)));
+      currentLocation = Marker(
+          markerId: MarkerId('orgin'),
+          infoWindow: InfoWindow(title: 'Orgin'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueRed),
+          position: pos);
     });
   }
 }

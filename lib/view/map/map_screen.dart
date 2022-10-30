@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:socialcarpooling/model/direction.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
@@ -19,6 +20,7 @@ class _MapScreenState extends State<MapScreen> {
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
+  Marker? currentLocation;
   Marker? _destination;
   LatLng? sourceLocation;
   LatLng? destinationLocation;
@@ -29,6 +31,12 @@ class _MapScreenState extends State<MapScreen> {
   void dispose() {
     super.dispose();
     _googleMapController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getGpsLocation();
   }
 
   @override
@@ -46,45 +54,14 @@ class _MapScreenState extends State<MapScreen> {
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
-    if (sourceLocation!.latitude != 0.0) {
+    if (sourceLocation!=null&&sourceLocation!.latitude != 0.0) {
       _addMarker(sourceLocation!);
     }
-    if (destinationLocation!.latitude != 0.0) {
+    if (destinationLocation!=null&&destinationLocation!.latitude != 0.0) {
       _addMarker(destinationLocation!);
     }
     return Scaffold(
-     /* appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        title: Text(
-          'Google Map',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          if (_origin != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _origin!.position, zoom: 14.5, tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('ORIGIN')),
-          if (_destination != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _destination!.position,
-                        zoom: 14.5,
-                        tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('DEST')),
-        ],
-      ),*/
+
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -95,9 +72,11 @@ class _MapScreenState extends State<MapScreen> {
               initialCameraPosition: _initialCameraPosition,
               onMapCreated: (controller) => _googleMapController = controller,
               markers: {
+                if (currentLocation != null) currentLocation!,
                 if (_origin != null) _origin!,
                 if (_destination != null) _destination!,
               },
+
               polylines: {
                 if (directionResponse != null)
                   Polyline(
@@ -108,6 +87,7 @@ class _MapScreenState extends State<MapScreen> {
                           .map((e) => LatLng(e.latitude, e.longitude))
                           .toList())
               },
+
               //onLongPress: _addMarker,
             ),
           ),
@@ -136,10 +116,7 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        onPressed: () => _googleMapController.animateCamera(
-            directionResponse != null
-                ? CameraUpdate.newLatLngBounds(directionResponse!.bounds, 100)
-                : CameraUpdate.newCameraPosition(_initialCameraPosition)),
+        onPressed: () => getGpsLocation(),
         child: Icon(Icons.gps_fixed),
       ),
     );
@@ -147,6 +124,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
+
       setState(() {
         _origin = Marker(
             markerId: MarkerId('orgin'),
@@ -158,7 +136,9 @@ class _MapScreenState extends State<MapScreen> {
         directionResponse = null;
       });
     } else {
+
       setState(() {
+
         _destination = Marker(
             markerId: MarkerId('destination'),
             infoWindow: InfoWindow(title: 'Destination'),
@@ -171,5 +151,50 @@ class _MapScreenState extends State<MapScreen> {
           origin: _origin!.position, destination: _destination!.position);
       setState(() => directionResponse = directions);
     }
+  }
+  void getGpsLocation() async {
+    Position position = await getGeoLocationCoOrdinates();
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+      // on below line we have given positions of Location 5
+        CameraPosition(
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 15,
+        )));
+
+    setState(() {
+
+      currentLocation = Marker(
+          markerId: MarkerId('currentLocation'),
+          infoWindow: InfoWindow(title: 'Current Location'),
+          icon:
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          position: LatLng(position.latitude,position.longitude));
+    });
+  }
+
+  Future<Position> getGeoLocationCoOrdinates() async {
+    bool isServiceEnabled;
+    LocationPermission permission;
+
+    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!isServiceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location Services are not enabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location Permission are not enabled');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location Permission are denied permanently');
+    }
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 }

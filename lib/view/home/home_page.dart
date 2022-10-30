@@ -11,7 +11,6 @@ import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
-import 'package:socialcarpooling/view/map/map_page.dart';
 import 'package:socialcarpooling/view/map/map_screen.dart';
 
 import '../../util/color.dart';

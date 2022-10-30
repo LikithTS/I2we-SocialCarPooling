@@ -25,6 +25,14 @@ class SearchLocationView extends StatefulWidget {
 class _SearchLocationViewState extends State<SearchLocationView> {
   var _scrollController;
 
+  var closeFlag=false;
+
+  @override
+  void initState() {
+    super.initState();
+    closeFlag=true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SearchInjector(
@@ -57,9 +65,15 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                             Icons.location_on,
                             color: Colors.grey,
                           )),
-                      onChanged: api.handleSearch),
+                     onChanged: (val){
+                       setState(() {
+                         closeFlag=true;
+                       });
+                       api.handleSearch(val);
+                     },
+                     /* onChanged: api.handleSearch*/),
                 ),
-                Container(
+                closeFlag? Container(
                   color: Colors.blue[200],
                   width: deviceWidth(context) * .7,
                   child: StreamBuilder<List<Place>>(
@@ -95,11 +109,17 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                                           '${places.name} , ${places.street} , ${places.country}';*/
                                                     ProviderPreference().putAddress(
                                                         context,
-                                                        '${places.name} , ${places.street} , ${places.country}');
+                                                        '${places.name} , ${places.street} , ${places.locality}');
 
                                                     ProviderPreference().putLatLng(
                                                         context,
                                                         LatLng(places.latitude, places.longitude));
+
+                                                    setState(() {
+                                                      api.addressController.clear();
+                                                      FocusScope.of(context).requestFocus(FocusNode());
+                                                      closeFlag=false;
+                                                    });
 
                                                   },
                                                   title: Text(
@@ -139,7 +159,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                 ),
                               );
                       }),
-                )
+                ):Container()
               ],
             ),
           ),
