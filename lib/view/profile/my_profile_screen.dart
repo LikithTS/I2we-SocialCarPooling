@@ -67,11 +67,11 @@ class MyProfileScreen extends StatelessWidget {
                           ),
                         ),
                         CircleAvatar(
-                          radius: 18,
-                          backgroundColor: primaryLightColor,
+                          radius: 10,
+                          backgroundColor: Colors.white,
                           child: Icon(
                             Icons.photo_camera,
-                            color: Colors.white,
+                            color: primaryColor,
                           ),
                         )
                       ],

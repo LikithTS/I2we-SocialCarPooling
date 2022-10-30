@@ -16,6 +16,7 @@ import '../../../util/CPSessionManager.dart';
 import '../../../utils/Localization.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
+import '../../ratingsandreviews/ratings_reviews_screen.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -165,6 +166,10 @@ class NavigationDrawerWidget extends StatelessWidget {
       case 4:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
+        break;
+      case 5:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
       case 11:
         onLogoutButtonPressed(context);
