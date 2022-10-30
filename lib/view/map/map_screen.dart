@@ -49,52 +49,49 @@ class _MapScreenState extends State<MapScreen> {
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
     } else {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
+      sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
-    if (sourceLocation!=null&&sourceLocation!.latitude != 0.0) {
+    if (sourceLocation!.latitude != 0.0) {
       _addMarker(sourceLocation!);
     }
-    if (destinationLocation!=null&&destinationLocation!.latitude != 0.0) {
+    if (destinationLocation!.latitude != 0.0) {
       _addMarker(destinationLocation!);
     }
-    return Scaffold(
 
+    return Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            child: GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-              markers: {
-                if (currentLocation != null) currentLocation!,
-                if (_origin != null) _origin!,
-                if (_destination != null) _destination!,
-              },
+          GoogleMap(
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            initialCameraPosition: _initialCameraPosition,
+            onMapCreated: (controller) => _googleMapController = controller,
+            markers: {
+              if (currentLocation != null) currentLocation!,
+              if (_origin != null) _origin!,
+              if (_destination != null) _destination!,
+            },
 
-              polylines: {
-                if (directionResponse != null)
-                  Polyline(
-                      polylineId: PolylineId('overview_polyline'),
-                      color: Colors.blueAccent,
-                      width: 5,
-                      points: directionResponse!.polylinePoints
-                          .map((e) => LatLng(e.latitude, e.longitude))
-                          .toList())
-              },
+            polylines: {
+              if (directionResponse != null)
+                Polyline(
+                    polylineId: PolylineId('overview_polyline'),
+                    color: Colors.blueAccent,
+                    width: 5,
+                    points: directionResponse!.polylinePoints
+                        .map((e) => LatLng(e.latitude, e.longitude))
+                        .toList())
+            },
 
-              //onLongPress: _addMarker,
-            ),
+            //onLongPress: _addMarker,
           ),
           if (directionResponse != null)
             Positioned(
                 top: 40,
-                child: Container(
+                child: destinationLocation!.latitude == 0.0?Container(
                   padding:
                       EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
@@ -106,11 +103,11 @@ class _MapScreenState extends State<MapScreen> {
                             offset: Offset(0, 2),
                             blurRadius: 6.0)
                       ]),
-                  child: Text(
+                  child:Text(
                     '${directionResponse!.totalDistance},${directionResponse!.totalDuration}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                ))
+                ):Container())
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -124,7 +121,6 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
-
       setState(() {
         _origin = Marker(
             markerId: MarkerId('orgin'),
@@ -136,9 +132,7 @@ class _MapScreenState extends State<MapScreen> {
         directionResponse = null;
       });
     } else {
-
       setState(() {
-
         _destination = Marker(
             markerId: MarkerId('destination'),
             infoWindow: InfoWindow(title: 'Destination'),
@@ -158,7 +152,7 @@ class _MapScreenState extends State<MapScreen> {
       // on below line we have given positions of Location 5
         CameraPosition(
           target: LatLng(position.latitude, position.longitude),
-          zoom: 15,
+          zoom: 13,
         )));
 
     setState(() {
