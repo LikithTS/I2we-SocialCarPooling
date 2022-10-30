@@ -93,7 +93,7 @@ class _MapScreenState extends State<MapScreen> {
                 top: 40,
                 child: destinationLocation!.latitude == 0.0?Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                  EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
                       color: Colors.yellowAccent,
                       borderRadius: BorderRadius.circular(20),

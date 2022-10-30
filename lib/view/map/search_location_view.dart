@@ -100,98 +100,98 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                 ),
                 closeFlag
                     ? Container(
-                        margin: EdgeInsets.only(left: 40),
-                        color: Colors.blue[200],
-                        width: deviceWidth(context) * .75,
-                        child: StreamBuilder<List<Place>>(
-                            stream: api.controllerOut,
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return Container();
-                              }
-                              final data = snapshot.data;
-                              return data!.isEmpty
-                                  ? Container(
-                                      child: Center(
-                                      child: Text('No address found'),
-                                    ))
-                                  : Container(
-                                      height: 300,
-                                      child: Scrollbar(
-                                        controller: _scrollController,
-                                        child: SingleChildScrollView(
-                                          controller: _scrollController,
-                                          child: Container(
-                                            child: Builder(builder: (context) {
-                                              return Column(
-                                                children: List.generate(
-                                                    data.length, (index) {
-                                                  final places = data[index];
-                                                  return Column(
-                                                    children: [
-                                                      ListTile(
-                                                        onTap: () {
-                                                          /* api.addressController
+                  margin: EdgeInsets.only(left: 40),
+                  color: Colors.blue[200],
+                  width: deviceWidth(context) * .75,
+                  child: StreamBuilder<List<Place>>(
+                      stream: api.controllerOut,
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) {
+                          return Container();
+                        }
+                        final data = snapshot.data;
+                        return data!.isEmpty
+                            ? Container(
+                            child: Center(
+                              child: Text('No address found'),
+                            ))
+                            : Container(
+                          height: 300,
+                          child: Scrollbar(
+                            controller: _scrollController,
+                            child: SingleChildScrollView(
+                              controller: _scrollController,
+                              child: Container(
+                                child: Builder(builder: (context) {
+                                  return Column(
+                                    children: List.generate(
+                                        data.length, (index) {
+                                      final places = data[index];
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                            onTap: () {
+                                              /* api.addressController
                                                               .text =
                                                           '${places.name} , ${places.street} , ${places.country}';*/
 
-                                                          ProviderPreference()
-                                                              .putAddress(
-                                                                  context,
-                                                                  '${places.name} , ${places.street} , ${places.locality}');
+                                              ProviderPreference()
+                                                  .putAddress(
+                                                  context,
+                                                  '${places.name} , ${places.street} , ${places.locality}');
 
-                                                          ProviderPreference()
-                                                              .putLatLng(
-                                                                  context,
-                                                                  LatLng(
-                                                                      places
-                                                                          .latitude,
-                                                                      places
-                                                                          .longitude));
+                                              ProviderPreference()
+                                                  .putLatLng(
+                                                  context,
+                                                  LatLng(
+                                                      places
+                                                          .latitude,
+                                                      places
+                                                          .longitude));
 
-                                                          closeFlag = false;
-                                                        },
-                                                        title: Text(
-                                                          '${places.name} : ${places.street}',
-                                                          style: TextStyleUtils
-                                                              .primaryTextLight
-                                                              .copyWith(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  height: 1.2,
-                                                                  fontSize: 14),
-                                                        ),
-                                                        subtitle: Text(
-                                                          '${places.locality}',
-                                                          style: TextStyleUtils
-                                                              .primaryTextLight
-                                                              .copyWith(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  height: 1.2,
-                                                                  fontSize: 12),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      10),
-                                                          child: Divider(
-                                                            height: 1,
-                                                            color: Colors.white,
-                                                          ))
-                                                    ],
-                                                  );
-                                                }),
-                                              );
-                                            }),
+                                              closeFlag = false;
+                                            },
+                                            title: Text(
+                                              '${places.name} : ${places.street}',
+                                              style: TextStyleUtils
+                                                  .primaryTextLight
+                                                  .copyWith(
+                                                  color: Colors
+                                                      .black,
+                                                  height: 1.2,
+                                                  fontSize: 14),
+                                            ),
+                                            subtitle: Text(
+                                              '${places.locality}',
+                                              style: TextStyleUtils
+                                                  .primaryTextLight
+                                                  .copyWith(
+                                                  color: Colors
+                                                      .black,
+                                                  height: 1.2,
+                                                  fontSize: 12),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                            }),
-                      )
+                                          Container(
+                                              margin: EdgeInsets
+                                                  .symmetric(
+                                                  horizontal:
+                                                  10),
+                                              child: Divider(
+                                                height: 1,
+                                                color: Colors.white,
+                                              ))
+                                        ],
+                                      );
+                                    }),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                )
                     : Container()
               ],
             ),
