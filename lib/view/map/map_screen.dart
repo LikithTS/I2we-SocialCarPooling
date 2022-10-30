@@ -49,11 +49,13 @@ class _MapScreenState extends State<MapScreen> {
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
     } else {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
+      sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
+
+
+
     if (sourceLocation!.latitude != 0.0) {
       _addMarker(sourceLocation!);
     }
@@ -62,71 +64,37 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     return Scaffold(
-     /* appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        title: Text(
-          'Google Map',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          if (_origin != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _origin!.position, zoom: 14.5, tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('ORIGIN')),
-          if (_destination != null)
-            TextButton(
-                onPressed: () => _googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: _destination!.position,
-                        zoom: 14.5,
-                        tilt: 50.0))),
-                style: TextButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                child: Text('DEST')),
-        ],
-      ),*/
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            child: GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-              markers: {
-                if (currentLocation != null) currentLocation!,
-                if (_origin != null) _origin!,
-                if (_destination != null) _destination!,
-              },
+          GoogleMap(
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            initialCameraPosition: _initialCameraPosition,
+            onMapCreated: (controller) => _googleMapController = controller,
+            markers: {
+              if (currentLocation != null) currentLocation!,
+              if (_origin != null) _origin!,
+              if (_destination != null) _destination!,
+            },
 
-              polylines: {
-                if (directionResponse != null)
-                  Polyline(
-                      polylineId: PolylineId('overview_polyline'),
-                      color: Colors.blueAccent,
-                      width: 5,
-                      points: directionResponse!.polylinePoints
-                          .map((e) => LatLng(e.latitude, e.longitude))
-                          .toList())
-              },
+            polylines: {
+              if (directionResponse != null)
+                Polyline(
+                    polylineId: PolylineId('overview_polyline'),
+                    color: Colors.blueAccent,
+                    width: 5,
+                    points: directionResponse!.polylinePoints
+                        .map((e) => LatLng(e.latitude, e.longitude))
+                        .toList())
+            },
 
-              //onLongPress: _addMarker,
-            ),
+            //onLongPress: _addMarker,
           ),
           if (directionResponse != null)
             Positioned(
                 top: 40,
-                child: Container(
+                child: destinationLocation!.latitude == 0.0?Container(
                   padding:
                       EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
@@ -138,11 +106,11 @@ class _MapScreenState extends State<MapScreen> {
                             offset: Offset(0, 2),
                             blurRadius: 6.0)
                       ]),
-                  child: Text(
+                  child:Text(
                     '${directionResponse!.totalDistance},${directionResponse!.totalDuration}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                ))
+                ):Container())
         ],
       ),
       floatingActionButton: FloatingActionButton(
