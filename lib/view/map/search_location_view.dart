@@ -13,10 +13,9 @@ import '../../util/TextStylesUtil.dart';
 import '../../util/color.dart';
 
 class SearchLocationView extends StatefulWidget {
-
-  const SearchLocationView(
-      {Key? key,})
-      : super(key: key);
+  const SearchLocationView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SearchLocationView> createState() => _SearchLocationViewState();
@@ -24,6 +23,14 @@ class SearchLocationView extends StatefulWidget {
 
 class _SearchLocationViewState extends State<SearchLocationView> {
   var _scrollController;
+  var closeFlag = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    closeFlag = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,113 +40,159 @@ class _SearchLocationViewState extends State<SearchLocationView> {
           builder: (_, api, child) => SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.only(top: 10, left: 60, right: 60),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: new BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 2.0,
-                            spreadRadius: 0.4)
-                      ]),
-                  child: TextField(
-                      controller: api.addressController,
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0, color: Colors.transparent),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(10)),
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: deviceWidth(context) * .8,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.circular(5.0),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 2.0,
+                                spreadRadius: 0.4)
+                          ]),
+                      child: TextField(
+                          controller: api.addressController,
+                          decoration: InputDecoration(
+                            fillColor: Colors.grey,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 0, color: Colors.transparent),
+                            ),
+                            hintText: 'Search Location',
+                            prefixIcon: Icon(
+                              Icons.location_on,
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                setState(()
+                                {
+                                  api.addressController.clear();
+                                  closeFlag=true;
+                                });
+                              },
+                            ),
                           ),
-                          hintText: 'Search Location',
-                          prefixIcon: Icon(
-                            Icons.location_on,
-                            color: Colors.grey,
-                          )),
-                      onChanged: api.handleSearch),
+                          onChanged: api.handleSearch),
+                    ),
+                  ],
                 ),
-                Container(
-                  color: Colors.blue[200],
-                  width: deviceWidth(context) * .7,
-                  child: StreamBuilder<List<Place>>(
-                      stream: api.controllerOut,
-                      builder: (context, snapshot) {
-                        if (snapshot.data == null) {
-                          return Container();
-                        }
-                        final data = snapshot.data;
-                        return data!.isEmpty
-                            ? Container(
-                                child: Center(
-                                child: Text('No address found'),
-                              ))
-                            : Container(
-                                height: 300,
-                                child: Scrollbar(
-                                  controller: _scrollController,
-                                  child: SingleChildScrollView(
-                                    controller: _scrollController,
-                                    child: Container(
-                                      child: Builder(builder: (context) {
-                                        return Column(
-                                          children: List.generate(data.length,
-                                              (index) {
-                                            final places = data[index];
-                                            return Column(
-                                              children: [
-                                                ListTile(
-                                                  onTap: () {
-                                                    /* api.addressController
+                closeFlag
+                    ? Container(
+                        margin: EdgeInsets.only(left: 40),
+                        color: Colors.blue[200],
+                        width: deviceWidth(context) * .75,
+                        child: StreamBuilder<List<Place>>(
+                            stream: api.controllerOut,
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return Container();
+                              }
+                              final data = snapshot.data;
+                              return data!.isEmpty
+                                  ? Container(
+                                      child: Center(
+                                      child: Text('No address found'),
+                                    ))
+                                  : Container(
+                                      height: 300,
+                                      child: Scrollbar(
+                                        controller: _scrollController,
+                                        child: SingleChildScrollView(
+                                          controller: _scrollController,
+                                          child: Container(
+                                            child: Builder(builder: (context) {
+                                              return Column(
+                                                children: List.generate(
+                                                    data.length, (index) {
+                                                  final places = data[index];
+                                                  return Column(
+                                                    children: [
+                                                      ListTile(
+                                                        onTap: () {
+                                                          /* api.addressController
                                                               .text =
                                                           '${places.name} , ${places.street} , ${places.country}';*/
-                                                    ProviderPreference().putAddress(
-                                                        context,
-                                                        '${places.name} , ${places.street} , ${places.locality}');
 
-                                                    ProviderPreference().putLatLng(
-                                                        context,
-                                                        LatLng(places.latitude, places.longitude));
+                                                          ProviderPreference()
+                                                              .putAddress(
+                                                                  context,
+                                                                  '${places.name} , ${places.street} , ${places.locality}');
 
-                                                  },
-                                                  title: Text(
-                                                    '${places.name} : ${places.street}',
-                                                    style: TextStyleUtils
-                                                        .primaryTextLight
-                                                        .copyWith(
-                                                            color: Colors.black,
-                                                            height: 1.2,
-                                                            fontSize: 14),
-                                                  ),
-                                                  subtitle: Text(
-                                                    '${places.locality}',
-                                                    style: TextStyleUtils
-                                                        .primaryTextLight
-                                                        .copyWith(
-                                                            color: Colors.black,
-                                                            height: 1.2,
-                                                            fontSize: 12),
-                                                  ),
-                                                ),
-                                                Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
-                                                    child: Divider(
-                                                      height: 1,
-                                                      color: Colors.white,
-                                                    ))
-                                              ],
-                                            );
-                                          }),
-                                        );
-                                      }),
-                                    ),
-                                  ),
-                                ),
-                              );
-                      }),
-                )
+                                                          ProviderPreference()
+                                                              .putLatLng(
+                                                                  context,
+                                                                  LatLng(
+                                                                      places
+                                                                          .latitude,
+                                                                      places
+                                                                          .longitude));
+
+                                                          closeFlag = false;
+                                                        },
+                                                        title: Text(
+                                                          '${places.name} : ${places.street}',
+                                                          style: TextStyleUtils
+                                                              .primaryTextLight
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  height: 1.2,
+                                                                  fontSize: 14),
+                                                        ),
+                                                        subtitle: Text(
+                                                          '${places.locality}',
+                                                          style: TextStyleUtils
+                                                              .primaryTextLight
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  height: 1.2,
+                                                                  fontSize: 12),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10),
+                                                          child: Divider(
+                                                            height: 1,
+                                                            color: Colors.white,
+                                                          ))
+                                                    ],
+                                                  );
+                                                }),
+                                              );
+                                            }),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                            }),
+                      )
+                    : Container()
               ],
             ),
           ),

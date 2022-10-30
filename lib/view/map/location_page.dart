@@ -31,52 +31,43 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  Completer<GoogleMapController> _controller = Completer();
+  static const _initialCameraPosition =
+      CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 15);
+
+  late GoogleMapController _googleMapController;
 
   double? latitude;
   double? longitude;
   late LatLng currentPosition;
-  Set<Marker> _markers = {};
+  Marker? currentLocation;
+  bool? currentLocationFlag = false;
 
-  void getLocation() async {
-    Position position = await getGeoLocationCoOrdinates();
-    var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
-        position.latitude, position.longitude,
-        localeIdentifier: "en");
-
-    setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
-      Provider.of<AddressProvider>(context, listen: false)
-          .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-      ProviderPreference().putAddress(context,
-          '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
-
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _googleMapController.dispose();
   }
 
   void getGpsLocation() async {
-    GoogleMapController controller = await _controller.future;
     Position position = await getGeoLocationCoOrdinates();
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         // on below line we have given positions of Location 5
         CameraPosition(
       target: LatLng(position.latitude, position.longitude),
       zoom: 15,
     )));
-
-    if (position.latitude != null) {
-      setState(() {
-        _markers.clear();
-        _markers.add(Marker(
-            markerId: MarkerId('Home'),
-            position: LatLng(position.latitude, position.longitude)));
-      });
-    }
+    var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
+        position.latitude, position.longitude,
+        localeIdentifier: "en");
+    setState(() {
+      currentLocation = Marker(
+          markerId: MarkerId('currentLocation'),
+          infoWindow: InfoWindow(title: 'Current Location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          position: LatLng(position.latitude, position.longitude));
+      ProviderPreference().putAddress(context,
+          '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+    });
   }
 
   Future<Position> getGeoLocationCoOrdinates() async {
@@ -108,7 +99,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getGpsLocation();
   }
 
   @override
@@ -117,37 +108,22 @@ class _LocationPageState extends State<LocationPage> {
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
     List<String> result = address.split(',');
 
+    if (latLngProvider.latitude != 0.0) {
+      _addMarker(latLngProvider);
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            latitude == null && longitude == null
-                ? Container(
-                    width: deviceWidth(context),
-                    height: deviceHeight(context),
-                    child: Container(
-                      width: margin50,
-                      height: margin50,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  )
-                : googleMap(
-                    context, LatLng(latitude!, longitude!), _controller),
             Container(
-              margin: EdgeInsets.only(top: 10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10)),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
+              child: GoogleMap(
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                initialCameraPosition: _initialCameraPosition,
+                onMapCreated: (controller) => _googleMapController = controller,
+                markers: {
+                  if (currentLocation != null) currentLocation!,
                 },
               ),
             ),
@@ -166,7 +142,6 @@ class _LocationPageState extends State<LocationPage> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    // Navigator.pop(context);
                     getGpsLocation();
                   },
                 ),
@@ -220,10 +195,6 @@ class _LocationPageState extends State<LocationPage> {
                                         listen: false)
                                     .changeDriver(true);
 
-                          var startLat=  Provider.of<AddressProvider>(context, listen: false)
-                                .driverStartLatLng;
-                          print("Start Lat : $startLat");
-
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
                                     ? ProviderPreference()
@@ -235,6 +206,7 @@ class _LocationPageState extends State<LocationPage> {
                                         .putEndDriverAddress(context, address)
                                     : ProviderPreference()
                                         .putEndRiderAddress(context, address);
+
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
                                     ? ProviderPreference().putDriverStartLatLng(
@@ -246,6 +218,7 @@ class _LocationPageState extends State<LocationPage> {
                                         context, latLngProvider)
                                     : ProviderPreference().putRiderDestLatLng(
                                         context, latLngProvider);
+
 
                             Navigator.pop(context);
                           },
@@ -279,40 +252,19 @@ class _LocationPageState extends State<LocationPage> {
         HomePage()), (Route<dynamic> route) => false);*/
   }
 
-  Widget googleMap(BuildContext context, LatLng latLng, _controller) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        mapType: MapType.terrain,
-        zoomControlsEnabled: false,
-        myLocationButtonEnabled: false,
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(target: latLng, zoom: 15),
-        markers: _markers,
-        onCameraMove: (_position) =>
-            _updatePosition(_position, latitude, longitude),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-    );
-  }
-
-  void _updatePosition(CameraPosition _position, latitude, longitude) async {
-    GoogleMapController controller = await _controller.future;
-    //print("Latitude $latitude : Longitude : $longitude");
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+  void _addMarker(LatLng pos) async {
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         // on below line we have given positions of Location 5
         CameraPosition(
-      target: LatLng(latitude, longitude),
-      zoom: 15,
+      target: LatLng(pos.latitude, pos.longitude),
+      zoom: 14,
     )));
-
     setState(() {
-      _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('Home'), position: LatLng(latitude, longitude)));
+      currentLocation = Marker(
+          markerId: MarkerId('orgin'),
+          infoWindow: InfoWindow(title: 'Orgin'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          position: pos);
     });
   }
 }
