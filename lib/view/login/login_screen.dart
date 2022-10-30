@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       suffixIcon: Icons.check_circle,
-                      prefixIcon: Icons.mobile_friendly,
+                      prefixIcon: Icons.mobile_friendly
                     ),
                     addVerticalSpace(10),
                     LoginTextForm(
