@@ -105,9 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       suffixIcon: Icons.check_circle,
-                      prefixIcon: Icons.mobile_friendly,
-                      isPasswordField : false,
-                      isNumber: true,
+                      prefixIcon: Icons.mobile_friendly
                     ),
                     addVerticalSpace(10),
                     LoginTextForm(
@@ -126,8 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               "",
                       suffixIcon: Icons.visibility,
                       prefixIcon: Icons.lock,
-                      isPasswordField : true,
-                      isNumber: false,
                     )
                   ],
                 ),
@@ -170,12 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     WidgetSpan(
                       child: GestureDetector(
                         onTap: () {
-                         // print("Register now" "pressed");
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.bottomToTop,
-                                  child: SignUpPage()));
+                          print("Register now" "pressed");
                         },
                         child: Container(
                           child: smallSpanText(

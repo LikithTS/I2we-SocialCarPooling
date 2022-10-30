@@ -152,7 +152,7 @@ class _MapScreenState extends State<MapScreen> {
       // on below line we have given positions of Location 5
         CameraPosition(
           target: LatLng(position.latitude, position.longitude),
-          zoom: 15,
+          zoom: 14,
         )));
 
     setState(() {
