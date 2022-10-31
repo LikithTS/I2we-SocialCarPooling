@@ -6,7 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/dimens.dart';
+import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
 import 'package:socialcarpooling/view/splash/splash_page.dart';
 
@@ -38,6 +41,12 @@ class MyApp extends StatelessWidget {
             textTheme: GoogleFonts.poppinsTextTheme(
               Theme.of(context).textTheme,
             ),
+            appBarTheme: AppBarTheme(
+              titleTextStyle: TextStyleUtils.primaryTextBold.copyWith(color: toolbarTitleColor, fontSize: textsize22sp),
+              backgroundColor: Colors.white,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.black),
+            )
           ),
           home: child,
         );

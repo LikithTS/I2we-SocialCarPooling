@@ -21,4 +21,10 @@ class Constant {
   static const String BUTTON_CHECK_IN = "CHECK IN";
   static const String BUTTON_CHECK_OUT = "CHECK OUT";
   static const String BUTTON_COMPLETED = "COMPLETED";
+
+
+
+  static const String TERMS_CONDITION_URL = "https://www.vtricks.in/about-us";
+  static const String PRIVACY_POLICY_URL = "https://www.vtricks.in/about-us";
+  static const String HELP_URL = "https://www.vtricks.in/about-us";
 }

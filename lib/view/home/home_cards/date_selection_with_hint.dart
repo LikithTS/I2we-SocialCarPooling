@@ -61,7 +61,7 @@ class DateSelectionWithHintSupport extends StatelessWidget {
       log("Date choosen $pickedDate");  //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       log("Formatted Date $formattedDate"); //formatted date output using intl package =>  2021-03-16
-      dateValue.text = formattedDate ?? "";
+      dateValue.text = formattedDate;
     }
   }
 }

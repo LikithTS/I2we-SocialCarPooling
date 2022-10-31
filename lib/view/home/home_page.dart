@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:developer';
-
-import 'package:common/network/repository/HomeRepository.dart';
+import 'dart:asyncn/network/repository/HomeRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +17,8 @@ import 'home_cards/driver_widget_view.dart';
 import 'home_cards/home_screen_res_view.dart';
 import 'home_cards/rider_widget_view.dart';
 
+final GlobalKey<ScaffoldState> homeGlobalkey = GlobalKey();
+
 class HomePage extends StatefulWidget {
   final HomeRepository homeRepository;
 
@@ -30,7 +29,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
   late final TabController tabController;
   final Completer<GoogleMapController> _controller = Completer();
 
@@ -89,7 +87,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: WillPopScope(
       onWillPop: () => _onBackButtonPressed(context),
       child: Scaffold(
-          key: _key,
+          key: homeGlobalkey,
           drawer: const NavigationDrawerWidget(),
           body: Container(
             child: Stack(
@@ -112,7 +110,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.blue,
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                              _key.currentState?.openDrawer();
+                              homeGlobalkey.currentState?.openDrawer();
                             },
                           ),
                         ),
