@@ -60,6 +60,7 @@ class _MapScreenState extends State<MapScreen> {
       _addMarker(destinationLocation!);
     }
 
+    print("Souce : $sourceLocation : Dest : $destinationLocation");
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -91,7 +92,7 @@ class _MapScreenState extends State<MapScreen> {
           if (directionResponse != null)
             Positioned(
                 top: 40,
-                child: destinationLocation!.latitude == 0.0?Container(
+                child:Container(
                   padding:
                       EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
@@ -107,7 +108,7 @@ class _MapScreenState extends State<MapScreen> {
                     '${directionResponse!.totalDistance},${directionResponse!.totalDuration}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                ):Container())
+                ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
