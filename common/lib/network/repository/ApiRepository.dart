@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:common/network/exception/dio_exception.dart';
+import 'package:dio/dio.dart';
 import 'package:dio/src/response.dart';
 
 import '../ApiConstant.dart';
+import '../exception/ApiException.dart';
 import '../model/error_response.dart';
 import '../response/SuccessResponse.dart';
 
@@ -34,7 +37,15 @@ class ApiRepository {
       }
     } else {
       log("Error:${responseData.data}");
-      return ErrorResponse.fromJson(responseData.data);
+      ErrorResponse(status: responseData.statusCode);
     }
+  }
+
+  ApiException getErrorResponse(DioError onError) {
+    var errorMessage = DioException.fromDioError(onError).errorMessage;
+    return ApiException(ErrorResponse(
+        status: onError.response?.statusCode,
+        errorMessage: errorMessage,
+        errorCode: onError.response?.statusCode));
   }
 }

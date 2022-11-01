@@ -1,4 +1,4 @@
-import 'package:common/network/model/error_response.dart';
+import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
@@ -11,11 +11,14 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/WebviewPage.dart';
+import 'package:socialcarpooling/view/feedback/feedback_page.dart';
+import 'package:socialcarpooling/view/history/history_page.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/CPSessionManager.dart';
@@ -150,6 +153,10 @@ class NavigationDrawerWidget extends StatelessWidget {
                 builder: (context) =>
                     HomePage(homeRepository: HomeRepository())));
         break;
+      case 2:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HistoryPage()));
+        break;
       case 3:
         if (CPSessionManager().getIfCarDetailsAdded()) {
           Navigator.push(
@@ -167,6 +174,14 @@ class NavigationDrawerWidget extends StatelessWidget {
       case 4:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
+        break;
+      case 6:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FeedbackPage()));
+        break;
+      case 7:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SubscriptionPage()));
         break;
       case 8:
         launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("terms_and_conditions") ?? "", Constant.TERMS_CONDITION_URL);
@@ -201,8 +216,8 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   void handleErrorResponseData(onError, BuildContext context) {
-    if(onError is ErrorResponse) {
-      showSnackbar(context, onError.errorMessage ?? "");
+    if(onError is ApiException) {
+      showSnackbar(homeGlobalkey.currentContext!, onError.errorResponse.errorMessage ?? "");
     }
   }
 
