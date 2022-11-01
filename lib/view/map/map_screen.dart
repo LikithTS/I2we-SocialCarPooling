@@ -16,7 +16,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 14);
+  CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -49,54 +49,56 @@ class _MapScreenState extends State<MapScreen> {
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
     } else {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .driverStartLatLng;
+      sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
       destinationLocation =
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
-    if (sourceLocation!=null&&sourceLocation!.latitude != 0.0) {
-      _addMarker(sourceLocation!);
+    if (sourceLocation!.latitude != 0.0) {
+      _addSourceMarker(sourceLocation!);
     }
-    if (destinationLocation!=null&&destinationLocation!.latitude != 0.0) {
-      _addMarker(destinationLocation!);
+    if (destinationLocation!.latitude != 0.0) {
+      _addDestMarker(destinationLocation!);
     }
-    return Scaffold(
 
+    if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
+      {
+        _addPolyLine(sourceLocation,destinationLocation);
+      }
+
+    return Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            child: GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-              markers: {
-                if (currentLocation != null) currentLocation!,
-                if (_origin != null) _origin!,
-                if (_destination != null) _destination!,
-              },
+          GoogleMap(
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            initialCameraPosition: _initialCameraPosition,
+            onMapCreated: (controller) => _googleMapController = controller,
+            markers: {
+              if (currentLocation != null) currentLocation!,
+              if (_origin != null) _origin!,
+              if (_destination != null) _destination!,
+            },
 
-              polylines: {
-                if (directionResponse != null)
-                  Polyline(
-                      polylineId: PolylineId('overview_polyline'),
-                      color: Colors.blueAccent,
-                      width: 5,
-                      points: directionResponse!.polylinePoints
-                          .map((e) => LatLng(e.latitude, e.longitude))
-                          .toList())
-              },
+            polylines: {
+              if (directionResponse != null)
+                Polyline(
+                    polylineId: PolylineId('overview_polyline'),
+                    color: Colors.blueAccent,
+                    width: 5,
+                    points: directionResponse!.polylinePoints
+                        .map((e) => LatLng(e.latitude, e.longitude))
+                        .toList())
+            },
 
-              //onLongPress: _addMarker,
-            ),
+            //onLongPress: _addMarker,
           ),
           if (directionResponse != null)
             Positioned(
                 top: 40,
-                child: Container(
+                child:Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                  EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
                       color: Colors.yellowAccent,
                       borderRadius: BorderRadius.circular(20),
@@ -106,7 +108,7 @@ class _MapScreenState extends State<MapScreen> {
                             offset: Offset(0, 2),
                             blurRadius: 6.0)
                       ]),
-                  child: Text(
+                  child:Text(
                     '${directionResponse!.totalDistance},${directionResponse!.totalDuration}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
@@ -122,8 +124,8 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
+
+   void _addSourceMarker(LatLng pos) async {
 
       setState(() {
         _origin = Marker(
@@ -133,32 +135,37 @@ class _MapScreenState extends State<MapScreen> {
                 BitmapDescriptor.hueBlue),
             position: pos);
         _destination = null;
-        directionResponse = null;
       });
-    } else {
 
-      setState(() {
-
+  }
+   void _addDestMarker(LatLng pos) async {
+     setState(() {
         _destination = Marker(
             markerId: MarkerId('destination'),
             infoWindow: InfoWindow(title: 'Destination'),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueBlue),
             position: pos);
+
       });
 
-      final directions = await DirectionApiRepository().getDirection(
-          origin: _origin!.position, destination: _destination!.position);
-      setState(() => directionResponse = directions);
-    }
   }
+
+  void _addPolyLine(_origin,_destination) async
+  {
+    final directions = await DirectionApiRepository().getDirection(
+        origin: _origin, destination: _destination);
+    setState(() => directionResponse = directions);
+  }
+
+
   void getGpsLocation() async {
     Position position = await getGeoLocationCoOrdinates();
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
       // on below line we have given positions of Location 5
         CameraPosition(
           target: LatLng(position.latitude, position.longitude),
-          zoom: 15,
+          zoom: 12,
         )));
 
     setState(() {

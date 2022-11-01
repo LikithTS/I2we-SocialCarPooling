@@ -10,27 +10,35 @@ import 'ApiRepository.dart';
 
 class LoginRepository extends ApiRepository {
   Future<dynamic> login({required LoginApi api}) async {
-    Response userData = await APIClient()
-        .getDioInstance()
-        .post(ApiConstant.LOGIN_API_PATH, data: api.toJson());
-    dynamic response = handleAPIResponseData(userData);
-    if (response is ErrorResponse) {
-      return response;
-    } else {
-      var authResponse = AuthResponse.fromJson(response[0]);
-      return authResponse;
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.LOGIN_API_PATH, data: api.toJson());
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        var authResponse = AuthResponse.fromJson(response[0]);
+        return authResponse;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
     }
   }
 
   Future<dynamic> logout() async {
-    Response userData =
-        await APIClient().getDioInstance().post(ApiConstant.LOGOUT_API_PATH);
-    dynamic response = handleAPIResponseData(userData);
-    if (response is ErrorResponse) {
-      return response;
-    } else {
-      var successResponse = SuccessResponse(statusCode: userData.statusCode);
-      return successResponse;
+    try {
+      Response userData =
+          await APIClient().getDioInstance().post(ApiConstant.LOGOUT_API_PATH);
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        var successResponse = SuccessResponse(statusCode: userData.statusCode);
+        return successResponse;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
     }
   }
 

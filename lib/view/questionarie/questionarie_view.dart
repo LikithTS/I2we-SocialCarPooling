@@ -12,6 +12,7 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import '../../util/CPSessionManager.dart';
 import '../../util/CPString.dart';
 import '../../util/color.dart';
+import '../../util/font_size.dart';
 
 class QuestionariePage extends StatefulWidget {
   const QuestionariePage({Key? key}) : super(key: key);
@@ -47,8 +48,6 @@ class _QuestionarieState extends State<QuestionariePage>
         .catchError((onError) {
       handleErrorResponseData(onError);
     });
-    // List<Questionarie>? categoryList = await FileUtils.readQuestionariesData();
-    // _onCategoriesUpdated(categoryList!);
   }
 
   void _onCategoriesUpdated(dynamic val) {
@@ -120,21 +119,9 @@ class _QuestionarieState extends State<QuestionariePage>
 
   @override
   Widget build(BuildContext context) {
-    TextStyle primaryTextBold =
-        TextStyleUtils.primaryTextBold.copyWith(color: toolbarTitleColor, fontSize: textsize22sp);
     return Scaffold(
         appBar: AppBar(
-            title: Text(CPString.QUESTIONARIES, style: primaryTextBold),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ))),
+            title: const Text(CPString.QUESTIONARIES)),
         body: tabCreate());
   }
 

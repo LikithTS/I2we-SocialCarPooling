@@ -69,6 +69,17 @@ class CPString{
   static const String resendOtpIn='Resend OTP in ';
   static const String dontreciveOtp='Didn’t receive.Click here to ';
   static const String apiKey='AIzaSyCHgDPkBitY9TLDasjyqQ0EhZGRQqrZp6M';
+  static const String Alert='Alert';
+  static const String logout_desc = "Are you sure wants to logout?";
+  static const String appName = "i2We";
+  static const String about_desc = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque '
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque'
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque';
+  static const String copyright = '©2022 i2we.com';
+  static const String HISTORY = "History";
+  static const String NO_RIDES_AVAILABLE = 'No Rides Available';
+  static const String FEEDBACK_DESC = 'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car';
+  static const String SUBMIT = 'Submit';
 
 
 }
