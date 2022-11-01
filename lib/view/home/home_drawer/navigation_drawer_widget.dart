@@ -1,18 +1,27 @@
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/view/WebviewPage.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/CPSessionManager.dart';
+import '../../../util/string_url.dart';
 import '../../../utils/Localization.dart';
+import '../../../widgets/image_widgets.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
 
@@ -159,16 +168,42 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
+      case 8:
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("terms_and_conditions") ?? "", Constant.TERMS_CONDITION_URL);
+        break;
+      case 9:
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("privacy_policy") ?? "", Constant.PRIVACY_POLICY_URL);
+        break;
+      case 10:
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("help") ?? "", Constant.HELP_URL);
+        break;
       case 11:
-        onLogoutButtonPressed(context);
+        showAbout(context);
+        break;
+      case 12:
+        showLogoutConfirmationDialog(context);
         break;
     }
+  }
+
+  void launchWebViewScreen(BuildContext context, String title, String url) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => WebViewPage(title: title, url: url)));
   }
 
   void onLogoutButtonPressed(BuildContext context) {
     LoginRepository()
         .logout()
-        .then((value) => {handleResponseData(value, context)});
+        .then((value) => {handleResponseData(value, context)})
+        .catchError((onError) {
+          handleErrorResponseData(onError, context);
+    });
+  }
+
+  void handleErrorResponseData(onError, BuildContext context) {
+    if(onError is ErrorResponse) {
+      showSnackbar(context, onError.errorMessage ?? "");
+    }
   }
 
   handleResponseData(value, BuildContext context) {
@@ -181,6 +216,34 @@ class NavigationDrawerWidget extends StatelessWidget {
                   LoginScreen(userRepository: LoginRepository())));
     }
   }
+
+  void showLogoutConfirmationDialog(BuildContext context) {
+    showAlertDialog(homeGlobalkey.currentContext!, CPString.Alert, CPString.logout_desc, CPString.no, CPString.yes, () => Navigator.pop(homeGlobalkey.currentContext!)
+    , () {
+      Navigator.of(homeGlobalkey.currentContext!).pop(true);
+      onLogoutButtonPressed(context);
+    });
+  }
+}
+
+void showAbout(BuildContext context) {
+  PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+    showAboutDialog(
+      context: context,
+      applicationIcon: imageAssets(
+          StringUrl.splashImage, 32.w, 32.h),
+      applicationName: packageInfo.appName,
+      applicationVersion: packageInfo.version,
+      applicationLegalese: CPString.copyright,
+      children: <Widget>[
+        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "", style: TextStyleUtils.primaryTextBold),
+        const Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(CPString.about_desc)
+        )
+      ],
+    );
+  });
 }
 
 Widget buildHeader(
