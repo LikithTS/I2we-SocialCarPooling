@@ -13,14 +13,14 @@ Widget primaryButton(String title, VoidCallback callback) {
         borderRadius: BorderRadius.all(Radius.circular(margin10)),
       ), // <-- Radius
       primary: Colors.white,
-      textStyle: TextStyleUtils.primaryTextRegular,
+      textStyle: TextStyleUtils.primaryTextMedium,
       side: BorderSide(width: 0, color: primaryLightColor),
     ),
     child: Padding(
       padding: EdgeInsets.only(left: margin12, right: margin12),
       child: Text(
         title,
-        style: TextStyleUtils.primaryTextRegular
+        style: TextStyleUtils.primaryTextMedium
             .copyWith(color: primaryColor, fontSize: fontSize9),
       ),
     ),
@@ -32,12 +32,13 @@ Widget secondaryButton(String title, VoidCallback callback) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(margin10)),
+        borderRadius: BorderRadius.all(Radius.circular(margin5)),
       ), // <-- Radius
-      primary: primaryColor,
+      primary: buttonBgColor,
+      minimumSize: const Size.fromHeight(50),
       textStyle: TextStyleUtils.primaryTextRegular,
-      side: BorderSide(width: 1.0, color: borderColor),
     ),
+    onPressed: callback,
     child: Padding(
       padding: EdgeInsets.only(left: margin12, right: margin12),
       child: Text(
@@ -45,7 +46,6 @@ Widget secondaryButton(String title, VoidCallback callback) {
         style: TextStyleUtils.primaryTextRegular.copyWith(color: Colors.white),
       ),
     ),
-    onPressed: callback,
   );
 }
 

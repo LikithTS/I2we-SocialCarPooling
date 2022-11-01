@@ -9,5 +9,7 @@ class StringUrl
   static const String welecomeImage = "assets/images/welcome_user.png";
   static const String introThree = "assets/images/intro_three.png";
   static const String introFour = "assets/images/intro_four.png";
+  static const String history_no_ride = "assets/svgimages/history.svg";
+  static const String feedback_image = "assets/svgimages/feedback.svg";
 
 }

@@ -12,6 +12,7 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import '../../util/CPSessionManager.dart';
 import '../../util/CPString.dart';
 import '../../util/color.dart';
+import '../../util/font_size.dart';
 
 class QuestionariePage extends StatefulWidget {
   const QuestionariePage({Key? key}) : super(key: key);
