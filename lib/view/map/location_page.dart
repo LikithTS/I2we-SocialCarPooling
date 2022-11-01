@@ -11,7 +11,6 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/map/search_location_view.dart';
-import 'package:socialcarpooling/widgets/button_widgets.dart';
 
 import '../../provider/provider_preference.dart';
 import '../../util/CPString.dart';
@@ -272,11 +271,6 @@ class _LocationPageState extends State<LocationPage> {
         ),
       ),
     );
-  }
-
-  void _gotoChangePage() {
-    /* Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        HomePage()), (Route<dynamic> route) => false);*/
   }
 
   Widget googleMap(BuildContext context, LatLng latLng) {

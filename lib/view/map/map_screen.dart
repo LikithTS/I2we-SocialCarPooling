@@ -16,7 +16,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 14);
+  CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -54,13 +54,17 @@ class _MapScreenState extends State<MapScreen> {
           Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
     if (sourceLocation!.latitude != 0.0) {
-      _addMarker(sourceLocation!);
+      _addSourceMarker(sourceLocation!);
     }
     if (destinationLocation!.latitude != 0.0) {
-      _addMarker(destinationLocation!);
+      _addDestMarker(destinationLocation!);
     }
 
-    print("Souce : $sourceLocation : Dest : $destinationLocation");
+    if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
+      {
+        _addPolyLine(sourceLocation,destinationLocation);
+      }
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -120,8 +124,9 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
+
+   void _addSourceMarker(LatLng pos) async {
+
       setState(() {
         _origin = Marker(
             markerId: MarkerId('orgin'),
@@ -130,30 +135,37 @@ class _MapScreenState extends State<MapScreen> {
                 BitmapDescriptor.hueBlue),
             position: pos);
         _destination = null;
-        directionResponse = null;
       });
-    } else {
-      setState(() {
+
+  }
+   void _addDestMarker(LatLng pos) async {
+     setState(() {
         _destination = Marker(
             markerId: MarkerId('destination'),
             infoWindow: InfoWindow(title: 'Destination'),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueBlue),
             position: pos);
+
       });
 
-      final directions = await DirectionApiRepository().getDirection(
-          origin: _origin!.position, destination: _destination!.position);
-      setState(() => directionResponse = directions);
-    }
   }
+
+  void _addPolyLine(_origin,_destination) async
+  {
+    final directions = await DirectionApiRepository().getDirection(
+        origin: _origin, destination: _destination);
+    setState(() => directionResponse = directions);
+  }
+
+
   void getGpsLocation() async {
     Position position = await getGeoLocationCoOrdinates();
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
       // on below line we have given positions of Location 5
         CameraPosition(
           target: LatLng(position.latitude, position.longitude),
-          zoom: 14,
+          zoom: 12,
         )));
 
     setState(() {

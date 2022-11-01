@@ -105,11 +105,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       suffixIcon: Icons.check_circle,
-                      prefixIcon: Icons.mobile_friendly
+                      prefixIcon: Icons.mobile_friendly, isNumber: true, isPasswordField: false,
                     ),
                     addVerticalSpace(10),
                     LoginTextForm(
                       editingController: passwordController,
+                      isPasswordField: true,isNumber: false,
                       formValidator: (value) {
                         if (value!.isEmpty || value.isEmpty) {
                           return "Password Cannot be Empty";
