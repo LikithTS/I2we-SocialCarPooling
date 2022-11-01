@@ -136,31 +136,49 @@ class AddCarScreenState extends State<AddCarScreen> {
                           Icons.edit,
                           carRegNumberController),
                       addVerticalSpace(10),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          isExpanded: true,
-                          value: selectedCarType,
-                          hint: Text(
-                            DemoLocalizations.of(context)
+
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: const [
+                              BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButtonFormField(
+                              isExpanded: true,
+                              value: selectedCarType,
+                              decoration: const InputDecoration(
+                                fillColor: Colors.grey,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 0, color: Colors.transparent),
+                                ),
+                              ),
+                              hint: Text(
+                                DemoLocalizations.of(context)
                                     ?.getText("car_type") ??
-                                "",
-                            style: TextStyleUtils.primaryTextMedium,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          items: carTypeList.map((list) {
-                            return DropdownMenuItem(
-                              value: list.toString(),
-                              child: Text(list),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCarType = value.toString();
-                            });
-                          },
-                          icon: SvgPicture.asset(
-                            StringUrl.downArrowImage,
-                            color: primaryColor,
+                                    "",
+                                style: TextStyleUtils.primaryTextMedium,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              items: carTypeList.map((list) {
+                                return DropdownMenuItem(
+                                  value: list.toString(),
+                                  child: Text(list),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedCarType = value.toString();
+                                });
+                              },
+                              icon: SvgPicture.asset(
+                                StringUrl.downArrowImage,
+                                color: primaryColor,
+                              ),
+                            ),
                           ),
                         ),
                       ),

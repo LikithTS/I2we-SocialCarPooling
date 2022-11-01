@@ -106,6 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       suffixIcon: Icons.check_circle,
                       prefixIcon: Icons.mobile_friendly,
+                      isPasswordField : false,
+                      isNumber: true,
                     ),
                     addVerticalSpace(10),
                     LoginTextForm(
@@ -124,6 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               "",
                       suffixIcon: Icons.visibility,
                       prefixIcon: Icons.lock,
+                      isPasswordField : true,
+                      isNumber: false,
                     )
                   ],
                 ),

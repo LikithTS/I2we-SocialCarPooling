@@ -31,50 +31,40 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  static const _initialCameraPosition =
-  CameraPosition(target: LatLng(13.0827, 80.2707), zoom: 14);
-  late GoogleMapController _googleMapController;
-  Marker? currentLocation;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _googleMapController.dispose();
-  }
+  GoogleMapController? mapController;
 
   double? latitude;
   double? longitude;
   late LatLng currentPosition;
+  Set<Marker> _markers = {};
+  var _initialCameraPosition = CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 14);
 
-
-
-  void getGpsLocation() async {
+  void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 15,
-        )));
     var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
         position.latitude, position.longitude,
         localeIdentifier: "en");
-
+    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
+    mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+            _initialCameraPosition
+        )
+    );
     setState(() {
-      currentLocation = Marker(
-          markerId: MarkerId('currentLocation'),
-          infoWindow: InfoWindow(title: 'Current Location'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          position: LatLng(position.latitude, position.longitude));
+      latitude = position.latitude;
+      longitude = position.longitude;
+
+      Provider.of<AddressProvider>(context, listen: false)
+          .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
       ProviderPreference().putAddress(context,
           '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+      _markers.add(Marker(
+          markerId: MarkerId('Home'),
+          position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getGpsLocation();
-  }
+
 
   Future<Position> getGeoLocationCoOrdinates() async {
     bool isServiceEnabled;
@@ -103,38 +93,52 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var address = Provider
-        .of<AddressProvider>(context)
-        .address;
-    var latLngProvider = Provider
-        .of<AddressProvider>(context)
-        .latLng;
+    var address = Provider.of<AddressProvider>(context).address;
+    var latLngProvider = Provider.of<AddressProvider>(context).latLng;
     List<String> result = address.split(',');
-
-
+    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
+    mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+            _initialCameraPosition
+        )
+    );
     if(latLngProvider.latitude!=0.0)
+    {
+      setState(()
       {
-        _addMarker(latLngProvider);
-      }
+        _markers.clear();
+        _markers.add(Marker(
+            markerId: MarkerId('Home'),
+            position: LatLng(latLngProvider.latitude, latLngProvider.longitude)));
+      });
+
+    }
 
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              child: GoogleMap(
-                myLocationButtonEnabled: false,
-                zoomControlsEnabled: false,
-                initialCameraPosition: _initialCameraPosition,
-                onMapCreated: (controller) =>
-                _googleMapController = controller,
-                markers: {
-                  if (currentLocation != null) currentLocation!,
-                },
-                //onLongPress: _addMarker,
+            latitude == null && longitude == null
+                ? Container(
+              width: deviceWidth(context),
+              height: deviceHeight(context),
+              child: Container(
+                width: margin50,
+                height: margin50,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            ),
+            )
+                : googleMap(
+                context, LatLng(latitude!, longitude!)),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -167,10 +171,7 @@ class _LocationPageState extends State<LocationPage> {
                   ),
                   onPressed: () {
                     // Navigator.pop(context);
-                   /* ProviderPreference().putLatLng(
-                        context,
-                        LatLng(0.0, 0.0));*/
-                    getGpsLocation();
+                    getLocation();
                   },
                 ),
               ),
@@ -222,12 +223,6 @@ class _LocationPageState extends State<LocationPage> {
                                 : Provider.of<DriverProvider>(context,
                                 listen: false)
                                 .changeDriver(true);
-
-                            var startLat = Provider
-                                .of<AddressProvider>(context,
-                                listen: false)
-                                .driverStartLatLng;
-                            //print("Start Lat : $startLat");
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
@@ -284,20 +279,24 @@ class _LocationPageState extends State<LocationPage> {
         HomePage()), (Route<dynamic> route) => false);*/
   }
 
-  void _addMarker(LatLng pos) async {
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-      // on below line we have given positions of Location 5
-        CameraPosition(
-          target: LatLng(pos.latitude, pos.longitude),
-          zoom: 14,
-        )));
-    setState(() {
-      currentLocation = Marker(
-          markerId: MarkerId('orgin'),
-          infoWindow: InfoWindow(title: 'Orgin'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueRed),
-          position: pos);
-    });
+  Widget googleMap(BuildContext context, LatLng latLng) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: GoogleMap(
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        initialCameraPosition: _initialCameraPosition,
+        markers: _markers,
+        onMapCreated: (controller) => mapController = controller,
+      ),
+    );
   }
+  @override
+  void dispose() {
+    super.dispose();
+    mapController!.dispose();
+  }
+
+
 }
