@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/model/direction.dart';
+import 'package:socialcarpooling/model/directionResponseApi.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
 import 'package:provider/provider.dart';
+
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -24,8 +26,18 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _destination;
   LatLng? sourceLocation;
   LatLng? destinationLocation;
+  LatLngBounds? bounds;
+  PolylineId? polylineId;
+   String? totalDistance;
+   String? totalDuration;
+  DirectionResponseApi? directionResponse;
+   List<PointLatLng>? polylinePoints;
 
-  DirectionResponse? directionResponse;
+// List of coordinates to join
+  List<LatLng> polylineCoordinates = [];
+
+// Map storing polylines created by connecting two points
+  Map<PolylineId, Polyline> polylines = {};
 
   @override
   void dispose() {
@@ -63,6 +75,8 @@ class _MapScreenState extends State<MapScreen> {
     if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
       {
         _addPolyLine(sourceLocation,destinationLocation);
+        print("Source : $sourceLocation : Dest : $destinationLocation");
+       // _createPolylines(sourceLocation!.latitude,sourceLocation!.longitude,destinationLocation!.latitude,destinationLocation!.longitude);
       }
 
     return Scaffold(
@@ -80,20 +94,10 @@ class _MapScreenState extends State<MapScreen> {
               if (_destination != null) _destination!,
             },
 
-            polylines: {
-              if (directionResponse != null)
-                Polyline(
-                    polylineId: PolylineId('overview_polyline'),
-                    color: Colors.blueAccent,
-                    width: 5,
-                    points: directionResponse!.polylinePoints
-                        .map((e) => LatLng(e.latitude, e.longitude))
-                        .toList())
-            },
-
+            polylines:Set<Polyline>.of(polylines.values),
             //onLongPress: _addMarker,
           ),
-          if (directionResponse != null)
+          totalDistance!=null&& totalDistance!=null?
             Positioned(
                 top: 40,
                 child:Container(
@@ -109,10 +113,10 @@ class _MapScreenState extends State<MapScreen> {
                             blurRadius: 6.0)
                       ]),
                   child:Text(
-                    '${directionResponse!.totalDistance},${directionResponse!.totalDuration}',
+                      '$totalDistance,$totalDuration',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                ))
+                )):Container()
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -155,7 +159,34 @@ class _MapScreenState extends State<MapScreen> {
   {
     final directions = await DirectionApiRepository().getDirection(
         origin: _origin, destination: _destination);
-    setState(() => directionResponse = directions);
+    polylineCoordinates.clear();
+    setState(() {
+      for (var element in directions.routes!) {
+        bounds = LatLngBounds(
+          southwest: LatLng(element.bounds!.southwest!.lat!, element.bounds!.southwest!.lng!),
+          northeast: LatLng(element.bounds!.northeast!.lat!, element.bounds!.northeast!.lng!),);
+        polylinePoints= PolylinePoints().decodePolyline(element.overviewPolyline!.points!);
+       for (var point in polylinePoints!) {
+         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+
+         totalDuration= element.legs![0].duration!.text;
+         totalDistance= element.legs![0].distance!.text;
+
+       }
+        PolylineId id = PolylineId('poly');
+        Polyline polyline = Polyline(
+          polylineId: id,
+          color:Colors.blueAccent,
+          points: polylineCoordinates,
+          width: 5,
+        );
+
+        setState(() {
+          polylines[id] = polyline;
+        });
+      }
+
+    });
   }
 
 
@@ -204,4 +235,5 @@ class _MapScreenState extends State<MapScreen> {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
+
 }
