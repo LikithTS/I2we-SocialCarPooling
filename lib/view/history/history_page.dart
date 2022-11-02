@@ -1,17 +1,24 @@
 import 'package:common/network/exception/ApiException.dart';
+import 'package:common/network/model/RecentRides.dart';
+import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HistoryApiRespository.dart';
+import 'package:common/network/response/HistoryResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
+import 'package:socialcarpooling/view/home/home_cards/upcoming_rides_card.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../util/CPString.dart';
 import '../../util/font_size.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/button_widgets.dart';
+import '../../widgets/circular_progress_loader.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -20,6 +27,8 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryState extends State<HistoryPage> {
   bool isRideDataAvailable = false;
+  bool isDataLoading = true;
+  HistoryResponse? _historyResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -48,20 +57,80 @@ class _HistoryState extends State<HistoryPage> {
     });
   }
 
+  void updateHistoryData(HistoryResponse value) {
+    setState(() {
+      _historyResponse = value;
+      if ((value.asDriver?.isNotEmpty == true) ||
+          (value.asPassenger?.isNotEmpty == true)) {
+        isRideDataAvailable = true;
+      } else {
+        isRideDataAvailable = false;
+      }
+    });
+  }
+
   void handleHistoryResponseData(value) {
-    if(value is ErrorResponse) {
+    isDataLoading = false;
+    if (value is HistoryResponse) {
+      updateHistoryData(value);
+    } else if (value is ErrorResponse) {
       showSnackbar(context, value.errorMessage ?? "");
     }
   }
 
   void handleErrorResponseData(onError) {
-    if(onError is ApiException) {
+    if (onError is ApiException) {
       showSnackbar(context, onError.errorResponse.errorMessage ?? "");
     }
   }
 
   Widget getAllRideWidget(BuildContext context) {
-    return Text("");
+    int _totalcount = (_historyResponse?.asDriver?.length ?? 0) +
+        (_historyResponse?.asPassenger?.length ?? 0);
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: false,
+        itemCount: _totalcount,
+        itemBuilder: (BuildContext buildContext1, int index1) {
+          return getRecentRideWidget(index1);
+        });
+  }
+
+  getRecentRideWidget(int index) {
+    List<RecentRides>? recentRides = _historyResponse?.asDriver;
+    if (index < (recentRides?.length ?? 0)) {
+      RecentRides recentRide = recentRides![index];
+      return RecentRidesWidget(
+        carIcon: 'assets/images/car_pool.png',
+        startAddress: recentRide.startDestinationFormattedAddress ?? "",
+        endAddress: recentRide.endDestinationFormattedAddress ?? "",
+        rideType: recentRide.rideType ?? Constant.AS_HOST,
+        amount: recentRide.amountPerSeat ?? 0,
+        dateTime: DateTime.now(),
+        seatsOffered: recentRide.seatsOffered ?? 1,
+        carType: Constant.CAR_TYPE_SEDAN,
+        coRidersCount: "2",
+        leftButtonText: Constant.BUTTON_CANCEL,
+        rideStatus: Constant.RIDE_COMPLETED,
+      );
+    } else {
+      List<UpcomingRides>? upcomingRides = _historyResponse?.asPassenger;
+      int indexCount = index - (recentRides?.length ?? 0);
+      UpcomingRides upcomingRide = upcomingRides![indexCount];
+      return UpcomingRidesWidget(
+        carIcon: 'assets/images/car_pool.png',
+        startAddress: upcomingRide.startDestinationFormattedAddress ?? "",
+        endAddress: upcomingRide.endDestinationFormattedAddress ?? "",
+        rideType: upcomingRide.rideType ?? Constant.AS_HOST,
+        amount: upcomingRide.amountPerSeat ?? 0,
+        dateTime: DateTime.now(),
+        seatsOffered: upcomingRide.seatsOffered ?? 1,
+        carType: upcomingRide.carTypeInterested ?? Constant.CAR_TYPE_SEDAN,
+        coRidersCount: "2",
+        leftButtonText: Constant.BUTTON_CANCEL,
+        rideStatus: Constant.RIDE_SCHEDULED,
+      );
+    }
   }
 
   Widget getNoRideWidget(BuildContext context) {
@@ -99,7 +168,9 @@ class _HistoryState extends State<HistoryPage> {
   }
 
   Widget getHistoryWidget() {
-    if (isRideDataAvailable) {
+    if (isDataLoading) {
+      return getLoadingWidget();
+    } else if (isRideDataAvailable) {
       return getAllRideWidget(context);
     } else {
       return getNoRideWidget(context);

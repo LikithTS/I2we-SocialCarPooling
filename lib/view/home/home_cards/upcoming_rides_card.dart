@@ -11,7 +11,7 @@ import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
 
-class UpcomingRides extends StatelessWidget {
+class UpcomingRidesWidget extends StatelessWidget {
   final String carIcon;
   final String startAddress;
   final String endAddress;
@@ -24,7 +24,7 @@ class UpcomingRides extends StatelessWidget {
   final String leftButtonText;
   final String rideStatus;
 
-  const UpcomingRides(
+  const UpcomingRidesWidget(
       {Key? key,
       required this.carIcon,
       required this.startAddress,
