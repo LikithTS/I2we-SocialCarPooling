@@ -10,7 +10,7 @@ import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
 
-class RecentRides extends StatelessWidget {
+class RecentRidesWidget extends StatelessWidget {
   final String carIcon;
   final String startAddress;
   final String endAddress;
@@ -23,7 +23,7 @@ class RecentRides extends StatelessWidget {
   final String leftButtonText;
   final String rideStatus;
 
-  const RecentRides(
+  const RecentRidesWidget(
       {Key? key,
       required this.carIcon,
       required this.startAddress,

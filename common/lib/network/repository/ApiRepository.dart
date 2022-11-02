@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:common/network/exception/dio_exception.dart';
@@ -15,7 +16,7 @@ class ApiRepository {
     if (responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
         responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
       try {
-        log("response: ${responseData.data.toString()}");
+        log("response: ${json.encode(responseData.data)}");
         var successResponse = SuccessResponse.fromJson(responseData.data);
         if (successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
             successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
