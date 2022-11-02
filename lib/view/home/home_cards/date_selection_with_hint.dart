@@ -8,11 +8,13 @@ import 'package:socialcarpooling/util/color.dart';
 class DateSelectionWithHintSupport extends StatelessWidget {
   final String text;
   final IconData iconData;
+  TextEditingController reqDateValue;
 
   DateSelectionWithHintSupport({
     Key? key,
     required this.text,
     required this.iconData,
+    required this.reqDateValue
   }) : super(key: key);
 
   var dateValue = TextEditingController();
@@ -60,8 +62,10 @@ class DateSelectionWithHintSupport extends StatelessWidget {
     if(pickedDate != null ){
       log("Date choosen $pickedDate");  //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+      String respFormattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       log("Formatted Date $formattedDate"); //formatted date output using intl package =>  2021-03-16
-      dateValue.text = formattedDate;
+      dateValue.text = formattedDate ?? "";
+      reqDateValue.text = respFormattedDate ?? "";
     }
   }
 }

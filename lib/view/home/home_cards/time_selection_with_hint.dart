@@ -7,14 +7,14 @@ import 'package:socialcarpooling/util/color.dart';
 class TimeSelectionWithHintSupport extends StatelessWidget {
   final String text;
   final IconData iconData;
+  TextEditingController timerValue;
 
   TimeSelectionWithHintSupport({
     Key? key,
     required this.text,
     required this.iconData,
+    required this.timerValue
   }) : super(key: key);
-
-  var timeValue = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
           ]),
       child: TextField(
         textAlign: TextAlign.start,
-        controller: timeValue,
+        controller: timerValue,
         readOnly: true,
         onTap: () {
           showClock(context);
@@ -67,6 +67,6 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
     );
     var timeSelected = pickedTime?.format(context);
     log("Picked Time $timeSelected");
-    timeValue.text = timeSelected ?? "";
+    timerValue.text = timeSelected ?? "";
   }
 }

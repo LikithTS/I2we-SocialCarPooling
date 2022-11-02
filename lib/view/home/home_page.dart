@@ -214,9 +214,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     height: 320,
                                     child: TabBarView(
                                         controller: tabController,
-                                        children: [
-                                          showDriverWidget(context),
-                                          const RiderWidgetView()
+                                        children: const [
+                                          DriverWidgetView(),
+                                          RiderWidgetView()
                                         ]),
                                   ),
                                 ),
