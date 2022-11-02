@@ -1,13 +1,15 @@
 
-import 'dart:developer';
-
+import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/model/QuestionarieCategory.dart';
 import 'package:common/network/model/QuestionarieResponse.dart';
 import 'package:common/network/model/SubCategories.dart';
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
+import 'package:socialcarpooling/widgets/circular_progress_loader.dart';
 
 import '../../util/CPSessionManager.dart';
 import '../../util/CPString.dart';
@@ -26,6 +28,7 @@ class _QuestionarieState extends State<QuestionariePage>
   late TabController tabController;
   TextStyle tabStyle = TextStyleUtils.primaryTextBold.copyWith(fontSize: textsize16sp);
   List<Questionarie> categories = [];
+  bool isDataLoading = true;
 
   @override
   void initState() {
@@ -122,7 +125,15 @@ class _QuestionarieState extends State<QuestionariePage>
     return Scaffold(
         appBar: AppBar(
             title: const Text(CPString.QUESTIONARIES)),
-        body: tabCreate());
+        body: getQuestionarieWidgets());
+  }
+
+  Widget getQuestionarieWidgets() {
+    if (isDataLoading) {
+      return getLoadingWidget();
+    } else {
+      return tabCreate();
+    }
   }
 
   getSubCategories(List<Questionarie> categories) {
@@ -157,13 +168,18 @@ class _QuestionarieState extends State<QuestionariePage>
   }
 
   void handleQuestionResponseData(value) {
+    isDataLoading = false;
     if(value is QuestionarieResponse){
     _onCategoriesUpdated(value.questionarie);
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.errorMessage ?? "");
     }
   }
 
   void handleErrorResponseData(onError) {
-    log("onError ${onError}");
+    if (onError is ApiException) {
+      showSnackbar(context, onError.errorResponse.errorMessage ?? "");
+    }
   }
 }
 
