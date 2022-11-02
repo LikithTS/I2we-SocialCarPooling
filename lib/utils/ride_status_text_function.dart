@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/constant.dart';
 
 
@@ -20,6 +22,15 @@ String getRightButtonText(String rideType, String rideStatus) {
     case Constant.RIDE_JOINED:
       return Constant.BUTTON_CHECK_IN;
     default:
-      return Constant.BUTTON_START;
+      return rideStatus;
+  }
+}
+
+Color getRightButtonBgColor(String rideType, String rideStatus) {
+  switch (rideStatus) {
+    case Constant.BUTTON_COMPLETED:
+      return Colors.green;
+    default:
+      return buttonBgColor;
   }
 }

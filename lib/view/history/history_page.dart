@@ -1,17 +1,13 @@
 import 'package:common/network/exception/ApiException.dart';
-import 'package:common/network/model/RecentRides.dart';
-import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HistoryApiRespository.dart';
 import 'package:common/network/response/HistoryResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
-import 'package:socialcarpooling/view/home/home_cards/upcoming_rides_card.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../util/CPString.dart';
@@ -60,8 +56,7 @@ class _HistoryState extends State<HistoryPage> {
   void updateHistoryData(HistoryResponse value) {
     setState(() {
       _historyResponse = value;
-      if ((value.asDriver?.isNotEmpty == true) ||
-          (value.asPassenger?.isNotEmpty == true)) {
+      if (value.rides?.isNotEmpty == true) {
         isRideDataAvailable = true;
       } else {
         isRideDataAvailable = false;
@@ -85,8 +80,7 @@ class _HistoryState extends State<HistoryPage> {
   }
 
   Widget getAllRideWidget(BuildContext context) {
-    int _totalcount = (_historyResponse?.asDriver?.length ?? 0) +
-        (_historyResponse?.asPassenger?.length ?? 0);
+    int _totalcount = (_historyResponse?.rides?.length ?? 0);
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: false,
@@ -97,39 +91,25 @@ class _HistoryState extends State<HistoryPage> {
   }
 
   getRecentRideWidget(int index) {
-    List<RecentRides>? recentRides = _historyResponse?.asDriver;
+    List<RideData>? recentRides = _historyResponse?.rides;
     if (index < (recentRides?.length ?? 0)) {
-      RecentRides recentRide = recentRides![index];
+      RideData recentRide = recentRides![index];
       return RecentRidesWidget(
         carIcon: 'assets/images/car_pool.png',
         startAddress: recentRide.startDestinationFormattedAddress ?? "",
         endAddress: recentRide.endDestinationFormattedAddress ?? "",
-        rideType: recentRide.rideType ?? Constant.AS_HOST,
+        rideType: recentRide.rideType ?? "",
         amount: recentRide.amountPerSeat ?? 0,
-        dateTime: DateTime.now(),
+        dateTime: DateTime.parse(recentRide.startTime ?? ""),
         seatsOffered: recentRide.seatsOffered ?? 1,
-        carType: Constant.CAR_TYPE_SEDAN,
-        coRidersCount: "2",
-        leftButtonText: Constant.BUTTON_CANCEL,
-        rideStatus: Constant.RIDE_COMPLETED,
+        carType: recentRide.carTypeInterested ?? "",
+        coRidersCount: "",
+        leftButtonText: "",
+        rideStatus: recentRide.rideStatus ?? recentRide.riderStatus?? "",
+        isDisplayTitle: false
       );
     } else {
-      List<UpcomingRides>? upcomingRides = _historyResponse?.asPassenger;
-      int indexCount = index - (recentRides?.length ?? 0);
-      UpcomingRides upcomingRide = upcomingRides![indexCount];
-      return UpcomingRidesWidget(
-        carIcon: 'assets/images/car_pool.png',
-        startAddress: upcomingRide.startDestinationFormattedAddress ?? "",
-        endAddress: upcomingRide.endDestinationFormattedAddress ?? "",
-        rideType: upcomingRide.rideType ?? Constant.AS_HOST,
-        amount: upcomingRide.amountPerSeat ?? 0,
-        dateTime: DateTime.now(),
-        seatsOffered: upcomingRide.seatsOffered ?? 1,
-        carType: upcomingRide.carTypeInterested ?? Constant.CAR_TYPE_SEDAN,
-        coRidersCount: "2",
-        leftButtonText: Constant.BUTTON_CANCEL,
-        rideStatus: Constant.RIDE_SCHEDULED,
-      );
+      return Container();
     }
   }
 
