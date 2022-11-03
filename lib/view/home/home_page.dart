@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
-                  height: deviceHeight(context)*.48,
+                    height: deviceHeight(context) * .48,
                     //Load Maps here
                     child: MapScreen()),
                 Padding(
