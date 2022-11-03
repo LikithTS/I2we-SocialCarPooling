@@ -21,3 +21,8 @@ String getFormattedTime(DateTime dateTime) {
   debugPrint("Formatted time object $formattedStr");
   return formattedStr;
 }
+
+DateTime parseDatetimeFromUtc({required String isoFormattedString}){
+  var dateTime = DateTime.parse(isoFormattedString);
+  return dateTime.toLocal();
+}

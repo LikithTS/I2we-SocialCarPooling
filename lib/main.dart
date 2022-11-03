@@ -41,7 +41,11 @@ class MyApp extends StatelessWidget {
             textTheme: GoogleFonts.poppinsTextTheme(
               Theme.of(context).textTheme,
             ),
-            backgroundColor: Colors.white,
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                        primary: buttonBgColor, onPrimary: Colors.white),
+                  ),
+                  backgroundColor: Colors.white,
             scaffoldBackgroundColor: Colors.white,
             useMaterial3: true,
             appBarTheme: AppBarTheme(

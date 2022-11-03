@@ -22,8 +22,9 @@ class RecentRidesWidget extends StatelessWidget {
   final String coRidersCount;
   final String leftButtonText;
   final String rideStatus;
+  bool isDisplayTitle;
 
-  const RecentRidesWidget(
+  RecentRidesWidget(
       {Key? key,
       required this.carIcon,
       required this.startAddress,
@@ -35,7 +36,8 @@ class RecentRidesWidget extends StatelessWidget {
       required this.carType,
       required this.coRidersCount,
       required this.leftButtonText,
-      required this.rideStatus})
+      required this.rideStatus,
+      this.isDisplayTitle = true})
       : super(key: key);
 
   @override
@@ -45,11 +47,13 @@ class RecentRidesWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-                  child: primaryTextWidgetLeft(context,
-                      DemoLocalizations.of(context)?.getText("recent_rides")),
-                ),
+                if (isDisplayTitle) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+                    child: primaryTextWidgetLeft(context,
+                        DemoLocalizations.of(context)?.getText("recent_rides")),
+                  )
+                ],
                 Card(
                     child: Container(
                   width: double.infinity,
@@ -138,8 +142,10 @@ class RecentRidesWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            timeView(Icons.calendar_today_sharp, getFormattedDate(dateTime)),
-                            timeView(Icons.schedule, getFormattedTime(dateTime)),
+                            timeView(Icons.calendar_today_sharp,
+                                getFormattedDate(dateTime)),
+                            timeView(
+                                Icons.schedule, getFormattedTime(dateTime)),
                             if (rideType == Constant.AS_HOST) ...[
                               timeView(Icons.airline_seat_recline_normal,
                                   seatsOffered.toString()),
@@ -157,26 +163,27 @@ class RecentRidesWidget extends StatelessWidget {
                             left: 10, right: 10, top: 5, bottom: 5),
                         child: Row(
                           children: [
-                            const Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.blue,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            primaryTextNormalTwoLine(context, coRidersCount),
+                            if (coRidersCount.isNotEmpty) ...[
+                              const Icon(
+                                Icons.add_circle_outline,
+                                color: Colors.blue,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              primaryTextNormalTwoLine(context, coRidersCount)
+                            ],
                             const Spacer(),
                             elevatedButtonView(
-                                getRightButtonText(rideType, rideStatus))
+                                getRightButtonText(rideType, rideStatus),
+                                getRightButtonBgColor(rideType, rideStatus))
                           ],
                         ),
-                      ),
+                      )
                     ],
                   ),
                 )),
               ],
-            )
-        )
-    );
+            )));
   }
 }
