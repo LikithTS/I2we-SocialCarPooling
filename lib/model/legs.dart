@@ -1,8 +1,8 @@
 
 
-import 'package:common/network/model/Steps.dart';
 import 'package:socialcarpooling/model/distance.dart';
 import 'package:socialcarpooling/model/northeast.dart';
+import 'package:socialcarpooling/model/steps.dart';
 
 class Legs {
   Distance? distance;

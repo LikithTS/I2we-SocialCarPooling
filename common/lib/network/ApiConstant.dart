@@ -16,4 +16,5 @@ class ApiConstant {
   static const String ADD_NEW_CAR = "car/add";
   static const String DELETE_CAR = "car/del";
   static const String ALL_RIDE = "ride/all";
+  static const String NEW_RIDE = "ride/new-ride";
 }

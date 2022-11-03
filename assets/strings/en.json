@@ -99,7 +99,9 @@
   "profile_match": "Profile Match",
   "route_match" : "Route Match",
   "bio_char_limit": "250 characters",
-  "post_a_ride_button": "Post a Ride"
+  "post_a_ride_button": "Post a Ride",
+  "post_ride_error" : "Error! One or more fields. Please correct!!",
+  "ride_created_successful" : "New ride created successfully"
 
   "route_match" : "Route Match",
   "Benefits_includes" : "Benefits Includes",

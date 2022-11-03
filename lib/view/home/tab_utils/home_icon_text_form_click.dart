@@ -11,13 +11,15 @@ class HomeTextIconFormClick extends StatefulWidget {
   final IconData prefixIcon;
   final String userType;
   final bool flagAddress;
+  TextEditingController addressValue;
 
-  const HomeTextIconFormClick(
+  HomeTextIconFormClick(
       {Key? key,
       required this.hint,
       required this.prefixIcon,
       required this.userType,
-      required this.flagAddress})
+      required this.flagAddress,
+      required this.addressValue})
       : super(key: key);
 
   @override
@@ -34,6 +36,19 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
     var endDriverAddress =
         Provider.of<AddressProvider>(context).endDriverAddress;
     var endRiderAddress = Provider.of<AddressProvider>(context).endRiderAddress;
+    if(widget.flagAddress) {
+      if(widget.userType.toString() == 'driver') {
+          widget.addressValue.text = startDriverAddress;
+      } else {
+        widget.addressValue.text = startRiderAddress;
+      }
+    } else {
+      if(widget.userType.toString() == 'driver') {
+        widget.addressValue.text = endDriverAddress;
+      } else {
+        widget.addressValue.text = endRiderAddress;
+      }
+    }
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -42,20 +57,8 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
             BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
-        key: Key(widget.flagAddress
-            ? widget.userType.toString() == 'driver'
-                ? startDriverAddress
-                : startRiderAddress
-            : widget.userType.toString() == 'driver'
-                ? endDriverAddress
-                : endRiderAddress),
-        initialValue: widget.flagAddress
-            ? widget.userType.toString() == 'driver'
-                ? startDriverAddress
-                : startRiderAddress
-            : widget.userType.toString() == 'driver'
-                ? endDriverAddress
-                : endRiderAddress,
+        key: Key(widget.addressValue.text),
+        initialValue: widget.addressValue.text,
         onTap: () {
           ProviderPreference().putAddress(context, '');
           Navigator.push(
