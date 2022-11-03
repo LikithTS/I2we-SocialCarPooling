@@ -37,8 +37,8 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: new BorderRadius.circular(5.0),
-          boxShadow: [
+          borderRadius: BorderRadius.circular(5.0),
+          boxShadow: const [
             BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
@@ -71,7 +71,7 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
         textAlign: TextAlign.start,
         decoration: InputDecoration(
             fillColor: Colors.grey,
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: widget.hint,

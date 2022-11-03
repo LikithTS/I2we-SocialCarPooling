@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/Validation.dart';
 
+import '../util/CPString.dart';
 import '../util/TextStylesUtil.dart';
 import '../util/color.dart';
-import '../util/CPString.dart';
 
 Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,TextEditingController _controller,String errorText,IconData icon,int flag,InputValidationMixin inputValidationMixin,String initValue) =>  Card(
     shape: RoundedRectangleBorder(
@@ -63,5 +63,41 @@ Widget inputEditTextWithPrefixWidget(BuildContext context,String textString,Text
       ),
   ),
 );
+
+
+TextFormField buildFormBuilderTextField(
+    String labelText, String hintText,
+    TextEditingController _controller,
+    [TextInputType? textInputType = TextInputType.name, FormFieldValidator? formFieldValidator]) {
+  return TextFormField(
+    controller: _controller,
+    keyboardType: textInputType,
+    validator: formFieldValidator,
+    decoration: InputDecoration(
+        labelText: labelText, hintText: hintText, border: const OutlineInputBorder()),
+  );
+}
+
+TextFormField buildFormBuilderMultilineTextField(
+    String labelText, String hintText,
+    TextEditingController _controller,
+    int maxLines,
+    int maxLength,
+    [TextInputType? textInputType = TextInputType.name, FormFieldValidator? formFieldValidator]) {
+  return TextFormField(
+    textAlign: TextAlign.start,
+    controller: _controller,
+    keyboardType: textInputType,
+    validator: formFieldValidator,
+    maxLines: maxLines,
+    maxLength: maxLength,
+    decoration: InputDecoration(
+        counterText: "$maxLength",
+        labelText: labelText,
+        hintText: hintText,
+        hintTextDirection: TextDirection.ltr,
+        border: const OutlineInputBorder()),
+  );
+}
 
 

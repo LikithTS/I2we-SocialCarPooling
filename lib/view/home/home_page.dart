@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
-                    height: deviceHeight(context) * .5,
+                  height: deviceHeight(context)*.48,
                     //Load Maps here
                     child: MapScreen()),
                 Padding(
@@ -215,9 +215,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     height: 320,
                                     child: TabBarView(
                                         controller: tabController,
-                                        children: [
-                                          showDriverWidget(context),
-                                          const RiderWidgetView()
+                                        children: const [
+                                          DriverWidgetView(),
+                                          RiderWidgetView()
                                         ]),
                                   ),
                                 ),

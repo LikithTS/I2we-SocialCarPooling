@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -29,6 +31,8 @@ class RiderWidgetView extends StatefulWidget {
 class HomeRiderState extends State<RiderWidgetView> {
 
   var selectedCarType = "Car Type";
+  var timeValue = TextEditingController();
+  var dateValue = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -106,23 +110,27 @@ class HomeRiderState extends State<RiderWidgetView> {
                 flex: 5,
                 child: TimeSelectionWithHintSupport(
                     text: DemoLocalizations.of(context)!.getText("time"),
-                    iconData: Icons.schedule),
+                    iconData: Icons.schedule, timerValue: timeValue,),
               ),
               addHorizontalSpace(12),
               Expanded(
                 flex: 5,
                 child: DateSelectionWithHintSupport(
                     text: DemoLocalizations.of(context)!.getText("date"),
-                    iconData: Icons.calendar_today),
+                    iconData: Icons.calendar_today, reqDateValue: dateValue,),
               ),
             ],
           ),
           addVerticalSpace(10),
           elevatedDynamicWidthButtonView(
-              DemoLocalizations.of(context)?.getText("find_ride"), width)
+              DemoLocalizations.of(context)?.getText("find_ride"), width, onFindRideButtonClicked)
         ],
       ),
     );
+  }
+
+  void onFindRideButtonClicked() {
+    log("Button clicked find ride");
   }
 }
 

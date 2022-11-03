@@ -21,7 +21,7 @@ Widget loadHomePageData(HomeResponse data) {
   }
   return Column(
     children: [
-      UpcomingRides(
+      UpcomingRidesWidget(
         carIcon: 'assets/images/car_pool.png',
         startAddress: data.upcomingRides?.firstWhere((element) => true).startDestinationFormattedAddress ?? "",
         endAddress: data.upcomingRides?.firstWhere((element) => true).endDestinationFormattedAddress ?? "",
@@ -34,7 +34,7 @@ Widget loadHomePageData(HomeResponse data) {
         leftButtonText: Constant.BUTTON_CANCEL,
         rideStatus: Constant.RIDE_SCHEDULED,
       ),
-      RecentRides(
+      RecentRidesWidget(
         carIcon: 'assets/images/car_pool.png',
         startAddress: data.recentRides?.firstWhere((element) => true).startDestinationFormattedAddress ?? "",
         endAddress: data.recentRides?.firstWhere((element) => true).endDestinationFormattedAddress ?? "",

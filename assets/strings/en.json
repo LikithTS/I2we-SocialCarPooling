@@ -92,12 +92,15 @@
   "save": "Save",
   "update_profile": "Update Profile",
   "languages_known": "Languages Known",
-  "bio_char_limit": "250 characters",
   "check_in": "CHECK IN",
   "available_rides" : "Available Rides",
   "join_ride_to_see": "Join the ride to see the co-riders",
   "join": "Join",
   "profile_match": "Profile Match",
+  "route_match" : "Route Match",
+  "bio_char_limit": "250 characters",
+  "post_a_ride_button": "Post a Ride"
+
   "route_match" : "Route Match",
   "Benefits_includes" : "Benefits Includes",
   "unlimited_host_a_ride": "Unlimited Host a Ride",

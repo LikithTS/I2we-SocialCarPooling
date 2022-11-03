@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:socialcarpooling/model/direction.dart';
+import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 
 class DirectionApiRepository {
@@ -11,7 +14,7 @@ class DirectionApiRepository {
 
   DirectionApiRepository({Dio? dio}) : _dio = dio ?? Dio();
 
-  Future<DirectionResponse> getDirection(
+  Future<Direction> getDirection(
       {required LatLng origin, required LatLng destination}) async {
 
     final response = await _dio?.get(baseUrl,queryParameters: {
@@ -22,9 +25,15 @@ class DirectionApiRepository {
 
     if(response!.statusCode==200)
       {
-        return DirectionResponse.fromMap(response.data);
+        String directionData = jsonEncode(Direction.fromJson(response.data));
+        storeDirectionData(directionData);
+        return Direction.fromJson(response.data);
       }
 
     return null!;
+  }
+
+  void storeDirectionData(String directionData) {
+      CPSessionManager().setDirectionObject(directionData);
   }
 }

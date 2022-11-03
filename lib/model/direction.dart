@@ -1,48 +1,39 @@
-// To parse this JSON data, do
-//
-//     final directionResponse = directionResponseFromJson(jsonString);
+import 'package:socialcarpooling/model/geocodedWayPoints.dart';
+import 'package:socialcarpooling/model/routes.dart';
 
-import 'dart:convert';
+class Direction {
+  List<GeocodedWaypoints>? geocodedWaypoints;
+  List<Routes>? routes;
+  String? status;
 
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+  Direction({this.geocodedWaypoints, this.routes, this.status});
 
-class DirectionResponse {
-  final LatLngBounds bounds;
-  final List<PointLatLng> polylinePoints;
-  final String totalDistance;
-  final String totalDuration;
-
-  DirectionResponse({
-    required this.bounds,
-    required this.polylinePoints,
-    required this.totalDistance,
-    required this.totalDuration,
-  });
-
-  factory DirectionResponse.fromMap(Map<String, dynamic> map) {
-    if ((map['routes'] as List).isEmpty) return null!;
-
-    final data = Map<String, dynamic>.from(map['routes'][0]);
-
-    final northeast = data['bounds']['northeast'];
-    final southwest = data['bounds']['southwest'];
-    final bounds = LatLngBounds(
-      southwest: LatLng(southwest['lat'], southwest['lng']),
-      northeast: LatLng(northeast['lat'], northeast['lng']),);
-
-    String distance = '';
-    String duration = '';
-
-    if ((data['legs'] as List).isNotEmpty) {
-      final leg = data['legs'][0];
-      distance = leg['distance']['text'];
-      duration = leg['duration']['text'];
+  Direction.fromJson(Map<String, dynamic> json) {
+    if (json['geocoded_waypoints'] != null) {
+      geocodedWaypoints = <GeocodedWaypoints>[];
+      json['geocoded_waypoints'].forEach((v) {
+        geocodedWaypoints!.add(new GeocodedWaypoints.fromJson(v));
+      });
     }
+    if (json['routes'] != null) {
+      routes = <Routes>[];
+      json['routes'].forEach((v) {
+        routes!.add(new Routes.fromJson(v));
+      });
+    }
+    status = json['status'];
+  }
 
-    return DirectionResponse(bounds: bounds,
-        polylinePoints: PolylinePoints().decodePolyline(data['overview_polyline']['points']),
-        totalDistance: distance,
-        totalDuration: duration);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.geocodedWaypoints != null) {
+      data['geocoded_waypoints'] =
+          this.geocodedWaypoints!.map((v) => v.toJson()).toList();
+    }
+    if (this.routes != null) {
+      data['routes'] = this.routes!.map((v) => v.toJson()).toList();
+    }
+    data['status'] = this.status;
+    return data;
   }
 }

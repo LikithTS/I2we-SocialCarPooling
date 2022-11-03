@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget elevatedDynamicWidthButtonView(String? buttonName, double width) => ElevatedButton(
+Widget elevatedDynamicWidthButtonView(String? buttonName, double width, void Function() onPostRideButtonClicked) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         minimumSize: Size(width, 40)),
     onPressed: () {
-      onRightButtonClicked();
+      onPostRideButtonClicked.call();
     },
     child: Text(
       buttonName!,
@@ -19,7 +19,3 @@ Widget elevatedDynamicWidthButtonView(String? buttonName, double width) => Eleva
         fontFamily: 'PoppinsBold',
       ),
     ));
-
-void onRightButtonClicked() {
-  print("On right button clicked");
-}

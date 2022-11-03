@@ -1,4 +1,4 @@
-import 'package:common/network/model/error_response.dart';
+import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
@@ -11,12 +11,15 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/WebviewPage.dart';
+import 'package:socialcarpooling/view/feedback/feedback_page.dart';
+import 'package:socialcarpooling/view/history/history_page.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/CPSessionManager.dart';
@@ -159,6 +162,11 @@ class NavigationDrawerWidget extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => MyRidesScreen()));
         break;
 
+      case 2:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HistoryPage()));
+        break;
+
       case 3:
         if (CPSessionManager().getIfCarDetailsAdded()) {
           Navigator.push(
@@ -191,28 +199,22 @@ class NavigationDrawerWidget extends StatelessWidget {
               );
             });
         break;
+      case 6:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FeedbackPage()));
+        break;
+      case 7:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SubscriptionPage()));
+        break;
       case 8:
-        launchWebViewScreen(
-            context,
-            DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
-                "",
-            Constant.TERMS_CONDITION_URL);
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("terms_and_conditions") ?? "", Constant.TERMS_CONDITION_URL);
         break;
       case 9:
-        launchWebViewScreen(
-            context,
-            DemoLocalizations.of(context)?.getText("privacy_policy") ?? "",
-            Constant.PRIVACY_POLICY_URL);
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("privacy_policy") ?? "", Constant.PRIVACY_POLICY_URL);
         break;
       case 10:
-        launchWebViewScreen(
-            context,
-            DemoLocalizations.of(context)?.getText("help") ?? "",
-            Constant.HELP_URL);
-        break;
-      case 5:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
+        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("help") ?? "", Constant.HELP_URL);
         break;
       case 11:
         showAbout(context);
@@ -224,10 +226,8 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   void launchWebViewScreen(BuildContext context, String title, String url) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WebViewPage(title: title, url: url)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => WebViewPage(title: title, url: url)));
   }
 
   void onLogoutButtonPressed(BuildContext context) {
@@ -235,13 +235,13 @@ class NavigationDrawerWidget extends StatelessWidget {
         .logout()
         .then((value) => {handleResponseData(value, context)})
         .catchError((onError) {
-      handleErrorResponseData(onError, context);
+          handleErrorResponseData(onError, context);
     });
   }
 
   void handleErrorResponseData(onError, BuildContext context) {
-    if (onError is ErrorResponse) {
-      showSnackbar(context, onError.errorMessage ?? "");
+    if(onError is ApiException) {
+      showSnackbar(homeGlobalkey.currentContext!, onError.errorResponse.errorMessage ?? "");
     }
   }
 
@@ -257,13 +257,8 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
-    showAlertDialog(
-        homeGlobalkey.currentContext!,
-        CPString.Alert,
-        CPString.logout_desc,
-        CPString.no,
-        CPString.yes,
-        () => Navigator.pop(homeGlobalkey.currentContext!), () {
+    showAlertDialog(homeGlobalkey.currentContext!, CPString.Alert, CPString.logout_desc, CPString.no, CPString.yes, () => Navigator.pop(homeGlobalkey.currentContext!)
+    , () {
       Navigator.of(homeGlobalkey.currentContext!).pop(true);
       onLogoutButtonPressed(context);
     });
@@ -274,15 +269,17 @@ void showAbout(BuildContext context) {
   PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
     showAboutDialog(
       context: context,
-      applicationIcon: imageAssets(StringUrl.splashImage, 32.w, 32.h),
+      applicationIcon: imageAssets(
+          StringUrl.splashImage, 32.w, 32.h),
       applicationName: packageInfo.appName,
       applicationVersion: packageInfo.version,
       applicationLegalese: CPString.copyright,
       children: <Widget>[
-        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "",
-            style: TextStyleUtils.primaryTextBold),
+        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "", style: TextStyleUtils.primaryTextBold),
         const Padding(
-            padding: EdgeInsets.only(top: 10), child: Text(CPString.about_desc))
+            padding: EdgeInsets.only(top: 10),
+            child: Text(CPString.about_desc)
+        )
       ],
     );
   });

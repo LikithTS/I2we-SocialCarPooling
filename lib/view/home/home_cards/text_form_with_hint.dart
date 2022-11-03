@@ -8,12 +8,14 @@ class TextFormWithHintSupport extends StatelessWidget {
   final String text;
   final IconData iconData;
   final bool isNumber;
+  TextEditingController updatedValue;
 
-  const TextFormWithHintSupport({
+  TextFormWithHintSupport({
     Key? key,
     required this.text,
     required this.iconData,
-    required this.isNumber
+    required this.isNumber,
+    required this.updatedValue
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class TextFormWithHintSupport extends StatelessWidget {
       child: TextFormField(
         keyboardType: checkForInputType(isNumber),
         textAlign: TextAlign.start,
+        controller: updatedValue,
         decoration: InputDecoration(
             fillColor: Colors.grey,
             enabledBorder: const UnderlineInputBorder(

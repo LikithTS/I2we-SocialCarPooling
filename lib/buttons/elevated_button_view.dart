@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/color.dart';
 
-Widget elevatedButtonView(String buttonName) => ElevatedButton(
+Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor]) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        minimumSize: const Size(150, 40)),
+        minimumSize: const Size(150, 40),
+        primary : btnBgColor
+    ),
     onPressed: () {
       onRightButtonClicked();
     },

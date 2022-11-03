@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -13,8 +14,11 @@ import '../../util/TextStylesUtil.dart';
 import '../../util/color.dart';
 
 class SearchLocationView extends StatefulWidget {
-  const SearchLocationView({
-    Key? key,
+
+  Function(double lat, double lng) searchedAddressData;
+
+  SearchLocationView({
+    Key? key, required this.searchedAddressData
   }) : super(key: key);
 
   @override
@@ -89,6 +93,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                 setState(()
                                 {
                                   api.addressController.clear();
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   closeFlag=true;
                                 });
                               },
@@ -134,7 +139,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                               /* api.addressController
                                                               .text =
                                                           '${places.name} , ${places.street} , ${places.country}';*/
-
+                                              widget.searchedAddressData(places.latitude, places.longitude);
                                               ProviderPreference()
                                                   .putAddress(
                                                   context,
@@ -150,6 +155,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                                           .longitude));
 
                                               closeFlag = false;
+                                              FocusManager.instance.primaryFocus?.unfocus();
                                             },
                                             title: Text(
                                               '${places.name} : ${places.street}',
