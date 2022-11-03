@@ -1,7 +1,9 @@
 
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:common/utils/storageutil.dart';
+import 'package:socialcarpooling/model/direction.dart';
 
 class CPSessionManager{
   //Auth Token
@@ -10,6 +12,7 @@ class CPSessionManager{
   final String AUTH_REFRESH_TOKEN = "user_auth_refersh_token";
   final String INTRO_PAGE_VISITED = "intro_page_visited";
   final String CAR_DETAILS_AVAILABLE = "car_details_available";
+  final String DIRECTION_OBJECT = "direction_object";
 
   static final CPSessionManager _instance = CPSessionManager._internal();
 
@@ -83,6 +86,16 @@ class CPSessionManager{
   
   void setIfCarDetailsAdded(bool value) {
     PreferencesUtil.putBoolean(CAR_DETAILS_AVAILABLE, value);
+  }
+
+  void setDirectionObject(String direction) {
+    PreferencesUtil.putString(DIRECTION_OBJECT, direction);
+  }
+
+  Direction getDirectionObject() {
+    Map<String, dynamic> json = jsonDecode(PreferencesUtil.getString(DIRECTION_OBJECT));
+    var direction = Direction.fromJson(json);
+    return direction;
   }
 
 }

@@ -10,7 +10,7 @@ class LocationApi extends ChangeNotifier {
 
   var addressController = TextEditingController();
 
-  var _delay = Deley(milliSeconds: 500);
+  final _delay = Deley(milliSeconds: 300);
 
   final _controller = StreamController<List<Place>>.broadcast();
 
@@ -61,7 +61,7 @@ class LocationApi extends ChangeNotifier {
 class Deley {
   final int milliSeconds;
   late VoidCallback action;
-  Timer _timer = Timer(Duration(milliseconds: 500), () {});
+  Timer _timer = Timer(const Duration(milliseconds: 300), () {});
 
   Deley({required this.milliSeconds});
 

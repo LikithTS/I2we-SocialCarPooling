@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
+import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/view/home/home_cards/date_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/time_selection_with_hint.dart';
@@ -106,6 +107,10 @@ class HomeDriverState extends State<DriverWidgetView> {
     log("Seats offered ${seatOffered.text}");
     log("Ride amount ${rideAmount.text}");
     log("UTC date ${DateFormat("yyyy-MM-dd hh:mm aaa").parse('${dateValue.text} ${timeValue.text}', true)}");
+
+    log("Direction data lat ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lat}");
+    log("Direction data long ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lng}");
+
   }
 
 }

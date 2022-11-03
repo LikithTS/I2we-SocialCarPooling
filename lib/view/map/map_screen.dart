@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/model/directionResponseApi.dart';
+import 'package:socialcarpooling/model/direction.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
@@ -18,7 +18,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-  CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
+  CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -30,7 +30,7 @@ class _MapScreenState extends State<MapScreen> {
   PolylineId? polylineId;
    String? totalDistance;
    String? totalDuration;
-  DirectionResponseApi? directionResponse;
+  Direction? directionResponse;
    List<PointLatLng>? polylinePoints;
 
 // List of coordinates to join
@@ -114,7 +114,7 @@ class _MapScreenState extends State<MapScreen> {
                       ]),
                   child:Text(
                       '$totalDistance,$totalDuration',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 )):Container()
         ],
