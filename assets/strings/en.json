@@ -98,5 +98,17 @@
   "join_ride_to_see": "Join the ride to see the co-riders",
   "join": "Join",
   "profile_match": "Profile Match",
-  "route_match" : "Route Match"
+  "route_match" : "Route Match",
+  "Benefits_includes" : "Benefits Includes",
+  "unlimited_host_a_ride": "Unlimited Host a Ride",
+  "premium_membership": "Premium Membership",
+  "15_days" : "15 days",
+  "1_year": "1 Year",
+  "go_pro": "Go Pro",
+  "subscription_desc": "Subscription will automatically renew and your credit card will be charged at the end of the each period"
+
+
+
+
+
 }

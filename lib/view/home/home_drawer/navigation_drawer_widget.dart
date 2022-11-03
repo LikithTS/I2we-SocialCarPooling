@@ -23,6 +23,7 @@ import '../../../util/CPSessionManager.dart';
 import '../../../util/string_url.dart';
 import '../../../utils/Localization.dart';
 import '../../../widgets/image_widgets.dart';
+import '../../commondialog/custom_dialog.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
 import '../../ratingsandreviews/ratings_reviews_screen.dart';
@@ -176,14 +177,38 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
+      case 7:
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const CustomDialog(
+                title: "Allow Your Location",
+                descriptions:
+                    "We need your location permission to Give better expericance",
+                rightButtonText: "Allow",
+                leftButtonText: "Not now",
+                img: "assets/images/location_dialog.png",
+              );
+            });
+        break;
       case 8:
-        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("terms_and_conditions") ?? "", Constant.TERMS_CONDITION_URL);
+        launchWebViewScreen(
+            context,
+            DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
+                "",
+            Constant.TERMS_CONDITION_URL);
         break;
       case 9:
-        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("privacy_policy") ?? "", Constant.PRIVACY_POLICY_URL);
+        launchWebViewScreen(
+            context,
+            DemoLocalizations.of(context)?.getText("privacy_policy") ?? "",
+            Constant.PRIVACY_POLICY_URL);
         break;
       case 10:
-        launchWebViewScreen(context, DemoLocalizations.of(context)?.getText("help") ?? "", Constant.HELP_URL);
+        launchWebViewScreen(
+            context,
+            DemoLocalizations.of(context)?.getText("help") ?? "",
+            Constant.HELP_URL);
         break;
       case 5:
         Navigator.push(context,
@@ -199,8 +224,10 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   void launchWebViewScreen(BuildContext context, String title, String url) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => WebViewPage(title: title, url: url)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => WebViewPage(title: title, url: url)));
   }
 
   void onLogoutButtonPressed(BuildContext context) {
@@ -208,12 +235,12 @@ class NavigationDrawerWidget extends StatelessWidget {
         .logout()
         .then((value) => {handleResponseData(value, context)})
         .catchError((onError) {
-          handleErrorResponseData(onError, context);
+      handleErrorResponseData(onError, context);
     });
   }
 
   void handleErrorResponseData(onError, BuildContext context) {
-    if(onError is ErrorResponse) {
+    if (onError is ErrorResponse) {
       showSnackbar(context, onError.errorMessage ?? "");
     }
   }
@@ -230,8 +257,13 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
-    showAlertDialog(homeGlobalkey.currentContext!, CPString.Alert, CPString.logout_desc, CPString.no, CPString.yes, () => Navigator.pop(homeGlobalkey.currentContext!)
-    , () {
+    showAlertDialog(
+        homeGlobalkey.currentContext!,
+        CPString.Alert,
+        CPString.logout_desc,
+        CPString.no,
+        CPString.yes,
+        () => Navigator.pop(homeGlobalkey.currentContext!), () {
       Navigator.of(homeGlobalkey.currentContext!).pop(true);
       onLogoutButtonPressed(context);
     });
@@ -242,17 +274,15 @@ void showAbout(BuildContext context) {
   PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
     showAboutDialog(
       context: context,
-      applicationIcon: imageAssets(
-          StringUrl.splashImage, 32.w, 32.h),
+      applicationIcon: imageAssets(StringUrl.splashImage, 32.w, 32.h),
       applicationName: packageInfo.appName,
       applicationVersion: packageInfo.version,
       applicationLegalese: CPString.copyright,
       children: <Widget>[
-        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "", style: TextStyleUtils.primaryTextBold),
+        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "",
+            style: TextStyleUtils.primaryTextBold),
         const Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(CPString.about_desc)
-        )
+            padding: EdgeInsets.only(top: 10), child: Text(CPString.about_desc))
       ],
     );
   });

@@ -1,4 +1,6 @@
-import 'dart:asyncn/network/repository/HomeRepository.dart';
+import 'dart:async';
+
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
-                  height: deviceHeight(context)*.5,
+                    height: deviceHeight(context) * .5,
                     //Load Maps here
                     child: MapScreen()),
                 Padding(
@@ -197,8 +199,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     tabs: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(DemoLocalizations.of(context)!
-                                            .getText("driver_tab")),
+                                        child: Text(
+                                            DemoLocalizations.of(context)!
+                                                .getText("driver_tab")),
                                       ),
                                       Text(DemoLocalizations.of(context)!
                                           .getText("rider_tab"))
