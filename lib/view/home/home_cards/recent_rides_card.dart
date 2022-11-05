@@ -149,8 +149,6 @@ class RecentRidesWidget extends StatelessWidget {
                             if (rideType == Constant.AS_HOST) ...[
                               timeView(Icons.airline_seat_recline_normal,
                                   seatsOffered.toString()),
-                            ] else ...[
-                              timeView(Icons.directions_car, carType),
                             ]
                           ],
                         ),

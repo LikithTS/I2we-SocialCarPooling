@@ -38,14 +38,15 @@ class MyRides extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0.0),
       child: Column(
         children: [
           Card(
               child: Container(
-            width: double.infinity,
+            width: screenWidth * 0.85,
             margin: const EdgeInsets.all(5.0),
             child: Wrap(
               direction: Axis.horizontal,
@@ -54,23 +55,19 @@ class MyRides extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 5, top: 5, bottom: 5),
-                        child: Image.asset(carIcon,
-                            width: 60, height: 60, fit: BoxFit.cover),
-                      ),
+                      child: Image.asset(carIcon,
+                          width: 60, height: 60, fit: BoxFit.cover),
                     ),
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 5),
                     Expanded(
                       flex: 6,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 5, right: 10, top: 5, bottom: 5),
+                            left: 5, right: 5, top: 5, bottom: 5),
                         child: Row(
                           children: [
                             const Icon(Icons.route_rounded),
-                            const SizedBox(width: 5),
+                            const SizedBox(width: 3),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,12 +132,24 @@ class MyRides extends StatelessWidget {
                       if (rideType == Constant.AS_HOST) ...[
                         timeView(Icons.airline_seat_recline_normal,
                             seatsOffered.toString()),
-                      ] else ...[
-                        timeView(Icons.directions_car, carType),
                       ]
                     ],
                   ),
                 ),
+                if (rideType == Constant.AS_RIDER) ...[
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
+                    child: Row(
+                      children: [
+                        timeView(Icons.directions_car, carType),
+                      ],
+                    ),
+                  ),
+                ],
                 const Divider(
                   color: Colors.grey,
                 ),
@@ -149,11 +158,19 @@ class MyRides extends StatelessWidget {
                       left: 10, right: 10, top: 5, bottom: 5),
                   child: Row(
                     children: [
-                      primaryTextNormalTwoLine(
-                          context,
-                          DemoLocalizations.of(context)
-                                  ?.getText("join_ride_to_see") ??
-                              ""),
+                      if (rideType == Constant.AS_RIDER) ...[
+                        primaryTextNormalTwoLine(
+                            context,
+                            DemoLocalizations.of(context)
+                                ?.getText("join_ride_to_see") ??
+                                ""),
+                      ] else ...[
+                        primaryTextNormalTwoLine(
+                            context,
+                            DemoLocalizations.of(context)
+                                ?.getText("invite_ride_to_see") ??
+                                ""),
+                      ]
                     ],
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/CPSessionManager.dart';
+import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 
 import '../../../util/constant.dart';
 import 'add_car_home_view.dart';
@@ -27,7 +28,7 @@ Widget loadHomePageData(HomeResponse data) {
         endAddress: data.upcomingRides?.firstWhere((element) => true).endDestinationFormattedAddress ?? "",
         rideType:  data.upcomingRides?.firstWhere((element) => true).rideType ?? Constant.AS_HOST,
         amount: data.upcomingRides?.firstWhere((element) => true).amountPerSeat ?? 0,
-        dateTime: DateTime.now(),
+        dateTime: getDateTimeFormatter().parse(data.upcomingRides?.firstWhere((element) => true).startTime ?? ""),
         seatsOffered: data.upcomingRides?.firstWhere((element) => true).seatsOffered ?? 1,
         carType: data.upcomingRides?.firstWhere((element) => true).carTypeInterested ?? Constant.CAR_TYPE_SEDAN,
         coRidersCount: "2",
@@ -40,7 +41,7 @@ Widget loadHomePageData(HomeResponse data) {
         endAddress: data.recentRides?.firstWhere((element) => true).endDestinationFormattedAddress ?? "",
         rideType: data.recentRides?.firstWhere((element) => true).rideType ?? Constant.AS_HOST,
         amount: data.recentRides?.firstWhere((element) => true).amountPerSeat ?? 0,
-        dateTime: DateTime.now(),
+        dateTime: getDateTimeFormatter().parse(data.recentRides?.firstWhere((element) => true).startTime ?? ""),
         seatsOffered: data.recentRides?.firstWhere((element) => true).seatsOffered ?? 1,
         carType: Constant.CAR_TYPE_SEDAN,
         coRidersCount: "2",

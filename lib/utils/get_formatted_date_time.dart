@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String getFormattedDateTime(DateTime dateTime) {
   final formattedStr = formatDate(
@@ -8,18 +9,22 @@ String getFormattedDateTime(DateTime dateTime) {
   return formattedStr;
 }
 
+DateFormat getDateTimeFormatter(){
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  return dateFormat;
+}
+
 String getFormattedDate(DateTime dateTime) {
-  final formattedStr = formatDate(
-      dateTime, [dd, '-', mm, '-', yyyy]);
-  debugPrint("Formatted date object $formattedStr");
-  return formattedStr;
+  var formatter = DateFormat('dd-MM-yyyy');
+  String formattedDate = formatter.format(dateTime);
+  debugPrint("Formatted date object $formattedDate");
+  return formattedDate;
 }
 
 String getFormattedTime(DateTime dateTime) {
-  final formattedStr = formatDate(
-      dateTime, [HH, ':', nn, ' ', am]);
-  debugPrint("Formatted time object $formattedStr");
-  return formattedStr;
+  String formattedTime = DateFormat('kk:mm:a').format(dateTime);
+  debugPrint("Formatted time object $formattedTime");
+  return formattedTime;
 }
 
 DateTime parseDatetimeFromUtc({required String isoFormattedString}){

@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:common/network/apiclient.dart';
 import 'package:common/network/model/QuestionarieResponse.dart';
+import 'package:common/network/repository/RefreshRepository.dart';
+import 'package:common/network/response/AuthResponse.dart';
 import 'package:dio/dio.dart';
+import 'package:socialcarpooling/util/CPSessionManager.dart';
 
 import '../ApiConstant.dart';
 import '../model/error_response.dart';
@@ -12,6 +15,7 @@ import 'ApiRepository.dart';
 class HomeRepository extends ApiRepository {
   Future<dynamic> home() async {
     try {
+      log("Calling home api");
       Response userData =
           await APIClient().getDioInstance().get(ApiConstant.HOME_API_PATH);
       dynamic response = handleAPIResponseData(userData);
@@ -23,7 +27,23 @@ class HomeRepository extends ApiRepository {
         return homeResponse;
       }
     } on DioError catch (onError) {
+      if(onError.response?.statusCode == ApiConstant.HTTP_UNAUTHORIZED_ERROR) {
+        RefreshRepository refreshRepository = RefreshRepository();
+        Future<dynamic> future =  refreshRepository.refreshAccessToken();
+        future.then((value) => {
+          handleResponseData(value)
+        });
+      }
       throw getErrorResponse(onError);
+    }
+  }
+
+  handleResponseData(value) {
+    if (value is AuthResponse) {
+      log("Refresh token is successful access token ${value.accessToken}");
+      log("Refresh token is successful refresh token ${value.refreshToken}");
+      CPSessionManager().setAuthToken(value.accessToken ?? "");
+      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
     }
   }
 
