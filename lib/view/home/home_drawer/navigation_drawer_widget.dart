@@ -261,7 +261,7 @@ class NavigationDrawerWidget extends StatelessWidget {
     if (value is SuccessResponse) {
       CPSessionManager().handleUserLogout();
       Navigator.pushReplacement(
-          context,
+          homeGlobalkey.currentContext!,
           MaterialPageRoute(
               builder: (context) =>
                   LoginScreen(userRepository: LoginRepository())));

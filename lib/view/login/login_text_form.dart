@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,6 +31,14 @@ class LoginTextForm extends StatefulWidget {
 
 class InputFieldState extends State<LoginTextForm> {
 
+  late bool _passwordVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -43,7 +53,7 @@ class InputFieldState extends State<LoginTextForm> {
           ]),
       child: TextFormField(
         keyboardType: checkForInputType(widget.isNumber),
-        obscureText: widget.isPasswordField,
+        obscureText:  !_passwordVisible,
         inputFormatters: [
           LengthLimitingTextInputFormatter(10)
         ],
@@ -83,9 +93,10 @@ class InputFieldState extends State<LoginTextForm> {
   }
 
   void handlePasswordVisibleText(bool number) {
-    if(number) {
+    if(!number) {
       setState(() {
-        widget.isPasswordField = !widget.isPasswordField;
+        _passwordVisible = !_passwordVisible;
+        log("Password visible $_passwordVisible");
       });
     }
   }

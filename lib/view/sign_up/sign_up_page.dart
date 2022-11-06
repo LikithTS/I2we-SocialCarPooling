@@ -4,16 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
-import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
-import 'package:socialcarpooling/widgets/text_widgets.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
@@ -112,6 +110,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     CPString.fullNameError,
                     Icons.person,
                     1,
+                    20,
                     this,
                     ''),
               ),
@@ -127,6 +126,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     CPString.mobileError,
                     Icons.mobile_screen_share_outlined,
                     2,
+                    10,
                     this,
                     ''),
               ),
@@ -142,6 +142,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     CPString.emailError,
                     Icons.email,
                     3,
+                    30,
                     this,
                     ''),
               ),
@@ -162,7 +163,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       child: Container(
                           width: deviceWidth(context) * .3,
                           child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 5, bottom: 5),
                             child: Center(
                               child: DropdownButtonHideUnderline(
@@ -199,7 +200,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   ),
                   Container(
                     width: deviceWidth(context) * .6,
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -212,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                           controller: dateController,
                           decoration: const InputDecoration(
                             fillColor: Colors.grey,
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: Colors.blue),
                             ),
@@ -242,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -251,15 +252,17 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.error_outline,
+                    IconButton(
+                      icon: const Icon(Icons.error_outline),
+                      onPressed: () {
+                        alertWidgets(context,CPString.passwordInfo,DemoLocalizations.of(context)?.getText("password_info"));
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     InkWell(
                       onTap:(){
-                        print("Click");
                         alertWidgets(context,CPString.passwordInfo,DemoLocalizations.of(context)?.getText("password_info"));
                     },
                       child: Container(
@@ -456,6 +459,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     CPString.emailError,
                     Icons.work,
                     3,
+                    15,
                     this,
                     ''),
               ),
@@ -508,7 +512,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                 padding: EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {

@@ -1,8 +1,5 @@
-import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/SigninRepository.dart';
-import 'package:common/network/request/SendOtpApi.dart';
 import 'package:common/network/request/signinapi.dart';
-import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -11,7 +8,6 @@ import 'package:socialcarpooling/util/Validation.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
-import '../../util/CPSessionManager.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
@@ -82,6 +78,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     CPString.addressError,
                     Icons.location_on,
                     5,
+                    30,
                     this,
                     ''),
               ),
@@ -97,6 +94,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     CPString.addressTwoError,
                     Icons.location_on,
                     5,
+                    20,
                     this,
                     ''),
               ),
@@ -112,6 +110,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     CPString.cityError,
                     Icons.location_city,
                     5,
+                    15,
                     this,
                     ''),
               ),
@@ -127,6 +126,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     CPString.stateError,
                     Icons.location_city,
                     5,
+                    15,
                     this,
                     ''),
               ),
@@ -142,6 +142,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     CPString.zipCodeError,
                     Icons.local_post_office_outlined,
                     4,
+                    6,
                     this,
                     ''),
               ),

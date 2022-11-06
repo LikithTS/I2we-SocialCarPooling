@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ffi';
+import 'dart:developer';
 
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/SigninRepository.dart';
@@ -9,9 +9,9 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
@@ -124,11 +124,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                     style:
                         TextStyleUtils.primaryTextMedium.copyWith(fontSize: 14),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   imageAssets(StringUrl.verifyPinImage, 200, 200),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Stack(
@@ -142,6 +142,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             CPString.mobileError,
                             Icons.mobile_screen_share_outlined,
                             4,
+                            10,
                             this,
                             widget.mobileNo),
                       ),
@@ -247,12 +248,12 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                                 type: PageTransitionType.leftToRight,
                                 child: VerifiedPage()));*/
                         var otpText=otpString1Controller.text.toString()+otpString2Controller.text.toString()+otpString3Controller.text.toString()+otpString4Controller.text.toString()+otpString5Controller.text.toString()+otpString6Controller.text.toString();
-                        print("OTP Text: $otpText");
+                        log("OTP Text: $otpText");
                         ValidOtpApi validOtpApi = ValidOtpApi(phoneNumber: mobileNoController.text.toString(), otp: otpText);
                         validOtp(validOtpApi);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
+                        backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

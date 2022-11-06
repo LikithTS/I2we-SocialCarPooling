@@ -80,6 +80,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     CPString.fullNameError,
                     Icons.person,
                     1,
+                    20,
                     this,
                     ''),
               ),
@@ -95,6 +96,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     CPString.mobileError,
                     Icons.mobile_screen_share_outlined,
                     2,
+                    10,
                     this,
                     ''),
               ),
@@ -110,6 +112,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     CPString.emailError,
                     Icons.email,
                     3,
+                    30,
                     this,
                     ''),
               ),
@@ -210,7 +213,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -222,6 +225,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     CPString.emailError,
                     Icons.work,
                     3,
+                    15,
                     this,
                     ''),
               ),
