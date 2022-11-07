@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
@@ -105,12 +106,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       suffixIcon: Icons.check_circle,
-                      prefixIcon: Icons.mobile_friendly, isNumber: true, isPasswordField: false,
+                      prefixIcon: Icons.mobile_friendly,
+                      isNumber: true,
+                      isPasswordField: false,
                     ),
                     addVerticalSpace(10),
                     LoginTextForm(
                       editingController: passwordController,
-                      isPasswordField: true,isNumber: false,
+                      isPasswordField: true,
+                      isNumber: false,
                       formValidator: (value) {
                         if (value!.isEmpty || value.isEmpty) {
                           return "Password Cannot be Empty";
@@ -129,10 +133,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              smallText(
-                  DemoLocalizations.of(context)?.getText("forgot_password") ??
-                      "",
-                  Alignment.topRight),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgetPasswordScreen()));
+                },
+                child: smallText(
+                    DemoLocalizations.of(context)?.getText("forgot_password") ??
+                        "",
+                    Alignment.topRight),
+              ),
               Center(
                 child: SizedBox(
                     height: 60,
