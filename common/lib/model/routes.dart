@@ -1,8 +1,10 @@
 
 
-import 'package:socialcarpooling/model/bounds.dart';
-import 'package:socialcarpooling/model/legs.dart';
-import 'package:socialcarpooling/model/polylinePointsData.dart';
+
+import 'package:common/model/polylinePointsData.dart';
+
+import 'bounds.dart';
+import 'legs.dart';
 
 class Routes {
   Bounds? bounds;

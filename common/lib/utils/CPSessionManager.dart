@@ -3,7 +3,8 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:common/utils/storageutil.dart';
-import 'package:socialcarpooling/model/direction.dart';
+
+import '../model/direction.dart';
 
 class CPSessionManager{
   //Auth Token

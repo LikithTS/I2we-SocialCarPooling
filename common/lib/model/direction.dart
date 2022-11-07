@@ -1,5 +1,7 @@
-import 'package:socialcarpooling/model/geocodedWayPoints.dart';
-import 'package:socialcarpooling/model/routes.dart';
+
+import 'package:common/model/routes.dart';
+
+import 'geocodedWayPoints.dart';
 
 class Direction {
   List<GeocodedWaypoints>? geocodedWaypoints;

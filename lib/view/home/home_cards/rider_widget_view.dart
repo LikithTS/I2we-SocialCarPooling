@@ -1,22 +1,22 @@
 import 'dart:developer';
 
+import 'package:common/model/direction.dart';
+import 'package:common/model/steps.dart' as directionSteps;
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/StartDestination.dart';
+import 'package:common/network/request/Steps.dart' as requestSteps;
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:socialcarpooling/model/direction.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/model/steps.dart' as directionSteps;
-import 'package:common/network/request/Steps.dart' as requestSteps;
 import 'package:socialcarpooling/view/home/home_cards/date_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/time_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.dart';
@@ -155,12 +155,8 @@ class HomeRiderState extends State<RiderWidgetView> {
     log("Drive start date ${dateValue.text.isEmpty}");
     log("Seats offered ${selectedCarType.isEmpty}");
 
-    log("Direction data lat ${CPSessionManager()
-        .getDirectionObject()
-        .routes![0].legs![0].startLocation!.lat}");
-    log("Direction data long ${CPSessionManager()
-        .getDirectionObject()
-        .routes![0].legs![0].startLocation!.lng}");
+    log("Direction data lat ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lat}");
+    log("Direction data long ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lng}");
 
     if (originValue.text.isEmpty ||
         destinationValue.text.isEmpty ||
@@ -176,27 +172,27 @@ class HomeRiderState extends State<RiderWidgetView> {
       StartDestination origin = StartDestination(
           formattedAddress: directionObject.routes![0].legs![0].startAddress,
           placeId: directionObject.geocodedWaypoints![1].placeId,
-          lat: directionObject.routes![0].legs![0].startLocation!.lat
-              .toString(),
+          lat:
+              directionObject.routes![0].legs![0].startLocation!.lat.toString(),
           long: directionObject.routes![0].legs![0].startLocation!.lng
-              .toString()
-      );
+              .toString());
       StartDestination destination = StartDestination(
           formattedAddress: directionObject.routes![0].legs![0].endAddress,
           placeId: directionObject.geocodedWaypoints![0].placeId,
           lat: directionObject.routes![0].legs![0].endLocation!.lat.toString(),
-          long: directionObject.routes![0].legs![0].endLocation!.lng.toString()
-      );
-      final String? distance = directionObject.routes![0].legs![0].distance
-          ?.text;
-      final String? duration = directionObject.routes![0].legs![0].duration
-          ?.text;
-      final List<directionSteps.Steps>? steps = directionObject.routes![0]
-          .legs![0].steps;
+          long:
+              directionObject.routes![0].legs![0].endLocation!.lng.toString());
+      final String? distance =
+          directionObject.routes![0].legs![0].distance?.text;
+      final String? duration =
+          directionObject.routes![0].legs![0].duration?.text;
+      final List<directionSteps.Steps>? steps =
+          directionObject.routes![0].legs![0].steps?.cast<directionSteps.Steps>();
       List<requestSteps.Steps>? reqSteps = [];
       if (steps != null) {
         for (var step in steps) {
-          reqSteps.add(requestSteps.Steps(distanceInMeters: step.distance?.value,
+          reqSteps.add(requestSteps.Steps(
+              distanceInMeters: step.distance?.value,
               lat: step.endLocation?.lat.toString(),
               long: step.endLocation?.lng.toString()));
         }
@@ -209,8 +205,7 @@ class HomeRiderState extends State<RiderWidgetView> {
           carTypeInterested: selectedCarType,
           distance: distance,
           duration: duration,
-          steps: reqSteps
-      );
+          steps: reqSteps);
       log("New Ride API $api");
       RideRepository rideRepository = RideRepository();
       Future<dynamic> future = rideRepository.postNewRide(api: api);

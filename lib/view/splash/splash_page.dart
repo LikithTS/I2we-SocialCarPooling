@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/dimens.dart';
@@ -12,13 +14,10 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/login/login_screen.dart';
-import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 
-import '../../util/CPSessionManager.dart';
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
-import 'package:provider/provider.dart';
 
 
 class SplashScreenPage extends StatefulWidget {

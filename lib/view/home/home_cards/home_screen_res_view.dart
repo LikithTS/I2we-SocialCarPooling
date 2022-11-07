@@ -2,8 +2,8 @@
 
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 
 import '../../../util/constant.dart';

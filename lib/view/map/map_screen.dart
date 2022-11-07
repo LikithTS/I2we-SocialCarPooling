@@ -1,12 +1,12 @@
+import 'package:common/model/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/model/direction.dart';
+import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
-import 'package:provider/provider.dart';
 
 
 class MapScreen extends StatefulWidget {

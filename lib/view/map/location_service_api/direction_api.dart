@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:common/model/direction.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/model/direction.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 
 class DirectionApiRepository {

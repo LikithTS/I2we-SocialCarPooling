@@ -1,19 +1,17 @@
 import 'dart:developer';
 
+import 'package:common/model/direction.dart';
+import 'package:common/model/steps.dart' as directionSteps;
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/StartDestination.dart';
+import 'package:common/network/request/Steps.dart' as requestSteps;
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:socialcarpooling/model/direction.dart';
-import 'package:socialcarpooling/model/steps.dart' as directionSteps;
-import 'package:common/network/request/Steps.dart' as requestSteps;
-import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/view/home/home_cards/date_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
@@ -171,7 +169,7 @@ class HomeDriverState extends State<DriverWidgetView> {
       final String? duration = directionObject.routes![0].legs![0].duration
           ?.text;
       final List<directionSteps.Steps>? steps = directionObject.routes![0]
-          .legs![0].steps;
+          .legs![0].steps?.cast<directionSteps.Steps>();
       List<requestSteps.Steps>? reqSteps = [];
       if (steps != null) {
         for (var step in steps) {

@@ -329,7 +329,7 @@ Widget elevatedButtonView(
         String buttonName, VoidCallback onClick, BuildContext context) =>
     ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0Xff1D883A),
+            primary: const Color(0Xff1D883A),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),

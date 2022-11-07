@@ -5,13 +5,13 @@ import 'package:common/network/model/QuestionarieResponse.dart';
 import 'package:common/network/model/SubCategories.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/circular_progress_loader.dart';
 
-import '../../util/CPSessionManager.dart';
 import '../../util/CPString.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';

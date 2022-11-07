@@ -5,8 +5,8 @@ import 'package:common/network/model/QuestionarieResponse.dart';
 import 'package:common/network/repository/RefreshRepository.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:dio/dio.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 
+import '../../utils/CPSessionManager.dart';
 import '../ApiConstant.dart';
 import '../model/error_response.dart';
 import '../response/HomeResponse.dart';

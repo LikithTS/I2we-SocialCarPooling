@@ -78,7 +78,7 @@ class _ForgetPasswordConfirmScreenState
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
+                        primary: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

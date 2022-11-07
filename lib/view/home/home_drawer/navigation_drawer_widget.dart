@@ -3,6 +3,7 @@ import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -22,7 +23,6 @@ import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
-import '../../../util/CPSessionManager.dart';
 import '../../../util/string_url.dart';
 import '../../../utils/Localization.dart';
 import '../../../widgets/image_widgets.dart';

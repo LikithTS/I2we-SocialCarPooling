@@ -6,6 +6,7 @@ import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/SendOtpApi.dart';
 import 'package:common/network/request/ValidOtpApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
@@ -16,7 +17,6 @@ import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
-import '../../util/CPSessionManager.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';
@@ -253,7 +253,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                         validOtp(validOtpApi);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
+                        primary: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

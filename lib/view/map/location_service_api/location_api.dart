@@ -1,9 +1,8 @@
 import 'dart:async';
 
+import 'package:common/model/places.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:get/utils.dart';
-import 'package:socialcarpooling/model/places.dart';
 
 class LocationApi extends ChangeNotifier {
   List<Place> placeList = [];

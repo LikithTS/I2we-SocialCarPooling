@@ -220,7 +220,7 @@ Widget outlineButtonView(String buttonName, VoidCallback onClick) =>
 Widget elevatedButtonView(String buttonName, VoidCallback onClick) =>
     ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0Xff1D883A),
+            primary: Color(0Xff1D883A),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),

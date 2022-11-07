@@ -1,17 +1,12 @@
-import 'dart:developer';
-import 'dart:ffi';
-
+import 'package:common/model/places.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:socialcarpooling/model/places.dart';
-import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/map/location_service_api/location_api.dart';
 
 import '../../provider/provider_preference.dart';
 import '../../util/TextStylesUtil.dart';
-import '../../util/color.dart';
 
 class SearchLocationView extends StatefulWidget {
 

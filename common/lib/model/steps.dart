@@ -1,8 +1,10 @@
 
 
-import 'package:socialcarpooling/model/distance.dart';
-import 'package:socialcarpooling/model/northeast.dart';
-import 'package:socialcarpooling/model/polylinePointsData.dart';
+
+import 'package:common/model/polylinePointsData.dart';
+
+import 'distance.dart';
+import 'northeast.dart';
 
 class Steps {
   Distance? distance;

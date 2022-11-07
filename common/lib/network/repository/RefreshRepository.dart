@@ -7,8 +7,8 @@ import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/ApiRepository.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:dio/dio.dart';
-import 'package:socialcarpooling/util/CPSessionManager.dart';
 
+import '../../utils/CPSessionManager.dart';
 import '../ApiConstant.dart';
 
 class RefreshRepository extends ApiRepository {
