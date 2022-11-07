@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/color.dart';
 
 class CustomDialog extends StatefulWidget {
   final String title, descriptions, rightButtonText, leftButtonText;
@@ -62,7 +63,7 @@ class _CustomDialogState extends State<CustomDialog> {
           ),
           Text(
             widget.descriptions,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14, color: primaryColor),
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -74,20 +75,29 @@ class _CustomDialogState extends State<CustomDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      widget.leftButtonText,
-                      style: const TextStyle(fontSize: 18),
-                    )),
+                  style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  )),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    widget.leftButtonText,
+                    style: const TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ),
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    )),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     child: Text(
                       widget.rightButtonText,
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 14),
                     )),
               ],
             ),
