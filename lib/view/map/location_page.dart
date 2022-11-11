@@ -63,6 +63,43 @@ class _LocationPageState extends State<LocationPage> {
     });
   }
 
+  void onMoveCamera(BuildContext context) async {
+    LatLngBounds bounds = await mapController!.getVisibleRegion();
+    final lon = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+    final lat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    _markers.clear();
+
+    var places = await GeocodingPlatform.instance
+        .placemarkFromCoordinates(lat, lon, localeIdentifier: "en");
+
+    setState(() {
+      _markers.add(Marker(
+        draggable: true,
+        markerId: MarkerId("marker_2"),
+        position: LatLng(lat, lon),
+        icon: BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(
+          title:
+          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}',
+        ),
+      ));
+      latitude = lat;
+      longitude = lon;
+      ProviderPreference()
+          .putAddress(
+          context,
+          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+
+      ProviderPreference()
+          .putLatLng(
+          context,
+          LatLng(
+              lat, lon));
+      Provider.of<DriverProvider>(context,
+          listen: false)
+          .changeSearchDrag(false);
+    });
+  }
 
 
   Future<Position> getGeoLocationCoOrdinates() async {
@@ -101,6 +138,7 @@ class _LocationPageState extends State<LocationPage> {
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
+    var searchDrag = Provider.of<DriverProvider>(context).searchDragFlag;
     List<String> result = address.split(',');
     _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
     mapController?.animateCamera(
@@ -108,10 +146,17 @@ class _LocationPageState extends State<LocationPage> {
             _initialCameraPosition
         )
     );
-    if(latLngProvider.latitude!=0.0)
+
+    if(latLngProvider.latitude!=0.0 &&  searchDrag==true)
     {
       setState(()
       {
+        _initialCameraPosition= CameraPosition(target: LatLng(latLngProvider.latitude, latLngProvider.longitude), zoom: 14);
+        mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(
+                _initialCameraPosition
+            )
+        );
         _markers.clear();
         _markers.add(Marker(
             markerId: MarkerId('Home'),
@@ -266,7 +311,15 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                     ],
                   ),
-                ))
+                )),
+            Align(
+                alignment: Alignment.center,
+                child: Transform.translate(
+                    offset: Offset(0, -34),
+                    child: Icon(
+                      Icons.location_on,color: primaryColor,
+                      size: 44,
+                    )))
           ],
         ),
       ),
@@ -282,6 +335,7 @@ class _LocationPageState extends State<LocationPage> {
         zoomControlsEnabled: false,
         initialCameraPosition: _initialCameraPosition,
         markers: _markers,
+        onCameraIdle: () => onMoveCamera(context),
         onMapCreated: (controller) => mapController = controller,
       ),
     );

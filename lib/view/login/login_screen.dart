@@ -16,6 +16,7 @@ import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 import '../../util/color.dart';
 import '../../util/margin_confiq.dart';
 import '../../utils/Localization.dart';
+import 'authentication.dart';
 
 class LoginScreen extends StatefulWidget {
   final LoginRepository userRepository;
@@ -80,8 +81,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset("assets/images/facebook_icon.png",
                       width: 45.w, height: 45.h, fit: BoxFit.fill),
                   addHorizontalSpace(20),
-                  Image.asset("assets/images/google_icon.png",
-                      width: 45.w, height: 45.h, fit: BoxFit.fill)
+                  InkWell(
+                    onTap: (){
+                      AuthenticationHelper().signInWithGoogle(context: context).then((value) =>
+                      {
+                        if(value == null)
+                          {
+                           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()))
+                            print("Success")
+                          }
+                        else
+                          {
+                            print("value : Failure")
+                          }
+                      });
+                    },
+                    child: Image.asset("assets/images/google_icon.png",
+                        width: 45.w, height: 45.h, fit: BoxFit.fill),
+                  )
                 ],
               ),
               addHorizontalSpace(20),
@@ -277,4 +294,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+
 }

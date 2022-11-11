@@ -12,6 +12,7 @@ import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/login/login_screen.dart';
+import 'package:socialcarpooling/view/map/location_get.dart';
 import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 
 import '../../util/CPSessionManager.dart';

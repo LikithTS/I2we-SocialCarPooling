@@ -75,8 +75,6 @@ class _MapScreenState extends State<MapScreen> {
     if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
       {
         _addPolyLine(sourceLocation,destinationLocation);
-        print("Source : $sourceLocation : Dest : $destinationLocation");
-       // _createPolylines(sourceLocation!.latitude,sourceLocation!.longitude,destinationLocation!.latitude,destinationLocation!.longitude);
       }
 
     return Scaffold(

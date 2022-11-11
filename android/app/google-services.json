@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "636673137095",
-    "project_id": "socialcarpooling-d919d",
-    "storage_bucket": "socialcarpooling-d919d.appspot.com"
+    "project_number": "540033069332",
+    "project_id": "i2we-491ed",
+    "storage_bucket": "i2we-491ed.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:636673137095:android:65c458e6e075041ab9e1e2",
+        "mobilesdk_app_id": "1:540033069332:android:cc539808194c0ab9481201",
         "android_client_info": {
           "package_name": "com.ride.socialcarpooling"
         }
       },
       "oauth_client": [
         {
-          "client_id": "636673137095-llpttmtcvc5muhm0s83rvprrbpn1n5vm.apps.googleusercontent.com",
+          "client_id": "540033069332-b16lkl245alk53adcb64rgt1e6aud5bp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ride.socialcarpooling",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "636673137095-75llpmtq66u6589jtke3usr1bge8jp01.apps.googleusercontent.com",
+          "client_id": "540033069332-hhpqomh6v5ott8or5hq3sodinnr4av98.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDVdnp6BOlWZWoqs7KpXnrCLeZqLivVH1M"
+          "current_key": "AIzaSyBIY593fYB_MkGPCdjRTMkJ-m41BQHqTiU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "636673137095-75llpmtq66u6589jtke3usr1bge8jp01.apps.googleusercontent.com",
+              "client_id": "540033069332-hhpqomh6v5ott8or5hq3sodinnr4av98.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
