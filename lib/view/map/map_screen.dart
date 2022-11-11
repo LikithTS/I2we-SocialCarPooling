@@ -1,12 +1,12 @@
-import 'package:common/model/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:socialcarpooling/model/directionResponseApi.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
+import 'package:provider/provider.dart';
 
 
 class MapScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-  CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
+  CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -28,10 +28,10 @@ class _MapScreenState extends State<MapScreen> {
   LatLng? destinationLocation;
   LatLngBounds? bounds;
   PolylineId? polylineId;
-   String? totalDistance;
-   String? totalDuration;
-  Direction? directionResponse;
-   List<PointLatLng>? polylinePoints;
+  String? totalDistance;
+  String? totalDuration;
+  DirectionResponseApi? directionResponse;
+  List<PointLatLng>? polylinePoints;
 
 // List of coordinates to join
   List<LatLng> polylineCoordinates = [];
@@ -73,11 +73,9 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
-      {
-        _addPolyLine(sourceLocation,destinationLocation);
-       // print("Source : $sourceLocation : Dest : $destinationLocation");
-       // _createPolylines(sourceLocation!.latitude,sourceLocation!.longitude,destinationLocation!.latitude,destinationLocation!.longitude);
-      }
+    {
+      _addPolyLine(sourceLocation,destinationLocation);
+    }
 
     return Scaffold(
       body: Stack(
@@ -98,25 +96,25 @@ class _MapScreenState extends State<MapScreen> {
             //onLongPress: _addMarker,
           ),
           totalDistance!=null&& totalDistance!=null?
-            Positioned(
-                top: 40,
-                child:Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
-                  decoration: BoxDecoration(
-                      color: Colors.yellowAccent,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black26,
-                            offset: Offset(0, 2),
-                            blurRadius: 6.0)
-                      ]),
-                  child:Text(
-                      '$totalDistance,$totalDuration',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                )):Container()
+          Positioned(
+              top: 40,
+              child:Container(
+                padding:
+                EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                decoration: BoxDecoration(
+                    color: Colors.yellowAccent,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          blurRadius: 6.0)
+                    ]),
+                child:Text(
+                  '$totalDistance,$totalDuration',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+              )):Container()
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -129,29 +127,29 @@ class _MapScreenState extends State<MapScreen> {
   }
 
 
-   void _addSourceMarker(LatLng pos) async {
+  void _addSourceMarker(LatLng pos) async {
 
-      setState(() {
-        _origin = Marker(
-            markerId: MarkerId('orgin'),
-            infoWindow: InfoWindow(title: 'Orgin'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueBlue),
-            position: pos);
-        _destination = null;
-      });
+    setState(() {
+      _origin = Marker(
+          markerId: MarkerId('orgin'),
+          infoWindow: InfoWindow(title: 'Orgin'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueBlue),
+          position: pos);
+      _destination = null;
+    });
 
   }
-   void _addDestMarker(LatLng pos) async {
-     setState(() {
-        _destination = Marker(
-            markerId: MarkerId('destination'),
-            infoWindow: InfoWindow(title: 'Destination'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueBlue),
-            position: pos);
+  void _addDestMarker(LatLng pos) async {
+    setState(() {
+      _destination = Marker(
+          markerId: MarkerId('destination'),
+          infoWindow: InfoWindow(title: 'Destination'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueBlue),
+          position: pos);
 
-      });
+    });
 
   }
 
@@ -166,13 +164,13 @@ class _MapScreenState extends State<MapScreen> {
           southwest: LatLng(element.bounds!.southwest!.lat!, element.bounds!.southwest!.lng!),
           northeast: LatLng(element.bounds!.northeast!.lat!, element.bounds!.northeast!.lng!),);
         polylinePoints= PolylinePoints().decodePolyline(element.overviewPolyline!.points!);
-       for (var point in polylinePoints!) {
-         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        for (var point in polylinePoints!) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
 
-         totalDuration= element.legs![0].duration!.text;
-         totalDistance= element.legs![0].distance!.text;
+          totalDuration= element.legs![0].duration!.text;
+          totalDistance= element.legs![0].distance!.text;
 
-       }
+        }
         PolylineId id = PolylineId('poly');
         Polyline polyline = Polyline(
           polylineId: id,

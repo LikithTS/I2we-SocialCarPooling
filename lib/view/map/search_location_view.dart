@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/map/location_service_api/location_api.dart';
 
+import '../../provider/driver_provider.dart';
 import '../../provider/provider_preference.dart';
 import '../../util/TextStylesUtil.dart';
 
@@ -148,7 +149,9 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                                                           .latitude,
                                                       places
                                                           .longitude));
-
+                                              Provider.of<DriverProvider>(context,
+                                                  listen: false)
+                                                  .changeSearchDrag(true);
                                               closeFlag = false;
                                               FocusManager.instance.primaryFocus?.unfocus();
                                             },

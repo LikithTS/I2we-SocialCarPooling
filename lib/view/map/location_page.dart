@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -37,33 +36,25 @@ class _LocationPageState extends State<LocationPage> {
   double? longitude;
   late LatLng currentPosition;
   Set<Marker> _markers = {};
+  var _initialCameraPosition = CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 14);
 
-  var _initialCameraPosition =
-      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
-  //Don't change this
-
-  void getCurrentLocation() async {
+  void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
-    getLocation(position.latitude, position.longitude);
-  }
-
-  void getLocation(double lat, double lng) async {
     var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
-        lat, lng,
+        position.latitude, position.longitude,
         localeIdentifier: "en");
-    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 16);
+    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
     mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
             _initialCameraPosition
         )
     );
     setState(() {
-      latitude = lat;
-      longitude = lng;
+      latitude = position.latitude;
+      longitude = position.longitude;
 
       Provider.of<AddressProvider>(context, listen: false)
           .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-      log("Places $places");
       ProviderPreference().putAddress(context,
           '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
       _markers.add(Marker(
@@ -71,6 +62,45 @@ class _LocationPageState extends State<LocationPage> {
           position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
     });
   }
+
+  void onMoveCamera(BuildContext context) async {
+    LatLngBounds bounds = await mapController!.getVisibleRegion();
+    final lon = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+    final lat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    _markers.clear();
+
+    var places = await GeocodingPlatform.instance
+        .placemarkFromCoordinates(lat, lon, localeIdentifier: "en");
+
+    setState(() {
+      _markers.add(Marker(
+        draggable: true,
+        markerId: MarkerId("marker_2"),
+        position: LatLng(lat, lon),
+        icon: BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(
+          title:
+          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}',
+        ),
+      ));
+      latitude = lat;
+      longitude = lon;
+      ProviderPreference()
+          .putAddress(
+          context,
+          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+
+      ProviderPreference()
+          .putLatLng(
+          context,
+          LatLng(
+              lat, lon));
+      Provider.of<DriverProvider>(context,
+          listen: false)
+          .changeSearchDrag(false);
+    });
+  }
+
 
   Future<Position> getGeoLocationCoOrdinates() async {
     bool isServiceEnabled;
@@ -98,34 +128,41 @@ class _LocationPageState extends State<LocationPage> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  void searchedAddressData(double latitude, double longitude){
-    log("Searched address data callback $latitude and $longitude");
-    getLocation(latitude, longitude);
-  }
-
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
+    getLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
+    var searchDrag = Provider.of<DriverProvider>(context).searchDragFlag;
     List<String> result = address.split(',');
-    _initialCameraPosition = CameraPosition(
-        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 16);
-    mapController
-        ?.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
-    if (latLngProvider.latitude != 0.0) {
-      setState(() {
+    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
+    mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+            _initialCameraPosition
+        )
+    );
+
+    if(latLngProvider.latitude!=0.0 &&  searchDrag==true)
+    {
+      setState(()
+      {
+        _initialCameraPosition= CameraPosition(target: LatLng(latLngProvider.latitude, latLngProvider.longitude), zoom: 14);
+        mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(
+                _initialCameraPosition
+            )
+        );
         _markers.clear();
         _markers.add(Marker(
             markerId: MarkerId('Home'),
-            position:
-                LatLng(latLngProvider.latitude, latLngProvider.longitude)));
+            position: LatLng(latLngProvider.latitude, latLngProvider.longitude)));
       });
+
     }
 
     return Scaffold(
@@ -134,17 +171,18 @@ class _LocationPageState extends State<LocationPage> {
           children: [
             latitude == null && longitude == null
                 ? Container(
-                    width: deviceWidth(context),
-                    height: deviceHeight(context),
-                    child: Container(
-                      width: margin50,
-                      height: margin50,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  )
-                : googleMap(context, LatLng(latitude!, longitude!)),
+              width: deviceWidth(context),
+              height: deviceHeight(context),
+              child: Container(
+                width: margin50,
+                height: margin50,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
+                : googleMap(
+                context, LatLng(latitude!, longitude!)),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -161,7 +199,7 @@ class _LocationPageState extends State<LocationPage> {
                 },
               ),
             ),
-            SearchLocationView(searchedAddressData: searchedAddressData,),
+            SearchLocationView(),
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -177,7 +215,7 @@ class _LocationPageState extends State<LocationPage> {
                   ),
                   onPressed: () {
                     // Navigator.pop(context);
-                    getCurrentLocation();
+                    getLocation();
                   },
                 ),
               ),
@@ -224,34 +262,34 @@ class _LocationPageState extends State<LocationPage> {
                           onPressed: () {
                             widget.userType.toString() == 'driver'
                                 ? Provider.of<DriverProvider>(context,
-                                        listen: false)
-                                    .changeDriver(false)
+                                listen: false)
+                                .changeDriver(false)
                                 : Provider.of<DriverProvider>(context,
-                                        listen: false)
-                                    .changeDriver(true);
+                                listen: false)
+                                .changeDriver(true);
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putStartDriverAddress(context, address)
-                                    : ProviderPreference()
-                                        .putStartRiderAddress(context, address)
+                                ? ProviderPreference()
+                                .putStartDriverAddress(context, address)
+                                : ProviderPreference()
+                                .putStartRiderAddress(context, address)
                                 : widget.userType.toString() == 'driver'
-                                    ? ProviderPreference()
-                                        .putEndDriverAddress(context, address)
-                                    : ProviderPreference()
-                                        .putEndRiderAddress(context, address);
+                                ? ProviderPreference()
+                                .putEndDriverAddress(context, address)
+                                : ProviderPreference()
+                                .putEndRiderAddress(context, address);
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                    ? ProviderPreference().putDriverStartLatLng(
-                                        context, latLngProvider)
-                                    : ProviderPreference().putRiderStartLatLng(
-                                        context, latLngProvider)
+                                ? ProviderPreference().putDriverStartLatLng(
+                                context, latLngProvider)
+                                : ProviderPreference().putRiderStartLatLng(
+                                context, latLngProvider)
                                 : widget.userType.toString() == 'driver'
-                                    ? ProviderPreference().putDriverDestLatLng(
-                                        context, latLngProvider)
-                                    : ProviderPreference().putRiderDestLatLng(
-                                        context, latLngProvider);
+                                ? ProviderPreference().putDriverDestLatLng(
+                                context, latLngProvider)
+                                : ProviderPreference().putRiderDestLatLng(
+                                context, latLngProvider);
 
                             Navigator.pop(context);
                           },
@@ -273,7 +311,15 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                     ],
                   ),
-                ))
+                )),
+            Align(
+                alignment: Alignment.center,
+                child: Transform.translate(
+                    offset: Offset(0, -34),
+                    child: Icon(
+                      Icons.location_on,color: primaryColor,
+                      size: 44,
+                    )))
           ],
         ),
       ),
@@ -289,14 +335,16 @@ class _LocationPageState extends State<LocationPage> {
         zoomControlsEnabled: false,
         initialCameraPosition: _initialCameraPosition,
         markers: _markers,
+        onCameraIdle: () => onMoveCamera(context),
         onMapCreated: (controller) => mapController = controller,
       ),
     );
   }
-
   @override
   void dispose() {
     super.dispose();
     mapController!.dispose();
   }
+
+
 }
