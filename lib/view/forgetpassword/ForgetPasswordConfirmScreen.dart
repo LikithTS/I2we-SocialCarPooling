@@ -1,5 +1,12 @@
+import 'dart:developer';
+
+import 'package:common/network/repository/ChangePasswordRespository.dart';
+import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/request/ChangePasswordApi.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/view/home/home_page.dart';
 
 import '../../util/CPString.dart';
 import '../../util/Validation.dart';
@@ -14,7 +21,12 @@ import '../../widgets/header_widgets.dart';
 import '../../widgets/image_widgets.dart';
 
 class ForgetPasswordConfirmScreen extends StatefulWidget {
-  const ForgetPasswordConfirmScreen({Key? key}) : super(key: key);
+
+  String mobileNumber;
+
+  ForgetPasswordConfirmScreen(
+      {Key? key, required this.mobileNumber})
+      : super(key: key);
 
   @override
   State<ForgetPasswordConfirmScreen> createState() =>
@@ -76,7 +88,10 @@ class _ForgetPasswordConfirmScreenState
                     padding: EdgeInsets.symmetric(horizontal: margin20),
                     margin: EdgeInsets.only(top: margin20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        callChangePasswordApi(widget.mobileNumber);
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
                         shape: RoundedRectangleBorder(
@@ -101,5 +116,26 @@ class _ForgetPasswordConfirmScreenState
         ),
       ),
     );
+  }
+
+  void callChangePasswordApi(String mobileNumber) {
+    log("New Password text ${newPassController.text}");
+    log("Confirm Password text ${confirmPassController.text}");
+    log("Mobile number $mobileNumber");
+    if(newPassController.text == confirmPassController.text && mobileNumber.isNotEmpty) {
+        log("Both the password is same");
+        ChangePasswordApi changePasswordApi = ChangePasswordApi(
+            phoneNumber: mobileNumber, password: confirmPassController.text);
+        Future<dynamic> future = ChangePasswordRepository().changePassword(api: changePasswordApi);
+        future.then((value) => {handleResponseData(value)});
+    }
+  }
+
+  handleResponseData(value) {
+    Navigator.pushReplacement(
+        context,
+        PageTransition(
+            type: PageTransitionType.bottomToTop,
+            child: HomePage(homeRepository: HomeRepository())));
   }
 }

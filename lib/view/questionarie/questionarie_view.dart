@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/model/QuestionarieCategory.dart';
 import 'package:common/network/model/QuestionarieResponse.dart';
@@ -7,8 +9,10 @@ import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/circular_progress_loader.dart';
 
@@ -103,7 +107,7 @@ class _QuestionarieState extends State<QuestionariePage>
                 padding: const EdgeInsets.only(top: 10, right: 24, bottom: 34),
                 child: ElevatedButton(
                   onPressed: () {
-                    handleOnContinuteButtonPressed();
+                    handleOnContinueButtonPressed();
                   },
                   style: ElevatedButton.styleFrom(
                       primary: buttonBgColor,
@@ -157,13 +161,19 @@ class _QuestionarieState extends State<QuestionariePage>
     return widgets;
   }
 
-  void handleOnContinuteButtonPressed() {
+  void handleOnContinueButtonPressed() {
      //TODO: CALL API to push the selected items
     if(CPSessionManager().categoryIds.isEmpty){
       const snackBar = SnackBar(
         content: Text(CPString.ALERT_SELECT_ATLEAST_ONE_CATEGORY),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.bottomToTop,
+              child: HomePage(homeRepository: HomeRepository())));
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -36,25 +37,33 @@ class _LocationPageState extends State<LocationPage> {
   double? longitude;
   late LatLng currentPosition;
   Set<Marker> _markers = {};
-  var _initialCameraPosition = CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 14);
 
-  void getLocation() async {
+  var _initialCameraPosition =
+      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
+  //Don't change this
+
+  void getCurrentLocation() async {
     Position position = await getGeoLocationCoOrdinates();
+    getLocation(position.latitude, position.longitude);
+  }
+
+  void getLocation(double lat, double lng) async {
     var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
-        position.latitude, position.longitude,
+        lat, lng,
         localeIdentifier: "en");
-    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
+    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 16);
     mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
             _initialCameraPosition
         )
     );
     setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
+      latitude = lat;
+      longitude = lng;
 
       Provider.of<AddressProvider>(context, listen: false)
           .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+      log("Places $places");
       ProviderPreference().putAddress(context,
           '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
       _markers.add(Marker(
@@ -128,10 +137,15 @@ class _LocationPageState extends State<LocationPage> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
+  void searchedAddressData(double latitude, double longitude){
+    log("Searched address data callback $latitude and $longitude");
+    getLocation(latitude, longitude);
+  }
+
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getCurrentLocation();
   }
 
   @override
@@ -160,9 +174,9 @@ class _LocationPageState extends State<LocationPage> {
         _markers.clear();
         _markers.add(Marker(
             markerId: MarkerId('Home'),
-            position: LatLng(latLngProvider.latitude, latLngProvider.longitude)));
+            position:
+                LatLng(latLngProvider.latitude, latLngProvider.longitude)));
       });
-
     }
 
     return Scaffold(
@@ -171,18 +185,17 @@ class _LocationPageState extends State<LocationPage> {
           children: [
             latitude == null && longitude == null
                 ? Container(
-              width: deviceWidth(context),
-              height: deviceHeight(context),
-              child: Container(
-                width: margin50,
-                height: margin50,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            )
-                : googleMap(
-                context, LatLng(latitude!, longitude!)),
+                    width: deviceWidth(context),
+                    height: deviceHeight(context),
+                    child: Container(
+                      width: margin50,
+                      height: margin50,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  )
+                : googleMap(context, LatLng(latitude!, longitude!)),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: ElevatedButton(
@@ -199,23 +212,23 @@ class _LocationPageState extends State<LocationPage> {
                 },
               ),
             ),
-            SearchLocationView(),
+            SearchLocationView(searchedAddressData: searchedAddressData,),
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                margin: EdgeInsets.only(top: 15, bottom: 200),
+                margin: const EdgeInsets.only(top: 15, bottom: 200),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(10)),
-                  child: Icon(
+                  child: const Icon(
                     Icons.my_location,
                     color: Colors.black,
                   ),
                   onPressed: () {
                     // Navigator.pop(context);
-                    getLocation();
+                    getCurrentLocation();
                   },
                 ),
               ),
@@ -223,7 +236,7 @@ class _LocationPageState extends State<LocationPage> {
             Positioned(
                 bottom: 0,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
@@ -262,34 +275,34 @@ class _LocationPageState extends State<LocationPage> {
                           onPressed: () {
                             widget.userType.toString() == 'driver'
                                 ? Provider.of<DriverProvider>(context,
-                                listen: false)
-                                .changeDriver(false)
+                                        listen: false)
+                                    .changeDriver(false)
                                 : Provider.of<DriverProvider>(context,
-                                listen: false)
-                                .changeDriver(true);
+                                        listen: false)
+                                    .changeDriver(true);
 
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                ? ProviderPreference()
-                                .putStartDriverAddress(context, address)
-                                : ProviderPreference()
-                                .putStartRiderAddress(context, address)
+                                    ? ProviderPreference()
+                                        .putStartDriverAddress(context, address)
+                                    : ProviderPreference()
+                                        .putStartRiderAddress(context, address)
                                 : widget.userType.toString() == 'driver'
-                                ? ProviderPreference()
-                                .putEndDriverAddress(context, address)
-                                : ProviderPreference()
-                                .putEndRiderAddress(context, address);
+                                    ? ProviderPreference()
+                                        .putEndDriverAddress(context, address)
+                                    : ProviderPreference()
+                                        .putEndRiderAddress(context, address);
                             widget.flagAddress
                                 ? widget.userType.toString() == 'driver'
-                                ? ProviderPreference().putDriverStartLatLng(
-                                context, latLngProvider)
-                                : ProviderPreference().putRiderStartLatLng(
-                                context, latLngProvider)
+                                    ? ProviderPreference().putDriverStartLatLng(
+                                        context, latLngProvider)
+                                    : ProviderPreference().putRiderStartLatLng(
+                                        context, latLngProvider)
                                 : widget.userType.toString() == 'driver'
-                                ? ProviderPreference().putDriverDestLatLng(
-                                context, latLngProvider)
-                                : ProviderPreference().putRiderDestLatLng(
-                                context, latLngProvider);
+                                    ? ProviderPreference().putDriverDestLatLng(
+                                        context, latLngProvider)
+                                    : ProviderPreference().putRiderDestLatLng(
+                                        context, latLngProvider);
 
                             Navigator.pop(context);
                           },
@@ -340,11 +353,10 @@ class _LocationPageState extends State<LocationPage> {
       ),
     );
   }
+
   @override
   void dispose() {
     super.dispose();
     mapController!.dispose();
   }
-
-
 }

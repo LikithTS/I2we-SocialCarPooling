@@ -19,4 +19,5 @@ class ApiConstant {
   static const String NEW_RIDE = "ride/new-ride";
   static const String UPCOMING_RIDE = "ride/upcoming";
   static const String REFRESH = "auth/refresh-token";
+  static const String CHANGE_PASSWORD_API_PATH = "user/change-password";
 }

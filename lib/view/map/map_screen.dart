@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/model/directionResponseApi.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
@@ -30,7 +29,6 @@ class _MapScreenState extends State<MapScreen> {
   PolylineId? polylineId;
   String? totalDistance;
   String? totalDuration;
-  DirectionResponseApi? directionResponse;
   List<PointLatLng>? polylinePoints;
 
 // List of coordinates to join

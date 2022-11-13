@@ -53,7 +53,7 @@ class InputFieldState extends State<LoginTextForm> {
           ]),
       child: TextFormField(
         keyboardType: checkForInputType(widget.isNumber),
-        obscureText:  !_passwordVisible,
+        obscureText:  checkForObsureText(widget.isNumber),
         inputFormatters: [
           LengthLimitingTextInputFormatter(10)
         ],
@@ -89,6 +89,14 @@ class InputFieldState extends State<LoginTextForm> {
       return TextInputType.number;
     } else {
       TextInputType.text;
+    }
+  }
+
+  checkForObsureText(bool isNumber) {
+    if(!isNumber) {
+      return !_passwordVisible;
+    } else {
+      return _passwordVisible;
     }
   }
 

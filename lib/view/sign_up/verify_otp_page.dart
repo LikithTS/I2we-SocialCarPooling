@@ -5,6 +5,7 @@ import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/SendOtpApi.dart';
 import 'package:common/network/request/ValidOtpApi.dart';
+import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
+import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
@@ -28,7 +30,9 @@ class VerifyOtpPage extends StatefulWidget {
   final String userName;
   final String mobileNo;
 
-  const VerifyOtpPage({Key? key, required this.mobileNo, required this.userName}) : super(key: key);
+  const VerifyOtpPage(
+      {Key? key, required this.mobileNo, required this.userName})
+      : super(key: key);
 
   @override
   State<VerifyOtpPage> createState() => _VerifyOtpPageState();
@@ -40,20 +44,20 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   int secondsRemaining = 30;
   bool enableResend = false;
   Timer? timer;
+  SigninRepository signInRepository = SigninRepository();
 
-  TextEditingController otpString1Controller =TextEditingController();
-  TextEditingController otpString2Controller =TextEditingController();
-  TextEditingController otpString3Controller =TextEditingController();
-  TextEditingController otpString4Controller =TextEditingController();
-  TextEditingController otpString5Controller =TextEditingController();
-  TextEditingController otpString6Controller =TextEditingController();
+  TextEditingController otpString1Controller = TextEditingController();
+  TextEditingController otpString2Controller = TextEditingController();
+  TextEditingController otpString3Controller = TextEditingController();
+  TextEditingController otpString4Controller = TextEditingController();
+  TextEditingController otpString5Controller = TextEditingController();
+  TextEditingController otpString6Controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     mobileNoController.text = widget.mobileNo;
-    SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: widget.mobileNo);
-    sendOtp(sendOtpApi);
+    callSendOtpApi(widget.mobileNo);
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -68,7 +72,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   }
 
   void sendOtp(SendOtpApi sendOtpApi) {
-    Future<dynamic> future = SigninRepository().sendOtp(api: sendOtpApi);
+    Future<dynamic> future = signInRepository.sendOtp(api: sendOtpApi);
     future.then((value) => {handleResponseData(value)});
     //     .catchError((onError) {
     //   handleErrorResponse(onError);
@@ -76,7 +80,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   }
 
   void validOtp(ValidOtpApi validOtpApi) {
-    Future<dynamic> future = SigninRepository().validOtp(api: validOtpApi);
+    Future<dynamic> future = signInRepository.validOtp(api: validOtpApi);
     future.then((value) => {handleValidOtpResponseData(value)});
     //     .catchError((onError) {
     //   handleErrorResponse(onError);
@@ -85,8 +89,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
-     // print("Success ${value.statusCode}");
-
+      // print("Success ${value.statusCode}");
     } else {
       ErrorResponse errorResponse = value;
       print('Error ${errorResponse.errorMessage}');
@@ -94,17 +97,19 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   }
 
   handleValidOtpResponseData(value) {
-    if (value is SuccessResponse) {
-      print("Success ${value.statusCode}");
+    if (value is AuthResponse) {
+      log("Storing access token and refresh token in sign up flow");
+      CPSessionManager().setAuthToken(value.accessToken ?? "");
+      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
+
       Navigator.push(
           context,
           PageTransition(
               type: PageTransitionType.leftToRight,
-              child: VerifiedPage()));
-
+              child: const VerifiedPage()));
     } else {
       ErrorResponse errorResponse = value;
-      print('Error ${errorResponse.errorMessage}');
+      log('Error ${errorResponse.errorMessage}');
     }
   }
 
@@ -157,22 +162,20 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        otpCard(otpString1Controller),
-                        otpCard(otpString2Controller),
-                        otpCard(otpString3Controller),
-                        otpCard(otpString4Controller),
-                        otpCard(otpString5Controller),
-                        otpCard(otpString6Controller),
-
+                        otpCard(otpString1Controller, borderColor, context),
+                        otpCard(otpString2Controller, borderColor, context),
+                        otpCard(otpString3Controller, borderColor, context),
+                        otpCard(otpString4Controller, borderColor, context),
+                        otpCard(otpString5Controller, borderColor, context),
+                        otpCard(otpString6Controller, borderColor, context),
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   /* ElevatedButton(
@@ -242,14 +245,21 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                       onPressed: () {
                         CPSessionManager().setUserName(widget.userName);
 
-                      /*  Navigator.push(
+                        /*  Navigator.push(
                             context,
                             PageTransition(
                                 type: PageTransitionType.leftToRight,
                                 child: VerifiedPage()));*/
-                        var otpText=otpString1Controller.text.toString()+otpString2Controller.text.toString()+otpString3Controller.text.toString()+otpString4Controller.text.toString()+otpString5Controller.text.toString()+otpString6Controller.text.toString();
+                        var otpText = otpString1Controller.text.toString() +
+                            otpString2Controller.text.toString() +
+                            otpString3Controller.text.toString() +
+                            otpString4Controller.text.toString() +
+                            otpString5Controller.text.toString() +
+                            otpString6Controller.text.toString();
                         log("OTP Text: $otpText");
-                        ValidOtpApi validOtpApi = ValidOtpApi(phoneNumber: mobileNoController.text.toString(), otp: otpText);
+                        ValidOtpApi validOtpApi = ValidOtpApi(
+                            phoneNumber: mobileNoController.text.toString(),
+                            otp: otpText);
                         validOtp(validOtpApi);
                       },
                       style: ElevatedButton.styleFrom(
@@ -308,45 +318,10 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
       )),
     );
   }
-  Widget otpCard(TextEditingController controller) =>  Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5),
-    ),
-    elevation: 2,
-    shadowColor: borderColor,
-    child: Align(
-      alignment: Alignment.center,
-      child: SizedBox(
-        height: 48,
-        width: 48,
-        child: TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          textAlign: TextAlign.center,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(1),
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-          ),
-          onChanged: (value) {
-            if (value.length == 1) {
-              FocusScope.of(context).nextFocus();
-            }
-          },
-          onSaved: (pin) {
-          },
-        ),
-      ),
-    ),
-  );
-
 
   void _resendCode() {
     //other code here
+    callSendOtpApi(widget.mobileNo);
     setState(() {
       secondsRemaining = 10;
       enableResend = false;
@@ -357,5 +332,12 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   dispose() {
     timer?.cancel();
     super.dispose();
+  }
+
+  void callSendOtpApi(String mobileNo) {
+    if(mobileNo.isNotEmpty) {
+      SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
+      sendOtp(sendOtpApi);
+    }
   }
 }
