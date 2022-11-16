@@ -11,6 +11,7 @@ import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
 import 'package:socialcarpooling/view/map/map_screen.dart';
+import 'package:socialcarpooling/view/notifications/notification_main_screen.dart';
 
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
@@ -132,11 +133,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           height: 50,
                           width: 50,
                           child: IconButton(
-                            icon: const Icon(Icons.alarm),
+                            icon: const Icon(Icons.notifications),
                             padding: EdgeInsets.zero,
                             color: Colors.blue,
                             onPressed: () {
                               //For top Menu
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NotificationMainScreen()));
                             },
                           ),
                         ),

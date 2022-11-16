@@ -1,3 +1,5 @@
+import 'package:common/network/repository/UpdateUserRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +8,10 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
+import '../../util/AppPreference.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/font_size.dart';
@@ -281,7 +285,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
                 padding: EdgeInsets.all(10),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    updateUser();
+                  },
                   style: ElevatedButton.styleFrom(
                     primary: primaryColor,
                     shape: RoundedRectangleBorder(
@@ -318,6 +324,71 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
         dob = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(picker);
         dateController.text = formattedDate;
       });
+    }
+  }
+
+  void updateUser() {
+    if (fullNameController.text.isEmpty) {
+      print("full name cannot be empty");
+      return;
+    }
+    if (mobileNoController.text.isEmpty) {
+      print("mobile cannot be empty");
+      return;
+    }
+    if (emailNoController.text.isEmpty) {
+      print("email cannot be empty");
+      return;
+    }
+    if (dateController.text.isEmpty) {
+      print("date cannot be empty");
+      return;
+    }
+    if (workController.text.isEmpty) {
+      print("date cannot be empty");
+      return;
+    }
+    if (selectedValueEducation.isEmpty) {
+      print("education cannot be empty");
+      return;
+    }
+    UpdaterUserApi updaterUserApi = UpdaterUserApi(
+        bio: "",
+        profileImage: "",
+        designation: "",
+        address1: "",
+        address2: "",
+        city: "",
+        education: selectedValueEducation,
+        facebook: "",
+        language: ['ENGLISH'],
+        linkedIn: "",
+        state: "",
+        twitter: "",
+        work: workController.text,
+        pincode: "560045");
+    AppPreference().userDetails = updaterUserApi;
+    updateUserApi(AppPreference().userDetails!);
+  }
+
+  void updateUserApi(UpdaterUserApi updaterUserApi) {
+    Future<dynamic> future =
+        UpdateUserRepository().updateUserDetails(api: updaterUserApi);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    if (value is SuccessResponse) {
+      print("UPdate success" + value.toString());
+      //print("Response Data : ${value.statusCode}");
+    } else {
+      print("UPdate failure " + value.toString());
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
     }
   }
 }
