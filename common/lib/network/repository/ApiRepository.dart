@@ -22,7 +22,7 @@ class ApiRepository {
             successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
           if (successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS) {
             log("success response data ${successResponse.data}");
-            return successResponse.data;
+            return successResponse.data!.isNotEmpty ? successResponse.data : successResponse;
           }
           else {
             log("success response $successResponse");

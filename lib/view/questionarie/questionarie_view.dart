@@ -1,12 +1,13 @@
 
-import 'dart:developer';
-
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/model/QuestionarieCategory.dart';
 import 'package:common/network/model/QuestionarieResponse.dart';
 import 'package:common/network/model/SubCategories.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/request/Data.dart';
+import 'package:common/network/request/Postquestionarieapi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -60,6 +61,11 @@ class _QuestionarieState extends State<QuestionariePage>
   void _onCategoriesUpdated(dynamic val) {
     setState(() {
       categories = val;
+      for (var element in categories) {
+        element.subcategory?.forEach((subCategory) {
+          CPSessionManager().saveSelectedCategoryIds(subCategory.questionnarieId!, subCategory.id!, subCategory.enabled??false);
+        });
+      }
       tabController.dispose();
       tabController = TabController(
           length: categories.length, initialIndex: 0, vsync: this);
@@ -106,9 +112,7 @@ class _QuestionarieState extends State<QuestionariePage>
                 color: Colors.white,
                 padding: const EdgeInsets.only(top: 10, right: 24, bottom: 34),
                 child: ElevatedButton(
-                  onPressed: () {
-                    handleOnContinueButtonPressed();
-                  },
+                  onPressed: handleOnContinueButtonPressed,
                   style: ElevatedButton.styleFrom(
                       primary: buttonBgColor,
                       padding: EdgeInsets.all(margin10),
@@ -118,7 +122,7 @@ class _QuestionarieState extends State<QuestionariePage>
                       style:
                           tabStyle.copyWith(fontSize: textsize16sp, color: Colors.white)),
                 ),
-              )
+              ),
             ]),
           ),
         ],
@@ -162,19 +166,38 @@ class _QuestionarieState extends State<QuestionariePage>
   }
 
   void handleOnContinueButtonPressed() {
-     //TODO: CALL API to push the selected items
     if(CPSessionManager().categoryIds.isEmpty){
       const snackBar = SnackBar(
         content: Text(CPString.ALERT_SELECT_ATLEAST_ONE_CATEGORY),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: HomePage(homeRepository: HomeRepository())));
+      showLoaderDialog(context);
+      postQuetionarieData();
     }
+  }
+
+  void navigateToHomeScreen(){
+    Navigator.pushReplacement(
+        context,
+        PageTransition(
+            type: PageTransitionType.bottomToTop,
+            child: HomePage(homeRepository: HomeRepository())));
+  }
+
+  void postQuetionarieData() async {
+    final postData = CPSessionManager().postQuestionarieData;
+    var data = <QuestionariePostData>[];
+    postData.forEach((key, value) {
+      data.add(QuestionariePostData(id: key, subCategories: value.toList()));
+    });
+    Postquestionarieapi api = Postquestionarieapi(data: data);
+    HomeRepository()
+        .postQuestionarieData(api)
+        .then((value) => handleQuestionResponseData(value))
+        .catchError((onError) {
+      handleErrorResponseData(onError);
+    });
   }
 
   void handleQuestionResponseData(value) {
@@ -183,6 +206,15 @@ class _QuestionarieState extends State<QuestionariePage>
     _onCategoriesUpdated(value.questionarie);
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.errorMessage ?? "");
+    } else if(value is SuccessResponse){
+      showSnackbar(context, value.message ?? CPString.UPDATED_SUCCESS);
+      CPSessionManager().clearAllSelectedCategoryData();
+      Future.delayed(
+        const Duration(seconds: 1),
+            () {
+              navigateToHomeScreen();
+            } ,
+      );
     }
   }
 
@@ -226,7 +258,7 @@ class QuestionariChipSetState extends State<QuestionariChipSet> {
       selected: CPSessionManager().isCategoryItemsSelected(widget.subcategories.id!),
       onSelected: (bool value) {
         setState(() {
-          CPSessionManager().saveSelectedCategoryIds(widget.subcategories.id!, value);
+          CPSessionManager().saveSelectedCategoryIds(widget.subcategories.questionnarieId!, widget.subcategories.id!, value);
         });
       },
     );

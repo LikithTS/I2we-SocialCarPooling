@@ -81,6 +81,7 @@ class CPString{
   static const String FEEDBACK_DESC = 'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car';
   static const String SUBMIT = 'Submit';
   static const String LOADING = "Loading";
+  static const String UPDATED_SUCCESS = "Successfully updated";
 
 
 }
