@@ -1,14 +1,27 @@
+import 'package:common/network/repository/UpdateUserRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
 
 import '../../util/color.dart';
 import '../../util/font_size.dart';
 import '../../util/margin_confiq.dart';
 import '../../utils/widget_functions.dart';
 
-class ProfileBioUpdateScreen extends StatelessWidget {
+class ProfileBioUpdateScreen extends StatefulWidget {
   const ProfileBioUpdateScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileBioUpdateScreen> createState() => _ProfileBioUpdateScreenState();
+}
+
+class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
+  TextEditingController bioController = TextEditingController();
+
+  TextEditingController languageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +29,7 @@ class ProfileBioUpdateScreen extends StatelessWidget {
     final Color lightOrange = Color(0Xfffacb9c);
     final Color orange = Color(0XffF29339);
     final Color lightBlue = Color(0Xffd9e9fc);
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -86,6 +100,7 @@ class ProfileBioUpdateScreen extends StatelessWidget {
                   child: Material(
                     elevation: 2.0,
                     child: TextFormField(
+                      controller: languageController,
                       readOnly: true,
                       showCursor: true,
                       cursorWidth: 0,
@@ -108,7 +123,8 @@ class ProfileBioUpdateScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 20),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Row(
@@ -131,11 +147,11 @@ class ProfileBioUpdateScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 20.0, right: 20, top: 20, bottom: 10),
+                      left: 20.0, right: 20, top: 5, bottom: 10),
                   child: Material(
                     elevation: 2.0,
                     child: TextFormField(
-                      readOnly: true,
+                      controller: bioController,
                       showCursor: true,
                       maxLines: 5,
                       cursorWidth: 0,
@@ -161,7 +177,9 @@ class ProfileBioUpdateScreen extends StatelessWidget {
                       EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
                   padding: EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      updateBio();
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: primaryColor,
                       shape: RoundedRectangleBorder(
@@ -184,6 +202,41 @@ class ProfileBioUpdateScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void updateBio() {
+    if (bioController.text.isEmpty) {
+      return;
+    }
+    if (AppPreference().userDetails != null) {
+      AppPreference().userDetails?.bio = bioController.text;
+      AppPreference().userDetails?.language = ['ENGLISH'];
+    } else {
+      AppPreference().userDetails =
+          UpdaterUserApi(bio: bioController.text, language: ['ENGLISH']);
+    }
+    updateUserApi(AppPreference().userDetails!);
+  }
+
+  void updateUserApi(UpdaterUserApi updaterUserApi) {
+    Future<dynamic> future =
+        UpdateUserRepository().updateUserDetails(api: updaterUserApi);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    if (value is SuccessResponse) {
+      print("UPdate success" + value.toString());
+      //print("Response Data : ${value.statusCode}");
+    } else {
+      print("UPdate failure " + value.toString());
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
+    }
   }
 }
 

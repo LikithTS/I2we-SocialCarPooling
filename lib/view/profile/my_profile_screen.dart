@@ -236,13 +236,7 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: ProfileBioUpdateScreen()));
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                         height: 180,
@@ -308,71 +302,80 @@ class MyProfileScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                   height: 250,
                   width: double.maxFinite,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 5,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              profileText(
-                                  DemoLocalizations.of(context)
-                                          ?.getText("bio") ??
-                                      "",
-                                  12.sp,
-                                  primaryColor),
-                              profileText(
-                                  DemoLocalizations.of(context)
-                                          ?.getText("edit") ??
-                                      "",
-                                  12.sp,
-                                  orange),
-                            ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: ProfileBioUpdateScreen()));
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                profileText(
+                                    DemoLocalizations.of(context)
+                                            ?.getText("bio") ??
+                                        "",
+                                    12.sp,
+                                    primaryColor),
+                                profileText(
+                                    DemoLocalizations.of(context)
+                                            ?.getText("edit") ??
+                                        "",
+                                    12.sp,
+                                    orange),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: profileText(
-                                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis",
-                                12.sp,
-                                const Color(0Xff707070)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 8.0, right: 8.0, bottom: 4.0),
-                          child: Row(
-                            children: [
-                              profileText(
-                                  DemoLocalizations.of(context)
-                                          ?.getText("languages") ??
-                                      "",
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: profileText(
+                                  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis",
                                   12.sp,
-                                  primaryColor),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, bottom: 8.0),
-                          child: Row(
-                            children: [
-                              profileText("Kannada, English", 12.sp,
                                   const Color(0Xff707070)),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, left: 8.0, right: 8.0, bottom: 4.0),
+                            child: Row(
+                              children: [
+                                profileText(
+                                    DemoLocalizations.of(context)
+                                            ?.getText("languages") ??
+                                        "",
+                                    12.sp,
+                                    primaryColor),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8.0, bottom: 8.0),
+                            child: Row(
+                              children: [
+                                profileText("Kannada, English", 12.sp,
+                                    const Color(0Xff707070)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

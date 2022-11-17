@@ -112,6 +112,7 @@
   "subscription_desc": "Subscription will automatically renew and your credit card will be charged at the end of the each period",
   "confirm_password" : "Confirm Password",
   "new_password" : "New Confirm Password",
+  "notification": "Notification",
   "change_password": "Change Password",
   "change_password_mobile_no_error": "Please enter mobile number",
   "change_password_otp_error" : "Please enter otp to validate",
