@@ -26,9 +26,19 @@ class CPSessionManager{
   }
 
   Set<String> categoryIds = HashSet();
+  HashMap<String, Set<String>> postQuestionarieData = HashMap<String, Set<String>>();
 
-  void saveSelectedCategoryIds(String id, bool selected) {
-    selected ? categoryIds.add(id) : categoryIds.remove(id);
+  void saveSelectedCategoryIds(String categoryId, String subCategoryId, bool selected) {
+    selected ? categoryIds.add(subCategoryId) : categoryIds.remove(subCategoryId);
+    if(postQuestionarieData.containsKey(categoryId)){
+      var existingValue = postQuestionarieData[categoryId];
+      selected ? existingValue?.add(subCategoryId) : existingValue?.remove(subCategoryId);
+      postQuestionarieData.updateAll((categoryId, value) => existingValue!);
+    } else {
+      final subSet = HashSet<String>();
+      subSet.add(subCategoryId);
+      postQuestionarieData[categoryId] = subSet;
+    }
   }
 
   bool isCategoryItemsSelected(String id) {
@@ -37,6 +47,7 @@ class CPSessionManager{
 
   void clearAllSelectedCategoryData(){
     categoryIds.clear();
+    postQuestionarieData.clear();
   }
 
   String getAuthToken() {

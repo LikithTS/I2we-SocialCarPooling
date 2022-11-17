@@ -9,7 +9,9 @@ import 'package:dio/dio.dart';
 import '../../utils/CPSessionManager.dart';
 import '../ApiConstant.dart';
 import '../model/error_response.dart';
+import '../request/Postquestionarieapi.dart';
 import '../response/HomeResponse.dart';
+import '../response/SuccessResponse.dart';
 import 'ApiRepository.dart';
 
 class HomeRepository extends ApiRepository {
@@ -58,6 +60,23 @@ class HomeRepository extends ApiRepository {
       } else {
         var responseData = QuestionarieResponse.fromJson(questionData.data);
         return responseData;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> postQuestionarieData(Postquestionarieapi api) async {
+    try {
+      Response questionData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.QUESTIONARIE_API_PATH, data: api.toJson());
+      dynamic response = handleAPIResponseData(questionData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        var successResponse = SuccessResponse(statusCode: response.statusCode);
+        return successResponse;
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

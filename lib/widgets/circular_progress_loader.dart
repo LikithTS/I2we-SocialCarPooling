@@ -17,3 +17,23 @@ Widget getLoadingWidget() {
     ),
   );
 }
+
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: Row(
+      children: [
+        const CircularProgressIndicator(),
+        Container(
+            margin: EdgeInsets.only(left: margin12),
+            child: const Text(CPString.LOADING)),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
