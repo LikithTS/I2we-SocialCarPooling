@@ -13,6 +13,7 @@ import '../response/SuccessResponse.dart';
 class ApiRepository {
 
   handleAPIResponseData(Response<dynamic> responseData) {
+    log("Status code ${responseData.statusCode}");
     if (responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
         responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
       try {
@@ -33,12 +34,12 @@ class ApiRepository {
           return ErrorResponse.fromJson(responseData.data);
         }
       } catch (e) {
-        log("Error:$e");
-        return ErrorResponse.fromJson(responseData.data);
+        log("Error 1 : $e");
+        return ErrorResponse.fromJson(responseData.statusCode);
       }
     } else {
-      log("Error:${responseData.data}");
-      ErrorResponse(status: responseData.statusCode);
+      log("Error 2 : ${responseData.data}");
+      return ErrorResponse(status: responseData.data);
     }
   }
 

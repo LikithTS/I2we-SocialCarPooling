@@ -117,7 +117,8 @@
   "change_password_mobile_no_error": "Please enter mobile number",
   "change_password_otp_error" : "Please enter otp to validate",
   "verify" : "Verify",
-  "send_otp" : "Send OTP"
+  "send_otp" : "Send OTP",
+  "new_user_verification" : "New User Verification"
 
 
 

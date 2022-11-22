@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:common/model/GoogleUserObject.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,8 +14,8 @@ class AuthenticationHelper {
    return _auth.currentUser !=null;
   }
 
-  Future<User?> signInWithGoogle({required BuildContext context}) async {
-    User? user;
+  Future<GoogleUserObject?> signInWithGoogle({required BuildContext context}) async {
+    GoogleUserObject? user = GoogleUserObject();
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -21,17 +25,18 @@ class AuthenticationHelper {
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-
       try {
         final UserCredential userCredential =
         await _auth.signInWithCredential(credential);
-
-        user = userCredential.user;
+        user.token = userCredential.credential?.token;
+        user.accessToken = userCredential.credential?.accessToken;
+        user.displayName = userCredential.user?.displayName;
+        user.email = userCredential.user?.email;
+        user.photoUrl = userCredential.user?.photoURL;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
@@ -59,10 +64,9 @@ class AuthenticationHelper {
           ),
         );
 
-        print("Error : ${e.toString()}");
+        log("Error : ${e.toString()}");
       }
     }
-
     return user;
   }
 

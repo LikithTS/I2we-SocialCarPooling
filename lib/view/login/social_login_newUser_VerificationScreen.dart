@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:common/model/GoogleUserObject.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/SendOtpApi.dart';
+import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/ValidOtpApi.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -31,14 +34,21 @@ import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/image_widgets.dart';
 
-class ForgetPasswordScreen extends StatefulWidget {
+class SocialLoginNewUserVerificationScreen extends StatefulWidget {
   String mobileNo = "";
+  GoogleUserObject googleUserObject;
+
+  SocialLoginNewUserVerificationScreen(
+      {Key? key, required this.googleUserObject})
+      : super(key: key);
 
   @override
-  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+  State<SocialLoginNewUserVerificationScreen> createState() =>
+      _SocialLoginNewUserVerificationScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
+class _SocialLoginNewUserVerificationScreenState
+    extends State<SocialLoginNewUserVerificationScreen>
     with InputValidationMixin {
   TextEditingController mobileNoController = TextEditingController();
   int secondsRemaining = 30;
@@ -71,9 +81,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     });
   }
 
-  void sendOtp(SendOtpApi sendOtpApi) {
-    Future<dynamic> future = SigninRepository().sendOtp(api: sendOtpApi);
-    future.then((value) => {handleResponseData(value, sendOtpApi.phoneNumber)});
+  void sendOtp(SocialLoginApi socialLoginApi) {
+    Future<dynamic> future = LoginRepository().socialLogin(api: socialLoginApi);
+    future.then(
+        (value) => {handleResponseData(value, socialLoginApi.phoneNumber)});
     //     .catchError((onError) {
     //   handleErrorResponse(onError);
     // });
@@ -81,22 +92,22 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   void validOtp(ValidOtpApi validOtpApi) {
     Future<dynamic> future = SigninRepository().validOtp(api: validOtpApi);
-    future.then((value) => {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
+    future.then((value) =>
+        {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
     //     .catchError((onError) {
     //   handleErrorResponse(onError);
     // });
   }
 
-  handleResponseData(value, String phoneNumber) {
+  handleResponseData(value, String? phoneNumber) {
     setState(() {
       log("Set state otp");
       otpSent = true;
-      widget.mobileNo = phoneNumber;
+      widget.mobileNo = phoneNumber!;
     });
   }
 
   handleValidOtpResponseData(value, String phoneNumber) {
-
     if (value is AuthResponse) {
       log("Storing access token and refresh token in sign up flow");
       CPSessionManager().setAuthToken(value.accessToken ?? "");
@@ -106,7 +117,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
           context,
           PageTransition(
               type: PageTransitionType.bottomToTop,
-              child: ForgetPasswordConfirmScreen(mobileNumber: phoneNumber,)));
+              child: HomePage(homeRepository: HomeRepository())));
     } else {
       ErrorResponse errorResponse = value;
       log('Error ${errorResponse.errorMessage}');
@@ -126,7 +137,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                   headerLayout(
                       context,
                       DemoLocalizations.of(context)!
-                          .getText("forgot_password")),
+                          .getText("new_user_verification")),
                   Text(
                     CPString.verifyOTPTitle,
                     style:
@@ -140,7 +151,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                     height: 20,
                   ),
                   Stack(
-                    alignment: Alignment.bottomRight,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -158,7 +168,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                       if (widget.mobileNo.isNotEmpty &&
                           !enableSendOtpButton) ...[
                         Padding(
-                          padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: InkWell(
                               onTap: () {
                                 setState(() {
@@ -167,40 +177,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                               },
                               child: Positioned(
                                   right: 40,
-                                  bottom: 10,
+                                  bottom: 25,
                                   child: Text(
                                     'Edit',
                                     style: TextStyleUtils.primaryTextMedium
                                         .copyWith(
-                                        color: primaryColor,
-                                        fontSize: fontSize16),
-                                  )
-                              )
-                          ),
+                                            color: primaryColor,
+                                            fontSize: fontSize16),
+                                  ))),
                         ),
                       ],
                       if (enableSendOtpButton) ...[
                         Padding(
-                          padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: InkWell(
                               onTap: () {
                                 setState(() {
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   enableSendOtpButton = false;
                                   callSendOtpApi(widget.mobileNo);
                                 });
                               },
                               child: Positioned(
                                   right: 40,
-                                  bottom: 20,
+                                  bottom: 15,
                                   child: Text(
                                     'Send OTP',
                                     style: TextStyleUtils.primaryTextMedium
                                         .copyWith(
-                                        color: primaryColor,
-                                        fontSize: fontSize16),
-                                  )
-                              )
-                          ),
+                                            color: primaryColor,
+                                            fontSize: fontSize16),
+                                  ))),
                         ),
                       ],
                     ],
@@ -286,7 +293,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                   Container(
                     width: deviceWidth(context),
                     height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: margin20),
+                    padding: EdgeInsets.symmetric(horizontal: margin10),
                     margin: EdgeInsets.only(top: margin20),
                     child: ElevatedButton(
                       onPressed: () {
@@ -344,18 +351,23 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   void callSendOtpApi(String mobileNo) {
     if (mobileNo.isNotEmpty) {
-      SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
-      sendOtp(sendOtpApi);
+      SocialLoginApi api = SocialLoginApi(
+          name: widget.googleUserObject.displayName,
+          email: widget.googleUserObject.email,
+          phoneNumber: mobileNo,
+          token: widget.googleUserObject.accessToken.toString(),
+          socialId: widget.googleUserObject.token.toString());
+      sendOtp(api);
     }
   }
 
   void callValidateOtpApi(String mobileNumber, String otpText) {
     log("Mobile Number $mobileNumber");
     log("Otp $otpText");
-    if(mobileNumber.isEmpty) {
+    if (mobileNumber.isEmpty) {
       alertDialogView(context, "change_password_mobile_no_error");
-    } else if(otpText.isEmpty) {
-      if(otpSent) {
+    } else if (otpText.isEmpty) {
+      if (otpSent) {
         alertDialogView(context, "change_password_otp_error");
       } else {
         callSendOtpApi(mobileNumber);
@@ -370,12 +382,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   }
 
   String getButtonLabel(String mobileNo) {
-    if(mobileNo.isNotEmpty) {
-       return DemoLocalizations.of(context)!
-           .getText("verify");
+    if (mobileNo.isNotEmpty) {
+      return DemoLocalizations.of(context)!.getText("verify");
     } else {
-      return DemoLocalizations.of(context)!
-          .getText("send_otp");
+      return DemoLocalizations.of(context)!.getText("send_otp");
     }
   }
 }

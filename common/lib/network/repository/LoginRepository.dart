@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:common/network/apiclient.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -16,6 +19,26 @@ class LoginRepository extends ApiRepository {
           .post(ApiConstant.LOGIN_API_PATH, data: api.toJson());
       dynamic response = handleAPIResponseData(userData);
       if (response is ErrorResponse) {
+        return response;
+      } else {
+        var authResponse = AuthResponse.fromJson(response[0]);
+        return authResponse;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> socialLogin({required SocialLoginApi api}) async {
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.SOCIAL_API_PATH, data: api.toJson());
+      dynamic response = handleAPIResponseData(userData);
+      log("Response is $response");
+      if (response is ErrorResponse) {
+        return response;
+      } else if(response is SuccessResponse) {
         return response;
       } else {
         var authResponse = AuthResponse.fromJson(response[0]);

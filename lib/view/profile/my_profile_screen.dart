@@ -200,18 +200,22 @@ class MyProfileScreen extends StatelessWidget {
                                             const Color(0Xff707070)),
                                       ),
                                       addVerticalSpace(20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                      Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
                                         children: [
-                                          profileText(
-                                              DemoLocalizations.of(context)
-                                                      ?.getText(
-                                                          "view_details") ??
-                                                  "",
-                                              14.sp,
-                                              Colors.black),
-                                          Icon(Icons.arrow_right)
+                                          Text(
+                                            DemoLocalizations.of(context)
+                                                    ?.getText("view_details") ??
+                                                "",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              fontFamily: 'Poppins',
+                                            ),
+                                          ),
+                                          const Icon(Icons.arrow_right)
                                         ],
                                       )
                                     ]),
@@ -266,13 +270,22 @@ class MyProfileScreen extends StatelessWidget {
                                             const Color(0Xff707070)),
                                       ),
                                       addVerticalSpace(20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                      Wrap(
+                                        crossAxisAlignment:
+                                        WrapCrossAlignment.start,
                                         children: [
-                                          profileText("View Details", 14.sp,
-                                              Colors.black),
-                                          Icon(Icons.arrow_right)
+                                          Text(
+                                            DemoLocalizations.of(context)
+                                                ?.getText("view_details") ??
+                                                "",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              fontFamily: 'Poppins',
+                                            ),
+                                          ),
+                                          const Icon(Icons.arrow_right)
                                         ],
                                       )
                                     ]),
@@ -426,6 +439,7 @@ Widget progressTextBlack(String title, double fontSize, Color color) =>
               fontWeight: FontWeight.w500,
               fontFamily: 'Poppins')),
     ));
+
 Widget profileText(String title, double fontSize, Color color) => Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w),
     child: Align(
