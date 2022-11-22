@@ -1,42 +1,49 @@
 {
   "project_info": {
-    "project_number": "540033069332",
-    "project_id": "i2we-491ed",
-    "storage_bucket": "i2we-491ed.appspot.com"
+    "project_number": "996268724185",
+    "project_id": "i2we-77589",
+    "storage_bucket": "i2we-77589.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:540033069332:android:cc539808194c0ab9481201",
+        "mobilesdk_app_id": "1:996268724185:android:a49a99b518f7c6584853c8",
         "android_client_info": {
           "package_name": "com.ride.socialcarpooling"
         }
       },
       "oauth_client": [
         {
-          "client_id": "540033069332-b16lkl245alk53adcb64rgt1e6aud5bp.apps.googleusercontent.com",
+          "client_id": "996268724185-eq4lo3m0npviad37f5o968t9414g3o34.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ride.socialcarpooling",
-            "certificate_hash": "0073f0b175efceac4f8d8554d668826cb0a30273"
+            "certificate_hash": "663dbec8fe1126a73f60a0f47fcbd4c96b2a9687"
           }
         },
         {
-          "client_id": "540033069332-hhpqomh6v5ott8or5hq3sodinnr4av98.apps.googleusercontent.com",
+          "client_id": "996268724185-a0n6fose7m2vkebfn2mj6aiuji3g09jn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIY593fYB_MkGPCdjRTMkJ-m41BQHqTiU"
+          "current_key": "AIzaSyAG2pCMKsS6ZQXXClEKbKD4nrNEAg9AlAI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "540033069332-hhpqomh6v5ott8or5hq3sodinnr4av98.apps.googleusercontent.com",
+              "client_id": "996268724185-a0n6fose7m2vkebfn2mj6aiuji3g09jn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "996268724185-k64kq23nunk6q88st3ser3vu6h604uvn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ride.socialcarpooling"
+              }
             }
           ]
         }

@@ -2,9 +2,11 @@ class ApiConstant {
   static const int STATUS_CODE_SUCCESS = 200;
   static const int STATUS_CODE_SUCCESS_ONE = 201;
   static const int HTTP_UNAUTHORIZED_ERROR = 401;
+  static const int SOCIAL_LOGIN_NEW_USER_ERROR = 503;
   static const int HTTP_INTERNAL_SERVER_ERROR = 500;
 
   static const String LOGIN_API_PATH = "user/login";
+  static const String SOCIAL_API_PATH = "user/social-login";
   static const String LOGOUT_API_PATH = "user/logout";
   static const String HOME_API_PATH = "home";
   static const String SIGN_IN_API_PATH = "user/signup";

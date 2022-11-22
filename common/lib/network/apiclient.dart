@@ -29,13 +29,17 @@ class APIClient {
     _dio.interceptors.add(LoggingInterceptors());
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (error, errorInterceptorHandler) async {
+        log("Status code in api client ${error.response?.statusCode}");
         if (error.response?.statusCode == 403 ||
             error.response?.statusCode == 401) {
           await RefreshRepository().refreshAccessToken();
           _retry(_dio ,error.requestOptions);
+        } else if(error.response?.statusCode == 503) {
+            errorInterceptorHandler.resolve(Response(requestOptions: error.requestOptions, data: error.response?.statusCode));
         }
-      }
+      },
     ));
+    log("return dio");
     return _dio;
   }
 

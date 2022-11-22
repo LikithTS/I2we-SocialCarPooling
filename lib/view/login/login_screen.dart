@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:common/model/GoogleUserObject.dart';
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
@@ -12,6 +15,7 @@ import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
+import 'package:socialcarpooling/view/login/social_login_newUser_VerificationScreen.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/color.dart';
@@ -83,19 +87,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 45.w, height: 45.h, fit: BoxFit.fill),
                   addHorizontalSpace(20),
                   InkWell(
-                    onTap: (){
-                      AuthenticationHelper().signInWithGoogle(context: context).then((value) =>
-                      {
-                        if(value == null)
-                          {
-                           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()))
-                            print("Success")
-                          }
-                        else
-                          {
-                            print("value : Failure")
-                          }
-                      });
+                    onTap: () {
+                      AuthenticationHelper()
+                          .signInWithGoogle(context: context)
+                          .then((value) => {
+                                if (value is GoogleUserObject)
+                                  {callSocialLoginApi(value)}
+                              });
                     },
                     child: Image.asset("assets/images/google_icon.png",
                         width: 45.w, height: 45.h, fit: BoxFit.fill),
@@ -266,23 +264,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   handleResponseData(value) {
     if (value is AuthResponse) {
-      CPSessionManager().setAuthToken(value.accessToken ?? "");
-      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: HomePage(homeRepository: HomeRepository())));
-    } else {
-      // ErrorResponse errorResponse = value;
-      // setState(() {
-      //   errorText = errorResponse.errorMessage.toString();
-      // });
+      handleSuccessResponse(value);
     }
   }
-
-  handleErrorResponse(value) {}
 
   Widget _buildButton(String title, VoidCallback callback) {
     return ElevatedButton(
@@ -311,5 +295,42 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  callSocialLoginApi(GoogleUserObject userObject) {
+    SocialLoginApi api = SocialLoginApi(
+        name: userObject.displayName,
+        email: userObject.email,
+        phoneNumber: userObject.phoneNumber ,
+        token: userObject.accessToken.toString(),
+        socialId: userObject.token.toString());
+    Future<dynamic> future = _userRepository.socialLogin(api: api);
+    future.then((value) => {handleSocialResponseData(value, userObject)});
+  }
 
+  handleSocialResponseData(value, GoogleUserObject userObject) {
+    log("Response value $value");
+    if (value is AuthResponse) {
+      handleSuccessResponse(value);
+    } else if (value is ErrorResponse) {
+      if (value.status == 503) {
+        log("Navigate to mobile number page");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SocialLoginNewUserVerificationScreen(
+                      googleUserObject: userObject,
+                    )));
+      }
+    }
+  }
+
+  handleSuccessResponse(AuthResponse value) {
+    CPSessionManager().setAuthToken(value.accessToken ?? "");
+    CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
+
+    Navigator.pushReplacement(
+        context,
+        PageTransition(
+            type: PageTransitionType.bottomToTop,
+            child: HomePage(homeRepository: HomeRepository())));
+  }
 }

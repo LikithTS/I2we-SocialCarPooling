@@ -43,6 +43,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   TextEditingController mobileNoController = TextEditingController();
   int secondsRemaining = 30;
   bool enableResend = false;
+  bool enableSendOtpButton = false;
   Timer? timer;
   SigninRepository signInRepository = SigninRepository();
 
@@ -151,14 +152,45 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             this,
                             widget.mobileNo),
                       ),
-                      Positioned(
-                          right: 40,
-                          bottom: 15,
-                          child: Text(
-                            'Edit',
-                            style: TextStyleUtils.primaryTextMedium.copyWith(
-                                color: primaryColor, fontSize: fontSize16),
-                          ))
+                      InkWell(
+                          onTap: () {
+                            setState(() {
+                              enableSendOtpButton = true;
+                            });
+                          },
+                          child: Positioned(
+                              right: 40,
+                              bottom: 15,
+                              child: Text(
+                                'Edit',
+                                style: TextStyleUtils.primaryTextMedium
+                                    .copyWith(
+                                        color: primaryColor,
+                                        fontSize: fontSize16),
+                              )
+                          )
+                      ),
+                      if (enableSendOtpButton) ...[
+                        InkWell(
+                            onTap: () {
+                              setState(() {
+                                enableSendOtpButton = false;
+                                callSendOtpApi(widget.mobileNo);
+                              });
+                            },
+                            child: Positioned(
+                                right: 40,
+                                bottom: 15,
+                                child: Text(
+                                  'Send OTP',
+                                  style: TextStyleUtils.primaryTextMedium
+                                      .copyWith(
+                                      color: primaryColor,
+                                      fontSize: fontSize16),
+                                )
+                            )
+                        ),
+                      ],
                     ],
                   ),
                   Container(
@@ -335,7 +367,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   }
 
   void callSendOtpApi(String mobileNo) {
-    if(mobileNo.isNotEmpty) {
+    if (mobileNo.isNotEmpty) {
       SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
       sendOtp(sendOtpApi);
     }
