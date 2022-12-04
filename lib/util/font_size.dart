@@ -10,6 +10,7 @@ double fontSize7 = 7.sp;
 double fontSize8 = 8.sp;
 double fontSize9 = 9.sp;
 double fontSize10 = 10.sp;
+double fontSize13 = 13.sp;
 double fontSize14 = 14.sp;
 double fontSize16 = 16.sp;
 double fontSize17 = 17.sp;

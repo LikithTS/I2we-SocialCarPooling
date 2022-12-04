@@ -19,22 +19,26 @@ class AvailableRides extends StatelessWidget {
   final int seatsOffered;
   final String carType;
   final String coRidersCount;
-  final String leftButtonText;
-  final String rideStatus;
+  final String name;
+  final String designation;
+  final int routeMatch;
+  final int profileMatch;
 
   const AvailableRides(
       {Key? key,
+      required this.name,
+      required this.designation,
+      required this.carType,
+      required this.routeMatch,
       required this.carIcon,
       required this.startAddress,
       required this.endAddress,
+      required this.profileMatch,
       required this.rideType,
       required this.amount,
       required this.dateTime,
       required this.seatsOffered,
-      required this.carType,
       required this.coRidersCount,
-      required this.leftButtonText,
-      required this.rideStatus,
       required this.profileImage})
       : super(key: key);
 
@@ -54,11 +58,10 @@ class AvailableRides extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 5, top: 5, bottom: 5),
+                        padding: EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
                             backgroundImage: NetworkImage(
@@ -67,23 +70,24 @@ class AvailableRides extends StatelessWidget {
                     ),
                     const SizedBox(width: 20),
                     Expanded(
-                      flex: 6,
+                      flex: 5,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 5, right: 10, top: 5, bottom: 5),
+                        padding: const EdgeInsets.only(left: 5, right: 10),
                         child: Row(
                           children: [
-                            const SizedBox(width: 5),
+                            const SizedBox(width: 2),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  availableRidesText("Driver Name",
+                                  availableRidesText(name,
                                       Colors.black, 18.sp, FontWeight.w400),
-                                  availableRidesText("Destination",
+                                  availableRidesText(designation,
                                       primaryColor, 10.sp, FontWeight.w400),
-                                  availableRidesText("Car type", Colors.black,
-                                      11.sp, FontWeight.w400)
+                                  if (rideType == Constant.AS_HOST) ...[
+                                    availableRidesText(carType, Colors.black,
+                                        11.sp, FontWeight.w400)
+                                  ]
                                 ],
                               ),
                             ),
@@ -95,10 +99,9 @@ class AvailableRides extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
+                        padding: const EdgeInsets.only(left: 10, right: 10),
                         child: Container(
-                          color: Color(0XffE0F2FF),
+                          color: const Color(0XffE0F2FF),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -106,11 +109,11 @@ class AvailableRides extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.repeat,
                                     color: primaryColor,
                                   ),
-                                  availableRidesText("98%", Colors.black, 16.sp,
+                                  availableRidesText("$routeMatch%", Colors.black, 16.sp,
                                       FontWeight.w400)
                                 ],
                               ),
@@ -133,25 +136,22 @@ class AvailableRides extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 5, top: 5, bottom: 5),
+                    if (rideType == Constant.AS_HOST) ...[
+                      Expanded(
+                        flex: 2,
                         child: Image.asset(carIcon,
                             width: 60, height: 60, fit: BoxFit.cover),
                       ),
-                    ),
-                    const SizedBox(width: 20),
+                      const SizedBox(width: 15),
+                    ],
                     Expanded(
                       flex: 6,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 5, right: 10, top: 5, bottom: 5),
+                        padding: const EdgeInsets.only(left: 5, right: 10),
                         child: Row(
                           children: [
                             const Icon(Icons.route_rounded),
-                            const SizedBox(width: 5),
+                            const SizedBox(width: 6),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,10 +178,9 @@ class AvailableRides extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
+                        padding: const EdgeInsets.only(left: 10, right: 10),
                         child: Container(
-                          color: Color(0Xfffee9eb),
+                          color: const Color(0Xfffee9eb),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -189,11 +188,11 @@ class AvailableRides extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.favorite,
                                     color: Color(0Xfff86565),
                                   ),
-                                  availableRidesText("98%", Colors.black, 16.sp,
+                                  availableRidesText("$profileMatch%", Colors.black, 16.sp,
                                       FontWeight.w400)
                                 ],
                               ),
@@ -201,7 +200,7 @@ class AvailableRides extends StatelessWidget {
                                   DemoLocalizations.of(context)
                                           ?.getText("profile_match") ??
                                       "",
-                                  Color(0Xfff86565),
+                                  const Color(0Xfff86565),
                                   8.sp,
                                   FontWeight.w400)
                             ],
@@ -236,40 +235,38 @@ class AvailableRides extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      outlineButtonView(leftButtonText, () {}),
                       CircleAvatar(
                         child: IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.message_rounded,
                             color: Colors.white,
                           ),
                         ),
-                      )
+                      ),
+                      const Spacer(),
+                      outlineButtonView(() {}),
+                      const Spacer(),
+                      if (rideType == Constant.AS_HOST) ...[
+                        elevatedButtonView(
+                            DemoLocalizations.of(context)?.getText("join") ??
+                                "",
+                            () {},
+                            context)
+                      ] else ...[
+                        elevatedButtonView(
+                            DemoLocalizations.of(context)?.getText("invite") ??
+                                "",
+                            () {},
+                            context)
+                      ],
                     ],
                   ),
                 ),
-                const Divider(
-                  color: Colors.grey,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      elevatedButtonView(
-                          DemoLocalizations.of(context)?.getText("join") ?? "",
-                          () {},
-                          context)
-                    ],
-                  ),
-                )
               ],
             ),
           )),
@@ -294,35 +291,35 @@ Widget availableRidesText(
                 fontFamily: 'Poppins')),
       ),
     );
+
 Widget availableRidesCenterText(
         String? title, Color color, double size, FontWeight fontWeight) =>
-    Container(
-      child: Align(
-        alignment: Alignment.center,
-        child: Text(title!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: size,
-                decoration: TextDecoration.none,
-                color: color,
-                fontWeight: fontWeight,
-                fontFamily: 'Poppins')),
-      ),
+    Align(
+      alignment: Alignment.center,
+      child: Text(title!,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: size,
+              decoration: TextDecoration.none,
+              color: color,
+              fontWeight: fontWeight,
+              fontFamily: 'Poppins')),
     );
 
-Widget outlineButtonView(String buttonName, VoidCallback onClick) =>
+Widget outlineButtonView(VoidCallback onClick) =>
     OutlinedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+        style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            minimumSize: const Size(250, 40)),
+            side: const BorderSide(
+                color: primaryColor, width: 0.5, style: BorderStyle.solid)),
         onPressed: () {
           onClick;
         },
-        child: Text(
-          buttonName,
-          style: const TextStyle(color: Colors.blue),
+        child: const Text(
+          "Cancel",
+          style: TextStyle(color: Colors.blue),
         ));
 
 Widget elevatedButtonView(
@@ -333,7 +330,7 @@ Widget elevatedButtonView(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
-            minimumSize: Size(150, 40)),
+            minimumSize: const Size(150, 40)),
         onPressed: () {
           onClick;
         },

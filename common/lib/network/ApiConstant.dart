@@ -23,4 +23,5 @@ class ApiConstant {
   static const String REFRESH = "auth/refresh-token";
   static const String CHANGE_PASSWORD_API_PATH = "user/change-password";
   static const String UPDATE_USER = "user/update-details";
+  static const String AVAILABLE_RIDES = "ride/upcoming";
 }

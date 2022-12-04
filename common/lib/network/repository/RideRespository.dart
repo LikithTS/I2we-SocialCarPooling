@@ -49,4 +49,24 @@ class RideRepository extends ApiRepository {
     }
   }
 
+  Future<List<dynamic>> getAvailableRides() async {
+    try {
+      Response carData =
+      await APIClient().getDioInstance().get(ApiConstant.AVAILABLE_RIDES);
+      dynamic response = handleAPIResponseData(carData);
+      if (response is ErrorResponse) {
+        return response.toList();
+      } else {
+        log("Response available rides $response");
+        List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
+            response.map((i) => UpcomingRides.fromJson(i)));
+        // var carResponse = CarDetailsResponse.fromJson(response);
+        log("available ride response ${upcomingRidesList.length}");
+        return upcomingRidesList;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
 }

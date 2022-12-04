@@ -16,6 +16,7 @@ import 'package:socialcarpooling/view/feedback/feedback_page.dart';
 import 'package:socialcarpooling/view/history/history_page.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';

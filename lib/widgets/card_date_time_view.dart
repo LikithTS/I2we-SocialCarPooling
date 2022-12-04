@@ -9,7 +9,7 @@ Widget timeView(IconData icons, String dateTime) => Text.rich(
           WidgetSpan(
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.only(right: 6),
               child: Icon(icons, color: textThemeColor),
             ),
           ),
@@ -20,8 +20,8 @@ Widget timeView(IconData icons, String dateTime) => Text.rich(
                 maxLines: 2,
                 style: TextStyleUtils.primaryTextRegular.copyWith(
                   color: textGreyColor,
-                  fontSize: fontSize14,
-                  letterSpacing: 1.2,
+                  fontSize: fontSize13,
+                  letterSpacing: 1.0,
                 )),
           ),
         ],
