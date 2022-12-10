@@ -19,7 +19,6 @@ class DrivingLicenseScreen extends StatefulWidget {
 class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
   VerificationViewModel viewModel = VerificationViewModel();
   File? frontImageFile = null;
-  File? backImageFile = null;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -90,21 +89,9 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
         ],
       );
     } else {
-      return Image.file(frontImageFile!, width: 350, height: 350);
-    }
-  }
-
-  Widget displayBackImage() {
-    if (backImageFile == null) {
       return Column(
         children: [
-          const Text("Aadhaar Back Image Not Selected"),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          Image.file(backImageFile!, width: 350, height: 350),
+          Image.file(frontImageFile!, width: 350, height: 350),
           ElevatedButton(
             onPressed: () {
               //upload image
