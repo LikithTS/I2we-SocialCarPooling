@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,14 +14,12 @@ import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
-import 'package:socialcarpooling/view/login/login_screen.dart';
-import 'package:socialcarpooling/view/map/location_get.dart';
-import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
 import '../../widgets/text_widgets.dart';
-
+import '../login/login_screen.dart';
+import '../profile/model/UpdateUserDetails.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
@@ -33,6 +32,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
+
+    getUserApi();
+
     Timer(
         const Duration(seconds: 3),
         () => Navigator.pushReplacement(
@@ -44,10 +46,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () async {
-      Provider.of<DriverProvider>(context,
-          listen: false)
-          .changeDriver(false);
-
+      Provider.of<DriverProvider>(context, listen: false).changeDriver(false);
     });
     return Scaffold(
         body: Stack(
@@ -81,6 +80,26 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     } else {
       return const IntoMainPage();
     }
+  }
+}
+
+handleResponseData(value) {
+  if (value is UserApi) {
+    print("UPdate success" + value.toString());
+
+    //print("Response Data : ${value.statusCode}");
+  } else {
+    print("UPdate failure " + value.toString());
+    // ErrorResponse errorResponse = value;
+    // setState(() {
+    //   errorText = errorResponse.errorMessage.toString();
+    // });
+    //  print("Response Data : Error");
 
   }
+}
+
+void getUserApi() {
+  Future<dynamic> future = UpdateUserRepository().getUserDetails();
+  future.then((value) => {handleResponseData(value)});
 }

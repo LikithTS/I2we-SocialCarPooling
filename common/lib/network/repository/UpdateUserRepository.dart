@@ -8,7 +8,7 @@ import '../model/error_response.dart';
 import '../response/SuccessResponse.dart';
 
 class UpdateUserRepository extends ApiRepository {
-  Future<dynamic> updateUserDetails({required UpdaterUserApi api}) async {
+  Future<dynamic> updateUserDetails({required UserApi api}) async {
     try {
       Response rideData = await APIClient()
           .getDioInstance()
@@ -18,6 +18,38 @@ class UpdateUserRepository extends ApiRepository {
         return response;
       } else {
         return SuccessResponse();
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> getUserDetails() async {
+    try {
+      Response userData =
+          await APIClient().getDioInstance().get(ApiConstant.GET_USER);
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        return updaterUserApiFromJson(response);
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> getUserProfileUrl() async {
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .get(ApiConstant.GET_USER_PROFILE_URL);
+      dynamic response = handleAPIResponseData(userData);
+      print("profile url response : " + userData.toString());
+      if (response is ErrorResponse) {
+        return "";
+      } else {
+        return response[0];
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

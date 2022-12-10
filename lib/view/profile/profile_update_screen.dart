@@ -352,7 +352,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       print("education cannot be empty");
       return;
     }
-    UpdaterUserApi updaterUserApi = UpdaterUserApi(
+    UserApi updaterUserApi = UserApi(
         bio: "",
         profileImage: "",
         designation: "",
@@ -371,7 +371,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
     updateUserApi(AppPreference().userDetails!);
   }
 
-  void updateUserApi(UpdaterUserApi updaterUserApi) {
+  void updateUserApi(UserApi updaterUserApi) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
     future.then((value) => {handleResponseData(value)});

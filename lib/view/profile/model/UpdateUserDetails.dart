@@ -4,13 +4,15 @@
 
 import 'dart:convert';
 
-UpdaterUserApi updaterUserApiFromJson(String str) =>
-    UpdaterUserApi.fromJson(json.decode(str));
 
-String updaterUserApiToJson(UpdaterUserApi data) => json.encode(data.toJson());
 
-class UpdaterUserApi {
-  UpdaterUserApi({
+UserApi updaterUserApiFromJson(String str) =>
+    UserApi.fromJson(json.decode(str));
+
+String updaterUserApiToJson(UserApi data) => json.encode(data.toJson());
+
+class UserApi {
+  UserApi({
     this.bio,
     this.profileImage,
     this.designation,
@@ -42,7 +44,7 @@ class UpdaterUserApi {
   String? state = "";
   String? pincode = "";
 
-  factory UpdaterUserApi.fromJson(Map<String, dynamic> json) => UpdaterUserApi(
+  factory UserApi.fromJson(Map<String, dynamic> json) => UserApi(
         bio: json["bio"],
         profileImage: json["profileImage"],
         designation: json["designation"],

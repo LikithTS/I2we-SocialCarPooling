@@ -9,5 +9,5 @@ class AppPreference {
 
   AppPreference._internal();
 
-  UpdaterUserApi? userDetails;
+  UserApi userDetails = UserApi();
 }

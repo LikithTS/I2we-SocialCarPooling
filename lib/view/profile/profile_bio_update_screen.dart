@@ -213,12 +213,12 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
       AppPreference().userDetails?.language = ['ENGLISH'];
     } else {
       AppPreference().userDetails =
-          UpdaterUserApi(bio: bioController.text, language: ['ENGLISH']);
+          UserApi(bio: bioController.text, language: ['ENGLISH']);
     }
     updateUserApi(AppPreference().userDetails!);
   }
 
-  void updateUserApi(UpdaterUserApi updaterUserApi) {
+  void updateUserApi(UserApi updaterUserApi) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
     future.then((value) => {handleResponseData(value)});

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ import 'package:socialcarpooling/view/notifications/notification_main_screen.dar
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/button_widgets.dart';
+import '../profile/model/UpdateUserDetails.dart';
 import 'home_cards/driver_widget_view.dart';
 import 'home_cards/home_screen_res_view.dart';
 import 'home_cards/rider_widget_view.dart';
@@ -81,7 +83,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
+    getUserApi();
     // getHomeDetailsApi();
+  }
+
+  void getUserApi() {
+    Future<dynamic> future = UpdateUserRepository().getUserDetails();
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    if (value is UserApi) {
+      print("UPdate success" + value.toString());
+
+      //print("Response Data : ${value.statusCode}");
+    } else {
+      print("UPdate failure " + value.toString());
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
+    }
   }
 
   @override

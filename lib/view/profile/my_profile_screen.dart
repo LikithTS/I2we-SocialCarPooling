@@ -1,16 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:socialcarpooling/imageupload/AwsApi.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/view/profile/ProfileViewModel.dart';
 import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
 import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
+import 'package:socialcarpooling/view/profile/verification/VerificationMainScreen.dart';
 
 import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  var viewmodel = ProfileViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +30,7 @@ class MyProfileScreen extends StatelessWidget {
     final Color lightOrange = Color(0Xfffacb9c);
     final Color orange = Color(0XffF29339);
     final Color lightBlue = Color(0Xffd9e9fc);
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -55,18 +68,23 @@ class MyProfileScreen extends StatelessWidget {
                     ),
                     Stack(
                       alignment: Alignment.centerRight,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             right: 18,
                           ),
-                          child: CircleAvatar(
-                            radius: 58,
-                            backgroundImage: NetworkImage(
-                                "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                          child: GestureDetector(
+                            onTap: () {
+                              handleProfileUpload();
+                            },
+                            child: const CircleAvatar(
+                              radius: 58,
+                              backgroundImage: NetworkImage(
+                                  "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                            ),
                           ),
                         ),
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 10,
                           backgroundColor: Colors.white,
                           child: Icon(
@@ -240,7 +258,13 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                child: VerificationMainScreen()));
+                      },
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                         height: 180,
@@ -272,11 +296,11 @@ class MyProfileScreen extends StatelessWidget {
                                       addVerticalSpace(20),
                                       Wrap(
                                         crossAxisAlignment:
-                                        WrapCrossAlignment.start,
+                                            WrapCrossAlignment.start,
                                         children: [
                                           Text(
                                             DemoLocalizations.of(context)
-                                                ?.getText("view_details") ??
+                                                    ?.getText("view_details") ??
                                                 "",
                                             style: const TextStyle(
                                               color: Colors.black,
@@ -398,6 +422,21 @@ class MyProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void handleProfileUpload() {
+    Future<dynamic> future = viewmodel.getUserProfileUrl();
+    future.then((value) => {handleValidOtpResponseData(value)});
+
+    // uploadImage(image, url);
+  }
+
+  handleValidOtpResponseData(url) {
+    Future<dynamic> future = viewmodel.getProfileImage();
+    future.then((value) => {
+          if (value is File && url != null && url.isNotEmpty)
+            {AwsApi().uploadImage(url, value)}
+        });
   }
 }
 

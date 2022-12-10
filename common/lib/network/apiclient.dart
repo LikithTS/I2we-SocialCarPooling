@@ -5,7 +5,6 @@ import 'package:common/network/repository/RefreshRepository.dart';
 import 'package:common/utils/storageutil.dart';
 import 'package:dio/dio.dart';
 
-
 class APIClient {
   APIClient._privateConstructor();
 
@@ -17,15 +16,13 @@ class APIClient {
   }
 
   Dio getDioInstance() {
-    final Dio _dio = Dio(
-        BaseOptions(
-          baseUrl: baseUrl,
-          headers: getHeaders(),
-          connectTimeout: 5000,
-          receiveTimeout: 3000,
-          responseType: ResponseType.json,
-        )
-    );
+    final Dio _dio = Dio(BaseOptions(
+      baseUrl: baseUrl,
+      headers: getHeaders(),
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+      responseType: ResponseType.json,
+    ));
     _dio.interceptors.add(LoggingInterceptors());
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (error, errorInterceptorHandler) async {
@@ -33,9 +30,11 @@ class APIClient {
         if (error.response?.statusCode == 403 ||
             error.response?.statusCode == 401) {
           await RefreshRepository().refreshAccessToken();
-          _retry(_dio ,error.requestOptions);
-        } else if(error.response?.statusCode == 503) {
-            errorInterceptorHandler.resolve(Response(requestOptions: error.requestOptions, data: error.response?.statusCode));
+          _retry(_dio, error.requestOptions);
+        } else if (error.response?.statusCode == 503) {
+          errorInterceptorHandler.resolve(Response(
+              requestOptions: error.requestOptions,
+              data: error.response?.statusCode));
         }
       },
     ));
@@ -44,19 +43,16 @@ class APIClient {
   }
 
   Dio getRefreshDioInstance() {
-    final Dio _dio = Dio(
-        BaseOptions(
-          baseUrl: baseUrl,
-          headers: getRefreshTokenHeaders(),
-          connectTimeout: 5000,
-          receiveTimeout: 3000,
-          responseType: ResponseType.json,
-        )
-    );
+    final Dio _dio = Dio(BaseOptions(
+      baseUrl: baseUrl,
+      headers: getRefreshTokenHeaders(),
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+      responseType: ResponseType.json,
+    ));
     _dio.interceptors.add(LoggingInterceptors());
     return _dio;
   }
-
 
   getHeaders() {
     var headers = <String, dynamic>{};
@@ -74,7 +70,8 @@ class APIClient {
     return headers;
   }
 
-  Future<Response<dynamic>> _retry(Dio dio, RequestOptions requestOptions) async {
+  Future<Response<dynamic>> _retry(
+      Dio dio, RequestOptions requestOptions) async {
     final options = Options(
       method: requestOptions.method,
       headers: getHeaders(),
@@ -85,6 +82,4 @@ class APIClient {
         queryParameters: requestOptions.queryParameters,
         options: options);
   }
-
-
 }
