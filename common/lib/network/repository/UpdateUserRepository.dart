@@ -6,9 +6,10 @@ import '../ApiConstant.dart';
 import '../apiclient.dart';
 import '../model/error_response.dart';
 import '../response/SuccessResponse.dart';
+import '../response/user/UserProfileData.dart';
 
 class UpdateUserRepository extends ApiRepository {
-  Future<dynamic> updateUserDetails({required UserApi api}) async {
+  Future<dynamic> updateUserDetails({required UserProfileData api}) async {
     try {
       Response rideData = await APIClient()
           .getDioInstance()
@@ -33,6 +34,21 @@ class UpdateUserRepository extends ApiRepository {
         return response;
       } else {
         return updaterUserApiFromJson(response);
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> getUserProfileDetails() async {
+    try {
+      Response userData =
+          await APIClient().getDioInstance().get(ApiConstant.GET_USER);
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        return UserProfileData.fromJson(response[0]);
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

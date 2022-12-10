@@ -15,7 +15,7 @@ Widget inputEditTextWithPrefixWidget(
         int flag,
         int maxLength,
         InputValidationMixin inputValidationMixin,
-        String initValue) =>
+        String? initValue) =>
     Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),

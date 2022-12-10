@@ -11,6 +11,7 @@ import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
 import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
 import 'package:socialcarpooling/view/profile/verification/VerificationMainScreen.dart';
 
+import '../../util/AppPreference.dart';
 import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
 
@@ -77,10 +78,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             onTap: () {
                               handleProfileUpload();
                             },
-                            child: const CircleAvatar(
+                            child: CircleAvatar(
                               radius: 58,
-                              backgroundImage: NetworkImage(
-                                  "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                              backgroundImage: NetworkImage(AppPreference()
+                                      .userProfileData
+                                      ?.profileImage ??
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                             ),
                           ),
                         ),
@@ -97,8 +100,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   ],
                 ),
                 addVerticalSpace(5),
-                userNameText("User Name"),
-                workText("Work, Designation"),
+                userNameText(AppPreference().userProfileData?.name ?? ""),
+                workText(AppPreference().userProfileData?.designation ?? ""),
                 addVerticalSpace(20),
                 Container(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -353,8 +356,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       ),
                       elevation: 5,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -382,7 +384,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: profileText(
-                                  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis",
+                                  AppPreference().userProfileData?.bio ?? "",
                                   12.sp,
                                   const Color(0Xff707070)),
                             ),
@@ -406,7 +408,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 left: 8.0, right: 8.0, bottom: 8.0),
                             child: Row(
                               children: [
-                                profileText("Kannada, English", 12.sp,
+                                profileText(
+                                    AppPreference()
+                                            .userProfileData
+                                            ?.language
+                                            ?.join(', ') ??
+                                        "",
+                                    12.sp,
                                     const Color(0Xff707070)),
                               ],
                             ),
@@ -426,12 +434,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   void handleProfileUpload() {
     Future<dynamic> future = viewmodel.getUserProfileUrl();
-    future.then((value) => {handleValidOtpResponseData(value)});
+    future.then((value) => {handleResponseData(value)});
 
     // uploadImage(image, url);
   }
 
-  handleValidOtpResponseData(url) {
+  handleResponseData(url) {
     Future<dynamic> future = viewmodel.getProfileImage();
     future.then((value) => {
           if (value is File && url != null && url.isNotEmpty)

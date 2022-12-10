@@ -1,10 +1,9 @@
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/user/UserProfileData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
-import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
 
 import '../../util/color.dart';
 import '../../util/font_size.dart';
@@ -208,17 +207,12 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
     if (bioController.text.isEmpty) {
       return;
     }
-    if (AppPreference().userDetails != null) {
-      AppPreference().userDetails?.bio = bioController.text;
-      AppPreference().userDetails?.language = ['ENGLISH'];
-    } else {
-      AppPreference().userDetails =
-          UserApi(bio: bioController.text, language: ['ENGLISH']);
-    }
-    updateUserApi(AppPreference().userDetails!);
+
+    updateUserApi(
+        UserProfileData(bio: bioController.text, language: ['ENGLISH']));
   }
 
-  void updateUserApi(UserApi updaterUserApi) {
+  void updateUserApi(UserProfileData updaterUserApi) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
     future.then((value) => {handleResponseData(value)});

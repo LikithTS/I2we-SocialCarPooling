@@ -1,4 +1,4 @@
-import '../view/profile/model/UpdateUserDetails.dart';
+import 'package:common/network/response/user/UserProfileData.dart';
 
 class AppPreference {
   static final AppPreference _singleton = AppPreference._internal();
@@ -9,5 +9,5 @@ class AppPreference {
 
   AppPreference._internal();
 
-  UserApi userDetails = UserApi();
+  UserProfileData? userProfileData;
 }

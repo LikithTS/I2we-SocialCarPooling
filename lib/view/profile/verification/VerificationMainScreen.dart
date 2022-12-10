@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/view/profile/verification/aadhar/AadharVerfication.dart';
+import 'package:socialcarpooling/view/profile/verification/drivinglicense/DrivingLicenseScreen.dart';
 
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
@@ -60,19 +63,12 @@ class _VerificationMainScreenState extends State<VerificationMainScreen> {
                   DemoLocalizations.of(context)
                           ?.getText("aadhar_verification") ??
                       "", () {
-                getImage();
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.leftToRightWithFade,
+                        child: const AadharVerificationScreen()));
               }),
-              addVerticalSpace(10),
-              verificationCard(
-                  DemoLocalizations.of(context)?.getText("pan_verification") ??
-                      "",
-                  () {}),
-              addVerticalSpace(10),
-              verificationCard(
-                  DemoLocalizations.of(context)
-                          ?.getText("voter_verification") ??
-                      "",
-                  () {}),
               addVerticalSpace(10),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
@@ -89,8 +85,13 @@ class _VerificationMainScreenState extends State<VerificationMainScreen> {
               verificationCard(
                   DemoLocalizations.of(context)
                           ?.getText("driving_verification") ??
-                      "",
-                  () {}),
+                      "", () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.leftToRightWithFade,
+                        child: const DrivingLicenseScreen()));
+              }),
             ],
           ),
         ),

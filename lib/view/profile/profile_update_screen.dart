@@ -1,5 +1,6 @@
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/user/UserProfileData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/AppPreference.dart';
@@ -48,6 +48,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
   @override
   void initState() {
     super.initState();
+    fullNameController.text = AppPreference().userProfileData?.name ?? "";
+    mobileNoController.text =
+        AppPreference().userProfileData?.phoneNumber ?? "";
+    emailNoController.text = AppPreference().userProfileData?.email ?? "";
+    workController.text = AppPreference().userProfileData?.work ?? "";
+    dateController.text = AppPreference().userProfileData?.dob ?? "";
+    selectedValueGender = AppPreference().userProfileData?.gender ?? "";
   }
 
   @override
@@ -118,7 +125,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     3,
                     30,
                     this,
-                    ''),
+                    AppPreference().userProfileData?.email ?? ""),
               ),
               const SizedBox(
                 height: 10,
@@ -352,26 +359,18 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       print("education cannot be empty");
       return;
     }
-    UserApi updaterUserApi = UserApi(
-        bio: "",
-        profileImage: "",
-        designation: "",
-        address1: "",
-        address2: "",
-        city: "",
-        education: selectedValueEducation,
-        facebook: "",
-        language: ['ENGLISH'],
-        linkedIn: "",
-        state: "",
-        twitter: "",
+    UserProfileData updaterUserApi = UserProfileData(
+        name: fullNameController.text,
+        email: emailNoController.text,
+        phoneNumber: mobileNoController.text,
+        dob: dateController.text,
         work: workController.text,
-        pincode: "560045");
-    AppPreference().userDetails = updaterUserApi;
-    updateUserApi(AppPreference().userDetails!);
+        education: selectedValueEducation);
+
+    updateUserApi(updaterUserApi);
   }
 
-  void updateUserApi(UserApi updaterUserApi) {
+  void updateUserApi(UserProfileData updaterUserApi) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
     future.then((value) => {handleResponseData(value)});
