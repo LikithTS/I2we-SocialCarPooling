@@ -14,6 +14,7 @@ class CPSessionManager{
   final String INTRO_PAGE_VISITED = "intro_page_visited";
   final String CAR_DETAILS_AVAILABLE = "car_details_available";
   final String DIRECTION_OBJECT = "direction_object";
+  final String PROFILE_IMAGE = "profile_image";
 
   static final CPSessionManager _instance = CPSessionManager._internal();
 
@@ -64,6 +65,14 @@ class CPSessionManager{
 
   void setUserName(String user_name) {
     PreferencesUtil.putString(USER_NAME, user_name);
+  }
+
+  String getProfileImage() {
+    return PreferencesUtil.getString(PROFILE_IMAGE);
+  }
+
+  void setProfileImage(String path) {
+    PreferencesUtil.putString(PROFILE_IMAGE, path);
   }
 
   String getAuthRefreshToken() {

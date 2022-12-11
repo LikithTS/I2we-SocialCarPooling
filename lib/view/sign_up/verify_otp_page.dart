@@ -15,6 +15,7 @@ import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
@@ -102,12 +103,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
       log("Storing access token and refresh token in sign up flow");
       CPSessionManager().setAuthToken(value.accessToken ?? "");
       CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-      Navigator.push(
-          context,
-          PageTransition(
-              type: PageTransitionType.leftToRight,
-              child: const VerifiedPage()));
+      GetProfileDetails(context);
+      Timer(
+          const Duration(seconds: 2),
+              () => Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: const VerifiedPage())));
     } else {
       ErrorResponse errorResponse = value;
       log('Error ${errorResponse.errorMessage}');

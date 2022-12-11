@@ -10,7 +10,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
-        android:label="i2we">
+        android:label="I2We">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIY593fYB_MkGPCdjRTMkJ-m41BQHqTiU" />

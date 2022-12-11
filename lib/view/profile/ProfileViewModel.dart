@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:common/network/repository/UpdateUserRepository.dart';
@@ -16,8 +17,8 @@ class ProfileViewModel {
         imageQuality: 50, // <- Reduce Image quality
         maxHeight: 500, // <- reduce the image size
         maxWidth: 500);
-
-    File image = File(pickedFile!.path);
+    log("Image picked file ${pickedFile!.path}");
+    File image = File(pickedFile.path);
 
     return image;
   }

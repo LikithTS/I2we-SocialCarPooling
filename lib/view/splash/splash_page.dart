@@ -16,6 +16,7 @@ import 'package:socialcarpooling/util/dimens.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
@@ -33,15 +34,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
-
-    getUserApi();
-
-    Timer(
-        const Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-            context,
-            PageTransition(
-                type: PageTransitionType.bottomToTop, child: getNextPage())));
+    if (CPSessionManager().isUserLoggedIn()) {
+      GetProfileDetails(context);
+    }
+    handleNextPage(context);
   }
 
   @override
@@ -72,35 +68,23 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       ],
     ));
   }
-
-  getNextPage() {
-    if (CPSessionManager().isUserLoggedIn()) {
-      return HomePage(homeRepository: HomeRepository());
-    } else if (CPSessionManager().isIntroPageVisited()) {
-      return LoginScreen(userRepository: LoginRepository());
-    } else {
-      return const IntoMainPage();
-    }
-  }
 }
 
-handleResponseData(value) {
-  if (value is UserProfileData) {
-    AppPreference().userProfileData = value;
-
-    //print("Response Data : ${value.statusCode}");
+getNextPage() {
+  if (CPSessionManager().isUserLoggedIn()) {
+    return HomePage(homeRepository: HomeRepository());
+  } else if (CPSessionManager().isIntroPageVisited()) {
+    return LoginScreen(userRepository: LoginRepository());
   } else {
-    print("UPdate failure " + value.toString());
-    // ErrorResponse errorResponse = value;
-    // setState(() {
-    //   errorText = errorResponse.errorMessage.toString();
-    // });
-    //  print("Response Data : Error");
-
+    return const IntoMainPage();
   }
 }
 
-void getUserApi() {
-  Future<dynamic> future = UpdateUserRepository().getUserProfileDetails();
-  future.then((value) => {handleResponseData(value)});
+void handleNextPage(BuildContext context) {
+  Timer(
+      const Duration(seconds: 3),
+      () => Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.bottomToTop, child: getNextPage())));
 }

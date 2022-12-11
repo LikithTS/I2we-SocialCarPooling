@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
@@ -7,6 +9,7 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/constant.dart';
@@ -35,10 +38,9 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = "Ram Prasad Reddy";
+    final name = AppPreference().userProfileData?.name ?? "";
     final profile_percentage = "Profile 30% Completed";
-    final profileImage =
-        "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg";
+    final profileImage = CPSessionManager().getProfileImage();
 
     return Drawer(
       child: Material(
@@ -310,8 +312,18 @@ Widget buildHeader(
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(children: [
-            CircleAvatar(
-                radius: 30, backgroundImage: NetworkImage(profileImage)),
+            CPSessionManager().getProfileImage().isNotEmpty
+                ? CircleAvatar(
+                    radius: 30,
+                    backgroundImage:
+                        Image.file(File(CPSessionManager().getProfileImage()))
+                            .image,
+                  )
+                : CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                        AppPreference().userProfileData?.profileImage ?? ""),
+                  ),
             addHorizontalSpace(20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

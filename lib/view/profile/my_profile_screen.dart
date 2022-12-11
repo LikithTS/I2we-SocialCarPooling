@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
@@ -48,7 +50,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back)),
+                        icon: const Icon(Icons.arrow_back)),
                     headerText(
                         DemoLocalizations.of(context)?.getText("profile") ?? "")
                   ],
@@ -78,17 +80,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             onTap: () {
                               handleProfileUpload();
                             },
-                            child: CircleAvatar(
-                              radius: 58,
-                              backgroundImage: NetworkImage(AppPreference()
-                                      .userProfileData
-                                      ?.profileImage ??
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
-                            ),
+                            child: CPSessionManager().getProfileImage().isNotEmpty ?
+                            CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: Image.file(File(CPSessionManager().getProfileImage())).image,
+                                  ) : CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: NetworkImage(
+                                        AppPreference()
+                                                .userProfileData
+                                                ?.profileImage ??
+                                            ""),
+                                  ),
                           ),
                         ),
                         const CircleAvatar(
-                          radius: 10,
+                          radius: 20,
                           backgroundColor: Colors.white,
                           child: Icon(
                             Icons.photo_camera,
@@ -116,7 +123,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                          padding: const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                           child: Icon(
                             Icons.verified_user,
                             color: orange,
@@ -435,15 +442,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   void handleProfileUpload() {
     Future<dynamic> future = viewmodel.getUserProfileUrl();
     future.then((value) => {handleResponseData(value)});
-
-    // uploadImage(image, url);
   }
 
   handleResponseData(url) {
     Future<dynamic> future = viewmodel.getProfileImage();
     future.then((value) => {
           if (value is File && url != null && url.isNotEmpty)
-            {AwsApi().uploadImage(url, value)}
+            {
+              CPSessionManager().setProfileImage(value.path),
+              AwsApi().uploadImage(url, value),
+              setState(() {}),
+            }
         });
   }
 }

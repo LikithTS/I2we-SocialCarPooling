@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:common/network/repository/ApiRepository.dart';
+import 'package:common/network/repository/RefreshRepository.dart';
+import 'package:common/network/response/AuthResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:dio/dio.dart';
 import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
 
@@ -51,7 +56,23 @@ class UpdateUserRepository extends ApiRepository {
         return UserProfileData.fromJson(response[0]);
       }
     } on DioError catch (onError) {
+      if(onError.response?.statusCode == ApiConstant.HTTP_UNAUTHORIZED_ERROR) {
+        RefreshRepository refreshRepository = RefreshRepository();
+        Future<dynamic> future =  refreshRepository.refreshAccessToken();
+        future.then((value) => {
+          handleResponseData(value)
+        });
+      }
       throw getErrorResponse(onError);
+    }
+  }
+
+  handleResponseData(value) {
+    if (value is AuthResponse) {
+      log("Refresh token is successful access token ${value.accessToken}");
+      log("Refresh token is successful refresh token ${value.refreshToken}");
+      CPSessionManager().setAuthToken(value.accessToken ?? "");
+      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
     }
   }
 
@@ -61,7 +82,6 @@ class UpdateUserRepository extends ApiRepository {
           .getDioInstance()
           .get(ApiConstant.GET_USER_PROFILE_URL);
       dynamic response = handleAPIResponseData(userData);
-      print("profile url response : " + userData.toString());
       if (response is ErrorResponse) {
         return "";
       } else {

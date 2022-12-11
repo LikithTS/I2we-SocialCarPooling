@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -21,13 +22,14 @@ class AwsApi {
       Uint8List bytes = await image.readAsBytes();
       Uri uri = Uri.parse(url);
       var response = await http.put(uri, body: bytes);
-      print("call response upload   : " + response.request.toString());
-      print("call response upload  body : " + response.body.toString());
+      log("call response upload   : " + response.request.toString());
+      log("call response upload  body : " + response.body.toString());
       if (response.statusCode == 200) {
-        print("aws image upload" + response.toString());
-        print("success");
+        log("aws image upload" + response.toString());
+        log("success");
       }
     } catch (e) {
+      log("Error while photo upload $e");
       throw ('Error uploading photo');
     }
   }

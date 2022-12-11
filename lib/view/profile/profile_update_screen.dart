@@ -9,6 +9,7 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/AppPreference.dart';
@@ -53,7 +54,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
         AppPreference().userProfileData?.phoneNumber ?? "";
     emailNoController.text = AppPreference().userProfileData?.email ?? "";
     workController.text = AppPreference().userProfileData?.work ?? "";
-    dateController.text = AppPreference().userProfileData?.dob ?? "";
+    dateController.text = getFormattedDate(DateTime.parse(AppPreference().userProfileData?.dob ?? ""));
     selectedValueGender = AppPreference().userProfileData?.gender ?? "";
   }
 
@@ -321,15 +322,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
   Future _selectDate() async {
     DateTime? picker = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime.parse(AppPreference().userProfileData?.dob ?? ""),
         firstDate: DateTime(1970),
         lastDate: DateTime.now());
 
     if (picker != null) {
       setState(() {
-        String formattedDate = DateFormat('dd,MMM,yyyy').format(picker);
-        dob = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(picker);
-        dateController.text = formattedDate;
+        dob = getFormattedTime(picker);
+        dateController.text = dob;
       });
     }
   }

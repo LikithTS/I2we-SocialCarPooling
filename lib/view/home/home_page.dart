@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:common/network/repository/HomeRepository.dart';
+import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
+import 'package:common/network/response/user/UserProfileData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
@@ -81,7 +84,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
-    // getHomeDetailsApi();
   }
 
   @override
@@ -234,9 +236,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       AsyncSnapshot<dynamic> snapshot) {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.none:
-                                        return Text('No Internet!!');
+                                        return const Text('No Internet!!');
                                       case ConnectionState.waiting:
-                                        return Text(
+                                        return const Text(
                                             'Please wait... Loading details');
                                       default:
                                         if (snapshot.hasError) {

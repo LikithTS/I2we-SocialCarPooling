@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:common/model/GoogleUserObject.dart';
@@ -16,6 +17,7 @@ import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/login/social_login_newUser_VerificationScreen.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/color.dart';
@@ -299,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
     SocialLoginApi api = SocialLoginApi(
         name: userObject.displayName,
         email: userObject.email,
-        phoneNumber: userObject.phoneNumber ,
+        phoneNumber: userObject.phoneNumber,
         token: userObject.accessToken.toString(),
         socialId: userObject.token.toString());
     Future<dynamic> future = _userRepository.socialLogin(api: api);
@@ -326,11 +328,13 @@ class _LoginScreenState extends State<LoginScreen> {
   handleSuccessResponse(AuthResponse value) {
     CPSessionManager().setAuthToken(value.accessToken ?? "");
     CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.bottomToTop,
-            child: HomePage(homeRepository: HomeRepository())));
+    GetProfileDetails(context);
+    Timer(
+        const Duration(seconds: 2),
+        () => Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: HomePage(homeRepository: HomeRepository()))));
   }
 }
