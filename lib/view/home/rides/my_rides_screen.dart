@@ -26,16 +26,35 @@ class MyRidesScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      headerText(
+                          DemoLocalizations.of(context)?.getText("my_rides") ??
+                              "")
+                    ],
                   ),
-                  headerText(
-                      DemoLocalizations.of(context)?.getText("my_rides") ??
-                          "")
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        child: Icon(Icons.group),
+                      ),
+                      Positioned(
+                        right:0,child:  CircleAvatar(
+                        radius: 10,backgroundColor: Colors.red,
+                        child: Text('1'),
+                      ),)
+
+                    ],
+                  )
                 ],
               ),
             ),

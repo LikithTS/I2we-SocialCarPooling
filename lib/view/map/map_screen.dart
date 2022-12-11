@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  final bool? gpsIconShow;
+  const MapScreen({Key? key, this.gpsIconShow}) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -115,12 +116,12 @@ class _MapScreenState extends State<MapScreen> {
               )):Container()
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.gpsIconShow!? FloatingActionButton(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         onPressed: () => getGpsLocation(),
         child: Icon(Icons.gps_fixed),
-      ),
+      ):SizedBox.shrink(),
     );
   }
 
