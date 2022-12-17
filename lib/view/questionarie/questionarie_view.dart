@@ -11,15 +11,16 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/circular_progress_loader.dart';
 
 import '../../util/CPString.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
+
 
 class QuestionariePage extends StatefulWidget {
   const QuestionariePage({Key? key}) : super(key: key);

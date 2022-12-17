@@ -11,6 +11,7 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
@@ -22,8 +23,7 @@ import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/image_widgets.dart';
 

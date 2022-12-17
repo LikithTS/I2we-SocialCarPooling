@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -24,7 +25,7 @@ Future<String?> uploadImage(File file, String url) async {
   dio.options.headers["Content-Type"] = "multipart/form-data";
   Response response = await dio.post(url, data: formData);
 
-  print("uploadImage response : ${response.data}");
+  log("uploadImage response : ${response.data}");
 
   if (response.statusCode == 200) {
     var imageResponse = ImageUploadResponse.fromJson(response.data);

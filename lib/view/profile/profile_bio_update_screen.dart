@@ -3,11 +3,11 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/user/UserProfileData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
 
 import '../../util/color.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../utils/widget_functions.dart';
 
 class ProfileBioUpdateScreen extends StatefulWidget {

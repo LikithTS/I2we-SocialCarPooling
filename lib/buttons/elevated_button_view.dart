@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/color.dart';
 
@@ -7,7 +9,7 @@ Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor])
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         minimumSize: const Size(150, 40),
-        primary : btnBgColor
+        backgroundColor : btnBgColor
     ),
     onPressed: () {
       onRightButtonClicked();
@@ -24,5 +26,5 @@ Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor])
     ));
 
 void onRightButtonClicked() {
-  print("On right button clicked");
+  log("On right button clicked");
 }

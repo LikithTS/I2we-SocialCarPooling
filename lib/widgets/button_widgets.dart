@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:socialcarpooling/util/font_size.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 
 import '../util/TextStylesUtil.dart';
 import '../util/color.dart';
-import '../util/margin_confiq.dart';
+import '../font&margin/margin_confiq.dart';
 
 Widget primaryButton(String title, VoidCallback callback) {
   return ElevatedButton(

@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
@@ -15,7 +16,6 @@ import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 

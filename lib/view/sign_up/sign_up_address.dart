@@ -3,14 +3,14 @@ import 'package:common/network/request/signinapi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/Validation.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/color.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../widgets/edit_text_widgets.dart';
 
 class SignUpAddress extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/view/profile/verification/aadhar/VerificationViewModel.dart';
 
 import '../../../../util/color.dart';
-import '../../../../util/font_size.dart';
-import '../../../../util/margin_confiq.dart';
+import '../../../../font&margin/margin_confiq.dart';
 import '../../../../utils/Localization.dart';
 import '../../../../utils/widget_functions.dart';
 

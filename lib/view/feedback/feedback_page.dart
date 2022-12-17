@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/widgets/button_widgets.dart';
 
 import '../../util/CPString.dart';
-import '../../util/font_size.dart';
 import '../../util/string_url.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';

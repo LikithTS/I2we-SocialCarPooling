@@ -7,7 +7,7 @@ double deviceWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
 List<String> dataGenderList = ['Gender','MALE','FEMALE'];
 List<String> dataWorkList = ['Work','Doctor','Businessman','Scientist'];
-List<String> dataEducationList = ['Education','PRIMARY_EDUCATION','SECONDNARY_EDUCATION','BACHELORS_DEGREE','MASTERS_DEGREE','OTHER'];
+List<String> dataEducationList = ['Education','PRIMARY_EDUCATION','SECONDARY_EDUCATION','BACHELORS_DEGREE','MASTERS_DEGREE','OTHER'];
 List<String> carTypeList = ['Car Type', 'MINI', 'HATCHBACK', 'SEDAN', 'SUV', 'LUXURY'];
 
 

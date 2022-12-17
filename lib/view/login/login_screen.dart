@@ -21,7 +21,7 @@ import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
 
 import '../../util/color.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../utils/Localization.dart';
 import 'authentication.dart';
 

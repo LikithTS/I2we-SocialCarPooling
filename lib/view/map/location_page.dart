@@ -6,6 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -15,8 +16,7 @@ import 'package:socialcarpooling/view/map/search_location_view.dart';
 
 import '../../provider/provider_preference.dart';
 import '../../util/CPString.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 
 class LocationPage extends StatefulWidget {
   final bool flagAddress;

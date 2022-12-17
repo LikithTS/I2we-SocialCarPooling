@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/util/font_size.dart';
 
 Widget timeView(IconData icons, String dateTime) => Text.rich(
       TextSpan(

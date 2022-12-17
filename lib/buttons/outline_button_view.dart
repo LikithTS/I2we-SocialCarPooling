@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 Widget outlineButtonView(String buttonName) => OutlinedButton(
@@ -15,5 +17,5 @@ Widget outlineButtonView(String buttonName) => OutlinedButton(
     ));
 
 void onCancelButtonClicked() {
-  print("On Cancelled button clicked");
+  log("On Cancelled button clicked");
 }
