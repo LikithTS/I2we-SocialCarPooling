@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:common/network/repository/ApiRepository.dart';
 import 'package:common/network/repository/RefreshRepository.dart';
 import 'package:common/network/response/AuthResponse.dart';
+import 'package:common/network/response/user/ProfileImageUpload.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:dio/dio.dart';
 import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
@@ -56,12 +57,10 @@ class UpdateUserRepository extends ApiRepository {
         return UserProfileData.fromJson(response[0]);
       }
     } on DioError catch (onError) {
-      if(onError.response?.statusCode == ApiConstant.HTTP_UNAUTHORIZED_ERROR) {
+      if (onError.response?.statusCode == ApiConstant.HTTP_UNAUTHORIZED_ERROR) {
         RefreshRepository refreshRepository = RefreshRepository();
-        Future<dynamic> future =  refreshRepository.refreshAccessToken();
-        future.then((value) => {
-          handleResponseData(value)
-        });
+        Future<dynamic> future = refreshRepository.refreshAccessToken();
+        future.then((value) => {handleResponseData(value)});
       }
       throw getErrorResponse(onError);
     }
@@ -85,7 +84,7 @@ class UpdateUserRepository extends ApiRepository {
       if (response is ErrorResponse) {
         return "";
       } else {
-        return response[0];
+        return ProfileImageUpload.fromJson(response[0]);
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

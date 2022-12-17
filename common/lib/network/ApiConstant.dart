@@ -25,4 +25,6 @@ class ApiConstant {
   static const String UPDATE_USER = "user/update-details";
   static const String GET_USER = "user";
   static const String GET_USER_PROFILE_URL = "/user/profile-upload-url";
+  static const String GET_CAR_UPLOAD_URL = "/car/car-images-presigned-url/2";
+  static const String GET_IDENTIFICATION = "/user/identification-upload-url";
 }

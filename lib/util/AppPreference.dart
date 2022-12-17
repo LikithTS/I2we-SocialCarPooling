@@ -10,4 +10,6 @@ class AppPreference {
   AppPreference._internal();
 
   UserProfileData? userProfileData;
+  String profileImageKey = "";
+  String imageBaseUrl = "https://i2w-data.s3.ap-south-1.amazonaws.com/";
 }

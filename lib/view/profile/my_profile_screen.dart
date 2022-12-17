@@ -1,6 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
+import 'package:common/network/repository/UpdateUserRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/user/ProfileImageUpload.dart';
+import 'package:common/network/response/user/UserProfileData.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,17 +83,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             onTap: () {
                               handleProfileUpload();
                             },
-                            child: CPSessionManager().getProfileImage().isNotEmpty ?
-                            CircleAvatar(
+                            child: CPSessionManager()
+                                    .getProfileImage()
+                                    .isNotEmpty
+                                ? CircleAvatar(
                                     radius: 58,
-                                    backgroundImage: Image.file(File(CPSessionManager().getProfileImage())).image,
-                                  ) : CircleAvatar(
+                                    backgroundImage: Image.file(File(
+                                            CPSessionManager()
+                                                .getProfileImage()))
+                                        .image,
+                                  )
+                                : CircleAvatar(
                                     radius: 58,
                                     backgroundImage: NetworkImage(
-                                        AppPreference()
-                                                .userProfileData
-                                                ?.profileImage ??
-                                            ""),
+                                        AppPreference().imageBaseUrl +
+                                            (AppPreference().profileImageKey ??
+                                                "")),
                                   ),
                           ),
                         ),
@@ -123,7 +131,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                           child: Icon(
                             Icons.verified_user,
                             color: orange,
@@ -444,16 +453,43 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     future.then((value) => {handleResponseData(value)});
   }
 
-  handleResponseData(url) {
-    Future<dynamic> future = viewmodel.getProfileImage();
-    future.then((value) => {
-          if (value is File && url != null && url.isNotEmpty)
-            {
-              CPSessionManager().setProfileImage(value.path),
-              AwsApi().uploadImage(url, value),
-              setState(() {}),
-            }
-        });
+  handleResponseData(profileUrl) {
+    if (profileUrl is ProfileImageUpload) {
+      if (profileUrl.url != null && profileUrl.key != null) {
+        var uploadUrl = profileUrl.url!;
+        AppPreference().profileImageKey = profileUrl.key ?? "";
+        Future<dynamic> future = viewmodel.getProfileImage();
+        future.then((value) => {
+              if (value is File && uploadUrl.isNotEmpty)
+                {
+                  CPSessionManager().setProfileImage(value.path),
+                  AwsApi().uploadImage(uploadUrl, value),
+                  updateUserApi(UserProfileData(profileImage: profileUrl.key))
+                }
+            });
+      }
+    }
+  }
+}
+
+void updateUserApi(UserProfileData updaterUserApi) async {
+  Future<dynamic> future =
+      UpdateUserRepository().updateUserDetails(api: updaterUserApi);
+  future.then((value) => {handleResponseData(value)});
+}
+
+handleResponseData(value) {
+  if (value is SuccessResponse) {
+    print("UPdate success" + value.toString());
+    //print("Response Data : ${value.statusCode}");
+  } else {
+    print("UPdate failure " + value.toString());
+    // ErrorResponse errorResponse = value;
+    // setState(() {
+    //   errorText = errorResponse.errorMessage.toString();
+    // });
+    //  print("Response Data : Error");
+
   }
 }
 
