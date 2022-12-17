@@ -36,13 +36,13 @@ class _CustomDialogState extends State<CustomDialog> {
 
   contentBox(context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
-      margin: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
                 color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
           ]),
@@ -56,7 +56,7 @@ class _CustomDialogState extends State<CustomDialog> {
           ),
           Text(
             widget.title,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
           ),
           const SizedBox(
             height: 15,

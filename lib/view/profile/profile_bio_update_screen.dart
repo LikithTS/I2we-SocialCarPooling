@@ -108,7 +108,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("languages_known") ??
                             "",
-                        hintText: "Kannada,Hindi",
+                        hintText: "English, Kannada, Hindi",
                         labelStyle: const TextStyle(color: hintColor),
                         hintStyle: const TextStyle(color: primaryLightColor),
                         prefixIcon: const Icon(Icons.newspaper,

@@ -51,9 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController phoneNumberController =
-        TextEditingController(text: "9986215749");
+        TextEditingController();
     TextEditingController passwordController =
-        TextEditingController(text: "Test@1234");
+        TextEditingController();
 
     final Size size = MediaQuery.of(context).size;
     return SafeArea(

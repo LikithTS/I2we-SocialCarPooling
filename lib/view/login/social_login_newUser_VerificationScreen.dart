@@ -22,6 +22,7 @@ import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/forgetpassword/ForgetPasswordConfirmScreen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
@@ -109,15 +110,17 @@ class _SocialLoginNewUserVerificationScreenState
 
   handleValidOtpResponseData(value, String phoneNumber) {
     if (value is AuthResponse) {
-      log("Storing access token and refresh token in sign up flow");
       CPSessionManager().setAuthToken(value.accessToken ?? "");
       CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: HomePage(homeRepository: HomeRepository())));
+      GetProfileDetails(context);
+      Timer(
+          const Duration(seconds: 2),
+              () =>
+              Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: HomePage(homeRepository: HomeRepository()))));
     } else {
       ErrorResponse errorResponse = value;
       log('Error ${errorResponse.errorMessage}');
