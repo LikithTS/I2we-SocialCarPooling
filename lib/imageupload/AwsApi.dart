@@ -17,7 +17,7 @@ class AwsApi {
     }
   }
 
-  Future<void> uploadImage(String url, File image) async {
+  Future<bool> uploadImage(String url, File image) async {
     try {
       Uint8List bytes = await image.readAsBytes();
       Uri uri = Uri.parse(url);
@@ -26,12 +26,13 @@ class AwsApi {
       log("call response upload  body : " + response.body.toString());
       if (response.statusCode == 200) {
         log("aws image upload" + response.toString());
-        log("success");
+        return true;
       }
     } catch (e) {
       log("Error while photo upload $e");
       throw ('Error uploading photo');
     }
+    return false;
   }
 
 /*  Future<void> uploadImage(File imageFile, String url, String imagetype) async {

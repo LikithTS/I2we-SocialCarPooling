@@ -9,36 +9,36 @@ import 'dart:convert';
 /// address2 : ""
 /// city : ""
 /// state : ""
-/// pincode : "560045"
+/// pincode : ""
 /// phoneNumber : "9986215749"
 /// answeredQuestionnaries : [{"id":"634166c2f628ec64792bee4b","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166bef628ec64792bee20","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166c4f628ec64792bee5b","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166c7f628ec64792bee76","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166baf628ec64792bedfe","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166c1f628ec64792bee3c","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166c8f628ec64792bee81","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]},{"id":"634166bff628ec64792bee26","subCategories":["634166c8f628ec64792bee82","634166c8f628ec64792bee83","634166c8f628ec64792bee84"]}]
-/// work : "SE"
-/// education : "PRIMARY_EDUCATION"
+/// work : ""
+/// education : ""
 /// password : "$2b$10$tozSo7RtdFXEca64g3hC9uxmyHD4VpHct4l1E4sL/2KvodQ17s7MK"
 /// verificationStatus : "NOT_VERIFIED"
-/// profileImage : ""
-/// drivingLicence : null
-/// userIdentificationFront : null
+/// profileImage : "users/63236056267a855814e999a8/profileImage.jpg"
+/// drivingLicence : ""
+/// userIdentificationFront : ""
 /// designation : ""
-/// userIdentificationBack : null
+/// userIdentificationBack : ""
 /// userPersonalIdentityDocumentType : "AADHAR"
-/// hashedRt : "$2b$10$t5.0OGozXcJteEJShl1OquN1cUy9cXCnrTtF03OYjsGqE1sm7BQeu"
-/// bio : ""
+/// hashedRt : "$2b$10$dGeoepucM112eehg4pemLOJSA618kSuW9GLpUbASzI71x.o3Lu57G"
+/// bio : "my name is test I am here to test the app"
 /// language : ["ENGLISH"]
 /// facebook : ""
 /// linkedIn : ""
 /// twitter : ""
-/// otp : null
-/// otpExpirationTime : null
+/// otp : ""
+/// otpExpirationTime : ""
 /// gender : "MALE"
+/// percentageOfCompletion : 63
 
-UserProfileData userProfileDataFromJson(String str) =>
-    UserProfileData.fromJson(json.decode(str));
-String userProfileDataToJson(UserProfileData data) =>
-    json.encode(data.toJson());
+UserDetail userDetailFromJson(String str) =>
+    UserDetail.fromJson(json.decode(str));
+String userDetailToJson(UserDetail data) => json.encode(data.toJson());
 
-class UserProfileData {
-  UserProfileData({
+class UserDetail {
+  UserDetail({
     String? id,
     String? name,
     String? email,
@@ -56,10 +56,10 @@ class UserProfileData {
     String? password,
     String? verificationStatus,
     String? profileImage,
-    dynamic drivingLicence,
-    dynamic userIdentificationFront,
+    String? drivingLicence,
+    String? userIdentificationFront,
     String? designation,
-    dynamic userIdentificationBack,
+    String? userIdentificationBack,
     String? userPersonalIdentityDocumentType,
     String? hashedRt,
     String? bio,
@@ -67,9 +67,10 @@ class UserProfileData {
     String? facebook,
     String? linkedIn,
     String? twitter,
-    dynamic otp,
-    dynamic otpExpirationTime,
+    String? otp,
+    String? otpExpirationTime,
     String? gender,
+    num? percentageOfCompletion,
   }) {
     _id = id;
     _name = name;
@@ -102,9 +103,10 @@ class UserProfileData {
     _otp = otp;
     _otpExpirationTime = otpExpirationTime;
     _gender = gender;
+    _percentageOfCompletion = percentageOfCompletion;
   }
 
-  UserProfileData.fromJson(dynamic json) {
+  UserDetail.fromJson(dynamic json) {
     _id = json['id'];
     _name = json['name'];
     _email = json['email'];
@@ -142,6 +144,7 @@ class UserProfileData {
     _otp = json['otp'];
     _otpExpirationTime = json['otpExpirationTime'];
     _gender = json['gender'];
+    _percentageOfCompletion = json['percentageOfCompletion'];
   }
   String? _id;
   String? _name;
@@ -160,10 +163,10 @@ class UserProfileData {
   String? _password;
   String? _verificationStatus;
   String? _profileImage;
-  dynamic _drivingLicence;
-  dynamic _userIdentificationFront;
+  String? _drivingLicence;
+  String? _userIdentificationFront;
   String? _designation;
-  dynamic _userIdentificationBack;
+  String? _userIdentificationBack;
   String? _userPersonalIdentityDocumentType;
   String? _hashedRt;
   String? _bio;
@@ -171,10 +174,11 @@ class UserProfileData {
   String? _facebook;
   String? _linkedIn;
   String? _twitter;
-  dynamic _otp;
-  dynamic _otpExpirationTime;
+  String? _otp;
+  String? _otpExpirationTime;
   String? _gender;
-  UserProfileData copyWith({
+  num? _percentageOfCompletion;
+  UserDetail copyWith({
     String? id,
     String? name,
     String? email,
@@ -192,10 +196,10 @@ class UserProfileData {
     String? password,
     String? verificationStatus,
     String? profileImage,
-    dynamic drivingLicence,
-    dynamic userIdentificationFront,
+    String? drivingLicence,
+    String? userIdentificationFront,
     String? designation,
-    dynamic userIdentificationBack,
+    String? userIdentificationBack,
     String? userPersonalIdentityDocumentType,
     String? hashedRt,
     String? bio,
@@ -203,11 +207,12 @@ class UserProfileData {
     String? facebook,
     String? linkedIn,
     String? twitter,
-    dynamic otp,
-    dynamic otpExpirationTime,
+    String? otp,
+    String? otpExpirationTime,
     String? gender,
+    num? percentageOfCompletion,
   }) =>
-      UserProfileData(
+      UserDetail(
         id: id ?? _id,
         name: name ?? _name,
         email: email ?? _email,
@@ -243,6 +248,8 @@ class UserProfileData {
         otp: otp ?? _otp,
         otpExpirationTime: otpExpirationTime ?? _otpExpirationTime,
         gender: gender ?? _gender,
+        percentageOfCompletion:
+            percentageOfCompletion ?? _percentageOfCompletion,
       );
   String? get id => _id;
   String? get name => _name;
@@ -262,10 +269,10 @@ class UserProfileData {
   String? get password => _password;
   String? get verificationStatus => _verificationStatus;
   String? get profileImage => _profileImage;
-  dynamic get drivingLicence => _drivingLicence;
-  dynamic get userIdentificationFront => _userIdentificationFront;
+  String? get drivingLicence => _drivingLicence;
+  String? get userIdentificationFront => _userIdentificationFront;
   String? get designation => _designation;
-  dynamic get userIdentificationBack => _userIdentificationBack;
+  String? get userIdentificationBack => _userIdentificationBack;
   String? get userPersonalIdentityDocumentType =>
       _userPersonalIdentityDocumentType;
   String? get hashedRt => _hashedRt;
@@ -274,9 +281,10 @@ class UserProfileData {
   String? get facebook => _facebook;
   String? get linkedIn => _linkedIn;
   String? get twitter => _twitter;
-  dynamic get otp => _otp;
-  dynamic get otpExpirationTime => _otpExpirationTime;
+  String? get otp => _otp;
+  String? get otpExpirationTime => _otpExpirationTime;
   String? get gender => _gender;
+  num? get percentageOfCompletion => _percentageOfCompletion;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -314,6 +322,7 @@ class UserProfileData {
     map['otp'] = _otp;
     map['otpExpirationTime'] = _otpExpirationTime;
     map['gender'] = _gender;
+    map['percentageOfCompletion'] = _percentageOfCompletion;
     return map;
   }
 }

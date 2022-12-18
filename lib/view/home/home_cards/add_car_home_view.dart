@@ -9,8 +9,6 @@ import '../../../widgets/text_widgets.dart';
 class AddCarCard extends StatelessWidget {
   const AddCarCard({Key? key}) : super(key: key);
 
-  void addCarButtonClicked() {}
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -76,6 +74,7 @@ class AddCarCard extends StatelessWidget {
     Navigator.push(
         context,
         PageTransition(
-            type: PageTransitionType.bottomToTop, child: AddCarScreen(carRepository: CarRepository())));
+            type: PageTransitionType.bottomToTop,
+            child: AddCarScreen(carRepository: CarRepository())));
   }
 }

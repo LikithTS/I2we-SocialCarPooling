@@ -1,14 +1,20 @@
+import 'dart:io';
+
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
-import 'package:common/network/response/user/UserProfileData.dart';
+import 'package:common/network/response/profile/UpdateUserProfile.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
-import '../../util/color.dart';
 import '../../font&margin/margin_confiq.dart';
+import '../../util/AppPreference.dart';
+import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/circular_progress_loader.dart';
 
 class ProfileBioUpdateScreen extends StatefulWidget {
   const ProfileBioUpdateScreen({Key? key}) : super(key: key);
@@ -18,9 +24,12 @@ class ProfileBioUpdateScreen extends StatefulWidget {
 }
 
 class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
-  TextEditingController bioController = TextEditingController();
+  TextEditingController bioController =
+      TextEditingController(text: AppPreference().userDetail?.bio ?? "");
 
-  TextEditingController languageController = TextEditingController();
+  TextEditingController languageController = TextEditingController(
+      text: AppPreference().userDetail?.language?.join(',') ?? "");
+  var isSaved = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,17 +75,28 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                     ),
                     Stack(
                       alignment: Alignment.centerRight,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(
-                            right: 18,
-                          ),
-                          child: CircleAvatar(
-                            radius: 58,
-                            backgroundImage: NetworkImage(
-                                "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
-                          ),
-                        ),
+                            padding: EdgeInsets.only(
+                              right: 18,
+                            ),
+                            child: CPSessionManager()
+                                    .getProfileImage()
+                                    .isNotEmpty
+                                ? CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: Image.file(File(
+                                            CPSessionManager()
+                                                .getProfileImage()))
+                                        .image,
+                                  )
+                                : CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: NetworkImage(
+                                        AppPreference().imageBaseUrl +
+                                            (AppPreference().profileImageKey ??
+                                                "")),
+                                  )),
                         CircleAvatar(
                           radius: 18,
                           backgroundColor: primaryLightColor,
@@ -90,8 +110,8 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                   ],
                 ),
                 addVerticalSpace(5),
-                userNameText("User Name"),
-                workText("Work, Designation"),
+                userNameText(AppPreference().userDetail?.name ?? ""),
+                workText(AppPreference().userDetail?.work ?? ""),
                 addVerticalSpace(20),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -100,7 +120,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                     elevation: 2.0,
                     child: TextFormField(
                       controller: languageController,
-                      readOnly: true,
+                      readOnly: false,
                       showCursor: true,
                       cursorWidth: 0,
                       decoration: InputDecoration(
@@ -108,7 +128,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("languages_known") ??
                             "",
-                        hintText: "Kannada,Hindi",
+                        hintText: "",
                         labelStyle: const TextStyle(color: hintColor),
                         hintStyle: const TextStyle(color: primaryLightColor),
                         prefixIcon: const Icon(Icons.newspaper,
@@ -175,22 +195,26 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                   margin:
                       EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
                   padding: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      updateBio();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(margin20),
+                  child: Visibility(
+                    visible: isSaved,
+                    replacement: getLoadingWidget(),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        updateBio();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(margin20),
+                        ),
+                        elevation: margin2,
                       ),
-                      elevation: margin2,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        DemoLocalizations.of(context)?.getText("save") ?? "",
-                        style: TextStyle(fontSize: fontSize18),
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          DemoLocalizations.of(context)?.getText("save") ?? "",
+                          style: TextStyle(fontSize: fontSize18),
+                        ),
                       ),
                     ),
                   ),
@@ -207,23 +231,35 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
     if (bioController.text.isEmpty) {
       return;
     }
+    setState(() {
+      isSaved = false;
+    });
 
     updateUserApi(
-        UserProfileData(bio: bioController.text, language: ['ENGLISH']));
+        UpdateUserProfile(bio: bioController.text, language: getLanguageList()),
+        context);
   }
 
-  void updateUserApi(UserProfileData updaterUserApi) {
+  void updateUserApi(UpdateUserProfile updaterUserApi, BuildContext context) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
-    future.then((value) => {handleResponseData(value)});
+    future.then((value) => {handleResponseData(value, context)});
   }
 
-  handleResponseData(value) {
+  handleResponseData(value, BuildContext context) {
     if (value is SuccessResponse) {
+      GetProfileDetails(context);
       print("UPdate success" + value.toString());
+      setState(() {
+        isSaved = true;
+      });
+
       //print("Response Data : ${value.statusCode}");
     } else {
       print("UPdate failure " + value.toString());
+      setState(() {
+        isSaved = true;
+      });
       // ErrorResponse errorResponse = value;
       // setState(() {
       //   errorText = errorResponse.errorMessage.toString();
@@ -231,6 +267,16 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
       //  print("Response Data : Error");
 
     }
+  }
+
+  List<String> getLanguageList() {
+    var languageList = <String>[];
+    final names = languageController.text.toUpperCase();
+    final splitNames = names.split(',');
+    for (int i = 0; i < splitNames.length; i++) {
+      languageList.add(splitNames[i]);
+    }
+    return languageList;
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:common/network/response/user/UserProfileData.dart';
+import 'package:common/network/response/userdetails/UserDetail.dart';
 
 class AppPreference {
   static final AppPreference _singleton = AppPreference._internal();
@@ -9,7 +9,7 @@ class AppPreference {
 
   AppPreference._internal();
 
-  UserProfileData? userProfileData;
+  UserDetail? userDetail;
   String profileImageKey = "";
   String imageBaseUrl = "https://i2w-data.s3.ap-south-1.amazonaws.com/";
 }

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
-import 'package:common/network/response/user/ProfileImageUpload.dart';
-import 'package:common/network/response/user/UserProfileData.dart';
+import 'package:common/network/response/user/ProfileImageUpdate.dart';
+import 'package:common/network/response/user/ProfileImageUploadUrl.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +14,7 @@ import 'package:socialcarpooling/utils/Localization.dart';
 import 'package:socialcarpooling/view/profile/ProfileViewModel.dart';
 import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
 import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/profile/verification/VerificationMainScreen.dart';
 
 import '../../util/AppPreference.dart';
@@ -115,8 +116,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   ],
                 ),
                 addVerticalSpace(5),
-                userNameText(AppPreference().userProfileData?.name ?? ""),
-                workText(AppPreference().userProfileData?.designation ?? ""),
+                userNameText(AppPreference().userDetail?.name ?? ""),
+                workText(AppPreference().userDetail?.designation ?? ""),
                 addVerticalSpace(20),
                 Container(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -265,12 +266,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               child: CircularPercentIndicator(
                                   radius: 60,
                                   lineWidth: 6,
-                                  percent: 10 / 100,
+                                  percent: (AppPreference()
+                                              .userDetail
+                                              ?.percentageOfCompletion ??
+                                          0) /
+                                      100,
                                   progressColor: primaryColor,
                                   backgroundColor: lightGreyColor,
                                   circularStrokeCap: CircularStrokeCap.round,
                                   center: progressTextBlack(
-                                      "10%", 13.sp, primaryColor)),
+                                      (AppPreference()
+                                                  .userDetail
+                                                  ?.percentageOfCompletion ??
+                                              0)
+                                          .toString(),
+                                      13.sp,
+                                      primaryColor)),
                             )
                           ],
                         ),
@@ -400,7 +411,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: profileText(
-                                  AppPreference().userProfileData?.bio ?? "",
+                                  AppPreference().userDetail?.bio ?? "",
                                   12.sp,
                                   const Color(0Xff707070)),
                             ),
@@ -426,7 +437,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               children: [
                                 profileText(
                                     AppPreference()
-                                            .userProfileData
+                                            .userDetail
                                             ?.language
                                             ?.join(', ') ??
                                         "",
@@ -448,6 +459,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (CPSessionManager().isUserLoggedIn()) {
+      GetProfileDetails(context);
+    }
+  }
+
   void handleProfileUpload() {
     Future<dynamic> future = viewmodel.getUserProfileUrl();
     future.then((value) => {handleResponseData(value)});
@@ -464,7 +483,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 {
                   CPSessionManager().setProfileImage(value.path),
                   AwsApi().uploadImage(uploadUrl, value),
-                  updateUserApi(UserProfileData(profileImage: profileUrl.key))
+                  updateUserApi(
+                      ProfileImageUpdate(profileImage: profileUrl.key))
                 }
             });
       }
@@ -472,18 +492,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 }
 
-void updateUserApi(UserProfileData updaterUserApi) async {
+void updateUserApi(ProfileImageUpdate profileImage) async {
   Future<dynamic> future =
-      UpdateUserRepository().updateUserDetails(api: updaterUserApi);
+      UpdateUserRepository().updateProfilePhoto(api: profileImage);
   future.then((value) => {handleResponseData(value)});
 }
 
 handleResponseData(value) {
   if (value is SuccessResponse) {
-    print("UPdate success" + value.toString());
+    print("UPdate success$value");
     //print("Response Data : ${value.statusCode}");
   } else {
-    print("UPdate failure " + value.toString());
+    print("UPdate failure $value");
     // ErrorResponse errorResponse = value;
     // setState(() {
     //   errorText = errorResponse.errorMessage.toString();

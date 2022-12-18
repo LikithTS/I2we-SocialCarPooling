@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/addCarApi.dart';
@@ -11,6 +12,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/view/myvehicle/AddCarViewModel.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import 'package:socialcarpooling/widgets/material_text_form.dart';
@@ -41,6 +43,7 @@ class AddCarScreenState extends State<AddCarScreen> {
   List<Color> offeringSeatsColor = [];
   List<Color> availableSeatsTextColor = [];
   List<Color> offeringSeatsTextColor = [];
+  File? rcImageFile;
 
   CarRepository get _carRepository => widget.carRepository;
 
@@ -65,6 +68,8 @@ class AddCarScreenState extends State<AddCarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AddCarViewModel viewModel = AddCarViewModel();
+
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -136,16 +141,19 @@ class AddCarScreenState extends State<AddCarScreen> {
                           Icons.edit,
                           carRegNumberController),
                       addVerticalSpace(10),
-
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
                             boxShadow: const [
-                              BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 2.0,
+                                  spreadRadius: 0.4)
                             ]),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                          padding:
+                              const EdgeInsets.only(left: 20.0, right: 10.0),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButtonFormField(
                               isExpanded: true,
@@ -153,12 +161,13 @@ class AddCarScreenState extends State<AddCarScreen> {
                               decoration: const InputDecoration(
                                 fillColor: Colors.grey,
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(width: 0, color: Colors.transparent),
+                                  borderSide: BorderSide(
+                                      width: 0, color: Colors.transparent),
                                 ),
                               ),
                               hint: Text(
                                 DemoLocalizations.of(context)
-                                    ?.getText("car_type") ??
+                                        ?.getText("car_type") ??
                                     "",
                                 style: TextStyleUtils.primaryTextMedium,
                                 overflow: TextOverflow.ellipsis,
@@ -416,27 +425,38 @@ class AddCarScreenState extends State<AddCarScreen> {
                         ),
                       ),
                       addVerticalSpace(10),
-                      Material(
-                        elevation: 2.0,
-                        child: TextFormField(
-                          readOnly: true,
-                          showCursor: true,
-                          cursorWidth: 0,
-                          decoration: InputDecoration(
-                            filled: true,
-                            labelText: DemoLocalizations.of(context)
-                                    ?.getText("upload_document") ??
-                                "",
-                            hintText: DemoLocalizations.of(context)
-                                ?.getText("add_photos"),
-                            labelStyle: const TextStyle(color: hintColor),
-                            hintStyle:
-                                const TextStyle(color: primaryLightColor),
-                            prefixIcon: const Icon(Icons.newspaper,
-                                color: primaryLightColor),
-                            suffixIcon: const Icon(
-                              Icons.add_circle_outline,
-                              color: primaryLightColor,
+                      GestureDetector(
+                        onTap: () {
+                          Future<dynamic> future = viewModel.getRcImage();
+                          future.then((value) => {
+                                if (value != null && value is File)
+                                  setState(() {
+                                    rcImageFile = value;
+                                  })
+                              });
+                        },
+                        child: Material(
+                          elevation: 2.0,
+                          child: TextFormField(
+                            readOnly: true,
+                            showCursor: true,
+                            cursorWidth: 0,
+                            decoration: InputDecoration(
+                              filled: true,
+                              labelText: DemoLocalizations.of(context)
+                                      ?.getText("upload_document") ??
+                                  "",
+                              hintText: DemoLocalizations.of(context)
+                                  ?.getText("add_photos"),
+                              labelStyle: const TextStyle(color: hintColor),
+                              hintStyle:
+                                  const TextStyle(color: primaryLightColor),
+                              prefixIcon: const Icon(Icons.newspaper,
+                                  color: primaryLightColor),
+                              suffixIcon: const Icon(
+                                Icons.add_circle_outline,
+                                color: primaryLightColor,
+                              ),
                             ),
                           ),
                         ),

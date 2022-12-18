@@ -1,19 +1,10 @@
 import 'dart:io';
 
-import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class VerificationViewModel {
-  Future<dynamic> getIdentificationUrl() async {
-    return UpdateUserRepository().getUserIdentificationUrl();
-  }
-
-  Future<dynamic> getUserDrivingLicenseUrl() async {
-    return UpdateUserRepository().getUserDrivingLicenseUrl();
-  }
-
-  Future<File?> getImage() async {
+class AddCarViewModel {
+  Future<File?> getRcImage() async {
     final picker = ImagePicker();
 
     final XFile? pickedFile = await picker.pickImage(

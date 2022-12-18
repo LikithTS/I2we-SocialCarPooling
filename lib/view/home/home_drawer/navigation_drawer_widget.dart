@@ -38,8 +38,9 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = AppPreference().userProfileData?.name ?? "";
-    final profile_percentage = "Profile 30% Completed";
+    final name = AppPreference().userDetail?.name ?? "";
+    final profile_percentage =
+        "Profile ${AppPreference().userDetail?.percentageOfCompletion ?? 0}% Completed";
     final profileImage = CPSessionManager().getProfileImage();
 
     return Drawer(
@@ -196,7 +197,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     "We need your location permission to Give better expericance",
                 rightButtonText: "Allow",
                 leftButtonText: "Not now",
-                img: "assets/images/location_dialog.png",
+                img: "assets/images/verify_pin.png",
               );
             });
         break;
@@ -322,7 +323,7 @@ Widget buildHeader(
                 : CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
-                        AppPreference().userProfileData?.profileImage ?? ""),
+                        AppPreference().userDetail?.profileImage ?? ""),
                   ),
             addHorizontalSpace(20),
             Column(
