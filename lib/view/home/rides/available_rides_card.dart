@@ -98,7 +98,7 @@ class AvailableRides extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, top: 5, bottom: 5),
                         child: Container(
-                          color: Color(0XffE0F2FF),
+                          color: const Color(0XffE0F2FF),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -106,7 +106,7 @@ class AvailableRides extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.repeat,
                                     color: primaryColor,
                                   ),
@@ -245,7 +245,7 @@ class AvailableRides extends StatelessWidget {
                       CircleAvatar(
                         child: IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.message_rounded,
                             color: Colors.white,
                           ),

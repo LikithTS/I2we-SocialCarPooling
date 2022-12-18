@@ -23,6 +23,7 @@ import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/view/ratingsandreviews/ratings_reviews_screen.dart';
 import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
@@ -133,7 +134,7 @@ class NavigationDrawerWidget extends StatelessWidget {
       required VoidCallback onClicked}) {
     const iconColor = Colors.blue;
     return ListTile(
-      visualDensity: VisualDensity(vertical: -3),
+      visualDensity: const VisualDensity(vertical: -3),
       leading: BorderIcon(
         height: 30,
         width: 30,
@@ -161,7 +162,7 @@ class NavigationDrawerWidget extends StatelessWidget {
 
       case 1:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyRidesScreen()));
+            context, MaterialPageRoute(builder: (context) => const MyRidesScreen()));
         break;
 
       case 2:
@@ -187,20 +188,23 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
-      case 7:
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const CustomDialog(
-                title: "Allow Your Location",
-                descriptions:
-                    "We need your location permission to Give better expericance",
-                rightButtonText: "Allow",
-                leftButtonText: "Not now",
-                img: "assets/images/verify_pin.png",
-              );
-            });
+      case 5:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
+        // showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return const CustomDialog(
+        //         title: "Allow Your Location",
+        //         descriptions:
+        //             "We need your location permission to Give better expericance",
+        //         rightButtonText: "Allow",
+        //         leftButtonText: "Not now",
+        //         img: "assets/images/location_dialog.png",
+        //       );
+        //     });
+        // break;
       case 6:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => FeedbackPage()));

@@ -17,7 +17,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-  CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
+  CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;

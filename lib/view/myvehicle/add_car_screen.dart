@@ -258,7 +258,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(Icons.airline_seat_recline_normal,
+                          const Icon(Icons.airline_seat_recline_normal,
                               color: primaryLightColor),
                           smallText(
                               DemoLocalizations.of(context)

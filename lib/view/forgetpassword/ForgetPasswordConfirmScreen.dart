@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:common/network/repository/ChangePasswordRespository.dart';
@@ -8,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../util/CPString.dart';
 import '../../util/Validation.dart';
@@ -132,10 +134,14 @@ class _ForgetPasswordConfirmScreenState
   }
 
   handleResponseData(value) {
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.bottomToTop,
-            child: HomePage(homeRepository: HomeRepository())));
+
+    GetProfileDetails(context);
+    Timer(
+        const Duration(seconds: 2),
+            () => Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: HomePage(homeRepository: HomeRepository()))));
   }
 }

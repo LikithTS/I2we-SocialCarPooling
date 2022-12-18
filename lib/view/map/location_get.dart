@@ -19,7 +19,7 @@ class _LocationGetState extends State<LocationGet> {
   double? longitude;
   late LatLng currentPosition;
   var _initialCameraPosition =
-      CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 14);
+      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 14);
 
   final Set<Marker> _markers = {};
 
@@ -114,7 +114,7 @@ class _LocationGetState extends State<LocationGet> {
               child: Container(
                 width: margin50,
                 height: margin50,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),

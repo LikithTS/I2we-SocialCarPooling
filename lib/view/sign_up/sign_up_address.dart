@@ -148,8 +148,8 @@ class _SignUpAddressState extends State<SignUpAddress>
               ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
-                padding: EdgeInsets.all(10),
+                    const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+                padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -165,7 +165,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     elevation: margin2,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Text(
                       CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),
