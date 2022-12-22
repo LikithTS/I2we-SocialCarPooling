@@ -7,7 +7,7 @@ Widget outlineButtonView(String buttonName) => OutlinedButton(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        minimumSize: const Size(150, 40)),
+        minimumSize: const Size(120, 40)),
     onPressed: () {
       onCancelButtonClicked();
     },

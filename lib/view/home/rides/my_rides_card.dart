@@ -46,7 +46,7 @@ class MyRides extends StatelessWidget {
         children: [
           Card(
               child: Container(
-            width: screenWidth * 0.85,
+            width: screenWidth * 0.90,
             margin: const EdgeInsets.all(5.0),
             child: Wrap(
               direction: Axis.horizontal,
