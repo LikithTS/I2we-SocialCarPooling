@@ -36,4 +36,5 @@ class ApiConstant {
   static const String GET_DRIVING_LICENSE_URL =
       "/user/driving-license-upload-url";
   static const String FIREBASE_API_PATH = "/user/update-firebase-token";
+  static const String AVAILABLE_RIDES = "ride/upcoming";
 }
