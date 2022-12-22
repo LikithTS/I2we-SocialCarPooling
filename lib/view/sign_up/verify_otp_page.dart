@@ -13,11 +13,14 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/FirebaseTokenUpdate.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
 
@@ -59,7 +62,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   void initState() {
     super.initState();
     mobileNoController.text = widget.mobileNo;
-    callSendOtpApi(widget.mobileNo);
+    InternetChecks.isConnected()
+        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -71,50 +75,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
         });
       }
     });
-  }
-
-  void sendOtp(SendOtpApi sendOtpApi) {
-    Future<dynamic> future = signInRepository.sendOtp(api: sendOtpApi);
-    future.then((value) => {handleResponseData(value)});
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
-  }
-
-  void validOtp(ValidOtpApi validOtpApi) {
-    Future<dynamic> future = signInRepository.validOtp(api: validOtpApi);
-    future.then((value) => {handleValidOtpResponseData(value)});
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
-  }
-
-  handleResponseData(value) {
-    if (value is SuccessResponse) {
-      // print("Success ${value.statusCode}");
-    } else {
-      ErrorResponse errorResponse = value;
-      print('Error ${errorResponse.errorMessage}');
-    }
-  }
-
-  handleValidOtpResponseData(value) {
-    if (value is AuthResponse) {
-      log("Storing access token and refresh token in sign up flow");
-      CPSessionManager().setAuthToken(value.accessToken ?? "");
-      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-      GetProfileDetails(context);
-      Timer(
-          const Duration(seconds: 2),
-              () => Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  type: PageTransitionType.bottomToTop,
-                  child: const VerifiedPage())));
-    } else {
-      ErrorResponse errorResponse = value;
-      log('Error ${errorResponse.errorMessage}');
-    }
   }
 
   @override
@@ -170,15 +130,17 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                                     .copyWith(
                                         color: primaryColor,
                                         fontSize: fontSize16),
-                              )
-                          )
-                      ),
+                              ))),
                       if (enableSendOtpButton) ...[
                         InkWell(
                             onTap: () {
                               setState(() {
                                 enableSendOtpButton = false;
-                                callSendOtpApi(widget.mobileNo);
+                                InternetChecks.isConnected().then(
+                                    (isAvailable) => {
+                                          callSendOtpApi(
+                                              isAvailable, widget.mobileNo)
+                                        });
                               });
                             },
                             child: Positioned(
@@ -188,11 +150,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                                   'Send OTP',
                                   style: TextStyleUtils.primaryTextMedium
                                       .copyWith(
-                                      color: primaryColor,
-                                      fontSize: fontSize16),
-                                )
-                            )
-                        ),
+                                          color: primaryColor,
+                                          fontSize: fontSize16),
+                                ))),
                       ],
                     ],
                   ),
@@ -295,7 +255,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                         ValidOtpApi validOtpApi = ValidOtpApi(
                             phoneNumber: mobileNoController.text.toString(),
                             otp: otpText);
-                        validOtp(validOtpApi);
+                        InternetChecks.isConnected().then((isAvailable) =>
+                            {validOtp(isAvailable, validOtpApi)});
                       },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
@@ -354,25 +315,80 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
     );
   }
 
-  void _resendCode() {
-    //other code here
-    callSendOtpApi(widget.mobileNo);
-    setState(() {
-      secondsRemaining = 10;
-      enableResend = false;
-    });
-  }
-
   @override
   dispose() {
     timer?.cancel();
     super.dispose();
   }
 
-  void callSendOtpApi(String mobileNo) {
-    if (mobileNo.isNotEmpty) {
-      SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
-      sendOtp(sendOtpApi);
+  void sendOtp(SendOtpApi sendOtpApi) {
+    Future<dynamic> future = signInRepository.sendOtp(api: sendOtpApi);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  void validOtp(bool isInternetAvailable, ValidOtpApi validOtpApi) {
+    if (isInternetAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      Future<dynamic> future = signInRepository.validOtp(api: validOtpApi);
+      future.then((value) =>
+          {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  handleResponseData(value) {
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      // print("Success ${value.statusCode}");
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
+  }
+
+  handleValidOtpResponseData(value, String phoneNumber) {
+    if (value is AuthResponse) {
+      log("Storing access token and refresh token in sign up flow");
+      CPSessionManager().setUserId(phoneNumber);
+      CPSessionManager().setAuthToken(value.accessToken ?? "");
+      CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
+      FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
+      firebaseTokenUpdate.getToken();
+      firebaseTokenUpdate.initInfo();
+      GetProfileDetails(context);
+      InternetChecks.closeLoadingProgress(context);
+      Timer(
+          const Duration(seconds: 2),
+          () => Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: const VerifiedPage())));
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
+  }
+
+  void _resendCode() {
+    //other code here
+    InternetChecks.isConnected()
+        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
+    setState(() {
+      secondsRemaining = 10;
+      enableResend = false;
+    });
+  }
+
+  void callSendOtpApi(bool isInternetAvailable, String mobileNo) {
+    if (isInternetAvailable) {
+      if (mobileNo.isNotEmpty) {
+        InternetChecks.showLoadingCircle(context);
+        SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
+        sendOtp(sendOtpApi);
+      }
+    } else {
+      showSnackbar(context, "No Internet");
     }
   }
 }

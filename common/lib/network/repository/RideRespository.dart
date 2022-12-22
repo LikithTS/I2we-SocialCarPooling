@@ -35,7 +35,7 @@ class RideRepository extends ApiRepository {
       await APIClient().getDioInstance().get(ApiConstant.UPCOMING_RIDE);
       dynamic response = handleAPIResponseData(carData);
       if (response is ErrorResponse) {
-        return response.toList();
+        return List.empty();
       } else {
         log("Response car $response");
         List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(

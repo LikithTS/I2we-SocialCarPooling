@@ -206,7 +206,7 @@ class _QuestionarieState extends State<QuestionariePage>
     if(value is QuestionarieResponse){
     _onCategoriesUpdated(value.questionarie);
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.errorMessage ?? "");
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     } else if(value is SuccessResponse){
       showSnackbar(context, value.message ?? CPString.UPDATED_SUCCESS);
       CPSessionManager().clearAllSelectedCategoryData();
@@ -221,7 +221,7 @@ class _QuestionarieState extends State<QuestionariePage>
 
   void handleErrorResponseData(onError) {
     if (onError is ApiException) {
-      showSnackbar(context, onError.errorResponse.errorMessage ?? "");
+      showSnackbar(context, onError.errorResponse.message ?? "");
     }
   }
 }

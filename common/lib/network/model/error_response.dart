@@ -6,43 +6,49 @@ ErrorResponse errorResponseFromJson(String str) =>
 String errorResponseToJson(ErrorResponse data) => json.encode(data.toJson());
 
 class ErrorResponse {
-  ErrorResponse({
-    int? status,
-    int? errorCode,
-    String? errorMessage,
-  }) {
-    _status = status;
-    _errorCode = errorCode;
-    _errorMessage = errorMessage;
+  int? statusCode;
+  String? message;
+  List<Error>? error;
+
+  ErrorResponse({this.statusCode, this.message, this.error});
+
+  ErrorResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    message = json['message'];
+    if (json['error'] != null) {
+      error = <Error>[];
+      json['error'].forEach((v) {
+        error!.add(new Error.fromJson(v));
+      });
+    }
   }
-
-  ErrorResponse.fromJson(dynamic json) {
-    _status = json['status'];
-    _errorCode = json['errorCode'];
-    _errorMessage = json['errorMessage'];
-  }
-
-  int? _status;
-  int? _errorCode;
-  String? _errorMessage;
-
-  int? get status => _status;
-
-  int? get errorCode => _errorCode;
-
-  String? get errorMessage => _errorMessage;
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['status'] = _status;
-    map['errorCode'] = _errorCode;
-    map['errorMessage'] = _errorMessage;
-    return map;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.error != null) {
+      data['error'] = this.error!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Error {
+  String? property;
+  String? message;
+
+  Error({this.property, this.message});
+
+  Error.fromJson(Map<String, dynamic> json) {
+    property = json['property'];
+    message = json['message'];
   }
 
-  List<dynamic> toList() {
-    List errorResponse = [];
-    errorResponse.add(ErrorResponse());
-    return errorResponse;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['property'] = property;
+    data['message'] = message;
+    return data;
   }
 }

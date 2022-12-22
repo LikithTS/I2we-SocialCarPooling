@@ -8,6 +8,7 @@ import '../model/direction.dart';
 
 class CPSessionManager{
   //Auth Token
+  final String USER_ID = "user_id";
   final String AUTH_TOKEN = "user_auth_token";
   final String USER_NAME = "user_name";
   final String AUTH_REFRESH_TOKEN = "user_auth_refersh_token";
@@ -59,6 +60,14 @@ class CPSessionManager{
     PreferencesUtil.putString(AUTH_TOKEN, auth_token);
   }
 
+  String getUserId() {
+    return PreferencesUtil.getString(USER_ID);
+  }
+
+  void setUserId(String phoneNumber) {
+    PreferencesUtil.putString(USER_ID, phoneNumber);
+  }
+
   String getUserName() {
     return PreferencesUtil.getString(USER_NAME);
   }
@@ -97,6 +106,7 @@ class CPSessionManager{
   }
 
   void handleUserLogout() {
+    setUserId("");
     setAuthToken("");
     setAuthRefreshToken("");
   }

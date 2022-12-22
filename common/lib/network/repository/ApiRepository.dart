@@ -11,7 +11,6 @@ import '../model/error_response.dart';
 import '../response/SuccessResponse.dart';
 
 class ApiRepository {
-
   handleAPIResponseData(Response<dynamic> responseData) {
     log("Status code ${responseData.statusCode}");
     if (responseData.statusCode == ApiConstant.STATUS_CODE_SUCCESS ||
@@ -23,9 +22,10 @@ class ApiRepository {
             successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS_ONE) {
           if (successResponse.statusCode == ApiConstant.STATUS_CODE_SUCCESS) {
             log("success response data ${successResponse.data}");
-            return successResponse.data!.isNotEmpty ? successResponse.data : successResponse;
-          }
-          else {
+            return successResponse.data!.isNotEmpty
+                ? successResponse.data
+                : successResponse;
+          } else {
             log("success response $successResponse");
             return successResponse;
           }
@@ -35,19 +35,21 @@ class ApiRepository {
         }
       } catch (e) {
         log("Error 1 : $e");
-        return ErrorResponse.fromJson(responseData.statusCode);
+        return ErrorResponse.fromJson(responseData.data);
       }
     } else {
       log("Error 2 : ${responseData.data}");
-      return ErrorResponse(status: responseData.data);
+      final String parsed = json.encode(responseData.data);
+      final Map parsed2 = json.decode(parsed);
+      log("Parsed $parsed2");
+      return ErrorResponse.fromJson(responseData.data);
     }
   }
 
   ApiException getErrorResponse(DioError onError) {
     var errorMessage = DioException.fromDioError(onError).errorMessage;
     return ApiException(ErrorResponse(
-        status: onError.response?.statusCode,
-        errorMessage: errorMessage,
-        errorCode: onError.response?.statusCode));
+        statusCode: onError.response?.statusCode,
+        message: errorMessage));
   }
 }

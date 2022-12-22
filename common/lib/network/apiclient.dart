@@ -32,10 +32,11 @@ class APIClient {
             error.response?.statusCode == 401) {
           await RefreshRepository().refreshAccessToken();
           _retry(_dio, error.requestOptions);
-        } else if (error.response?.statusCode == 503) {
+        } else {
           errorInterceptorHandler.resolve(Response(
               requestOptions: error.requestOptions,
-              data: error.response?.statusCode));
+              data: error.response?.data,
+              statusCode: error.response?.statusCode));
         }
       },
     ));

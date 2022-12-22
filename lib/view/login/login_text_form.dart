@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class LoginTextForm extends StatefulWidget {
   final String hint;
-  final String lableText;
+  final String labelText;
   final IconData prefixIcon;
   final IconData suffixIcon;
   final TextEditingController editingController;
@@ -15,13 +15,13 @@ class LoginTextForm extends StatefulWidget {
 
   LoginTextForm({Key? key,
     required this.hint,
-    required this.lableText,
+    required this.labelText,
     required this.prefixIcon,
     required this.suffixIcon,
     required this.editingController,
     required this.formValidator,
     required this.isPasswordField,
-    required this.isNumber})
+    required this.isNumber,})
       : super(key: key);
 
   @override
@@ -42,8 +42,6 @@ class InputFieldState extends State<LoginTextForm> {
   @override
   Widget build(BuildContext context) {
 
-    FocusNode focusNode = FocusNode();
-
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -52,6 +50,7 @@ class InputFieldState extends State<LoginTextForm> {
             BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
+        controller: widget.editingController,
         keyboardType: checkForInputType(widget.isNumber),
         obscureText:  checkForObsureText(widget.isNumber),
         inputFormatters: [
@@ -59,7 +58,6 @@ class InputFieldState extends State<LoginTextForm> {
         ],
         textAlign: TextAlign.start,
         validator: widget.formValidator,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
             fillColor: Colors.grey,
             counterText: "",
@@ -67,7 +65,7 @@ class InputFieldState extends State<LoginTextForm> {
               borderSide: BorderSide(width: 1, color: Colors.blue),
             ),
             hintText: widget.hint,
-            labelText: widget.lableText,
+            labelText: widget.labelText,
             suffixIcon: IconButton(
               iconSize: 30,
               icon: Icon(widget.suffixIcon),

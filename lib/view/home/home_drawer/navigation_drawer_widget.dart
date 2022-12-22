@@ -260,7 +260,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   void handleErrorResponseData(onError, BuildContext context) {
     if (onError is ApiException) {
       showSnackbar(homeGlobalkey.currentContext!,
-          onError.errorResponse.errorMessage ?? "");
+          onError.errorResponse.message ?? "");
     }
   }
 

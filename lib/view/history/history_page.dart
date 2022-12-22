@@ -69,13 +69,13 @@ class _HistoryState extends State<HistoryPage> {
     if (value is HistoryResponse) {
       updateHistoryData(value);
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.errorMessage ?? "");
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 
   void handleErrorResponseData(onError) {
     if (onError is ApiException) {
-      showSnackbar(context, onError.errorResponse.errorMessage ?? "");
+      showSnackbar(context, onError.errorResponse.message ?? "");
     }
   }
 

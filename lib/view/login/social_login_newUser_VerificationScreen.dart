@@ -110,6 +110,7 @@ class _SocialLoginNewUserVerificationScreenState
 
   handleValidOtpResponseData(value, String phoneNumber) {
     if (value is AuthResponse) {
+      CPSessionManager().setUserId(phoneNumber);
       CPSessionManager().setAuthToken(value.accessToken ?? "");
       CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
       GetProfileDetails(context);
@@ -123,7 +124,7 @@ class _SocialLoginNewUserVerificationScreenState
                       child: HomePage(homeRepository: HomeRepository()))));
     } else {
       ErrorResponse errorResponse = value;
-      log('Error ${errorResponse.errorMessage}');
+      log('Error ${errorResponse.message}');
     }
   }
 

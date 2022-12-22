@@ -13,22 +13,20 @@ Widget addHorizontalSpace(double width) {
 
 Widget smallText(String text, Alignment alignement, [TextAlign? textAlign]) =>
     Container(
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         child: Align(
           alignment: alignement,
-          child: Expanded(
-            child: Text(
-              text,
-              textAlign: textAlign ?? TextAlign.start,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  height: 1.3,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                  decoration: TextDecoration.none,
-                  fontFamily: 'Poppins'),
-              maxLines: 3,
-            ),
+          child: Text(
+            text,
+            textAlign: textAlign ?? TextAlign.start,
+            style: TextStyle(
+                fontSize: 14.sp,
+                height: 1.3,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.none,
+                fontFamily: 'Poppins'),
+            maxLines: 3,
           ),
         ));
 
@@ -38,19 +36,17 @@ Widget smallSpanText(String text, Alignment alignement,
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: Align(
           alignment: alignement,
-          child: Expanded(
-            child: Text(
-              text,
-              textAlign: textAlign ?? TextAlign.start,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  height: 1.3,
-                  color: primaryColor,
-                  fontWeight: FontWeight.normal,
-                  decoration: TextDecoration.underline,
-                  fontFamily: 'Poppins'),
-              maxLines: 3,
-            ),
+          child: Text(
+            text,
+            textAlign: textAlign ?? TextAlign.start,
+            style: TextStyle(
+                fontSize: 14.sp,
+                height: 1.3,
+                color: primaryColor,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.underline,
+                fontFamily: 'Poppins'),
+            maxLines: 3,
           ),
         ));
 
@@ -59,20 +55,18 @@ Widget smallLightText(String text, Alignment alignement,
     Container(
         child: Align(
       alignment: alignement,
-      child: Expanded(
-        child: Text(
-          text,
-          textAlign: textAlign ?? TextAlign.start,
-          style: TextStyle(
-              fontSize: 7.sp,
-              height: 1.3,
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              fontFamily: 'Poppins'),
-          maxLines: 3,
-        ),
-      ),
+          child: Text(
+            text,
+            textAlign: textAlign ?? TextAlign.start,
+            style: TextStyle(
+                fontSize: 7.sp,
+                height: 1.3,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.none,
+                fontFamily: 'Poppins'),
+            maxLines: 3,
+          ),
     ));
 Widget headerText(String title) => Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -106,18 +100,16 @@ Widget smallTextWithNoMargin(String text, Alignment alignement,
     Container(
         child: Align(
       alignment: alignement,
-      child: Expanded(
-        child: Text(
-          text,
-          textAlign: textAlign ?? TextAlign.start,
-          style: TextStyle(
-              fontSize: 14.sp,
-              height: 1.3,
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              fontFamily: 'Poppins'),
-          maxLines: 3,
-        ),
+      child: Text(
+        text,
+        textAlign: textAlign ?? TextAlign.start,
+        style: TextStyle(
+            fontSize: 14.sp,
+            height: 1.3,
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins'),
+        maxLines: 3,
       ),
     ));

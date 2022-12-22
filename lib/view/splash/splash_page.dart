@@ -1,19 +1,29 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/utils/CPSessionManager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/font&margin/margin_confiq.dart';
+import 'package:socialcarpooling/provider/PushNotification.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/FirebaseNotification.dart';
+import 'package:socialcarpooling/util/FirebaseTokenUpdate.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/intro/intro_main_page.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
+import 'package:socialcarpooling/widgets/NotificationBadge.dart';
 
 import '../../util/string_url.dart';
 import '../../widgets/image_widgets.dart';
@@ -28,13 +38,20 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
+  String? mToken = '';
+  FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
+  FirebaseNotification firebaseNotification = FirebaseNotification();
+
   @override
   void initState() {
-    super.initState();
+    firebaseNotification.registerNotification();
+    firebaseNotification.handleBackgroundNotification();
+    firebaseNotification.checkForInitialMessage();
     if (CPSessionManager().isUserLoggedIn()) {
       GetProfileDetails(context);
     }
     handleNextPage(context);
+    super.initState();
   }
 
   @override

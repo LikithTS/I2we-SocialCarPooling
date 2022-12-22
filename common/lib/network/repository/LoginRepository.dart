@@ -18,6 +18,7 @@ class LoginRepository extends ApiRepository {
           .getDioInstance()
           .post(ApiConstant.LOGIN_API_PATH, data: api.toJson());
       dynamic response = handleAPIResponseData(userData);
+      log("Login respository response $response");
       if (response is ErrorResponse) {
         return response;
       } else {

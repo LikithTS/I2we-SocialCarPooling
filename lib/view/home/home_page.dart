@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:socialcarpooling/util/FirebaseNotification.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   double? longitude;
   late LatLng currentPosition;
   HomeRepository get _homeRepository => widget.homeRepository;
+  FirebaseNotification firebaseNotification = FirebaseNotification();
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
@@ -78,6 +80,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    firebaseNotification.registerNotification();
+    firebaseNotification.handleBackgroundNotification();
+    firebaseNotification.checkForInitialMessage();
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();

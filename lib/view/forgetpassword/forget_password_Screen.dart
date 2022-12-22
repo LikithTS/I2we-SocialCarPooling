@@ -14,12 +14,14 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/forgetpassword/ForgetPasswordConfirmScreen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
@@ -96,7 +98,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   }
 
   handleValidOtpResponseData(value, String phoneNumber) {
-
+    InternetChecks.closeLoadingProgress(context);
     if (value is AuthResponse) {
       log("Storing access token and refresh token in sign up flow");
       CPSessionManager().setAuthToken(value.accessToken ?? "");
@@ -107,9 +109,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
           PageTransition(
               type: PageTransitionType.bottomToTop,
               child: ForgetPasswordConfirmScreen(mobileNumber: phoneNumber,)));
-    } else {
-      ErrorResponse errorResponse = value;
-      log('Error ${errorResponse.errorMessage}');
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? "");
     }
   }
 
@@ -186,7 +187,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                               onTap: () {
                                 setState(() {
                                   enableSendOtpButton = false;
-                                  callSendOtpApi(widget.mobileNo);
+                                  InternetChecks.isConnected().then((isAvailable) =>
+                                  {callSendOtpApi(isAvailable, widget.mobileNo)});
                                 });
                               },
                               child: Positioned(
@@ -329,7 +331,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   void _resendCode() {
     //other code here
-    callSendOtpApi(widget.mobileNo);
+    InternetChecks.isConnected().then((isAvailable) =>
+    {callSendOtpApi(isAvailable, widget.mobileNo)});
     setState(() {
       secondsRemaining = 10;
       enableResend = false;
@@ -342,10 +345,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     super.dispose();
   }
 
-  void callSendOtpApi(String mobileNo) {
-    if (mobileNo.isNotEmpty) {
-      SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
-      sendOtp(sendOtpApi);
+  void callSendOtpApi(bool isInternetAvailable, String mobileNo) {
+    if(isInternetAvailable) {
+      if (mobileNo.isNotEmpty) {
+        InternetChecks.showLoadingCircle(context);
+        SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
+        sendOtp(sendOtpApi);
+      } else {
+        showSnackbar(context, "No Internet");
+      }
     }
   }
 
@@ -358,10 +366,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
       if(otpSent) {
         alertDialogView(context, "change_password_otp_error");
       } else {
-        callSendOtpApi(mobileNumber);
+        InternetChecks.isConnected().then((isAvailable) =>
+        {callSendOtpApi(isAvailable, mobileNumber)});
       }
     } else {
       if (mobileNumber.isNotEmpty && otpText.isNotEmpty) {
+        InternetChecks.showLoadingCircle(context);
         ValidOtpApi validOtpApi = ValidOtpApi(
             phoneNumber: mobileNoController.text.toString(), otp: otpText);
         validOtp(validOtpApi);
