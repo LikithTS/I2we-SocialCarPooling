@@ -15,6 +15,7 @@ import '../ApiConstant.dart';
 import '../apiclient.dart';
 import '../model/error_response.dart';
 import '../response/SuccessResponse.dart';
+import '../response/user/AadharIdentificationUpdate.dart';
 import '../response/user/ProfileImageUploadUrl.dart';
 
 class UpdateUserRepository extends ApiRepository {
@@ -56,6 +57,23 @@ class UpdateUserRepository extends ApiRepository {
       Response rideData = await APIClient()
           .getDioInstance()
           .post(ApiConstant.POST_UPDATE_DL_PHOTO, data: api.toJson());
+      dynamic response = handleAPIResponseData(rideData);
+      if (response is ErrorResponse) {
+        return response;
+      } else {
+        return SuccessResponse();
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> updateIdentificationPhoto(
+      {required AadharIdentificationUpdate api}) async {
+    try {
+      Response rideData = await APIClient().getDioInstance().post(
+          ApiConstant.POST_UPDATE_IDENTIFICATION_PHOTO,
+          data: api.toJson());
       dynamic response = handleAPIResponseData(rideData);
       if (response is ErrorResponse) {
         return response;
@@ -121,7 +139,7 @@ class UpdateUserRepository extends ApiRepository {
       if (response is ErrorResponse) {
         return "";
       } else {
-        return IdentificationImageUpload.fromJson(userData);
+        return IdentificationImageUpload.fromJson(response[0]);
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

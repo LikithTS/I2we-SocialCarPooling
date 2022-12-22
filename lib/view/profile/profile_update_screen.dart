@@ -357,7 +357,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       return;
     }
     UpdateUserProfile updaterUserApi = UpdateUserProfile(
-        work: workController.text, education: selectedValueEducation);
+        work: workController.text,
+        education: selectedValueEducation,
+        language: AppPreference().userDetail?.language ?? []);
 
     updateUserApi(updaterUserApi, context);
   }

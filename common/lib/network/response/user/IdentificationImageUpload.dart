@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-/// statusCode : 200
-/// data : [{"url":"https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221218%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221218T093653Z&X-Amz-Expires=7200&X-Amz-Signature=7abcdbec2782b4694bc3759bede755766899cc9f6c4ab85e0991e34a2094b750&X-Amz-SignedHeaders=host","key":"users/63236056267a855814e999a8/identification-front.jpg"},{"url":"https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-back.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221218%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221218T093653Z&X-Amz-Expires=7200&X-Amz-Signature=73da0b4dedcb92187b9421a2900cd489e566fa41788c49d9f7536c4070cd9690&X-Amz-SignedHeaders=host","key":"users/63236056267a855814e999a8/identification-back.jpg"}]
-/// message : ""
+/// front_verification_url : {"url":"https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221222%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221222T093320Z&X-Amz-Expires=7200&X-Amz-Signature=12b793c201ac7cbdda80f73278efd1946e22f0a4712cf469c115df10e63c314d&X-Amz-SignedHeaders=host","key":"users/63236056267a855814e999a8/identification-front.jpg"}
+/// back_verification_url : {"url":"https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221222%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221222T093320Z&X-Amz-Expires=7200&X-Amz-Signature=12b793c201ac7cbdda80f73278efd1946e22f0a4712cf469c115df10e63c314d&X-Amz-SignedHeaders=host","key":"users/63236056267a855814e999a8/identification-front.jpg"}
 
 IdentificationImageUpload identificationImageUploadFromJson(String str) =>
     IdentificationImageUpload.fromJson(json.decode(str));
@@ -11,61 +10,56 @@ String identificationImageUploadToJson(IdentificationImageUpload data) =>
 
 class IdentificationImageUpload {
   IdentificationImageUpload({
-    num? statusCode,
-    List<Data>? data,
-    String? message,
+    FrontVerificationUrl? frontVerificationUrl,
+    BackVerificationUrl? backVerificationUrl,
   }) {
-    _statusCode = statusCode;
-    _data = data;
-    _message = message;
+    _frontVerificationUrl = frontVerificationUrl;
+    _backVerificationUrl = backVerificationUrl;
   }
 
   IdentificationImageUpload.fromJson(dynamic json) {
-    _statusCode = json['statusCode'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
-      });
-    }
-    _message = json['message'];
+    _frontVerificationUrl = json['front_verification_url'] != null
+        ? FrontVerificationUrl.fromJson(json['front_verification_url'])
+        : null;
+    _backVerificationUrl = json['back_verification_url'] != null
+        ? BackVerificationUrl.fromJson(json['back_verification_url'])
+        : null;
   }
-  num? _statusCode;
-  List<Data>? _data;
-  String? _message;
+  FrontVerificationUrl? _frontVerificationUrl;
+  BackVerificationUrl? _backVerificationUrl;
   IdentificationImageUpload copyWith({
-    num? statusCode,
-    List<Data>? data,
-    String? message,
+    FrontVerificationUrl? frontVerificationUrl,
+    BackVerificationUrl? backVerificationUrl,
   }) =>
       IdentificationImageUpload(
-        statusCode: statusCode ?? _statusCode,
-        data: data ?? _data,
-        message: message ?? _message,
+        frontVerificationUrl: frontVerificationUrl ?? _frontVerificationUrl,
+        backVerificationUrl: backVerificationUrl ?? _backVerificationUrl,
       );
-  num? get statusCode => _statusCode;
-  List<Data>? get data => _data;
-  String? get message => _message;
+  FrontVerificationUrl? get frontVerificationUrl => _frontVerificationUrl;
+  BackVerificationUrl? get backVerificationUrl => _backVerificationUrl;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['statusCode'] = _statusCode;
-    if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+    if (_frontVerificationUrl != null) {
+      map['front_verification_url'] = _frontVerificationUrl?.toJson();
     }
-    map['message'] = _message;
+    if (_backVerificationUrl != null) {
+      map['back_verification_url'] = _backVerificationUrl?.toJson();
+    }
     return map;
   }
 }
 
-/// url : "https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221218%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221218T093653Z&X-Amz-Expires=7200&X-Amz-Signature=7abcdbec2782b4694bc3759bede755766899cc9f6c4ab85e0991e34a2094b750&X-Amz-SignedHeaders=host"
+/// url : "https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221222%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221222T093320Z&X-Amz-Expires=7200&X-Amz-Signature=12b793c201ac7cbdda80f73278efd1946e22f0a4712cf469c115df10e63c314d&X-Amz-SignedHeaders=host"
 /// key : "users/63236056267a855814e999a8/identification-front.jpg"
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
+BackVerificationUrl backVerificationUrlFromJson(String str) =>
+    BackVerificationUrl.fromJson(json.decode(str));
+String backVerificationUrlToJson(BackVerificationUrl data) =>
+    json.encode(data.toJson());
 
-class Data {
-  Data({
+class BackVerificationUrl {
+  BackVerificationUrl({
     String? url,
     String? key,
   }) {
@@ -73,17 +67,59 @@ class Data {
     _key = key;
   }
 
-  Data.fromJson(dynamic json) {
+  BackVerificationUrl.fromJson(dynamic json) {
     _url = json['url'];
     _key = json['key'];
   }
   String? _url;
   String? _key;
-  Data copyWith({
+  BackVerificationUrl copyWith({
     String? url,
     String? key,
   }) =>
-      Data(
+      BackVerificationUrl(
+        url: url ?? _url,
+        key: key ?? _key,
+      );
+  String? get url => _url;
+  String? get key => _key;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['url'] = _url;
+    map['key'] = _key;
+    return map;
+  }
+}
+
+/// url : "https://i2w-data.s3-ap-south-1.amazonaws.com/users/63236056267a855814e999a8/identification-front.jpg?Content-Type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXGXJFS3T76TPE4SA%2F20221222%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20221222T093320Z&X-Amz-Expires=7200&X-Amz-Signature=12b793c201ac7cbdda80f73278efd1946e22f0a4712cf469c115df10e63c314d&X-Amz-SignedHeaders=host"
+/// key : "users/63236056267a855814e999a8/identification-front.jpg"
+
+FrontVerificationUrl frontVerificationUrlFromJson(String str) =>
+    FrontVerificationUrl.fromJson(json.decode(str));
+String frontVerificationUrlToJson(FrontVerificationUrl data) =>
+    json.encode(data.toJson());
+
+class FrontVerificationUrl {
+  FrontVerificationUrl({
+    String? url,
+    String? key,
+  }) {
+    _url = url;
+    _key = key;
+  }
+
+  FrontVerificationUrl.fromJson(dynamic json) {
+    _url = json['url'];
+    _key = json['key'];
+  }
+  String? _url;
+  String? _key;
+  FrontVerificationUrl copyWith({
+    String? url,
+    String? key,
+  }) =>
+      FrontVerificationUrl(
         url: url ?? _url,
         key: key ?? _key,
       );

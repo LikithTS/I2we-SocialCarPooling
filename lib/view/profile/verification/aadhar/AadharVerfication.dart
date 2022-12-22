@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:common/network/repository/UpdateUserRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/user/AadharIdentificationUpdate.dart';
 import 'package:common/network/response/user/IdentificationImageUpload.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/view/profile/verification/aadhar/VerificationViewModel.dart';
 
 import '../../../../font&margin/margin_confiq.dart';
+import '../../../../imageupload/AwsApi.dart';
 import '../../../../util/color.dart';
 import '../../../../utils/Localization.dart';
 import '../../../../utils/widget_functions.dart';
@@ -24,17 +28,71 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
   File? frontImageFile = null;
   File? backImageFile = null;
 
+  String? frontKey = "";
+  String? backKey = "";
+
   @override
   void initState() {
     super.initState();
   }
 
-  handleData(List<IdentificationImageUpload> value) {
-    setState(() {
-      if (value != null) {
-        value;
+  handleData(value) async {
+    if (value is IdentificationImageUpload) {
+      // handle front image upload
+      var frontImage = await handleFrontImageUpload(value.frontVerificationUrl);
+      var backImageUpload =
+          await handleBackImageUpload(value.backVerificationUrl);
+      if (backImageUpload && frontImage) {
+        updateUserApi(AadharIdentificationUpdate(
+            userIdentificationBack: backKey,
+            userIdentificationFront: frontKey));
       }
-    });
+      // handle back image upload
+    } else {}
+  }
+
+  void updateUserApi(
+      AadharIdentificationUpdate aadharIdentificationUpdate) async {
+    Future<dynamic> future = UpdateUserRepository()
+        .updateIdentificationPhoto(api: aadharIdentificationUpdate);
+    future.then((value) => {handleResponseData(value)});
+  }
+
+  handleResponseData(value) {
+    if (value is SuccessResponse) {
+      print("UPdate success$value");
+      //print("Response Data : ${value.statusCode}");
+    } else {
+      print("UPdate failure $value");
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
+    }
+  }
+
+  Future<bool> handleFrontImageUpload(FrontVerificationUrl? value) async {
+    if (value?.url != null && value?.key != null) {
+      var uploadUrl = value?.url!;
+      frontKey = value?.key;
+      var isUploaded = AwsApi().uploadImage(uploadUrl!, frontImageFile!);
+      return isUploaded;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> handleBackImageUpload(BackVerificationUrl? value) async {
+    if (value?.url != null && value?.key != null) {
+      var uploadUrl = value?.url!;
+      backKey = value?.key;
+      var isUploaded = AwsApi().uploadImage(uploadUrl!, frontImageFile!);
+      return isUploaded;
+    } else {
+      return false;
+    }
   }
 
   @override

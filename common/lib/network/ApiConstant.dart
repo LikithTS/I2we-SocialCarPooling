@@ -31,6 +31,8 @@ class ApiConstant {
       "/user/update-driver-license-photo";
   static const String GET_IDENTIFICATION_URL =
       "/user/identification-upload-url";
+  static const String POST_UPDATE_IDENTIFICATION_PHOTO =
+      "/user/update-identification-photo";
   static const String GET_DRIVING_LICENSE_URL =
       "/user/driving-license-upload-url";
   static const String FIREBASE_API_PATH = "/user/update-firebase-token";
