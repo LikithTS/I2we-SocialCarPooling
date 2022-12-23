@@ -1,4 +1,17 @@
+import 'dart:developer';
+
+import 'package:common/network/ApiConstant.dart';
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/RideRespository.dart';
+import 'package:common/network/request/RideStatusApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/buttons/elevated_button_view.dart';
+import 'package:socialcarpooling/buttons/outline_button_view.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/utils/ride_status_text_function.dart';
+import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/constant.dart';
 import '../../../utils/Localization.dart';
@@ -9,6 +22,7 @@ import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
 
 class MyRides extends StatelessWidget {
+  final String rideId;
   final String carIcon;
   final String startAddress;
   final String endAddress;
@@ -17,12 +31,14 @@ class MyRides extends StatelessWidget {
   final DateTime dateTime;
   final int seatsOffered;
   final String carType;
-  final String coRidersCount;
+  final int coRidersCount;
   final String leftButtonText;
   final String rideStatus;
+  final VoidCallback refreshScreen;
 
   const MyRides(
       {Key? key,
+      required this.rideId,
       required this.carIcon,
       required this.startAddress,
       required this.endAddress,
@@ -33,7 +49,8 @@ class MyRides extends StatelessWidget {
       required this.carType,
       required this.coRidersCount,
       required this.leftButtonText,
-      required this.rideStatus})
+      required this.rideStatus,
+      required this.refreshScreen})
       : super(key: key);
 
   @override
@@ -122,7 +139,7 @@ class MyRides extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
+                      left: 8, right: 8, top: 5, bottom: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -132,20 +149,52 @@ class MyRides extends StatelessWidget {
                       if (rideType == Constant.AS_HOST) ...[
                         timeView(Icons.airline_seat_recline_normal,
                             seatsOffered.toString()),
+                      ] else ...[
+                        timeView(Icons.directions_car, carType),
                       ]
                     ],
                   ),
                 ),
-                if (rideType == Constant.AS_RIDER) ...[
+                if (rideStatus != Constant.RIDE_JOINED) ...[
                   const Divider(
                     color: Colors.grey,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 5, bottom: 5),
+                        left: 0, right: 5, top: 0, bottom: 0),
                     child: Row(
                       children: [
-                        timeView(Icons.directions_car, carType),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          color: Colors.blue,
+                          onPressed: () {
+                            //Open available rides screen
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+                          },
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        if (coRidersCount == 0 &&
+                            rideType == Constant.AS_HOST) ...[
+                          primaryTextNormalTwoLine(
+                              context,
+                              DemoLocalizations.of(context)
+                                  ?.getText("invite_ride_to_see") ??
+                                  ""),
+                        ] else if (coRidersCount > 0 &&
+                            rideType == Constant.AS_HOST) ...[
+                          primaryTextNormalTwoLine(context, coRidersCount.toString()),
+                        ] else ...[
+                          if (rideType == Constant.AS_RIDER && rideStatus == Constant.RIDE_CREATED) ...[
+                            primaryTextNormalTwoLine(
+                                context,
+                                DemoLocalizations.of(context)
+                                    ?.getText("join_ride_to_see") ??
+                                    ""),
+                          ]
+                        ],
                       ],
                     ),
                   ),
@@ -157,39 +206,17 @@ class MyRides extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 5, bottom: 5),
                   child: Row(
-                    children: [
-                      if (rideType == Constant.AS_RIDER) ...[
-                        primaryTextNormalTwoLine(
-                            context,
-                            DemoLocalizations.of(context)
-                                ?.getText("join_ride_to_see") ??
-                                ""),
-                      ] else ...[
-                        primaryTextNormalTwoLine(
-                            context,
-                            DemoLocalizations.of(context)
-                                ?.getText("invite_ride_to_see") ??
-                                ""),
-                      ]
-                    ],
-                  ),
-                ),
-                const Divider(
-                  color: Colors.grey,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (leftButtonText.isNotEmpty) ...[
-                        outlineButtonView(leftButtonText, () {}),
+                      if (rideStatus == Constant.RIDE_CREATED ||
+                          rideStatus == Constant.RIDE_STARTED ||
+                          rideStatus == Constant.RIDE_JOINED) ...[
+                        outlineButtonView(Constant.BUTTON_CANCEL,
+                            () => cancelRide(context, rideType, rideId)),
                       ],
                       elevatedButtonView(
-                          DemoLocalizations.of(context)?.getText("check_in") ??
-                              "",
-                          () {})
+                          getRightButtonText(rideType, rideStatus),
+                          () => updateRideDetails(context, rideType, rideId))
                     ],
                   ),
                 )
@@ -200,41 +227,60 @@ class MyRides extends StatelessWidget {
       ),
     ));
   }
+
+  void cancelRide(BuildContext context, String rideType, String rideId) {
+    log("On Cancelled button clicked");
+    if (rideId.isNotEmpty) {
+      InternetChecks.isConnected().then((isAvailable) => {
+            updateRideStatus(
+                isAvailable, context, rideType, rideId, Constant.RIDE_CANCELLED)
+          });
+    }
+  }
+
+  updateRideDetails(BuildContext context, String rideType, String rideId) {
+    if (rideId.isNotEmpty) {
+      if (rideType == Constant.AS_RIDER &&
+          rideStatus == Constant.RIDE_CREATED) {
+        // Move to rides available page
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+      } else {
+        String? status = getStatus(rideStatus, rideType);
+        if (status != null && status.isNotEmpty) {
+          InternetChecks.isConnected().then((isAvailable) => {
+                updateRideStatus(isAvailable, context, rideType, rideId, status)
+              });
+        }
+      }
+    }
+  }
+
+  updateRideStatus(bool isAvailable, BuildContext context, String rideType,
+      String rideId, String rideStatusData) {
+    if (isAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      var apiPath = ApiConstant.RIDE_STATUS_DRIVER;
+      if (rideType == Constant.AS_RIDER) {
+        apiPath = ApiConstant.RIDE_STATUS_PASSANGER;
+      }
+      RideRepository rideRepository = RideRepository();
+      RideStatusApi rideStatusApi =
+          RideStatusApi(rideId: rideId, rideStatus: rideStatusData);
+      Future<dynamic> future =
+          rideRepository.updateRideStatus(api: rideStatusApi, apiPath: apiPath);
+      future.then((value) => {handleCarStatusResponseData(context, value)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  handleCarStatusResponseData(context, value) {
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      refreshScreen();
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
+  }
 }
-
-Widget outlineButtonView(String buttonName, VoidCallback onClick) =>
-    OutlinedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-            ),
-            minimumSize: const Size(150, 40)),
-        onPressed: () {
-          onClick;
-        },
-        child: Text(
-          buttonName,
-          style: const TextStyle(color: Colors.blue),
-        ));
-
-Widget elevatedButtonView(String buttonName, VoidCallback onClick) =>
-    ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0Xff1D883A),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-            ),
-            minimumSize: const Size(150, 40)),
-        onPressed: () {
-          onClick;
-        },
-        child: Text(
-          buttonName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.normal,
-            letterSpacing: 1.2,
-            fontFamily: 'PoppinsBold',
-          ),
-        ));

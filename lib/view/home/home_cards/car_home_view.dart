@@ -100,75 +100,72 @@ class _State extends State<HomeCarCard> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0),
-                            child: Expanded(
-                              flex: 4,
-                              child: Column(
-                                children: [
-                                  Card(
-                                    child: Container(
-                                      margin: const EdgeInsets.all(4.0),
-                                      child: Wrap (
-                                        direction: Axis.vertical,
-                                        children: [
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    const Icon(Icons.airline_seat_recline_normal, color: Colors.blue,),
-                                                    primaryTextSmall(context, DemoLocalizations.of(context)?.getText("seats")),
-                                                  ],
-                                                ),
-                                                const SizedBox(width: 5,),
-                                                Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    primaryThemeTextWidget(context, widget.numberOfSeatsAvailable.toString()),
-                                                    primaryTextSmall(context, DemoLocalizations.of(context)?.getText("available")),
-                                                  ],
-                                                ),
-                                                const SizedBox(width: 5,),
-                                                Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    primaryThemeTextWidget(context, widget.numberOfSeatsOffered.toString()),
-                                                    primaryTextSmall(context, DemoLocalizations.of(context)?.getText("offered")),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          )
-
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Row(
+                            child: Column(
+                              children: [
+                                Card(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(4.0),
+                                    child: Wrap (
+                                      direction: Axis.vertical,
                                       children: [
-                                        secondaryTextSmall(context, DemoLocalizations.of(context)?.getText("set_default")),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
-                                          child: CupertinoSwitch(
-                                            // This bool value toggles the switch.
-                                            value: widget.defaultStatus,
-                                            onChanged: (bool value) {
-                                              // This is called when the user toggles the switch.
-                                              setState(() {
-                                                log("Cupertion switch $value");
-                                                widget.defaultStatus = value;
-                                                changeDefaultStateOfCar(widget.carId, value);
-                                              });
-                                            },
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const Icon(Icons.airline_seat_recline_normal, color: Colors.blue,),
+                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("seats")),
+                                                ],
+                                              ),
+                                              const SizedBox(width: 5,),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  primaryThemeTextWidget(context, widget.numberOfSeatsAvailable.toString()),
+                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("available")),
+                                                ],
+                                              ),
+                                              const SizedBox(width: 5,),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  primaryThemeTextWidget(context, widget.numberOfSeatsOffered.toString()),
+                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("offered")),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                        ),
+                                        )
+
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Row(
+                                    children: [
+                                      secondaryTextSmall(context, DemoLocalizations.of(context)?.getText("set_default")),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                                        child: CupertinoSwitch(
+                                          // This bool value toggles the switch.
+                                          value: widget.defaultStatus,
+                                          onChanged: (bool value) {
+                                            // This is called when the user toggles the switch.
+                                            setState(() {
+                                              log("Cupertion switch $value");
+                                              widget.defaultStatus = value;
+                                              changeDefaultStateOfCar(widget.carId, value);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           )
                         ],

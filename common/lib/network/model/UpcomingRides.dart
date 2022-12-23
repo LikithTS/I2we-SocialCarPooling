@@ -30,6 +30,7 @@ class UpcomingRides {
   int? _amountPerSeat;
   int? _seatsOffered;
   String? _rideStatus;
+  int? _count;
 
   UpcomingRides(
       {String? id,
@@ -58,7 +59,8 @@ class UpcomingRides {
         int? totalAmount,
         int? amountPerSeat,
         int? seatsOffered,
-        String? rideStatus}) {
+        String? rideStatus,
+        int? count}) {
     if (id != null) {
       this._id = id;
     }
@@ -140,6 +142,9 @@ class UpcomingRides {
     if (rideStatus != null) {
       this._rideStatus = rideStatus;
     }
+    if(count != null) {
+      this._count = count;
+    }
   }
 
   String? get id => _id;
@@ -206,6 +211,8 @@ class UpcomingRides {
   set seatsOffered(int? seatsOffered) => _seatsOffered = seatsOffered;
   String? get rideStatus => _rideStatus;
   set rideStatus(String? rideStatus) => _rideStatus = rideStatus;
+  int? get riderCount => _count;
+  set riderCount(int? count) => _count = riderCount;
 
   UpcomingRides.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -229,6 +236,7 @@ class UpcomingRides {
     _profileMatchPercentage = json['profileMatchPercentage'];
     _routeMatchPercentage = json['routeMatchPercentage'];
     _riderStatus = json['riderStatus'];
+    _count = json['count'];
     if (json['steps'] != null) {
       _steps = <Steps>[];
       json['steps'].forEach((v) {
@@ -291,6 +299,7 @@ class UpcomingRides {
     data['amountPerSeat'] = this._amountPerSeat;
     data['seatsOffered'] = this._seatsOffered;
     data['rideStatus'] = this._rideStatus;
+    data['count'] = this._count;
     return data;
   }
 }

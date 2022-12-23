@@ -413,13 +413,14 @@ class _LoginScreenState extends State<LoginScreen> {
     CPSessionManager().setAuthToken(value.accessToken ?? "");
     CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
     GetProfileDetails(context);
-    InternetChecks.closeLoadingProgress(context);
     Timer(
         const Duration(seconds: 2),
-        () => Navigator.pushReplacement(
+        () => {
+          InternetChecks.closeLoadingProgress(context),
+          Navigator.pushReplacement(
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child: HomePage(homeRepository: HomeRepository()))));
+                child: HomePage(homeRepository: HomeRepository())))});
   }
 }

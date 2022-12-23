@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +10,18 @@ import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 import 'my_rides_card.dart';
 
-
-class MyRidesScreen extends StatelessWidget {
+class MyRidesScreen extends StatefulWidget {
   const MyRidesScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    RideRepository rideRepository = RideRepository();
+  State<MyRidesScreen> createState() => _MyRidesScreen();
+}
 
+class _MyRidesScreen extends State<MyRidesScreen> {
+  RideRepository rideRepository = RideRepository();
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -34,8 +39,7 @@ class MyRidesScreen extends StatelessWidget {
                     },
                   ),
                   headerText(
-                      DemoLocalizations.of(context)?.getText("my_rides") ??
-                          "")
+                      DemoLocalizations.of(context)?.getText("my_rides") ?? "")
                 ],
               ),
             ),
@@ -51,17 +55,28 @@ class MyRidesScreen extends StatelessWidget {
                       itemCount: upcomingRideList.length,
                       itemBuilder: (context, index) {
                         return MyRides(
+                          rideId: upcomingRideList[index].id ?? "",
                           carIcon: 'assets/images/car_pool.png',
-                          startAddress: upcomingRideList[index].startDestinationFormattedAddress ?? "",
-                          endAddress: upcomingRideList[index].endDestinationFormattedAddress ?? "",
+                          startAddress: upcomingRideList[index]
+                                  .startDestinationFormattedAddress ??
+                              "",
+                          endAddress: upcomingRideList[index]
+                                  .endDestinationFormattedAddress ??
+                              "",
                           rideType: upcomingRideList[index].rideType ?? "",
                           amount: upcomingRideList[index].amountPerSeat ?? 0,
-                          dateTime: getDateTimeFormatter().parse(upcomingRideList[index].startTime!),
-                          seatsOffered: upcomingRideList[index].seatsOffered ?? 1,
-                          carType: upcomingRideList[index].carTypeInterested ?? "",
-                          coRidersCount: "2",
-                          leftButtonText: Constant.BUTTON_CANCEL,
-                          rideStatus: upcomingRideList[index].rideStatus ?? "",
+                          dateTime: getDateTimeFormatter()
+                              .parse(upcomingRideList[index].startTime!),
+                          seatsOffered:
+                              upcomingRideList[index].seatsOffered ?? 1,
+                          carType:
+                              upcomingRideList[index].carTypeInterested ?? "",
+                          coRidersCount: upcomingRideList[index].riderCount ?? 0,
+                          leftButtonText: upcomingRideList[index].rideStatus ??
+                              Constant.RIDE_CANCELLED,
+                          rideStatus: upcomingRideList[index].rideStatus ??
+                              Constant.RIDE_CREATED,
+                          refreshScreen: () => refreshScreen(),
                         );
                       },
                     );
@@ -73,5 +88,12 @@ class MyRidesScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  refreshScreen() {
+    // Refresh home screen data
+    setState(() {
+      log("Refresh move screen data");
+    });
   }
 }

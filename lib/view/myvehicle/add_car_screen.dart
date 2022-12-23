@@ -193,64 +193,56 @@ class AddCarScreenState extends State<AddCarScreen> {
                       ),
                       addVerticalSpace(10),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                smallText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("set_default") ??
-                                        "",
-                                    Alignment.topLeft),
-                                Container(
-                                  width: 40,
-                                  height: 30,
-                                  child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: CupertinoSwitch(
-                                      value: set_default,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          set_default = value;
-                                        });
-                                      },
-                                    ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              smallText(
+                                  DemoLocalizations.of(context)
+                                          ?.getText("set_default") ??
+                                      "",
+                                  Alignment.topLeft),
+                              SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: CupertinoSwitch(
+                                    value: set_default,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        set_default = value;
+                                      });
+                                    },
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            child: Row(
-                              children: [
-                                smallText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("electric_vehicle") ??
-                                        "",
-                                    Alignment.topLeft),
-                                Container(
-                                  width: 40,
-                                  height: 30,
-                                  child: Container(
-                                    width: 30,
-                                    height: 20,
-                                    child: FittedBox(
-                                      fit: BoxFit.contain,
-                                      child: CupertinoSwitch(
-                                        value: is_electric_vehicle,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            is_electric_vehicle = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
+                          Row(
+                            children: [
+                              smallText(
+                                  DemoLocalizations.of(context)
+                                          ?.getText("electric_vehicle") ??
+                                      "",
+                                  Alignment.topLeft),
+                              SizedBox(
+                                width: 30,
+                                height: 20,
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: CupertinoSwitch(
+                                    value: is_electric_vehicle,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        is_electric_vehicle = value;
+                                      });
+                                    },
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
@@ -501,7 +493,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: SizedBox(
                           width: size.width,
                           child: primaryButtonWithCallBack(

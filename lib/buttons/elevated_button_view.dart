@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/color.dart';
 
-Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor]) => ElevatedButton(
+Widget elevatedButtonView(String buttonName, VoidCallback onClicked, [Color btnBgColor = buttonBgColor]) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -12,7 +12,7 @@ Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor])
         backgroundColor : btnBgColor
     ),
     onPressed: () {
-      onRightButtonClicked();
+      onClicked();
     },
     child: Text(
       buttonName,
@@ -24,7 +24,3 @@ Widget elevatedButtonView(String buttonName, [Color btnBgColor = buttonBgColor])
         fontFamily: 'PoppinsBold',
       ),
     ));
-
-void onRightButtonClicked() {
-  log("On right button clicked");
-}

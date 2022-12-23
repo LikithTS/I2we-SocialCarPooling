@@ -1,4 +1,14 @@
+import 'dart:developer';
+
+import 'package:common/network/ApiConstant.dart';
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/RideRespository.dart';
+import 'package:common/network/request/RideStatusApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../buttons/outline_button_view.dart';
@@ -12,6 +22,7 @@ import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
 
 class UpcomingRidesWidget extends StatelessWidget {
+  final String rideId;
   final String carIcon;
   final String startAddress;
   final String endAddress;
@@ -23,9 +34,11 @@ class UpcomingRidesWidget extends StatelessWidget {
   final String coRidersCount;
   final String leftButtonText;
   final String rideStatus;
+  final VoidCallback refreshScreen;
 
   const UpcomingRidesWidget(
       {Key? key,
+      required this.rideId,
       required this.carIcon,
       required this.startAddress,
       required this.endAddress,
@@ -36,7 +49,8 @@ class UpcomingRidesWidget extends StatelessWidget {
       required this.carType,
       required this.coRidersCount,
       required this.leftButtonText,
-      required this.rideStatus})
+      required this.rideStatus,
+      required this.refreshScreen})
       : super(key: key);
 
   @override
@@ -52,156 +66,224 @@ class UpcomingRidesWidget extends StatelessWidget {
                 DemoLocalizations.of(context)?.getText("upcoming_rides")),
           ),
           GestureDetector(
-            onTap: (){
-                // Add page navigation here
+            onTap: () {
+              // Add page navigation here
             },
             child: Card(
                 child: Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(5.0),
-                  child: Wrap(
-                    direction: Axis.horizontal,
+              width: double.infinity,
+              margin: const EdgeInsets.all(5.0),
+              child: Wrap(
+                direction: Axis.horizontal,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Image.asset(carIcon,
-                                width: 60, height: 60, fit: BoxFit.cover),
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            flex: 6,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 5, right: 5, top: 5, bottom: 5),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.route_rounded),
-                                  const SizedBox(width: 5),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        primaryThemeTextNormal(
-                                            context,
-                                            DemoLocalizations.of(context)
-                                                ?.getText("from")),
-                                        primaryTextNormalTwoLine(
-                                            context, startAddress),
-                                        primaryThemeTextNormal(
-                                            context,
-                                            DemoLocalizations.of(context)
-                                                ?.getText("to")),
-                                        primaryTextNormalTwoLine(context, endAddress),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 5, bottom: 5),
-                              child: Column(
-                                children: [
-                                  if (rideType == Constant.AS_HOST) ...[
-                                    rideTypeView(DemoLocalizations.of(context)
-                                        ?.getText("as_host")),
-                                  ] else ...[
-                                    rideTypeView(DemoLocalizations.of(context)
-                                        ?.getText("as_rider")),
-                                  ],
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  if (rideType == Constant.AS_HOST) ...[
-                                    rideAmountView(amount)
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      Expanded(
+                        flex: 2,
+                        child: Image.asset(carIcon,
+                            width: 60, height: 60, fit: BoxFit.cover),
                       ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            timeView(Icons.calendar_today_sharp, getFormattedDate(dateTime)),
-                            timeView(Icons.schedule, getFormattedTime(dateTime)),
-                            if (rideType == Constant.AS_HOST) ...[
-                              timeView(
-                                  Icons.airline_seat_recline_normal, seatsOffered.toString()),
-                            ]
-                          ],
-                        ),
-                      ),
-                      if (rideType == Constant.AS_RIDER) ...[
-                        const Divider(
-                          color: Colors.grey,
-                        ),
-                        Padding(
+                      const SizedBox(width: 5),
+                      Expanded(
+                        flex: 6,
+                        child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 5, bottom: 5),
+                              left: 5, right: 5, top: 5, bottom: 5),
                           child: Row(
                             children: [
-                              timeView(Icons.directions_car, carType),
+                              const Icon(Icons.route_rounded),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    primaryThemeTextNormal(
+                                        context,
+                                        DemoLocalizations.of(context)
+                                            ?.getText("from")),
+                                    primaryTextNormalTwoLine(
+                                        context, startAddress),
+                                    primaryThemeTextNormal(
+                                        context,
+                                        DemoLocalizations.of(context)
+                                            ?.getText("to")),
+                                    primaryTextNormalTwoLine(
+                                        context, endAddress),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                      const Divider(
-                        color: Colors.grey,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.blue,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            primaryTextNormalTwoLine(context, coRidersCount),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            if (leftButtonText.isNotEmpty) ...[
-                              outlineButtonView(leftButtonText),
+                      const Spacer(),
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 5, bottom: 5),
+                          child: Column(
+                            children: [
+                              if (rideType == Constant.AS_HOST) ...[
+                                rideTypeView(DemoLocalizations.of(context)
+                                    ?.getText("as_host")),
+                              ] else ...[
+                                rideTypeView(DemoLocalizations.of(context)
+                                    ?.getText("as_rider")),
+                              ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              if (rideType == Constant.AS_HOST) ...[
+                                rideAmountView(amount)
+                              ]
                             ],
-                            elevatedButtonView(
-                                getRightButtonText(rideType, rideStatus))
-                          ],
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        timeView(Icons.calendar_today_sharp,
+                            getFormattedDate(dateTime)),
+                        timeView(Icons.schedule, getFormattedTime(dateTime)),
+                        if (rideType == Constant.AS_HOST) ...[
+                          timeView(Icons.airline_seat_recline_normal,
+                              seatsOffered.toString()),
+                        ] else ...[
+                          timeView(Icons.directions_car, carType),
+                        ]
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 0, right: 5, top: 0, bottom: 0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          color: Colors.blue,
+                          onPressed: () {
+                            //Open available rides screen
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+                          },
+                        ),
+                        if (int.tryParse(coRidersCount) == 0 &&
+                            rideType == Constant.AS_HOST) ...[
+                          primaryTextNormalTwoLine(
+                              context,
+                              DemoLocalizations.of(context)
+                                      ?.getText("invite_ride_to_see") ??
+                                  ""),
+                        ] else if (int.tryParse(coRidersCount) == 0 &&
+                            rideType == Constant.AS_RIDER) ...[
+                          primaryTextNormalTwoLine(
+                              context,
+                              DemoLocalizations.of(context)
+                                      ?.getText("join_ride_to_see") ??
+                                  ""),
+                        ] else ...[
+                          primaryTextNormalTwoLine(context, coRidersCount),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (rideStatus == Constant.RIDE_CREATED ||
+                            rideStatus == Constant.RIDE_STARTED ||
+                            rideStatus == Constant.RIDE_JOINED) ...[
+                          outlineButtonView(Constant.BUTTON_CANCEL,
+                              () => cancelRide(context, rideType, rideId)),
+                        ],
+                        elevatedButtonView(
+                            getRightButtonText(rideType, rideStatus),
+                            () => updateRideDetails(context, rideType, rideId))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )),
           ),
         ],
       ),
     ));
+  }
+
+  void cancelRide(BuildContext context, String rideType, String rideId) {
+    log("On Cancelled button clicked");
+    if (rideId.isNotEmpty) {
+      InternetChecks.isConnected().then((isAvailable) => {
+            updateRideStatus(
+                isAvailable, context, rideType, rideId, Constant.RIDE_CANCELLED)
+          });
+    }
+  }
+
+  updateRideDetails(BuildContext context, String rideType, String rideId) {
+    if (rideId.isNotEmpty) {
+      if (rideType == Constant.AS_RIDER &&
+          rideStatus == Constant.RIDE_CREATED) {
+        // Move to rides available page
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+      } else {
+        String? status = getStatus(rideStatus, rideType);
+        if (status != null && status.isNotEmpty) {
+          InternetChecks.isConnected().then((isAvailable) => {
+                updateRideStatus(isAvailable, context, rideType, rideId, status)
+              });
+        }
+      }
+    }
+  }
+
+  updateRideStatus(bool isAvailable, BuildContext context, String rideType,
+      String rideId, String rideStatusData) {
+    if (isAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      var apiPath = ApiConstant.RIDE_STATUS_DRIVER;
+      if (rideType == Constant.AS_RIDER) {
+        apiPath = ApiConstant.RIDE_STATUS_PASSANGER;
+      }
+      RideRepository rideRepository = RideRepository();
+      RideStatusApi rideStatusApi =
+          RideStatusApi(rideId: rideId, rideStatus: rideStatusData);
+      Future<dynamic> future =
+          rideRepository.updateRideStatus(api: rideStatusApi, apiPath: apiPath);
+      future.then((value) => {handleResponseData(context, value)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  handleResponseData(context, value) {
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      refreshScreen();
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 }

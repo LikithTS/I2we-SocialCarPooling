@@ -6,25 +6,25 @@ class Constant {
   static const String CAR_TYPE_SEDAN = "Sedan";
   static const String CAR_TYPE_SUV = "SUV";
   static const String CAR_TYPE_LUXURY = "Luxury";
-  static const String RIDE_SCHEDULED = "RideScheduled";
-  static const String RIDE_STARTED = "RideStarted";
-  static const String RIDE_END = "EndRide";
-  static const String RIDE_COMPLETED = "RideCompleted";
-  static const String RIDE_CHECKED_IN = "RideCheckedIn";
-  static const String RIDE_CHECKED_OUT = "RideCheckedOut";
-  static const String RIDE_JOINED = "RideJoined";
 
   static const String BUTTON_START = "START";
   static const String BUTTON_FIND_RIDE = "FIND RIDE";
   static const String BUTTON_CANCEL = "CANCEL";
+  static const String BUTTON_CANCELLED = "CANCELLED";
   static const String BUTTON_END = "END RIDE";
   static const String BUTTON_CHECK_IN = "CHECK IN";
   static const String BUTTON_CHECK_OUT = "CHECK OUT";
   static const String BUTTON_COMPLETED = "COMPLETED";
 
-
-
   static const String TERMS_CONDITION_URL = "https://www.vtricks.in/about-us";
   static const String PRIVACY_POLICY_URL = "https://www.vtricks.in/about-us";
   static const String HELP_URL = "https://www.vtricks.in/about-us";
+
+  static const String RIDE_CREATED = "CREATED";
+  static const String RIDE_STARTED = "STARTED";
+  static const String RIDE_COMPLETED = "COMPLETED";
+  static const String RIDE_CHECKED_IN = "CHECKED_IN";
+  static const String RIDE_CHECKED_OUT = "CHECKED_OUT";
+  static const String RIDE_JOINED = "JOINED";
+  static const String RIDE_CANCELLED = "CANCELLED";
 }

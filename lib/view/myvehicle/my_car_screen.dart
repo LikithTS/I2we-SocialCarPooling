@@ -258,7 +258,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        20.0, 8.0, 8.0, 8.0),
+                                        10.0, 8.0, 8.0, 8.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

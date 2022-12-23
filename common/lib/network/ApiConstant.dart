@@ -18,6 +18,7 @@ class ApiConstant {
   static const String ADD_NEW_CAR = "car/add";
   static const String DELETE_CAR = "car/del";
   static const String ALL_RIDE = "ride/all";
+  static const String HISTORY = "ride/get-recent-rides";
   static const String NEW_RIDE = "ride/new-ride";
   static const String UPCOMING_RIDE = "ride/upcoming";
   static const String REFRESH = "auth/refresh-token";
@@ -38,4 +39,7 @@ class ApiConstant {
   static const String FIREBASE_API_PATH = "/user/update-firebase-token";
   static const String AVAILABLE_RIDES = "ride/upcoming";
   static const String PRESIGNED_CAR_IMAGES = "/user/car-images-presigned-url/";
+  static const String RIDE_STATUS_PASSANGER = "ride/change-status-passenger";
+  static const String RIDE_STATUS_DRIVER = "ride/change-status-driver";
+
 }

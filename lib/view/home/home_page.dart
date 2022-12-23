@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
@@ -248,7 +249,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               'Error: ${snapshot.error}');
                                         } else {
                                           return loadHomePageData(
-                                              snapshot.data);
+                                              snapshot.data,  () => refreshScreen());
                                         }
                                     }
                                   },
@@ -311,5 +312,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           );
         });
     return exitApp ?? false;
+  }
+
+  refreshScreen() {
+    // Refresh home screen data
+    setState(() {
+      log("Refresh move screen data");
+    });
   }
 }
