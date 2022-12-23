@@ -68,7 +68,8 @@ class CPString{
   static const String resendOTP = "Resend OTP";
   static const String resendOtpIn='Resend OTP in ';
   static const String dontreciveOtp='Didn’t receive.Click here to ';
-  static const String apiKey='AIzaSyD5g1LYI0A_IZ7N47qPTWCxRvbsLRJGgzA12';
+  static const String androidApiKey='AIzaSyAG2pCMKsS6ZQXXClEKbKD4nrNEAg9AlAI';
+  static const String iosApiKey='AIzaSyCeObuRTT0Hfh3gnqiGmGFSsqGyoAyWehQ';
   static const String Alert='Alert';
   static const String logout_desc = "Are you sure wants to logout?";
   static const String appName = "i2We";

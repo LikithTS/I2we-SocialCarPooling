@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:common/model/direction.dart';
 import 'package:common/utils/CPSessionManager.dart';
@@ -17,10 +18,16 @@ class DirectionApiRepository {
   Future<Direction> getDirection(
       {required LatLng origin, required LatLng destination}) async {
 
+    String googleMapKey = CPString.androidApiKey;
+    if (Platform.isIOS) {
+      // iOS-specific code
+      googleMapKey = CPString.iosApiKey;
+    }
+
     final response = await _dio?.get(baseUrl,queryParameters: {
       'origin':'${origin.latitude},${origin.longitude}',
       'destination':'${destination.latitude},${destination.longitude}',
-      'key':CPString.apiKey
+      'key':googleMapKey
     });
 
     if(response!.statusCode==200)
