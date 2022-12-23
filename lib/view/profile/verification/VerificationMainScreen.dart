@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/profile/verification/aadhar/AadharVerfication.dart';
 import 'package:socialcarpooling/view/profile/verification/drivinglicense/DrivingLicenseScreen.dart';
@@ -59,16 +60,24 @@ class _VerificationMainScreenState extends State<VerificationMainScreen> {
                     Alignment.topLeft),
               ),
               addVerticalSpace(10),
-              verificationCard(
-                  DemoLocalizations.of(context)
-                          ?.getText("aadhar_verification") ??
-                      "", () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.leftToRightWithFade,
-                        child: const AadharVerificationScreen()));
-              }),
+              (isAadharUnderVerification() != null &&
+                      isAadharUnderVerification()!)
+                  ? verificationCard(
+                      DemoLocalizations.of(context)
+                              ?.getText("aadhar_verification_under_verify") ??
+                          "", () {
+                      // do nothing
+                    })
+                  : verificationCard(
+                      DemoLocalizations.of(context)
+                              ?.getText("aadhar_verification") ??
+                          "", () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.leftToRightWithFade,
+                              child: const AadharVerificationScreen()));
+                    }),
               addVerticalSpace(10),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
@@ -82,21 +91,41 @@ class _VerificationMainScreenState extends State<VerificationMainScreen> {
                     Alignment.topLeft),
               ),
               addVerticalSpace(10),
-              verificationCard(
-                  DemoLocalizations.of(context)
-                          ?.getText("driving_verification") ??
-                      "", () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.leftToRightWithFade,
-                        child: const DrivingLicenseScreen()));
-              }),
+              (isDrivingUnderVerification() != null &&
+                      isDrivingUnderVerification()!)
+                  ? verificationCard(
+                      DemoLocalizations.of(context)
+                              ?.getText("driving_verification_under_verify") ??
+                          "", () {
+                      // do nothing
+                    })
+                  : verificationCard(
+                      DemoLocalizations.of(context)
+                              ?.getText("driving_verification") ??
+                          "", () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.leftToRightWithFade,
+                              child: const DrivingLicenseScreen()));
+                    }),
             ],
           ),
         ),
       ),
     ));
+  }
+
+  bool? isAadharUnderVerification() {
+    return AppPreference().userDetail?.userIdentificationFront != null &&
+        AppPreference().userDetail!.userIdentificationFront!.isNotEmpty &&
+        AppPreference().userDetail?.userIdentificationBack != null &&
+        AppPreference().userDetail!.userIdentificationBack!.isNotEmpty;
+  }
+
+  bool? isDrivingUnderVerification() {
+    return AppPreference().userDetail?.drivingLicence != null &&
+        AppPreference().userDetail!.drivingLicence!.isNotEmpty;
   }
 
   Future getImage() async {

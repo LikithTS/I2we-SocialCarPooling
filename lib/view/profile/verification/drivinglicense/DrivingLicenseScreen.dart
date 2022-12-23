@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/driver/DrivingLicenseUpdate.dart';
@@ -10,9 +11,11 @@ import 'package:socialcarpooling/view/profile/verification/aadhar/VerificationVi
 
 import '../../../../font&margin/font_size.dart';
 import '../../../../font&margin/margin_confiq.dart';
+import '../../../../util/InternetChecks.dart';
 import '../../../../util/color.dart';
 import '../../../../utils/Localization.dart';
 import '../../../../utils/widget_functions.dart';
+import '../../../../widgets/aleart_widgets.dart';
 
 class DrivingLicenseScreen extends StatefulWidget {
   const DrivingLicenseScreen({Key? key}) : super(key: key);
@@ -57,7 +60,8 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
                 addVerticalSpace(20),
                 ElevatedButton(
                   onPressed: () {
-                    uploadLicense();
+                    InternetChecks.isConnected().then((isInternetAvailable) =>
+                        {uploadLicense(isInternetAvailable)});
                   },
                   style: ElevatedButton.styleFrom(
                     primary: primaryColor,
@@ -112,7 +116,7 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Aadhaar Back Image Not Selected"),
+                        const Text("Driving Licence Not Selected"),
                         Icon(Icons.add),
                       ],
                     ),
@@ -158,11 +162,16 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
     }
   }
 
-  void uploadLicense() {
-    // get upload url
-    if (licenseFile != null) {
-      var a = viewModel.getUserDrivingLicenseUrl();
-      a.then((value) => handleDrivingLicenseURlData(value));
+  void uploadLicense(bool isInternetAvailable) {
+    if (isInternetAvailable) {
+      // get upload url
+      InternetChecks.showLoadingCircle(context);
+      if (licenseFile != null) {
+        var a = viewModel.getUserDrivingLicenseUrl();
+        a.then((value) => handleDrivingLicenseURlData(value));
+      }
+    } else {
+      showSnackbar(context, "No Internet");
     }
   }
 
@@ -181,6 +190,8 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
   handleProfileDrivingLicenseUpdate(bool value, String key) {
     if (value) {
       updateUserApi(DrivingLicenseUpdate(drivingLicence: key));
+    } else {
+      showSnackbar(context, "Something went wrong please try again");
     }
   }
 
@@ -192,16 +203,14 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, "Driving License Updated");
+      Navigator.pop(context);
       print("UPdate success$value");
       //print("Response Data : ${value.statusCode}");
-    } else {
-      print("UPdate failure $value");
-      // ErrorResponse errorResponse = value;
-      // setState(() {
-      //   errorText = errorResponse.errorMessage.toString();
-      // });
-      //  print("Response Data : Error");
-
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 }

@@ -39,4 +39,18 @@ class AddCarViewModel {
       return null;
     }
   }
+
+  Future<List<XFile?>?> getCarImages() async {
+    List<XFile>? imageFileList = [];
+    final picker = ImagePicker();
+
+    final List<XFile>? selectedImages = await picker.pickMultiImage(
+        imageQuality: 50, // <- Reduce Image quality
+        maxHeight: 500, // <- reduce the image size
+        maxWidth: 500);
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      imageFileList.addAll(selectedImages);
+    }
+    return imageFileList;
+  }
 }

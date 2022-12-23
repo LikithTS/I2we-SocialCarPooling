@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/user/AadharIdentificationUpdate.dart';
@@ -10,9 +11,11 @@ import 'package:socialcarpooling/view/profile/verification/aadhar/VerificationVi
 
 import '../../../../font&margin/margin_confiq.dart';
 import '../../../../imageupload/AwsApi.dart';
+import '../../../../util/InternetChecks.dart';
 import '../../../../util/color.dart';
 import '../../../../utils/Localization.dart';
 import '../../../../utils/widget_functions.dart';
+import '../../../../widgets/aleart_widgets.dart';
 import '../../../commondialog/custom_dialog.dart';
 
 class AadharVerificationScreen extends StatefulWidget {
@@ -48,7 +51,10 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
             userIdentificationFront: frontKey));
       }
       // handle back image upload
-    } else {}
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 
   void updateUserApi(
@@ -60,16 +66,13 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
-      print("UPdate success$value");
+      showSnackbar(context, "Aadhar Card Updated");
+      InternetChecks.closeLoadingProgress(context);
+      Navigator.pop(context);
       //print("Response Data : ${value.statusCode}");
-    } else {
-      print("UPdate failure $value");
-      // ErrorResponse errorResponse = value;
-      // setState(() {
-      //   errorText = errorResponse.errorMessage.toString();
-      // });
-      //  print("Response Data : Error");
-
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 
@@ -129,7 +132,8 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
                 addVerticalSpace(20),
                 ElevatedButton(
                   onPressed: () {
-                    uploadAadhar();
+                    InternetChecks.isConnected().then((isInternetAvailable) =>
+                        {uploadAadhar(isInternetAvailable)});
                   },
                   style: ElevatedButton.styleFrom(
                     primary: primaryColor,
@@ -294,20 +298,24 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
     }
   }
 
-  void uploadAadhar() {
-    if (frontImageFile == null) {
-      handleIfImageNotSelected("Image not selected",
-          "Please select the front image of Aadhar for verification");
-      return;
+  void uploadAadhar(bool isInternetAvailable) {
+    if (isInternetAvailable) {
+      if (frontImageFile == null) {
+        handleIfImageNotSelected("Image not selected",
+            "Please select the front image of Aadhar for verification");
+        return;
+      }
+      if (backImageFile == null) {
+        handleIfImageNotSelected("Image not selected",
+            "Please select the back image of Aadhar for verification");
+        return;
+      }
+      InternetChecks.showLoadingCircle(context);
+      var a = viewModel.getIdentificationUrl();
+      a.then((value) => handleData(value));
+    } else {
+      showSnackbar(context, "No Internet");
     }
-    if (backImageFile == null) {
-      handleIfImageNotSelected("Image not selected",
-          "Please select the back image of Aadhar for verification");
-      return;
-    }
-
-    var a = viewModel.getIdentificationUrl();
-    a.then((value) => handleData(value));
   }
 
   void handleIfImageNotSelected(String title, String desc) {

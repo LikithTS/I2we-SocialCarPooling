@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/user/ProfileImageUpdate.dart';
@@ -18,8 +19,10 @@ import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/profile/verification/VerificationMainScreen.dart';
 
 import '../../util/AppPreference.dart';
+import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/aleart_widgets.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -30,6 +33,7 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   var viewmodel = ProfileViewModel();
+  NetworkImage? netWorkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +86,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              handleProfileUpload();
+                              InternetChecks.isConnected().then((isAvailable) =>
+                                  {handleProfileUpload(isAvailable)});
                             },
-                            child: CPSessionManager()
-                                    .getProfileImage()
-                                    .isNotEmpty
+                            child: netWorkImage == null
                                 ? CircleAvatar(
                                     radius: 58,
                                     backgroundImage: Image.file(File(
@@ -96,10 +99,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   )
                                 : CircleAvatar(
                                     radius: 58,
-                                    backgroundImage: NetworkImage(
-                                        AppPreference().imageBaseUrl +
-                                            (AppPreference().profileImageKey ??
-                                                "")),
+                                    backgroundImage: netWorkImage,
                                   ),
                           ),
                         ),
@@ -462,17 +462,25 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
     super.initState();
+    var profileImage =
+        AppPreference().imageBaseUrl + (AppPreference().profileImageKey ?? "");
+    netWorkImage = NetworkImage(profileImage);
     if (CPSessionManager().isUserLoggedIn()) {
       GetProfileDetails(context);
     }
   }
 
-  void handleProfileUpload() {
-    Future<dynamic> future = viewmodel.getUserProfileUrl();
-    future.then((value) => {handleResponseData(value)});
+  void handleProfileUpload(bool isAvailable) {
+    if (isAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      Future<dynamic> future = viewmodel.getUserProfileUrl();
+      future.then((value) => {handleprofileImageResponseData(value)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
   }
 
-  handleResponseData(profileUrl) {
+  void handleprofileImageResponseData(profileUrl) {
     if (profileUrl is ProfileImageUpload) {
       if (profileUrl.url != null && profileUrl.key != null) {
         var uploadUrl = profileUrl.url!;
@@ -484,32 +492,45 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   CPSessionManager().setProfileImage(value.path),
                   AwsApi().uploadImage(uploadUrl, value),
                   updateUserApi(
-                      ProfileImageUpdate(profileImage: profileUrl.key))
+                      ProfileImageUpdate(profileImage: profileUrl.key),
+                      context,
+                      profileUrl.key)
                 }
             });
       }
     }
   }
-}
 
-void updateUserApi(ProfileImageUpdate profileImage) async {
-  Future<dynamic> future =
-      UpdateUserRepository().updateProfilePhoto(api: profileImage);
-  future.then((value) => {handleResponseData(value)});
-}
+  void updateUserApi(ProfileImageUpdate profileImage, BuildContext context,
+      String? key) async {
+    Future<dynamic> future =
+        UpdateUserRepository().updateProfilePhoto(api: profileImage);
+    future.then((value) => {handleResponseData(value, context, key)});
+  }
 
-handleResponseData(value) {
-  if (value is SuccessResponse) {
-    print("UPdate success$value");
-    //print("Response Data : ${value.statusCode}");
-  } else {
-    print("UPdate failure $value");
-    // ErrorResponse errorResponse = value;
-    // setState(() {
-    //   errorText = errorResponse.errorMessage.toString();
-    // });
-    //  print("Response Data : Error");
+  void handleResponseData(value, BuildContext context, String? imageKey) {
+    if (value is SuccessResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      print("UPdate success$value");
+      setState(() {
+        if (imageKey != null) {
+          netWorkImage =
+              NetworkImage(AppPreference().imageBaseUrl + (imageKey ?? ""));
+        }
+      });
 
+      //print("Response Data : ${value.statusCode}");
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      print("UPdate failure $value");
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
+    }
   }
 }
 

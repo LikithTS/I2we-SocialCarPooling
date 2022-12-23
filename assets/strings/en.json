@@ -128,7 +128,9 @@
   "voter_verification": "Voter ID verification",
   "add_driving_license": "Add Driving License",
   "driving_verification": "Driving License verification",
-  "select" : "SELECT"
+  "select" : "SELECT",
+  "aadhar_verification_under_verify" : "Aadhar under Verification",
+  "driving_verification_under_verify" : "Driving License under Verification"
 
 
 
