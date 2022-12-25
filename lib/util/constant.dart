@@ -27,4 +27,13 @@ class Constant {
   static const String RIDE_CHECKED_OUT = "CHECKED_OUT";
   static const String RIDE_JOINED = "JOINED";
   static const String RIDE_CANCELLED = "CANCELLED";
+
+  static const String MALE = "MALE";
+  static const String FEMALE = "FEMALE";
+
+  static const String PRIMARY_EDUCATION = "PRIMARY_EDUCATION";
+  static const String SECONDARY_EDUCATION = "SECONDARY_EDUCATION";
+  static const String BACHELORS_DEGREE = "BACHELORS_DEGREE";
+  static const String MASTERS_DEGREE = "MASTERS_DEGREE";
+  static const String OTHER = "OTHER";
 }
