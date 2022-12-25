@@ -44,8 +44,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginRepository get _userRepository => widget.userRepository;
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController(text: '9986215749');
+  TextEditingController passwordController = TextEditingController(text: 'Test@1234');
   bool passwordVisible = true;
 
   @override

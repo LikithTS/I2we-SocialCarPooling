@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:common/model/direction.dart';
-import 'package:common/model/steps.dart' as directionSteps;
+import 'package:common/model/legSteps.dart' as directionSteps;
+import 'package:common/model/legSteps.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/StartDestination.dart';
 import 'package:common/network/request/Steps.dart' as requestSteps;
+import 'package:common/network/request/Steps.dart';
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
@@ -51,7 +53,6 @@ class HomeDriverState extends State<DriverWidgetView> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          addVerticalSpace(5),
           HomeTextIconFormClick(
             hint: DemoLocalizations.of(context)!.getText("start_address"),
             prefixIcon: Icons.my_location,
@@ -174,16 +175,17 @@ class HomeDriverState extends State<DriverWidgetView> {
             directionObject.routes![0].legs![0].distance?.text;
         final String? duration =
             directionObject.routes![0].legs![0].duration?.text;
-        final List<directionSteps.Steps>? steps = directionObject
-            .routes![0].legs![0].steps
-            ?.cast<directionSteps.Steps>();
-        List<requestSteps.Steps>? reqSteps = [];
-        if (steps != null) {
-          for (var step in steps) {
-            reqSteps.add(requestSteps.Steps(
-                distanceInMeters: step.distance?.value,
-                lat: step.endLocation?.lat.toString(),
-                long: step.endLocation?.lng.toString()));
+        List<LegSteps>? steps = [];
+        List<RequestSteps>? reqSteps = [];
+        if(directionObject.routes![0].legs![0].steps!.isNotEmpty) {
+          steps = directionObject.routes![0].legs![0].steps!.cast<LegSteps>();
+          if (steps != null) {
+            for (var step in steps) {
+              reqSteps.add(RequestSteps(
+                  distanceInMeters: step.distance?.value,
+                  lat: step.endLocation?.lat.toString(),
+                  long: step.endLocation?.lng.toString()));
+            }
           }
         }
         NewRideApi api = NewRideApi(

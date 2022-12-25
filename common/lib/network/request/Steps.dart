@@ -1,11 +1,11 @@
-class Steps {
+class RequestSteps {
   int? distanceInMeters;
   String? lat;
   String? long;
 
-  Steps({this.distanceInMeters, this.lat, this.long});
+  RequestSteps({this.distanceInMeters, this.lat, this.long});
 
-  Steps.fromJson(Map<String, dynamic> json) {
+  RequestSteps.fromJson(Map<String, dynamic> json) {
     distanceInMeters = json['distanceInMeters'];
     lat = json['lat'];
     long = json['long'];
