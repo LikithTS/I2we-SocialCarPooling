@@ -56,14 +56,11 @@ Widget inputEditTextWithPrefixWidget(
             } else if (flag == 2 &&
                 !inputValidationMixin.isValidPhoneNumber(value)) {
               return CPString.mobileValidError;
-            } else if (flag == 4 && !inputValidationMixin.isZipValid(value!)) {
-              return CPString.zipCodeError;
-            }
-            /*else if(flag==3 && !inputValidationMixin.isEmailValid(value))
+            } else if(flag==3 && !inputValidationMixin.isEmailValid(value))
             {
               return CPString.emailValidError;
             }
-          else if(flag==4 && !inputValidationMixin.isZipValid(value))
+            /*else if(flag==4 && !inputValidationMixin.isZipValid(value))
             {
               return CPString.zipCodeError;
             }
