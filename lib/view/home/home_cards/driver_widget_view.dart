@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:common/model/direction.dart';
-import 'package:common/model/steps.dart' as directionSteps;
+import 'package:common/model/legSteps.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/StartDestination.dart';
-import 'package:common/network/request/Steps.dart' as requestSteps;
+import 'package:common/network/request/Steps.dart';
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
@@ -173,12 +173,12 @@ class HomeDriverState extends State<DriverWidgetView> {
             directionObject.routes![0].legs![0].distance?.text;
         final String? duration =
             directionObject.routes![0].legs![0].duration?.text;
-        final List<directionSteps.Steps>? steps =
+        final List<LegSteps>? steps =
             directionObject.routes![0].legs![0].steps;
-        List<requestSteps.Steps>? reqSteps = [];
+        List<RequestSteps>? reqSteps = [];
         if (steps != null) {
           for (var s in steps) {
-            reqSteps.add(requestSteps.Steps(
+            reqSteps.add(RequestSteps(
                 distanceInMeters: s.distance?.value,
                 lat: s.endLocation?.lat.toString(),
                 long: s.endLocation?.lng.toString()));
