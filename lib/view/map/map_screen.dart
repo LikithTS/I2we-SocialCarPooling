@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -188,6 +190,8 @@ class _MapScreenState extends State<MapScreen> {
 
   void getGpsLocation() async {
     Position position = await getGeoLocationCoOrdinates();
+    log("Location home page latitude ${position.latitude}");
+    log("Location home page longitude ${position.longitude}");
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
       // on below line we have given positions of Location 5
         CameraPosition(

@@ -1,7 +1,5 @@
+import 'package:common/model/steps.dart';
 
-
-
-import '../network/model/Steps.dart';
 import 'distance.dart';
 import 'northeast.dart';
 
@@ -16,12 +14,12 @@ class Legs {
 
   Legs(
       {this.distance,
-        this.duration,
-        this.endAddress,
-        this.endLocation,
-        this.startAddress,
-        this.startLocation,
-        this.steps});
+      this.duration,
+      this.endAddress,
+      this.endLocation,
+      this.startAddress,
+      this.startLocation,
+      this.steps});
 
   Legs.fromJson(Map<String, dynamic> json) {
     distance = json['distance'] != null

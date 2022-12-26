@@ -30,7 +30,7 @@ class RideRepository extends ApiRepository {
     }
   }
 
-  Future<List<dynamic>> getUpcomingRides() async {
+  Future<List<UpcomingRides>> getUpcomingRides() async {
     try {
       Response carData =
       await APIClient().getDioInstance().get(ApiConstant.UPCOMING_RIDE);
@@ -38,7 +38,12 @@ class RideRepository extends ApiRepository {
       if (response is ErrorResponse) {
         return List.empty();
       } else {
-        log("Response car $response");
+        log("Response ride $response");
+        if(response is SuccessResponse) {
+          if(response.data != null && response.data!.isEmpty) {
+              return List.empty();
+          }
+        }
         List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
             response.map((i) => UpcomingRides.fromJson(i)));
         // var carResponse = CarDetailsResponse.fromJson(response);
