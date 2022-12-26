@@ -132,7 +132,7 @@ class HomeDriverState extends State<DriverWidgetView> {
 
   callRideApi(bool isAvailable) {
     if (isAvailable) {
-      InternetChecks.showLoadingCircle(context);
+     // InternetChecks.showLoadingCircle(context);
       log("Button clicked post ride");
       log("Start Address ${originValue.text.isEmpty}");
       log("End Address ${destinationValue.text.isEmpty}");
@@ -177,7 +177,23 @@ class HomeDriverState extends State<DriverWidgetView> {
             directionObject.routes![0].legs![0].duration?.text;
         List<LegSteps>? steps = [];
         List<RequestSteps>? reqSteps = [];
-        if(directionObject.routes![0].legs![0].steps!.isNotEmpty) {
+        print("Steps : ${directionObject.routes![0].legs![0].steps!.length}");
+        if(directionObject.routes![0].legs![0].steps!.isNotEmpty)
+          {
+            var stepList=directionObject.routes![0].legs![0].steps!;
+            for(var step in stepList)
+              {
+
+                   /* reqSteps.add(RequestSteps(
+                        distanceInMeters: step.distanceInMeters,
+                        lat: step.location?.toString(),
+                        long: step.location?.toString()));*/
+                    print("Steps ${step.distanceInMeters} : ${step.location?.coordinates}: ${step.location?.type}");
+
+                  }
+              }
+
+       /* if(directionObject.routes![0].legs![0].steps!.isNotEmpty) {
           steps = directionObject.routes![0].legs![0].steps!.cast<LegSteps>();
           if (steps != null) {
             for (var step in steps) {
@@ -187,7 +203,7 @@ class HomeDriverState extends State<DriverWidgetView> {
                   long: step.endLocation?.lng.toString()));
             }
           }
-        }
+        }*/
         NewRideApi api = NewRideApi(
             startDestination: origin,
             endDestination: destination,
