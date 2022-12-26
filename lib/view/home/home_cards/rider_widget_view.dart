@@ -170,6 +170,7 @@ class HomeRiderState extends State<RiderWidgetView> {
           selectedCarType.isEmpty) {
         alertDialogView(context, "post_ride_error");
       } else {
+        InternetChecks.showLoadingCircle(context);
         final DateTime utcRideStartTime = DateFormat("yyyy-MM-dd hh:mm aaa")
             .parse('${dateValue.text} ${timeValue.text}', true);
         log("UTC date ${utcRideStartTime.toIso8601String()}");
@@ -193,9 +194,8 @@ class HomeRiderState extends State<RiderWidgetView> {
             directionObject.routes![0].legs![0].distance?.text;
         final String? duration =
             directionObject.routes![0].legs![0].duration?.text;
-        final List<directionSteps.Steps>? steps = directionObject
-            .routes![0].legs![0].steps
-            ?.cast<directionSteps.Steps>();
+        final List<directionSteps.Steps>? steps =
+            directionObject.routes![0].legs![0].steps;
         List<requestSteps.Steps>? reqSteps = [];
         if (steps != null) {
           for (var step in steps) {

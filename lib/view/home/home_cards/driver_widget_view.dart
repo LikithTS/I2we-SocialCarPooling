@@ -174,16 +174,15 @@ class HomeDriverState extends State<DriverWidgetView> {
             directionObject.routes![0].legs![0].distance?.text;
         final String? duration =
             directionObject.routes![0].legs![0].duration?.text;
-        final List<directionSteps.Steps>? steps = directionObject
-            .routes![0].legs![0].steps
-            ?.cast<directionSteps.Steps>();
+        final List<directionSteps.Steps>? steps =
+            directionObject.routes![0].legs![0].steps;
         List<requestSteps.Steps>? reqSteps = [];
         if (steps != null) {
-          for (var step in steps) {
+          for (var s in steps) {
             reqSteps.add(requestSteps.Steps(
-                distanceInMeters: step.distance?.value,
-                lat: step.endLocation?.lat.toString(),
-                long: step.endLocation?.lng.toString()));
+                distanceInMeters: s.distance?.value,
+                lat: s.endLocation?.lat.toString(),
+                long: s.endLocation?.lng.toString()));
           }
         }
         NewRideApi api = NewRideApi(
