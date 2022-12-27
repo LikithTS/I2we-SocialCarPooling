@@ -130,7 +130,6 @@ class HomeDriverState extends State<DriverWidgetView> {
 
   callRideApi(bool isAvailable) {
     if (isAvailable) {
-      InternetChecks.showLoadingCircle(context);
       log("Button clicked post ride");
       log("Start Address ${originValue.text.isEmpty}");
       log("End Address ${destinationValue.text.isEmpty}");
@@ -150,6 +149,7 @@ class HomeDriverState extends State<DriverWidgetView> {
           rideAmount.text.isEmpty) {
         alertDialogView(context, "post_ride_error");
       } else {
+        InternetChecks.showLoadingCircle(context);
         final DateTime utcRideStartTime = DateFormat("yyyy-MM-dd hh:mm aaa")
             .parse('${dateValue.text} ${timeValue.text}', true);
         log("UTC date ${utcRideStartTime.toIso8601String()}");
