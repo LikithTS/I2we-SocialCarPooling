@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/font&margin/dimens.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../buttons/outline_button_view.dart';
 import '../../../util/TextStylesUtil.dart';
 import '../../../util/color.dart';
 import '../../../util/configuration.dart';
-import '../../../util/dimens.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/get_formatted_date_time.dart';
 import '../../../utils/widget_functions.dart';

@@ -122,16 +122,20 @@ class HomeRiderState extends State<RiderWidgetView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TimeSelectionWithHintSupport(
-                text: DemoLocalizations.of(context)!.getText("time"),
-                iconData: Icons.schedule,
-                timerValue: timeValue,
+              Expanded(
+                child: TimeSelectionWithHintSupport(
+                  text: DemoLocalizations.of(context)!.getText("time"),
+                  iconData: Icons.schedule,
+                  timerValue: timeValue,
+                ),
               ),
               addHorizontalSpace(12),
-              DateSelectionWithHintSupport(
-                text: DemoLocalizations.of(context)!.getText("date"),
-                iconData: Icons.calendar_today,
-                reqDateValue: dateValue,
+              Expanded(
+                child: DateSelectionWithHintSupport(
+                  text: DemoLocalizations.of(context)!.getText("date"),
+                  iconData: Icons.calendar_today,
+                  reqDateValue: dateValue,
+                ),
               ),
             ],
           ),
@@ -193,8 +197,7 @@ class HomeRiderState extends State<RiderWidgetView> {
             directionObject.routes![0].legs![0].distance?.text;
         final String? duration =
             directionObject.routes![0].legs![0].duration?.text;
-        final List<LegSteps>? steps =
-            directionObject.routes![0].legs![0].steps;
+        final List<LegSteps>? steps = directionObject.routes![0].legs![0].steps;
         List<RequestSteps>? reqSteps = [];
         if (steps != null) {
           for (var step in steps) {

@@ -35,34 +35,36 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                  children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      headerText(
+                          DemoLocalizations.of(context)?.getText("my_rides") ??
+                              "")
+                    ],
                   ),
-                  headerText(
-                      DemoLocalizations.of(context)?.getText("my_rides") ??
-                          "")
+                  Stack(
+                    children: const [
+                      CircleAvatar(
+                        radius: 20,
+                        child: Icon(Icons.group),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.red,
+                          child: Text('1'),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
-              Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    child: Icon(Icons.group),
-                  ),
-                  Positioned(
-                    right:0,child:  CircleAvatar(
-                    radius: 10,backgroundColor: Colors.red,
-                    child: Text('1'),
-                  ),)
-
-                ],
-              )
-            ],
-            ),
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
@@ -70,9 +72,10 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if(snapshot.hasData) {
+                  } else if (snapshot.hasData) {
                     List<UpcomingRides>? upcomingRideList = snapshot.data;
-                    if(upcomingRideList != null && upcomingRideList.isNotEmpty) {
+                    if (upcomingRideList != null &&
+                        upcomingRideList.isNotEmpty) {
                       return PageView.builder(
                         itemCount: upcomingRideList.length,
                         itemBuilder: (context, index) {
@@ -80,22 +83,24 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                             rideId: upcomingRideList[index].id ?? "",
                             carIcon: 'assets/images/car_pool.png',
                             startAddress: upcomingRideList[index]
-                                .startDestinationFormattedAddress ??
+                                    .startDestinationFormattedAddress ??
                                 "",
                             endAddress: upcomingRideList[index]
-                                .endDestinationFormattedAddress ??
+                                    .endDestinationFormattedAddress ??
                                 "",
                             rideType: upcomingRideList[index].rideType ?? "",
                             amount: upcomingRideList[index].amountPerSeat ?? 0,
                             dateTime: getDateTimeFormatter()
                                 .parse(upcomingRideList[index].startTime!),
                             seatsOffered:
-                            upcomingRideList[index].seatsOffered ?? 1,
+                                upcomingRideList[index].seatsOffered ?? 1,
                             carType:
-                            upcomingRideList[index].carTypeInterested ?? "",
-                            coRidersCount: upcomingRideList[index].riderCount ?? 0,
-                            leftButtonText: upcomingRideList[index].rideStatus ??
-                                Constant.RIDE_CANCELLED,
+                                upcomingRideList[index].carTypeInterested ?? "",
+                            coRidersCount:
+                                upcomingRideList[index].riderCount ?? 0,
+                            leftButtonText:
+                                upcomingRideList[index].rideStatus ??
+                                    Constant.RIDE_CANCELLED,
                             rideStatus: upcomingRideList[index].rideStatus ??
                                 Constant.RIDE_CREATED,
                             refreshScreen: () => refreshScreen(),

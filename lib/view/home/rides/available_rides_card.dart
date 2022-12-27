@@ -18,11 +18,11 @@ class AvailableRides extends StatelessWidget {
   final DateTime dateTime;
   final int seatsOffered;
   final String carType;
-  final String coRidersCount;
   final String name;
   final String designation;
   final int routeMatch;
   final int profileMatch;
+  final String carTypeInterested;
 
   const AvailableRides(
       {Key? key,
@@ -38,8 +38,8 @@ class AvailableRides extends StatelessWidget {
       required this.amount,
       required this.dateTime,
       required this.seatsOffered,
-      required this.coRidersCount,
-      required this.profileImage})
+      required this.profileImage,
+      required this.carTypeInterested})
       : super(key: key);
 
   @override
@@ -226,7 +226,7 @@ class AvailableRides extends StatelessWidget {
                         timeView(Icons.airline_seat_recline_normal,
                             seatsOffered.toString()),
                       ] else ...[
-                        timeView(Icons.directions_car, carType),
+                        timeView(Icons.directions_car, carTypeInterested),
                       ]
                     ],
                   ),

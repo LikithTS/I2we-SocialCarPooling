@@ -6,8 +6,11 @@ import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
+import 'package:socialcarpooling/view/home/rides/my_ride_routes.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
@@ -178,7 +181,10 @@ class UpcomingRidesWidget extends StatelessWidget {
                           onPressed: () {
                             //Open available rides screen
                             Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AvailableRidesScreen(
+                                        rideId: rideId, rideType: rideType)));
                           },
                         ),
                         if (int.tryParse(coRidersCount) == 0 &&
@@ -213,12 +219,17 @@ class UpcomingRidesWidget extends StatelessWidget {
                         if (rideStatus == Constant.RIDE_CREATED ||
                             rideStatus == Constant.RIDE_STARTED ||
                             rideStatus == Constant.RIDE_JOINED) ...[
-                          outlineButtonView(Constant.BUTTON_CANCEL,
-                              () => cancelRide(context, rideType, rideId)),
+                          Expanded(
+                            child: outlineButtonView(Constant.BUTTON_CANCEL,
+                                () => cancelRide(context, rideType, rideId)),
+                          ),
                         ],
-                        elevatedButtonView(
-                            getRightButtonText(rideType, rideStatus),
-                            () => updateRideDetails(context, rideType, rideId))
+                        addHorizontalSpace(10),
+                        Expanded(
+                          child: elevatedButtonView(
+                              getRightButtonText(rideType, rideStatus),
+                                  () => updateRideDetails(context, rideType, rideId)),
+                        ),
                       ],
                     ),
                   )
@@ -247,7 +258,19 @@ class UpcomingRidesWidget extends StatelessWidget {
           rideStatus == Constant.RIDE_CREATED) {
         // Move to rides available page
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const AvailableRidesScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => AvailableRidesScreen(
+                      rideId: rideId,
+                      rideType: rideType,
+                    )));
+      } else if (rideType == Constant.RIDE_JOINED ||
+          rideType == Constant.RIDE_STARTED) {
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: const MyRideRoutes()));
       } else {
         String? status = getStatus(rideStatus, rideType);
         if (status != null && status.isNotEmpty) {

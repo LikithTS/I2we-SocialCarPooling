@@ -8,7 +8,6 @@ Widget elevatedButtonView(String buttonName, VoidCallback onClicked, [Color btnB
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        minimumSize: const Size(150, 40),
         backgroundColor : btnBgColor
     ),
     onPressed: () {

@@ -10,8 +10,7 @@ Widget outlineButtonView(String buttonName, VoidCallback onClicked) => OutlinedB
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        side: const BorderSide(color: Colors.grey),
-        minimumSize: const Size(150, 40)),
+        side: const BorderSide(color: Colors.grey)),
     onPressed: () {
       onClicked();
     },

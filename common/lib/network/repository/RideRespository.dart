@@ -2,9 +2,11 @@
 import 'dart:developer';
 
 import 'package:common/network/apiclient.dart';
+import 'package:common/network/model/AvailableRideResponse.dart';
 import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/ApiRepository.dart';
+import 'package:common/network/request/AvailableRideApi.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -38,7 +40,6 @@ class RideRepository extends ApiRepository {
       if (response is ErrorResponse) {
         return List.empty();
       } else {
-        log("Response ride $response");
         if(response is SuccessResponse) {
           if(response.data != null && response.data!.isEmpty) {
               return List.empty();
@@ -47,7 +48,6 @@ class RideRepository extends ApiRepository {
         List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
             response.map((i) => UpcomingRides.fromJson(i)));
         // var carResponse = CarDetailsResponse.fromJson(response);
-        log("Upcoming ride response ${upcomingRidesList.length}");
         return upcomingRidesList;
       }
     } on DioError catch (onError) {
@@ -55,20 +55,18 @@ class RideRepository extends ApiRepository {
     }
   }
 
-  Future<List<dynamic>> getAvailableRides() async {
+  Future<List<AvailableRidesResponse>> postAvailableRides({required AvailableRideApi api}) async {
     try {
-      Response carData =
-      await APIClient().getDioInstance().get(ApiConstant.AVAILABLE_RIDES);
-      dynamic response = handleAPIResponseData(carData);
+      Response rideData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.AVAILABLE_RIDES, data: api.toJson());
+      dynamic response = handleAPIResponseData(rideData);
       if (response is ErrorResponse) {
         return List.empty();
       } else {
-        log("Response available rides $response");
-        List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
-            response.map((i) => UpcomingRides.fromJson(i)));
-        // var carResponse = CarDetailsResponse.fromJson(response);
-        log("available ride response ${upcomingRidesList.length}");
-        return upcomingRidesList;
+        List<AvailableRidesResponse> availableRideList = List<AvailableRidesResponse>.from(
+            response.map((i) => AvailableRidesResponse.fromJson(i)));
+        return availableRideList;
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);
