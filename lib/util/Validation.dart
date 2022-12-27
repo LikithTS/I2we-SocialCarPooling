@@ -3,11 +3,11 @@ mixin InputValidationMixin {
   bool isPasswordValid(String password) => password.length < 4;
   bool isZipValid(String zipCode) => zipCode.length == 6;
 
-  bool isEmailValid(String em) {
+  bool isEmailValid(String? em) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = new RegExp(p);
-    return regExp.hasMatch(em);
+    RegExp regExp = RegExp(p);
+    return regExp.hasMatch(em!);
   }
 
   bool isValidPhoneNumber(String? value) =>

@@ -1,14 +1,14 @@
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../util/CPString.dart';
 import '../../util/TextStylesUtil.dart';
 import '../../util/color.dart';
-import '../../util/dimens.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../util/string_url.dart';
 
 class WelcomePage extends StatefulWidget {

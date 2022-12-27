@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/view/history/history_page.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../util/constant.dart';
@@ -174,6 +175,7 @@ class RecentRidesWidget extends StatelessWidget {
                             const Spacer(),
                             elevatedButtonView(
                                 getRightButtonText(rideType, rideStatus),
+                                () => viewHistory(context),
                                 getRightButtonBgColor(rideType, rideStatus))
                           ],
                         ),
@@ -183,5 +185,11 @@ class RecentRidesWidget extends StatelessWidget {
                 )),
               ],
             )));
+  }
+
+  viewHistory(BuildContext context) {
+    //Navigate to history screen
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HistoryPage()));
   }
 }

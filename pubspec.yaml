@@ -34,6 +34,8 @@ dependencies:
     sdk: flutter
 
   date_format: ^2.0.7
+
+  permission_handler: 10.2.0
   flutter_rating_bar: ^4.0.1
 
   # The following adds the Cupertino Icons font to your application.
@@ -105,6 +107,15 @@ dependencies:
   firebase_auth: ^4.1.1
   google_sign_in: ^5.4.2
   firebase_core: ^2.1.1
+
+  #image_picker:
+  image_picker: ^0.8.5+3 # to upload image
+  image_cropper: ^3.0.1
+  firebase_messaging: ^14.1.4
+  flutter_local_notifications: ^13.0.0
+  cloud_firestore: ^4.0.1
+  connectivity: ^3.0.6
+  overlay_support: ^2.1.0
 
 dev_dependencies:
   flutter_test:

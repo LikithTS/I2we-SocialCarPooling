@@ -15,12 +15,14 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/forgetpassword/ForgetPasswordConfirmScreen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
@@ -28,8 +30,7 @@ import 'package:socialcarpooling/widgets/otp_edittext_view.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/image_widgets.dart';
@@ -109,18 +110,21 @@ class _SocialLoginNewUserVerificationScreenState
 
   handleValidOtpResponseData(value, String phoneNumber) {
     if (value is AuthResponse) {
-      log("Storing access token and refresh token in sign up flow");
+      CPSessionManager().setUserId(phoneNumber);
       CPSessionManager().setAuthToken(value.accessToken ?? "");
       CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: HomePage(homeRepository: HomeRepository())));
+      GetProfileDetails(context);
+      Timer(
+          const Duration(seconds: 2),
+              () =>
+              Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: HomePage(homeRepository: HomeRepository()))));
     } else {
       ErrorResponse errorResponse = value;
-      log('Error ${errorResponse.errorMessage}');
+      log('Error ${errorResponse.message}');
     }
   }
 

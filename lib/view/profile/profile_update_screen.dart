@@ -1,20 +1,21 @@
 import 'package:common/network/repository/UpdateUserRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/profile/UpdateUserProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/margin_confiq.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/view/profile/model/UpdateUserDetails.dart';
+import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/AppPreference.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 
@@ -48,6 +49,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
   @override
   void initState() {
     super.initState();
+    fullNameController.text = AppPreference().userDetail?.name ?? "";
+    mobileNoController.text = AppPreference().userDetail?.phoneNumber ?? "";
+    emailNoController.text = AppPreference().userDetail?.email ?? "";
+    workController.text = AppPreference().userDetail?.work ?? "";
+    dateController.text =
+        getFormattedDate(DateTime.parse(AppPreference().userDetail?.dob ?? ""));
+    selectedValueGender = AppPreference().userDetail?.gender ?? "";
   }
 
   @override
@@ -118,7 +126,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     3,
                     30,
                     this,
-                    ''),
+                    AppPreference().userDetail?.email ?? ""),
               ),
               const SizedBox(
                 height: 10,
@@ -314,15 +322,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
   Future _selectDate() async {
     DateTime? picker = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime.parse(AppPreference().userDetail?.dob ?? ""),
         firstDate: DateTime(1970),
         lastDate: DateTime.now());
 
     if (picker != null) {
       setState(() {
-        String formattedDate = DateFormat('dd,MMM,yyyy').format(picker);
-        dob = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(picker);
-        dateController.text = formattedDate;
+        dob = getFormattedTime(picker);
+        dateController.text = dob;
       });
     }
   }
@@ -332,10 +339,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       print("full name cannot be empty");
       return;
     }
-    if (mobileNoController.text.isEmpty) {
-      print("mobile cannot be empty");
-      return;
-    }
+
     if (emailNoController.text.isEmpty) {
       print("email cannot be empty");
       return;
@@ -345,41 +349,31 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       return;
     }
     if (workController.text.isEmpty) {
-      print("date cannot be empty");
+      print("work cannot be empty");
       return;
     }
     if (selectedValueEducation.isEmpty) {
       print("education cannot be empty");
       return;
     }
-    UpdaterUserApi updaterUserApi = UpdaterUserApi(
-        bio: "",
-        profileImage: "",
-        designation: "",
-        address1: "",
-        address2: "",
-        city: "",
-        education: selectedValueEducation,
-        facebook: "",
-        language: ['ENGLISH'],
-        linkedIn: "",
-        state: "",
-        twitter: "",
+    UpdateUserProfile updaterUserApi = UpdateUserProfile(
         work: workController.text,
-        pincode: "560045");
-    AppPreference().userDetails = updaterUserApi;
-    updateUserApi(AppPreference().userDetails!);
+        education: selectedValueEducation,
+        language: AppPreference().userDetail?.language ?? []);
+
+    updateUserApi(updaterUserApi, context);
   }
 
-  void updateUserApi(UpdaterUserApi updaterUserApi) {
+  void updateUserApi(UpdateUserProfile updaterUserApi, BuildContext context) {
     Future<dynamic> future =
         UpdateUserRepository().updateUserDetails(api: updaterUserApi);
-    future.then((value) => {handleResponseData(value)});
+    future.then((value) => {handleResponseData(value, context)});
   }
 
-  handleResponseData(value) {
+  handleResponseData(value, BuildContext context) {
     if (value is SuccessResponse) {
       print("UPdate success" + value.toString());
+      GetProfileDetails(context);
       //print("Response Data : ${value.statusCode}");
     } else {
       print("UPdate failure " + value.toString());

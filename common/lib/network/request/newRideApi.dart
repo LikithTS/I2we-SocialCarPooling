@@ -14,7 +14,7 @@ class NewRideApi {
   int? amountPerSeat;
   String? distance;
   String? duration;
-  List<Steps>? steps;
+  List<RequestSteps>? steps;
   List<Stops>? stops;
 
   NewRideApi(
@@ -45,9 +45,9 @@ class NewRideApi {
     distance = json['distance'];
     duration = json['duration'];
     if (json['steps'] != null) {
-      steps = <Steps>[];
+      steps = <RequestSteps>[];
       json['steps'].forEach((v) {
-        steps!.add(new Steps.fromJson(v));
+        steps!.add(new RequestSteps.fromJson(v));
       });
     }
     if (json['stops'] != null) {

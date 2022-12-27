@@ -4,7 +4,7 @@ import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 
 
 class IntroPage extends StatefulWidget {

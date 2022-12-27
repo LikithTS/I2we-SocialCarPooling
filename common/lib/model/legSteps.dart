@@ -1,12 +1,9 @@
-
-
-
 import 'package:common/model/polylinePointsData.dart';
 
 import 'distance.dart';
 import 'northeast.dart';
 
-class Steps {
+class LegSteps {
   Distance? distance;
   Distance? duration;
   Northeast? endLocation;
@@ -16,7 +13,7 @@ class Steps {
   String? travelMode;
   String? maneuver;
 
-  Steps(
+  LegSteps(
       {this.distance,
         this.duration,
         this.endLocation,
@@ -26,7 +23,7 @@ class Steps {
         this.travelMode,
         this.maneuver});
 
-  Steps.fromJson(Map<String, dynamic> json) {
+  LegSteps.fromJson(Map<String, dynamic> json) {
     distance = json['distance'] != null
         ? new Distance.fromJson(json['distance'])
         : null;

@@ -1,16 +1,39 @@
+import 'dart:io';
+
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/UpdateUserRepository.dart';
+import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/user/ProfileImageUpdate.dart';
+import 'package:common/network/response/user/ProfileImageUploadUrl.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:socialcarpooling/imageupload/AwsApi.dart';
 import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/view/profile/ProfileViewModel.dart';
 import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
 import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
+import 'package:socialcarpooling/view/profile/verification/VerificationMainScreen.dart';
 
+import '../../util/AppPreference.dart';
+import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/aleart_widgets.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  var viewmodel = ProfileViewModel();
+  NetworkImage? netWorkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +41,7 @@ class MyProfileScreen extends StatelessWidget {
     final Color lightOrange = Color(0Xfffacb9c);
     final Color orange = Color(0XffF29339);
     final Color lightBlue = Color(0Xffd9e9fc);
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -34,7 +58,7 @@ class MyProfileScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back)),
+                        icon: const Icon(Icons.arrow_back)),
                     headerText(
                         DemoLocalizations.of(context)?.getText("profile") ?? "")
                   ],
@@ -55,19 +79,32 @@ class MyProfileScreen extends StatelessWidget {
                     ),
                     Stack(
                       alignment: Alignment.centerRight,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             right: 18,
                           ),
-                          child: CircleAvatar(
-                            radius: 58,
-                            backgroundImage: NetworkImage(
-                                "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                          child: GestureDetector(
+                            onTap: () {
+                              InternetChecks.isConnected().then((isAvailable) =>
+                                  {handleProfileUpload(isAvailable)});
+                            },
+                            child: netWorkImage == null
+                                ? CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: Image.file(File(
+                                            CPSessionManager()
+                                                .getProfileImage()))
+                                        .image,
+                                  )
+                                : CircleAvatar(
+                                    radius: 58,
+                                    backgroundImage: netWorkImage,
+                                  ),
                           ),
                         ),
-                        CircleAvatar(
-                          radius: 10,
+                        const CircleAvatar(
+                          radius: 20,
                           backgroundColor: Colors.white,
                           child: Icon(
                             Icons.photo_camera,
@@ -79,8 +116,8 @@ class MyProfileScreen extends StatelessWidget {
                   ],
                 ),
                 addVerticalSpace(5),
-                userNameText("User Name"),
-                workText("Work, Designation"),
+                userNameText(AppPreference().userDetail?.name ?? ""),
+                workText(AppPreference().userDetail?.designation ?? ""),
                 addVerticalSpace(20),
                 Container(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -95,7 +132,8 @@ class MyProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                           child: Icon(
                             Icons.verified_user,
                             color: orange,
@@ -228,19 +266,35 @@ class MyProfileScreen extends StatelessWidget {
                               child: CircularPercentIndicator(
                                   radius: 60,
                                   lineWidth: 6,
-                                  percent: 10 / 100,
+                                  percent: (AppPreference()
+                                              .userDetail
+                                              ?.percentageOfCompletion ??
+                                          0) /
+                                      100,
                                   progressColor: primaryColor,
                                   backgroundColor: lightGreyColor,
                                   circularStrokeCap: CircularStrokeCap.round,
                                   center: progressTextBlack(
-                                      "10%", 13.sp, primaryColor)),
+                                      (AppPreference()
+                                                  .userDetail
+                                                  ?.percentageOfCompletion ??
+                                              0)
+                                          .toString(),
+                                      13.sp,
+                                      primaryColor)),
                             )
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                child: VerificationMainScreen()));
+                      },
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                         height: 180,
@@ -272,11 +326,11 @@ class MyProfileScreen extends StatelessWidget {
                                       addVerticalSpace(20),
                                       Wrap(
                                         crossAxisAlignment:
-                                        WrapCrossAlignment.start,
+                                            WrapCrossAlignment.start,
                                         children: [
                                           Text(
                                             DemoLocalizations.of(context)
-                                                ?.getText("view_details") ??
+                                                    ?.getText("view_details") ??
                                                 "",
                                             style: const TextStyle(
                                               color: Colors.black,
@@ -329,8 +383,7 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                       elevation: 5,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -358,7 +411,7 @@ class MyProfileScreen extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: profileText(
-                                  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis",
+                                  AppPreference().userDetail?.bio ?? "",
                                   12.sp,
                                   const Color(0Xff707070)),
                             ),
@@ -382,7 +435,13 @@ class MyProfileScreen extends StatelessWidget {
                                 left: 8.0, right: 8.0, bottom: 8.0),
                             child: Row(
                               children: [
-                                profileText("Kannada, English", 12.sp,
+                                profileText(
+                                    AppPreference()
+                                            .userDetail
+                                            ?.language
+                                            ?.join(', ') ??
+                                        "",
+                                    12.sp,
                                     const Color(0Xff707070)),
                               ],
                             ),
@@ -398,6 +457,80 @@ class MyProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var profileImage =
+        AppPreference().imageBaseUrl + (AppPreference().profileImageKey ?? "");
+    netWorkImage = NetworkImage(profileImage);
+    if (CPSessionManager().isUserLoggedIn()) {
+      GetProfileDetails(context);
+    }
+  }
+
+  void handleProfileUpload(bool isAvailable) {
+    if (isAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      Future<dynamic> future = viewmodel.getUserProfileUrl();
+      future.then((value) => {handleprofileImageResponseData(value)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  void handleprofileImageResponseData(profileUrl) {
+    if (profileUrl is ProfileImageUpload) {
+      if (profileUrl.url != null && profileUrl.key != null) {
+        var uploadUrl = profileUrl.url!;
+        AppPreference().profileImageKey = profileUrl.key ?? "";
+        Future<dynamic> future = viewmodel.getProfileImage();
+        future.then((value) => {
+              if (value is File && uploadUrl.isNotEmpty)
+                {
+                  CPSessionManager().setProfileImage(value.path),
+                  AwsApi().uploadImage(uploadUrl, value),
+                  updateUserApi(
+                      ProfileImageUpdate(profileImage: profileUrl.key),
+                      context,
+                      profileUrl.key)
+                }
+            });
+      }
+    }
+  }
+
+  void updateUserApi(ProfileImageUpdate profileImage, BuildContext context,
+      String? key) async {
+    Future<dynamic> future =
+        UpdateUserRepository().updateProfilePhoto(api: profileImage);
+    future.then((value) => {handleResponseData(value, context, key)});
+  }
+
+  void handleResponseData(value, BuildContext context, String? imageKey) {
+    if (value is SuccessResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      print("UPdate success$value");
+      setState(() {
+        if (imageKey != null) {
+          netWorkImage =
+              NetworkImage(AppPreference().imageBaseUrl + (imageKey ?? ""));
+        }
+      });
+
+      //print("Response Data : ${value.statusCode}");
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      print("UPdate failure $value");
+      // ErrorResponse errorResponse = value;
+      // setState(() {
+      //   errorText = errorResponse.errorMessage.toString();
+      // });
+      //  print("Response Data : Error");
+
+    }
   }
 }
 

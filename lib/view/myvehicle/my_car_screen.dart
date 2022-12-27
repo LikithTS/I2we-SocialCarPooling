@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/deleteCarApi.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
@@ -10,11 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 
+import '../../util/InternetChecks.dart';
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/aleart_widgets.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
 
@@ -30,48 +32,51 @@ class MyCarsScreen extends StatefulWidget {
 }
 
 class _MyCarsScreenState extends State<MyCarsScreen> {
-
   CarRepository get _carRepository => widget.carRepository;
   var deleteCarIndex = -1;
 
   void updateCarListDrivingStatus(int position, bool value) {
-    for(var i = 0; i < widget.carList.length; i++){
-        if(i == position) {
-          widget.carList[i]
-              .drivingStatus = value;
-        } else {
-          widget.carList[i]
-              .drivingStatus = !value;
-        }
+    for (var i = 0; i < widget.carList.length; i++) {
+      if (i == position) {
+        widget.carList[i].drivingStatus = value;
+      } else {
+        widget.carList[i].drivingStatus = !value;
+      }
     }
   }
 
-  void changeDefaultStateOfCar(String id, bool value) {
-    DrivingStatusApi api = DrivingStatusApi(carId: id);
-    // FutureBuilder<List<dynamic>>(
-    //     future: _carRepository.carDetails(),
-    //     builder: (context, AsyncSnapshot<dynamic> snapshot) {
-    //       if (!snapshot.hasData) {
-    //         return const Center(child: CircularProgressIndicator());
-    //       } else {
-    //         return MyCarsScreen(snapshot.data, CarRepository());
-    //       }
-    //     }
-    Future<dynamic> future = _carRepository.carDrivingStatusUpdate(api: api);
-    future.then((value) => {handleResponseData(value, "driving_status_update_response", false)});
+  void changeDefaultStateOfCar(
+      String id, bool value, bool isInternetAvailable) {
+    if (isInternetAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      DrivingStatusApi api = DrivingStatusApi(carId: id);
+      // FutureBuilder<List<dynamic>>(
+      //     future: _carRepository.carDetails(),
+      //     builder: (context, AsyncSnapshot<dynamic> snapshot) {
+      //       if (!snapshot.hasData) {
+      //         return const Center(child: CircularProgressIndicator());
+      //       } else {
+      //         return MyCarsScreen(snapshot.data, CarRepository());
+      //       }
+      //     }
+      Future<dynamic> future = _carRepository.carDrivingStatusUpdate(api: api);
+      future.then((value) =>
+          {handleResponseData(value, "driving_status_update_response", false)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
   }
 
   handleResponseData(value, String id, bool deleteItem) {
     if (value is SuccessResponse) {
+      InternetChecks.closeLoadingProgress(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               // Retrieve the text the that user has entered by using the
               // TextEditingController.
-              content: Text(DemoLocalizations.of(context)
-                      ?.getText(id) ??
-                  ""),
+              content: Text(DemoLocalizations.of(context)?.getText(id) ?? ""),
               actions: <Widget>[
                 TextButton(
                   child: Text(
@@ -80,7 +85,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                     setState(() {
                       log("Delete car Index $deleteCarIndex");
                       log("Delete item $deleteItem");
-                      if(deleteCarIndex != -1 && deleteItem) {
+                      if (deleteCarIndex != -1 && deleteItem) {
                         widget.carList.removeAt(deleteCarIndex);
                       }
                       log("Car type list ${widget.carList.length}");
@@ -91,6 +96,9 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
               ],
             );
           });
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 
@@ -131,9 +139,12 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                     onDismissed: (DismissDirection direction) {
                       if (direction == DismissDirection.endToStart) {
                         deleteCarIndex = index;
-                        delete(
-                            widget
-                                .carList[index].id!);
+                        InternetChecks.isConnected().then(
+                            (isInternetAvailable) => {
+                                  delete(widget.carList[index].id!,
+                                      isInternetAvailable)
+                                });
+
                         print('Remove item');
                       }
                     },
@@ -247,7 +258,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        20.0, 8.0, 8.0, 8.0),
+                                        10.0, 8.0, 8.0, 8.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -271,12 +282,23 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                                   // This is called when the user toggles the switch.
                                                   setState(() {
                                                     log("Cupertion switch $value");
-                                                    FocusManager.instance.primaryFocus?.unfocus();
-                                                    updateCarListDrivingStatus(index, value);
-                                                    changeDefaultStateOfCar(
-                                                        widget
-                                                            .carList[index].id!,
-                                                        value);
+                                                    FocusManager
+                                                        .instance.primaryFocus
+                                                        ?.unfocus();
+                                                    updateCarListDrivingStatus(
+                                                        index, value);
+                                                    InternetChecks.isConnected()
+                                                        .then(
+                                                            (isInternetAvailable) =>
+                                                                {
+                                                                  changeDefaultStateOfCar(
+                                                                      widget
+                                                                          .carList[
+                                                                              index]
+                                                                          .id!,
+                                                                      value,
+                                                                      isInternetAvailable)
+                                                                });
                                                   });
                                                 },
                                               ),
@@ -319,10 +341,16 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
     ));
   }
 
-  void delete(String carId) {
-    DeleteCarApi api = DeleteCarApi(carId: carId);
-    Future<dynamic> future = _carRepository.deleteCar(api: api);
-    future.then((value) => {handleResponseData(value, "delete_car_response_success", true)});
+  void delete(String carId, bool isInternetAvailable) {
+    if (isInternetAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      DeleteCarApi api = DeleteCarApi(carId: carId);
+      Future<dynamic> future = _carRepository.deleteCar(api: api);
+      future.then((value) =>
+          {handleResponseData(value, "delete_car_response_success", true)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
   }
 }
 

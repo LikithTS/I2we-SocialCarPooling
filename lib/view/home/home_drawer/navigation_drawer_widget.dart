@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
@@ -7,6 +9,7 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/constant.dart';
@@ -21,6 +24,7 @@ import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
+import 'package:socialcarpooling/view/ratingsandreviews/ratings_reviews_screen.dart';
 import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
@@ -36,10 +40,10 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = "Ram Prasad Reddy";
-    final profile_percentage = "Profile 30% Completed";
-    final profileImage =
-        "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg";
+    final name = AppPreference().userDetail?.name ?? "";
+    final profile_percentage =
+        "Profile ${AppPreference().userDetail?.percentageOfCompletion ?? 0}% Completed";
+    final profileImage = CPSessionManager().getProfileImage();
 
     return Drawer(
       child: Material(
@@ -131,7 +135,7 @@ class NavigationDrawerWidget extends StatelessWidget {
       required VoidCallback onClicked}) {
     const iconColor = Colors.blue;
     return ListTile(
-      visualDensity: VisualDensity(vertical: -3),
+      visualDensity: const VisualDensity(vertical: -3),
       leading: BorderIcon(
         height: 30,
         width: 30,
@@ -159,7 +163,7 @@ class NavigationDrawerWidget extends StatelessWidget {
 
       case 1:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyRidesScreen()));
+            context, MaterialPageRoute(builder: (context) => const MyRidesScreen()));
         break;
 
       case 2:
@@ -185,20 +189,23 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
-      case 7:
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const CustomDialog(
-                title: "Allow Your Location",
-                descriptions:
-                    "We need your location permission to Give better expericance",
-                rightButtonText: "Allow",
-                leftButtonText: "Not now",
-                img: "assets/images/location_dialog.png",
-              );
-            });
+      case 5:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
+        // showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return const CustomDialog(
+        //         title: "Allow Your Location",
+        //         descriptions:
+        //             "We need your location permission to Give better expericance",
+        //         rightButtonText: "Allow",
+        //         leftButtonText: "Not now",
+        //         img: "assets/images/location_dialog.png",
+        //       );
+        //     });
+        // break;
       case 6:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => FeedbackPage()));
@@ -254,7 +261,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   void handleErrorResponseData(onError, BuildContext context) {
     if (onError is ApiException) {
       showSnackbar(homeGlobalkey.currentContext!,
-          onError.errorResponse.errorMessage ?? "");
+          onError.errorResponse.message ?? "");
     }
   }
 
@@ -311,8 +318,18 @@ Widget buildHeader(
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(children: [
-            CircleAvatar(
-                radius: 30, backgroundImage: NetworkImage(profileImage)),
+            CPSessionManager().getProfileImage().isNotEmpty
+                ? CircleAvatar(
+                    radius: 30,
+                    backgroundImage:
+                        Image.file(File(CPSessionManager().getProfileImage()))
+                            .image,
+                  )
+                : CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                        AppPreference().userDetail?.profileImage ?? ""),
+                  ),
             addHorizontalSpace(20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

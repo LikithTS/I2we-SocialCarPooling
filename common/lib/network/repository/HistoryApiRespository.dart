@@ -10,7 +10,7 @@ class HistoryApiRepository extends ApiRepository {
   Future<dynamic> getAllRides() async {
     try {
       Response historyData =
-          await APIClient().getDioInstance().get(ApiConstant.ALL_RIDE);
+          await APIClient().getDioInstance().get(ApiConstant.HISTORY);
       dynamic response = handleAPIResponseData(historyData);
       if (response is ErrorResponse) {
         return response;

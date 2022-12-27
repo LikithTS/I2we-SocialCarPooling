@@ -1,16 +1,19 @@
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/signinapi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/Validation.dart';
 import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/color.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../widgets/edit_text_widgets.dart';
 
 class SignUpAddress extends StatefulWidget {
@@ -34,7 +37,7 @@ class _SignUpAddressState extends State<SignUpAddress>
   TextEditingController stateController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
 
-  Future _registrationAddress(addressOne, addressTwo) async {
+  Future _registrationAddress(addressOne, addressTwo, isAvailable) async {
     SignInApi signInApi = widget.signInApi;
 
     SignInApi api = SignInApi(
@@ -42,7 +45,7 @@ class _SignUpAddressState extends State<SignUpAddress>
         education: signInApi.education,
         gender: signInApi.gender,
         email: signInApi.email,
-        age: 20,
+        age: signInApi.age,
         dob: signInApi.dob,
         address1: addressController.text.toString(),
         address2: addressTwoController.text.toString(),
@@ -53,7 +56,11 @@ class _SignUpAddressState extends State<SignUpAddress>
         work: signInApi.work,
         password: signInApi.password);
     print('${api.toJson().toString()}');
-    signIn(api);
+    if(isAvailable) {
+      signIn(api);
+    } else {
+      showSnackbar(context, "No Internet");
+    }
   }
 
   @override
@@ -65,7 +72,7 @@ class _SignUpAddressState extends State<SignUpAddress>
           key: _formKey,
           child: ListView(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               headerLayout(context, CPString.signUp),
@@ -148,13 +155,15 @@ class _SignUpAddressState extends State<SignUpAddress>
               ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
-                padding: EdgeInsets.all(10),
+                const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+                padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      InternetChecks.isConnected().then((isAvailable) => {
                       _registrationAddress(
-                          addressController.text, addressTwoController.text);
+                        addressController.text, addressTwoController.text, isAvailable)
+                      });
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -165,7 +174,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     elevation: margin2,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Text(
                       CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),
@@ -181,16 +190,16 @@ class _SignUpAddressState extends State<SignUpAddress>
   }
 
   void signIn(SignInApi signInApi) {
+    InternetChecks.showLoadingCircle(context);
     Future<dynamic> future = SigninRepository().signIn(api: signInApi);
-    future.then((value) => {
+    future.then((value) =>
+    {
       handleResponseData(value)
     });
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
   }
 
   handleResponseData(value) {
+    InternetChecks.closeLoadingProgress(context);
     if (value is SuccessResponse) {
       Navigator.pushReplacement(
           context,
@@ -199,14 +208,8 @@ class _SignUpAddressState extends State<SignUpAddress>
               child: VerifyOtpPage(userName: widget.signInApi.name,
                 mobileNo: widget.signInApi.phoneNumber,
               )));
-      //print("Response Data : ${value.statusCode}");
-    } else {
-      // ErrorResponse errorResponse = value;
-      // setState(() {
-      //   errorText = errorResponse.errorMessage.toString();
-      // });
-    //  print("Response Data : Error");
-
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 }

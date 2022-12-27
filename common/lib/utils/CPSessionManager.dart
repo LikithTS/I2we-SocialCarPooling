@@ -8,12 +8,14 @@ import '../model/direction.dart';
 
 class CPSessionManager{
   //Auth Token
+  final String USER_ID = "user_id";
   final String AUTH_TOKEN = "user_auth_token";
   final String USER_NAME = "user_name";
   final String AUTH_REFRESH_TOKEN = "user_auth_refersh_token";
   final String INTRO_PAGE_VISITED = "intro_page_visited";
   final String CAR_DETAILS_AVAILABLE = "car_details_available";
   final String DIRECTION_OBJECT = "direction_object";
+  final String PROFILE_IMAGE = "profile_image";
 
   static final CPSessionManager _instance = CPSessionManager._internal();
 
@@ -58,12 +60,28 @@ class CPSessionManager{
     PreferencesUtil.putString(AUTH_TOKEN, auth_token);
   }
 
+  String getUserId() {
+    return PreferencesUtil.getString(USER_ID);
+  }
+
+  void setUserId(String phoneNumber) {
+    PreferencesUtil.putString(USER_ID, phoneNumber);
+  }
+
   String getUserName() {
     return PreferencesUtil.getString(USER_NAME);
   }
 
   void setUserName(String user_name) {
     PreferencesUtil.putString(USER_NAME, user_name);
+  }
+
+  String getProfileImage() {
+    return PreferencesUtil.getString(PROFILE_IMAGE);
+  }
+
+  void setProfileImage(String path) {
+    PreferencesUtil.putString(PROFILE_IMAGE, path);
   }
 
   String getAuthRefreshToken() {
@@ -88,6 +106,7 @@ class CPSessionManager{
   }
 
   void handleUserLogout() {
+    setUserId("");
     setAuthToken("");
     setAuthRefreshToken("");
   }

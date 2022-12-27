@@ -1,7 +1,7 @@
 
 
+import 'package:common/model/legSteps.dart';
 
-import '../network/model/Steps.dart';
 import 'distance.dart';
 import 'northeast.dart';
 
@@ -12,16 +12,16 @@ class Legs {
   Northeast? endLocation;
   String? startAddress;
   Northeast? startLocation;
-  List<Steps>? steps;
+  List<LegSteps>? steps;
 
   Legs(
       {this.distance,
-        this.duration,
-        this.endAddress,
-        this.endLocation,
-        this.startAddress,
-        this.startLocation,
-        this.steps});
+      this.duration,
+      this.endAddress,
+      this.endLocation,
+      this.startAddress,
+      this.startLocation,
+      this.steps});
 
   Legs.fromJson(Map<String, dynamic> json) {
     distance = json['distance'] != null
@@ -39,15 +39,15 @@ class Legs {
         ? new Northeast.fromJson(json['start_location'])
         : null;
     if (json['steps'] != null) {
-      steps = <Steps>[];
+      steps = <LegSteps>[];
       json['steps'].forEach((v) {
-        steps!.add(new Steps.fromJson(v));
+        steps!.add(new LegSteps.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.distance != null) {
       data['distance'] = this.distance!.toJson();
     }

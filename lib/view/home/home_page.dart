@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:socialcarpooling/util/FirebaseNotification.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   double? longitude;
   late LatLng currentPosition;
   HomeRepository get _homeRepository => widget.homeRepository;
+  FirebaseNotification firebaseNotification = FirebaseNotification();
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
@@ -78,10 +81,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    firebaseNotification.registerNotification();
+    firebaseNotification.handleBackgroundNotification();
+    firebaseNotification.checkForInitialMessage();
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
-    // getHomeDetailsApi();
   }
 
   @override
@@ -234,9 +239,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       AsyncSnapshot<dynamic> snapshot) {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.none:
-                                        return Text('No Internet!!');
+                                        return const Text('No Internet!!');
                                       case ConnectionState.waiting:
-                                        return Text(
+                                        return const Text(
                                             'Please wait... Loading details');
                                       default:
                                         if (snapshot.hasError) {
@@ -244,7 +249,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               'Error: ${snapshot.error}');
                                         } else {
                                           return loadHomePageData(
-                                              snapshot.data);
+                                              snapshot.data,  () => refreshScreen());
                                         }
                                     }
                                   },
@@ -307,5 +312,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           );
         });
     return exitApp ?? false;
+  }
+
+  refreshScreen() {
+    // Refresh home screen data
+    setState(() {
+      log("Refresh move screen data");
+    });
   }
 }

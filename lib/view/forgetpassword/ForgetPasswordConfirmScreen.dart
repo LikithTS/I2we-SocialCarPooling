@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:common/network/repository/ChangePasswordRespository.dart';
@@ -5,15 +6,16 @@ import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/request/ChangePasswordApi.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../util/CPString.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/configuration.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../util/string_url.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
@@ -132,10 +134,14 @@ class _ForgetPasswordConfirmScreenState
   }
 
   handleResponseData(value) {
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.bottomToTop,
-            child: HomePage(homeRepository: HomeRepository())));
+
+    GetProfileDetails(context);
+    Timer(
+        const Duration(seconds: 2),
+            () => Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: HomePage(homeRepository: HomeRepository()))));
   }
 }

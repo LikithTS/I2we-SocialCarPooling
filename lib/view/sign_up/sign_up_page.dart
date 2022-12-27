@@ -1,13 +1,20 @@
+
+
+import 'dart:developer';
+
 import 'package:common/network/request/signinapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/util/margin_confiq.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
+import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
@@ -15,7 +22,6 @@ import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../util/font_size.dart';
 import '../../utils/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 
@@ -45,31 +51,49 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   String selectedValueGender = "Gender";
   String selectedValueEducation = "Education";
   String selectedValueWork = "Work";
+  String apiValueGender = "";
+  String apiValueEducation = "";
   String dob = "";
+  int age = 0;
 
   Future _registration(name, mobile) async {
-    SignInApi api = SignInApi(
-        name: name,
-        education: selectedValueEducation,
-        gender: selectedValueGender,
-        email: emailNoController.text.toString(),
-        age: 20,
-        dob: dob,
-        address1: '',
-        address2: '',
-        city: '',
-        state: '',
-        pincode: '',
-        phoneNumber: mobile,
-        work: workController.text.toString(),
-        password: passwordController.text.toString());
-    Navigator.push(
-        context,
-        PageTransition(
-            type: PageTransitionType.leftToRight,
-            child: SignUpAddress(
-              signInApi: api,
-            )));
+
+    if(apiValueGender.isEmpty) {
+      showSnackbar(context, "Please select gender");
+    } else if (apiValueEducation.isEmpty) {
+      showSnackbar(context, "Please select education");
+    } else if (emailNoController.text.toString().isEmpty) {
+      showSnackbar(context, "Please enter valid email id");
+    } else if(mobile.isBlank) {
+      showSnackbar(context, "Please enter valid mobile number");
+    } else if(passwordController.text.toString().isEmpty || cpasswordController.text.toString().isEmpty) {
+      showSnackbar(context, "Please enter password");
+    } else if(passwordController.text.toString() != cpasswordController.text.toString()) {
+      showSnackbar(context, "Password is not matching");
+    } else {
+      SignInApi api = SignInApi(
+          name: name,
+          education: apiValueEducation,
+          gender: apiValueGender,
+          email: emailNoController.text.toString(),
+          age: age,
+          dob: dob,
+          address1: '',
+          address2: '',
+          city: '',
+          state: '',
+          pincode: '',
+          phoneNumber: mobile,
+          work: workController.text.toString(),
+          password: passwordController.text.toString());
+      Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.leftToRight,
+              child: SignUpAddress(
+                signInApi: api,
+              )));
+    }
   }
 
   @override
@@ -176,13 +200,14 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                                       style: TextStyleUtils.primaryTextMedium,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    items: dataGenderList.map((list) {
+                                    items: uiGenderList.map((list) {
                                       return DropdownMenuItem(
                                         value: list.toString(),
                                         child: Text(list),
                                       );
                                     }).toList(),
                                     onChanged: (value) {
+                                      apiValueGender = getGenderApiKey(value);
                                       setState(() {
                                         selectedValueGender = value.toString();
                                       });
@@ -305,7 +330,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
                         border: InputBorder.none,
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: primaryColor,
                         ),
@@ -340,8 +365,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -368,7 +393,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         hintStyle: TextStyleUtils.hintTextStyle,
                         // Here is key idea
                         border: InputBorder.none,
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: primaryColor,
                         ),
@@ -458,8 +483,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     workController,
                     CPString.emailError,
                     Icons.work,
-                    3,
-                    15,
+                    5,
+                    30,
                     this,
                     ''),
               ),
@@ -488,13 +513,14 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                                   style: TextStyleUtils.primaryTextMedium,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items: dataEducationList.map((list) {
+                                items: uiEducationList.map((list) {
                                   return DropdownMenuItem(
                                     value: list.toString(),
                                     child: Text(list),
                                   );
                                 }).toList(),
                                 onChanged: (value) {
+                                  apiValueEducation = getEducationValue(value);
                                   setState(() {
                                     selectedValueEducation = value.toString();
                                   });
@@ -552,6 +578,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         lastDate: DateTime.now());
 
     if (picker != null) {
+      age = calculateAge(picker);
+      log("Age is $age");
       setState(() {
         String formattedDate = DateFormat('dd,MMM,yyyy').format(picker);
         dob = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(picker);
@@ -559,4 +587,43 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
       });
     }
   }
+
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    log("Age during calculation $age");
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+
+    return age;
+  }
+
+  String getGenderApiKey(Object? value) {
+    switch(value) {
+      case "Male" : return Constant.MALE;
+      case "Female" : return Constant.FEMALE;
+      default : return "";
+    }
+  }
+
+  String getEducationValue(Object? value) {
+    switch(value) {
+      case "Primary Education" : return Constant.PRIMARY_EDUCATION;
+      case "Secondary Education" : return Constant.SECONDARY_EDUCATION;
+      case "Bachelors Degree" : return Constant.BACHELORS_DEGREE;
+      case "Master Degree" : return Constant.MASTERS_DEGREE;
+      case "Other" : return Constant.OTHER;
+      default : return "";
+    }
+  }
+
 }

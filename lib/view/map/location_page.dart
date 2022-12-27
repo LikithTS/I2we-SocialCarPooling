@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -15,8 +17,7 @@ import 'package:socialcarpooling/view/map/search_location_view.dart';
 
 import '../../provider/provider_preference.dart';
 import '../../util/CPString.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 
 class LocationPage extends StatefulWidget {
   final bool flagAddress;
@@ -39,37 +40,44 @@ class _LocationPageState extends State<LocationPage> {
   Set<Marker> _markers = {};
 
   var _initialCameraPosition =
-      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
+      const CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
   //Don't change this
 
   void getCurrentLocation() async {
     Position position = await getGeoLocationCoOrdinates();
+    log("Current latitude ${position.latitude}");
+    log("Current longitude ${position.longitude}");
     getLocation(position.latitude, position.longitude);
   }
 
   void getLocation(double lat, double lng) async {
-    var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
-        lat, lng,
-        localeIdentifier: "en");
-    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 16);
-    mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-            _initialCameraPosition
-        )
-    );
-    setState(() {
-      latitude = lat;
-      longitude = lng;
+    try {
+      List<Placemark> places = await placemarkFromCoordinates(lat, lng);
+      // var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
+      //     lat, lng,
+      //     localeIdentifier: "en");
+      _initialCameraPosition= CameraPosition(target: LatLng(lat, lng), zoom: 16);
+      mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+              _initialCameraPosition
+          )
+      );
+      setState(() {
+        latitude = lat;
+        longitude = lng;
 
-      Provider.of<AddressProvider>(context, listen: false)
-          .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-      log("Places $places");
-      ProviderPreference().putAddress(context,
-          '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
-      _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
-    });
+        Provider.of<AddressProvider>(context, listen: false)
+            .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+        log("PlacesPlaces $places");
+        ProviderPreference().putAddress(context,
+            '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+        _markers.add(Marker(
+            markerId: MarkerId('Home'),
+            position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
+      });
+    } on PlatformException catch (err) {
+      log("Platform exception $err");
+    }
   }
 
   void onMoveCamera(BuildContext context) async {

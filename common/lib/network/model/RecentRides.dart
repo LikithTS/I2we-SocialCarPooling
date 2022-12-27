@@ -6,6 +6,7 @@ class RecentRides {
   String? _id;
   String? _driverUserId;
   String? _carId;
+  String? _carTypeInterested;
   int? _totalAmount;
   int? _amountPerSeat;
   String? _distance;
@@ -28,6 +29,7 @@ class RecentRides {
       {String? id,
         String? driverUserId,
         String? carId,
+        String? carTypeInterested,
         int? totalAmount,
         int? amountPerSeat,
         String? distance,
@@ -53,6 +55,9 @@ class RecentRides {
     }
     if (carId != null) {
       this._carId = carId;
+    }
+    if (carTypeInterested != null) {
+      this._carTypeInterested = carTypeInterested;
     }
     if (totalAmount != null) {
       this._totalAmount = totalAmount;
@@ -113,6 +118,9 @@ class RecentRides {
   set driverUserId(String? driverUserId) => _driverUserId = driverUserId;
   String? get carId => _carId;
   set carId(String? carId) => _carId = carId;
+  String? get carTypeInterested => _carTypeInterested;
+  set carTypeInterested(String? carTypeInterested) =>
+      _carTypeInterested = carTypeInterested;
   int? get totalAmount => _totalAmount;
   set totalAmount(int? totalAmount) => _totalAmount = totalAmount;
   int? get amountPerSeat => _amountPerSeat;
@@ -159,6 +167,7 @@ class RecentRides {
     _id = json['id'];
     _driverUserId = json['driverUserId'];
     _carId = json['carId'];
+    _carTypeInterested = json['carTypeInterested'];
     _totalAmount = json['totalAmount'];
     _amountPerSeat = json['amountPerSeat'];
     _distance = json['distance'];
@@ -198,6 +207,7 @@ class RecentRides {
     data['id'] = this._id;
     data['driverUserId'] = this._driverUserId;
     data['carId'] = this._carId;
+    data['carTypeInterested'] = this._carTypeInterested;
     data['totalAmount'] = this._totalAmount;
     data['amountPerSeat'] = this._amountPerSeat;
     data['distance'] = this._distance;

@@ -45,12 +45,15 @@ class ProfileCard extends StatelessWidget {
                       direction: Axis.horizontal,
                       children: [
                         Row(
-                          children: [
-                            const CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                    "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
-                            const SizedBox(width: 20),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Expanded(
+                              flex: 2,
+                              child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                      "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
+                            ),
                             Expanded(
                               flex: 5,
                               child: Column(
@@ -61,16 +64,18 @@ class ProfileCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const Spacer(),
-                            CircularPercentIndicator(
-                                radius: 55,
-                                lineWidth: 6,
-                                percent: profileCompletionPercentage/100,
-                                progressColor: progressThemeColor,
-                                backgroundColor: lightGreyColor,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                center: primaryThemeTextWidget(context,
-                                    '${getPercentage(profileCompletionPercentage/100)}%'))
+                            Expanded(
+                              flex: 2,
+                              child: CircularPercentIndicator(
+                                  radius: 55,
+                                  lineWidth: 6,
+                                  percent: profileCompletionPercentage/100,
+                                  progressColor: progressThemeColor,
+                                  backgroundColor: lightGreyColor,
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  center: primaryThemeTextWidget(context,
+                                      '${getPercentage(profileCompletionPercentage/100)}%')),
+                            )
                           ],
                         ),
                       ],

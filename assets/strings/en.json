@@ -41,10 +41,12 @@
   "about_us": "About us",
   "logout": "Logout",
   "add_car": "Add Car",
+  "add_ride" : "Add New Ride",
   "add_car_details_one": "Add your car details to host a ride",
   "add_car_details_two": "Make more friends by hosting",
   "add_car_details_three": "Enjoy the ride",
   "add_car_button": "ADD CAR",
+  "add_ride_button" : "ADD RIDE",
   "car_info": "Car Info",
   "car_name": "Car Name",
   "register_number": "Register Number",
@@ -120,7 +122,20 @@
   "change_password_otp_error" : "Please enter otp to validate",
   "verify" : "Verify",
   "send_otp" : "Send OTP",
-  "new_user_verification" : "New User Verification"
+  "new_user_verification" : "New User Verification",
+  "send_otp" : "Send OTP",
+  "verification" : "Verification",
+  "verify_personal_identity": "Verify Personal Identity",
+  "aadhar_verification": "Aadhar ID verification",
+  "pan_verification": "PAN ID verification",
+  "voter_verification": "Voter ID verification",
+  "add_driving_license": "Add Driving License",
+  "driving_verification": "Driving License verification",
+  "select" : "SELECT",
+  "aadhar_verification_under_verify" : "Aadhar under Verification",
+  "driving_verification_under_verify" : "Driving License under Verification"
+
+
 
 
 

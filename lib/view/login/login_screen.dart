@@ -1,25 +1,35 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:common/model/GoogleUserObject.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/FirebaseRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/network/request/FirebaseTokenApi.dart';
 import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/FirebaseTokenUpdate.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/view/login/login_mobile_number_text_form.dart';
 import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/login/social_login_newUser_VerificationScreen.dart';
+import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
+import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 
 import '../../util/color.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 import '../../utils/Localization.dart';
 import 'authentication.dart';
 
@@ -34,6 +44,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginRepository get _userRepository => widget.userRepository;
+  TextEditingController phoneNumberController = TextEditingController(); //9986215749
+  TextEditingController passwordController = TextEditingController(); //Test@1234
+  bool passwordVisible = true;
 
   @override
   void initState() {
@@ -46,13 +59,14 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void handlePasswordVisibleText() {
+    setState(() {
+      passwordVisible = !passwordVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController phoneNumberController =
-        TextEditingController(text: "9986215749");
-    TextEditingController passwordController =
-        TextEditingController(text: "Test@1234");
-
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -88,12 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   addHorizontalSpace(20),
                   InkWell(
                     onTap: () {
-                      AuthenticationHelper()
-                          .signInWithGoogle(context: context)
-                          .then((value) => {
-                                if (value is GoogleUserObject)
-                                  {callSocialLoginApi(value)}
-                              });
+                      InternetChecks.isConnected().then((isAvailable) =>
+                          {authenticateGoogleSingIn(isAvailable)});
                     },
                     child: Image.asset("assets/images/google_icon.png",
                         width: 45.w, height: 45.h, fit: BoxFit.fill),
@@ -103,49 +113,99 @@ class _LoginScreenState extends State<LoginScreen> {
               addHorizontalSpace(20),
               smallText("or", Alignment.center),
               Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    LoginTextForm(
-                      editingController: phoneNumberController,
-                      hint: DemoLocalizations.of(context)
-                              ?.getText("mobile_number") ??
-                          "",
-                      lableText: DemoLocalizations.of(context)
-                              ?.getText("mobile_number") ??
-                          "",
-                      formValidator: (value) {
-                        if (value!.isEmpty || value.isEmpty) {
-                          return "Mobile Number Cannot be Empty";
-                        }
-                        return null;
-                      },
-                      suffixIcon: Icons.check_circle,
-                      prefixIcon: Icons.mobile_friendly,
-                      isNumber: true,
-                      isPasswordField: false,
-                    ),
-                    addVerticalSpace(10),
-                    LoginTextForm(
-                      editingController: passwordController,
-                      isPasswordField: true,
-                      isNumber: false,
-                      formValidator: (value) {
-                        if (value!.isEmpty || value.isEmpty) {
-                          return "Password Cannot be Empty";
-                        }
-                        return null;
-                      },
-                      lableText:
-                          DemoLocalizations.of(context)?.getText("password") ??
-                              "",
-                      hint:
-                          DemoLocalizations.of(context)?.getText("password") ??
-                              "",
-                      suffixIcon: Icons.visibility,
-                      prefixIcon: Icons.lock,
-                    )
-                  ],
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 2.0,
+                            spreadRadius: 0.4)
+                      ]),
+                  child: TextFormField(
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                    textAlign: TextAlign.start,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Mobile Number Cannot be Empty' : null,
+                    // onSaved: (value) => _email = value,
+                    decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        counterText: "",
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                        ),
+                        hintText: DemoLocalizations.of(context)
+                                ?.getText("mobile_number") ??
+                            "",
+                        labelText: DemoLocalizations.of(context)
+                                ?.getText("mobile_number") ??
+                            "",
+                        suffixIcon: IconButton(
+                          iconSize: 30,
+                          icon: const Icon(Icons.check_circle),
+                          color: Colors.green,
+                          onPressed: () {
+                            // Do Nothing
+                          },
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.mobile_friendly,
+                          color: Colors.grey,
+                        )),
+                  ),
+                ),
+              ),
+              addVerticalSpace(10),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 2.0,
+                            spreadRadius: 0.4)
+                      ]),
+                  child: TextFormField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.text,
+                    obscureText: passwordVisible,
+                    inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                    textAlign: TextAlign.start,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Password Cannot be Empty' : null,
+                    // onSaved: (value) => _email = value,
+                    decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        counterText: "",
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                        ),
+                        hintText: DemoLocalizations.of(context)
+                                ?.getText("password") ??
+                            "",
+                        labelText: DemoLocalizations.of(context)
+                                ?.getText("password") ??
+                            "",
+                        suffixIcon: IconButton(
+                          iconSize: 30,
+                          icon: const Icon(Icons.visibility),
+                          color: Colors.green,
+                          onPressed: () {
+                            handlePasswordVisibleText();
+                          },
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.grey,
+                        )),
+                  ),
                 ),
               ),
               GestureDetector(
@@ -168,8 +228,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 20.0),
                       child: _buildButton("Login", () {
-                        login(phoneNumberController.text,
-                            passwordController.text);
+                        InternetChecks.isConnected().then((isAvailable) => {
+                              login(isAvailable, phoneNumberController.text,
+                                  passwordController.text)
+                            });
                       }),
                     )),
               ),
@@ -180,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       context,
                       PageTransition(
                           type: PageTransitionType.bottomToTop,
-                          child: SignUpPage()));
+                          child: const SignUpPage()));
                 },
                 child: RichText(
                   text: TextSpan(children: [
@@ -214,8 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               addVerticalSpace(15),
-              Center(
-                  child: RichText(
+              RichText(
                 text: TextSpan(children: [
                   WidgetSpan(
                     child: Container(
@@ -243,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   )
                 ]),
-              )),
+              ),
               addVerticalSpace(20)
             ],
           ),
@@ -252,19 +313,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void login(String phoneNumber, String password) {
-    log("login Data: $phoneNumber");
-    LoginApi api = LoginApi(phoneNumber: phoneNumber, password: password);
-    Future<dynamic> future = _userRepository.login(api: api);
-    future.then((value) => {handleResponseData(value)});
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
+  void login(bool isInternetAvailable, String phoneNumber, String password) {
+    if (isInternetAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      log("login Data: $phoneNumber");
+      LoginApi api = LoginApi(phoneNumber: phoneNumber, password: password);
+      Future<dynamic> future = _userRepository.login(api: api);
+      future.then((value) => {handleResponseData(value, phoneNumber)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
   }
 
-  handleResponseData(value) {
+  handleResponseData(value, String phoneNumber) {
+    log("Handle login response");
     if (value is AuthResponse) {
-      handleSuccessResponse(value);
+      handleSuccessResponse(value, phoneNumber);
+    } else if (value is ErrorResponse) {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 
@@ -295,11 +362,24 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  authenticateGoogleSingIn(bool isInternetAvailable) {
+    if (isInternetAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      AuthenticationHelper()
+          .signInWithGoogle(context: context)
+          .then((value) => {
+                if (value is GoogleUserObject) {callSocialLoginApi(value)}
+              });
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
   callSocialLoginApi(GoogleUserObject userObject) {
     SocialLoginApi api = SocialLoginApi(
         name: userObject.displayName,
         email: userObject.email,
-        phoneNumber: userObject.phoneNumber ,
+        phoneNumber: userObject.phoneNumber,
         token: userObject.accessToken.toString(),
         socialId: userObject.token.toString());
     Future<dynamic> future = _userRepository.socialLogin(api: api);
@@ -309,9 +389,9 @@ class _LoginScreenState extends State<LoginScreen> {
   handleSocialResponseData(value, GoogleUserObject userObject) {
     log("Response value $value");
     if (value is AuthResponse) {
-      handleSuccessResponse(value);
+      handleSuccessResponse(value, userObject.phoneNumber);
     } else if (value is ErrorResponse) {
-      if (value.status == 503) {
+      if (value.statusCode == 503) {
         log("Navigate to mobile number page");
         Navigator.push(
             context,
@@ -323,14 +403,24 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  handleSuccessResponse(AuthResponse value) {
+  handleSuccessResponse(AuthResponse value, String? phoneNumber) {
+    if (phoneNumber != null) {
+      CPSessionManager().setUserId(phoneNumber);
+      FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
+      firebaseTokenUpdate.getToken();
+      firebaseTokenUpdate.initInfo();
+    }
     CPSessionManager().setAuthToken(value.accessToken ?? "");
     CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
-
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.bottomToTop,
-            child: HomePage(homeRepository: HomeRepository())));
+    GetProfileDetails(context);
+    Timer(
+        const Duration(seconds: 2),
+        () => {
+          InternetChecks.closeLoadingProgress(context),
+          Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: HomePage(homeRepository: HomeRepository())))});
   }
 }

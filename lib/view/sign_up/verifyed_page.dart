@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
@@ -8,8 +9,7 @@ import 'package:socialcarpooling/view/sign_up/welcome_page.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
 import '../../util/CPString.dart';
-import '../../util/font_size.dart';
-import '../../util/margin_confiq.dart';
+import '../../font&margin/margin_confiq.dart';
 
 class VerifiedPage extends StatefulWidget {
   const VerifiedPage({Key? key}) : super(key: key);

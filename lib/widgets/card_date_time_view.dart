@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/util/font_size.dart';
 
 Widget timeView(IconData icons, String dateTime) => Text.rich(
       TextSpan(
@@ -9,7 +9,7 @@ Widget timeView(IconData icons, String dateTime) => Text.rich(
           WidgetSpan(
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.only(right: 6),
+              padding: const EdgeInsets.only(right: 2),
               child: Icon(icons, color: textThemeColor),
             ),
           ),
@@ -21,7 +21,7 @@ Widget timeView(IconData icons, String dateTime) => Text.rich(
                 style: TextStyleUtils.primaryTextRegular.copyWith(
                   color: textGreyColor,
                   fontSize: fontSize13,
-                  letterSpacing: 1.0,
+                  letterSpacing: 1,
                 )),
           ),
         ],
