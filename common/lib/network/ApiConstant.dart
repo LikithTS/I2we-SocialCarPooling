@@ -42,5 +42,8 @@ class ApiConstant {
   static const String RIDE_STATUS_PASSANGER = "ride/change-status-passenger";
   static const String RIDE_STATUS_DRIVER = "ride/change-status-driver";
   static const String INVITE_RIDE = "invite";
+  static const String JOIN_RIDE = "invite/join";
+  static const String CURRENT_RIDE = "ride/ride";
+  static const String INVITE_CANCEL = "invite/cancel";
 
 }

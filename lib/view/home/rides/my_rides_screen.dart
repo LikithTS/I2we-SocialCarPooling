@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:common/network/model/Invites.dart';
 import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,8 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                       return PageView.builder(
                         itemCount: upcomingRideList.length,
                         itemBuilder: (context, index) {
+                          log("Travel partner passenger ${upcomingRideList[index].travelPassengers}");
+                          log("Travel partner driver ${upcomingRideList[index].driverRide}");
                           return MyRides(
                             rideId: upcomingRideList[index].id ?? "",
                             carIcon: 'assets/images/car_pool.png',
@@ -103,6 +106,12 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                                     Constant.RIDE_CANCELLED,
                             rideStatus: upcomingRideList[index].rideStatus ??
                                 Constant.RIDE_CREATED,
+                            invites:
+                                upcomingRideList[index].invites ?? List.empty(),
+                            travelledPassengers:
+                                upcomingRideList[index].travelPassengers ??
+                                    List.empty(),
+                            driverRide: upcomingRideList[index].driverRide,
                             refreshScreen: () => refreshScreen(),
                           );
                         },

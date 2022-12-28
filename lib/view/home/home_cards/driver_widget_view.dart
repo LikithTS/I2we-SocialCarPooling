@@ -146,8 +146,8 @@ class HomeDriverState extends State<DriverWidgetView> {
       log("Seats offered ${seatOffered.text.isEmpty}");
       log("Ride amount ${rideAmount.text.isEmpty}");
 
-      log("Direction data lat ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lat}");
-      log("Direction data long ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lng}");
+      // log("Direction data lat ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lat}");
+      // log("Direction data long ${CPSessionManager().getDirectionObject().routes![0].legs![0].startLocation!.lng}");
 
       if (originValue.text.isEmpty ||
           destinationValue.text.isEmpty ||

@@ -1,6 +1,9 @@
+import 'package:common/network/model/Driver.dart';
+import 'package:common/network/model/Invites.dart';
 import 'package:common/network/model/StartLocation.dart';
 import 'package:common/network/model/Steps.dart';
 import 'package:common/network/model/Stops.dart';
+import 'package:common/network/model/TravelledPassengers.dart';
 
 class UpcomingRides {
   String? _id;
@@ -31,6 +34,9 @@ class UpcomingRides {
   int? _seatsOffered;
   String? _rideStatus;
   int? _count;
+  List<Invites>? _invites;
+  List<TravelledPassengers>? _travelledPassengers;
+  AsDriver? _driverRide;
 
   UpcomingRides(
       {String? id,
@@ -60,7 +66,10 @@ class UpcomingRides {
         int? amountPerSeat,
         int? seatsOffered,
         String? rideStatus,
-        int? count}) {
+        int? count,
+        List<Invites>? invites,
+        List<TravelledPassengers>? travelledPassengers,
+        AsDriver? driverRide}) {
     if (id != null) {
       this._id = id;
     }
@@ -145,6 +154,15 @@ class UpcomingRides {
     if(count != null) {
       this._count = count;
     }
+    if(invites != null) {
+      this._invites = invites;
+    }
+    if(travelledPassengers != null) {
+      this._travelledPassengers = travelledPassengers;
+    }
+    if(driverRide != null) {
+      this._driverRide = driverRide;
+    }
   }
 
   String? get id => _id;
@@ -193,6 +211,12 @@ class UpcomingRides {
   set steps(List<Steps>? steps) => _steps = steps;
   List<Stops>? get stops => _stops;
   set stops(List<Stops>? stops) => _stops = stops;
+  List<Invites>? get invites => _invites;
+  set invites(List<Invites>? invites) => _invites = invites;
+  List<TravelledPassengers>? get travelPassengers => _travelledPassengers;
+  set travelPassengers(List<TravelledPassengers>? travelPassengers) => _travelledPassengers = travelPassengers;
+  AsDriver? get driverRide => _driverRide;
+  set driverRide(AsDriver? driverRide) => _driverRide = driverRide;
   String? get distance => _distance;
   set distance(String? distance) => _distance = distance;
   String? get duration => _duration;
@@ -240,15 +264,30 @@ class UpcomingRides {
     if (json['steps'] != null) {
       _steps = <Steps>[];
       json['steps'].forEach((v) {
-        _steps!.add(new Steps.fromJson(v));
+        _steps!.add(Steps.fromJson(v));
       });
     }
     if (json['stops'] != null) {
       _stops = <Stops>[];
       json['stops'].forEach((v) {
-        _stops!.add(new Stops.fromJson(v));
+        _stops!.add(Stops.fromJson(v));
       });
     }
+    if (json['invites'] != null) {
+      _invites = <Invites>[];
+      json['invites'].forEach((v) {
+        _invites!.add(Invites.fromJson(v));
+      });
+    }
+    if (json['travelledPassengers'] != null) {
+      _travelledPassengers = <TravelledPassengers>[];
+      json['travelledPassengers'].forEach((v) {
+        _travelledPassengers!.add(TravelledPassengers.fromJson(v));
+      });
+    }
+    _driverRide = json['driverRide'] != null
+        ? AsDriver.fromJson(json['driverRide'])
+        : null;
     _distance = json['distance'];
     _duration = json['duration'];
     _rideType = json['rideType'];
@@ -289,6 +328,15 @@ class UpcomingRides {
     }
     if (this._stops != null) {
       data['stops'] = this._stops!.map((v) => v.toJson()).toList();
+    }
+    if (this._invites != null) {
+      data['invites'] = this._invites!.map((v) => v.toJson()).toList();
+    }
+    if (this._travelledPassengers != null) {
+      data['travelledPassengers'] = this._travelledPassengers!.map((v) => v.toJson()).toList();
+    }
+    if (this._driverRide != null) {
+      data['driverRide'] = this._driverRide!.toJson();
     }
     data['distance'] = this._distance;
     data['duration'] = this._duration;

@@ -133,7 +133,8 @@
   "select" : "SELECT",
   "aadhar_verification_under_verify" : "Aadhar under Verification",
   "driving_verification_under_verify" : "Driving License under Verification",
-  "no_available_ride": "No rides available at the moment"
+  "no_available_ride": "No rides available at the moment",
+  "co_riders": "Co-Riders"
 
 
 

@@ -276,7 +276,7 @@ class UpcomingRidesWidget extends StatelessWidget {
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child: const MyRidesRoutesScreen()));
+                child: MyRidesRoutesScreen(rideId: rideId, rideType: rideType,)));
       } else {
         String? status = getStatus(rideStatus, rideType);
         if (status != null && status.isNotEmpty) {

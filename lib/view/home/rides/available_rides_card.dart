@@ -5,7 +5,9 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/buttons/elevated_button_view.dart';
+import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
@@ -250,6 +252,28 @@ class AvailableRides extends StatelessWidget {
                     ]
                   ],
                 ),
+                if (rideType == Constant.AS_HOST) ...[
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10, left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Requested Fair",
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            style: TextStyleUtils.primaryTextRegular.copyWith(
+                              color: textGreyColor,
+                              fontSize: fontSize13,
+                              letterSpacing: 1,
+                            )),
+                        timeViewGreen(Icons.currency_rupee, amount.toString()),
+                      ],
+                    ),
+                  )
+                ],
                 const Divider(
                   color: Colors.grey,
                 ),

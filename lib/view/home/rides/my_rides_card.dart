@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:common/network/ApiConstant.dart';
+import 'package:common/network/model/Driver.dart';
+import 'package:common/network/model/Invites.dart';
+import 'package:common/network/model/TravelledPassengers.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/RideStatusApi.dart';
@@ -9,6 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/utils/ride_status_text_function.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
+import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
+import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
+import 'package:socialcarpooling/view/home/rides/join_ride_passenger_card.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:page_transition/page_transition.dart';
@@ -40,6 +46,9 @@ class MyRides extends StatelessWidget {
   final String leftButtonText;
   final String rideStatus;
   final VoidCallback refreshScreen;
+  final List<Invites> invites;
+  final List<TravelledPassengers> travelledPassengers;
+  final AsDriver? driverRide;
 
   const MyRides(
       {Key? key,
@@ -55,7 +64,10 @@ class MyRides extends StatelessWidget {
       required this.coRidersCount,
       required this.leftButtonText,
       required this.rideStatus,
-      required this.refreshScreen})
+      required this.refreshScreen,
+      required this.invites,
+      required this.travelledPassengers,
+      required this.driverRide})
       : super(key: key);
 
   @override
@@ -248,335 +260,69 @@ class MyRides extends StatelessWidget {
                 ],
               ),
             )),
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Co-riders',
-                    style: TextStyleUtils.primaryTextRegular,
-                    textAlign: TextAlign.start,
-                  )),
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    child: Column(
-                      children: [
-                        index == 0
-                            ? Card(
-                                child: Column(
-                                children: [
-                                  Container(
-                                    width: screenWidth * 0.85,
-                                    margin: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      radius: 30,
-                                                      child: Image.asset(
-                                                        "assets/images/car_pool.png",
-                                                        width: 60,
-                                                        height: 60,
-                                                      ),
-                                                    ),
-                                                    const Positioned(
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        child: Icon(
-                                                          Icons
-                                                              .verified_user_rounded,
-                                                          color: Colors.green,
-                                                        ))
-                                                  ],
-                                                ),
-                                                addHorizontalSpace(10),
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                        Icons.route_rounded),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        primaryThemeTextNormal(
-                                                            context,
-                                                            DemoLocalizations
-                                                                    .of(context)
-                                                                ?.getText(
-                                                                    "from")),
-                                                        primaryTextNormalTwoLine(
-                                                            context,
-                                                            "startAddress"),
-                                                        primaryThemeTextNormal(
-                                                            context,
-                                                            DemoLocalizations
-                                                                    .of(context)
-                                                                ?.getText(
-                                                                    "to")),
-                                                        primaryTextNormalTwoLine(
-                                                            context,
-                                                            "endAddress"),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                rideTypeView(
-                                                    DemoLocalizations.of(
-                                                            context)
-                                                        ?.getText("as_host")),
-                                                addVerticalSpace(10),
-                                                Text(
-                                                  '₹ 250',
-                                                  style: TextStyleUtils
-                                                      .primaryTextBold
-                                                      .copyWith(
-                                                          color: Colors.green),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Divider(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: screenWidth * 0.85,
-                                    margin: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Stack(
-                                                  children: const [
-                                                    CircleAvatar(
-                                                      backgroundColor:
-                                                          primaryColor,
-                                                      radius: 30,
-                                                      child: Icon(
-                                                        Icons.account_circle,
-                                                        color: Colors.white,
-                                                        size: 60,
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        child: Icon(
-                                                          Icons
-                                                              .verified_user_rounded,
-                                                          color:
-                                                              primaryLightColor,
-                                                        ))
-                                                  ],
-                                                ),
-                                                addHorizontalSpace(10),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'Co-rider name',
-                                                      style: TextStyleUtils
-                                                          .primaryTextSemiBold
-                                                          .copyWith(
-                                                              color:
-                                                                  primaryColor),
-                                                    ),
-                                                    Align(
-                                                        alignment:
-                                                            Alignment.topLeft,
-                                                        child: Text(
-                                                          'Designation',
-                                                          style: TextStyleUtils
-                                                              .primaryTextRegular
-                                                              .copyWith(
-                                                                  fontSize: 12),
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        )),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            const CircleAvatar(
-                                              radius: 20,
-                                              backgroundColor: primaryColor,
-                                              child: Icon(
-                                                Icons.message,
-                                                size: 20,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Divider(
-                                          color: Colors.grey,
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5, horizontal: 5),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              timeView(
-                                                  Icons.drive_eta, '24 Rides'),
-                                              timeView(Icons.route_rounded,
-                                                  '24 Rides'),
-                                              timeView(Icons.star, '4.5'),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ))
-                            : Card(
-                                child: Container(
-                                width: screenWidth * 0.85,
-                                margin: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Stack(
-                                              children: const [
-                                                CircleAvatar(
-                                                  backgroundColor: primaryColor,
-                                                  radius: 30,
-                                                  child: Icon(
-                                                    Icons.account_circle,
-                                                    color: Colors.white,
-                                                    size: 60,
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    child: Icon(
-                                                      Icons
-                                                          .verified_user_rounded,
-                                                      color: primaryLightColor,
-                                                    ))
-                                              ],
-                                            ),
-                                            addHorizontalSpace(10),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Co-rider name',
-                                                  style: TextStyleUtils
-                                                      .primaryTextSemiBold
-                                                      .copyWith(
-                                                          color: primaryColor),
-                                                ),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Text(
-                                                      'Designation',
-                                                      style: TextStyleUtils
-                                                          .primaryTextRegular
-                                                          .copyWith(
-                                                              fontSize: 12),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    )),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        const CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: primaryColor,
-                                          child: Icon(
-                                            Icons.message,
-                                            size: 20,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      color: Colors.grey,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          timeView(Icons.drive_eta, '24 Rides'),
-                                          timeView(
-                                              Icons.route_rounded, '24 Rides'),
-                                          timeView(Icons.star, '4.5'),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )),
-                      ],
-                    ),
-                  );
-                }),
+
+            //For invite card
+            if (invites.isNotEmpty) ...[
+              Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Requests',
+                      style: TextStyleUtils.primaryTextRegular,
+                      textAlign: TextAlign.start,
+                    )),
+              ),
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: invites.length,
+                  itemBuilder: (context, index) {
+                    return getInviteRideCard(rideType, index);
+                  })
+            ],
+
+            //For Joined passenger cards
+            if (travelledPassengers.isNotEmpty) ...[
+              Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Co-Riders',
+                      style: TextStyleUtils.primaryTextRegular,
+                      textAlign: TextAlign.start,
+                    )),
+              ),
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: travelledPassengers.length,
+                  itemBuilder: (context, index) {
+                    return getPassengerJoinedCard(rideType, index);
+                  })
+            ],
+
+            //For Joined driver cards
+            if (driverRide != null) ...[
+              Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Co-Rider',
+                      style: TextStyleUtils.primaryTextRegular,
+                      textAlign: TextAlign.start,
+                    )),
+              ),
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return getDriverJoinedCard(rideType);
+                  })
+            ],
           ],
         ),
       ),
@@ -610,7 +356,11 @@ class MyRides extends StatelessWidget {
         Navigator.push(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop, child: const MyRidesRoutesScreen()));
+                type: PageTransitionType.bottomToTop,
+                child: MyRidesRoutesScreen(
+                  rideType: rideType,
+                  rideId: rideId,
+                )));
       } else {
         String? status = getStatus(rideStatus, rideType);
         if (status != null && status.isNotEmpty) {
@@ -650,23 +400,87 @@ class MyRides extends StatelessWidget {
     }
   }
 
-  // getMyRidesRouteObject() {
-  //   return MyRideRoutesView(
-  //     rideId: rideId,
-  //     carIcon: carIcon,
-  //     startAddress: startAddress,
-  //     endAddress: endAddress,
-  //     rideType: rideType,
-  //     amount: amount,
-  //     dateTime: dateTime,
-  //     seatsOffered: seatsOffered,
-  //     carType: carType,
-  //     coRidersCount: coRidersCount,
-  //     leftButtonText: leftButtonText,
-  //     rideStatus: rideStatus,
-  //     startLocation: ,
-  //     endLocation: ,
-  //     refreshScreen: () => refreshScreen(),
-  //   );
-  // }
+  getRideType(String? type) {
+    if (type == Constant.AS_HOST) {
+      return Constant.AS_RIDER;
+    } else {
+      return Constant.AS_HOST;
+    }
+  }
+
+  Widget getInviteRideCard(String rideType, int index) {
+    if (rideType == Constant.AS_HOST) {
+      return InviteRideCard(
+        inviteId: invites[index].id ?? "",
+        profileImage: invites[index].asPassenger?.user?.profileImage ?? "",
+        carIcon: invites[index].asPassenger?.car?.carPictures?[0] ?? "",
+        startAddress:
+            invites[index].asPassenger?.startDestinationFormattedAddress ?? "",
+        endAddress:
+            invites[index].asPassenger?.endDestinationFormattedAddress ?? "",
+        rideType: getRideType(rideType),
+        amount: invites[index].asPassenger?.amountPerSeat ?? 0,
+        dateTime: getDateTimeFormatter()
+            .parse(invites[index].asPassenger!.startTime!),
+        seatsOffered: invites[index].asPassenger?.seatsOffered ?? 1,
+        carType: invites[index].asPassenger?.car?.carType ?? "",
+        name: invites[index].asPassenger?.user?.name ?? "",
+        designation: invites[index].asPassenger?.user?.work ?? "",
+        carTypeInterested: invites[index].asPassenger?.carTypeInterested ?? "",
+        driverRideId: invites[index].asDriverId ?? "",
+        passengerRideId: invites[index].asPassengerId ?? "",
+        refreshScreen: refreshScreen,
+      );
+    } else {
+      return InviteRideCard(
+        inviteId: invites[index].id ?? "",
+        profileImage: invites[index].asDriver?.user?.profileImage ?? "",
+        carIcon: invites[index].asDriver?.car?.carPictures?[0] ?? "",
+        startAddress:
+            invites[index].asDriver?.startDestinationFormattedAddress ?? "",
+        endAddress:
+            invites[index].asDriver?.endDestinationFormattedAddress ?? "",
+        rideType: getRideType(rideType),
+        amount: invites[index].asDriver?.amountPerSeat ?? 0,
+        dateTime:
+            getDateTimeFormatter().parse(invites[index].asDriver!.startTime!),
+        seatsOffered: invites[index].asDriver?.seatsOffered ?? 1,
+        carType: invites[index].asDriver?.car?.carType ?? "",
+        name: invites[index].asDriver?.user?.name ?? "",
+        designation: invites[index].asDriver?.user?.work ?? "",
+        carTypeInterested: invites[index].asDriver?.carTypeInterested ?? "",
+        driverRideId: invites[index].asDriverId ?? "",
+        passengerRideId: invites[index].asPassengerId ?? "",
+        refreshScreen: refreshScreen,
+      );
+    }
+  }
+
+  Widget getPassengerJoinedCard(String rideType, int index) {
+    return JoinRidePassengerCard(
+      profileImage: travelledPassengers[index].user?.profileImage ?? "",
+      name: travelledPassengers[index].user?.name ?? "",
+      designation: travelledPassengers[index].user?.work ?? "",
+      rideStatus: travelledPassengers[index].riderStatus ?? "",
+      refreshScreen: refreshScreen,
+    );
+  }
+
+  Widget getDriverJoinedCard(String rideType) {
+    return JoinRideDriverCard(
+      profileImage: driverRide?.user?.profileImage ?? "",
+      name: driverRide?.user?.name ?? "",
+      designation: driverRide?.user?.work ?? "",
+      rideStatus: driverRide?.rideStatus ?? "",
+      carType: driverRide?.car?.carType ?? "",
+      carIcon: driverRide?.car?.carPictures?[0] ?? "",
+      startAddress: driverRide?.startDestinationFormattedAddress ?? "",
+      endAddress: driverRide?.endDestinationFormattedAddress ?? "",
+      rideType: rideType,
+      amount: driverRide?.amountPerSeat ?? 0,
+      dateTime: getDateTimeFormatter().parse(driverRide!.startTime!),
+      seatsOffered: driverRide?.seatsOffered ?? 1,
+      refreshScreen: refreshScreen,
+    );
+  }
 }
