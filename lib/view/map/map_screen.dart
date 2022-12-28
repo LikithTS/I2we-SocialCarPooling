@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:common/network/model/StartLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,7 +13,10 @@ import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   final bool? gpsIconShow;
-  const MapScreen({Key? key, this.gpsIconShow}) : super(key: key);
+  final bool? directionAlreadyAvailable;
+  final StartLocation? startLocation;
+  final StartLocation? endLocation;
+  const MapScreen({Key? key, this.gpsIconShow, this.directionAlreadyAvailable, this.startLocation, this.endLocation }) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -56,26 +60,35 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
 
-    if (driverFlag) {
-      sourceLocation =
-          Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
-      destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
-    } else {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
-      destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
-    }
-    if (sourceLocation!.latitude != 0.0) {
+    if(widget.directionAlreadyAvailable ?? false) {
+      log("Inside if condition of maps");
+      sourceLocation = LatLng(widget.startLocation?.coordinates?.first ?? 0.0, widget.startLocation?.coordinates?.last ?? 0.0);
       _addSourceMarker(sourceLocation!);
-    }
-    if (destinationLocation!.latitude != 0.0) {
+      destinationLocation = LatLng(widget.endLocation?.coordinates?.first ?? 0.0, widget.endLocation?.coordinates?.last ?? 0.0);
       _addDestMarker(destinationLocation!);
-    }
-
-    if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
-    {
       _addPolyLine(sourceLocation,destinationLocation);
+    } else {
+      if (driverFlag) {
+        sourceLocation =
+            Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
+        destinationLocation =
+            Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
+      } else {
+        sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
+        destinationLocation =
+            Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+      }
+      if (sourceLocation!.latitude != 0.0) {
+        _addSourceMarker(sourceLocation!);
+      }
+      if (destinationLocation!.latitude != 0.0) {
+        _addDestMarker(destinationLocation!);
+      }
+
+      if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
+      {
+        _addPolyLine(sourceLocation,destinationLocation);
+      }
     }
 
     return Scaffold(

@@ -10,7 +10,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
-import 'package:socialcarpooling/view/home/rides/my_ride_routes.dart';
+import 'package:socialcarpooling/view/home/rides/my_rides_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
@@ -149,23 +149,28 @@ class UpcomingRidesWidget extends StatelessWidget {
                   const Divider(
                     color: Colors.grey,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        timeView(Icons.calendar_today_sharp,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: timeView(Icons.calendar_today_sharp,
                             getFormattedDate(dateTime)),
-                        timeView(Icons.schedule, getFormattedTime(dateTime)),
-                        if (rideType == Constant.AS_HOST) ...[
-                          timeView(Icons.airline_seat_recline_normal,
+                      ),
+                      Expanded(
+                        child: timeView(
+                            Icons.schedule, getFormattedTime(dateTime)),
+                      ),
+                      if (rideType == Constant.AS_HOST) ...[
+                        Expanded(
+                          child: timeView(Icons.airline_seat_recline_normal,
                               seatsOffered.toString()),
-                        ] else ...[
-                          timeView(Icons.directions_car, carType),
-                        ]
-                      ],
-                    ),
+                        )
+                      ] else ...[
+                        Expanded(
+                          child: timeView(Icons.directions_car, carType),
+                        )
+                      ]
+                    ],
                   ),
                   const Divider(
                     color: Colors.grey,
@@ -228,7 +233,8 @@ class UpcomingRidesWidget extends StatelessWidget {
                         Expanded(
                           child: elevatedButtonView(
                               getRightButtonText(rideType, rideStatus),
-                                  () => updateRideDetails(context, rideType, rideId)),
+                              () =>
+                                  updateRideDetails(context, rideType, rideId)),
                         ),
                       ],
                     ),
@@ -264,13 +270,13 @@ class UpcomingRidesWidget extends StatelessWidget {
                       rideId: rideId,
                       rideType: rideType,
                     )));
-      } else if (rideType == Constant.RIDE_JOINED ||
-          rideType == Constant.RIDE_STARTED) {
+      } else if (rideStatus == Constant.RIDE_JOINED ||
+          rideStatus == Constant.RIDE_STARTED) {
         Navigator.push(
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,
-                child: const MyRideRoutes()));
+                child: const MyRidesRoutesScreen()));
       } else {
         String? status = getStatus(rideStatus, rideType);
         if (status != null && status.isNotEmpty) {

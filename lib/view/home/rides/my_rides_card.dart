@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/utils/ride_status_text_function.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
+import 'package:socialcarpooling/view/home/rides/my_rides_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -24,7 +25,6 @@ import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
-import 'my_ride_routes.dart';
 
 class MyRides extends StatelessWidget {
   final String rideId;
@@ -144,23 +144,28 @@ class MyRides extends StatelessWidget {
                   const Divider(
                     color: Colors.grey,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        timeView(Icons.calendar_today_sharp,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: timeView(Icons.calendar_today_sharp,
                             getFormattedDate(dateTime)),
-                        timeView(Icons.schedule, getFormattedTime(dateTime)),
-                        if (rideType == Constant.AS_HOST) ...[
-                          timeView(Icons.airline_seat_recline_normal,
+                      ),
+                      Expanded(
+                        child: timeView(
+                            Icons.schedule, getFormattedTime(dateTime)),
+                      ),
+                      if (rideType == Constant.AS_HOST) ...[
+                        Expanded(
+                          child: timeView(Icons.airline_seat_recline_normal,
                               seatsOffered.toString()),
-                        ] else ...[
-                          timeView(Icons.directions_car, carType),
-                        ]
-                      ],
-                    ),
+                        ),
+                      ] else ...[
+                        Expanded(
+                          child: timeView(Icons.directions_car, carType),
+                        )
+                      ]
+                    ],
                   ),
                   if (rideStatus != Constant.RIDE_JOINED) ...[
                     const Divider(
@@ -180,7 +185,9 @@ class MyRides extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          AvailableRidesScreen(rideId: rideId, rideType: rideType)));
+                                          AvailableRidesScreen(
+                                              rideId: rideId,
+                                              rideType: rideType)));
                             },
                           ),
                           const SizedBox(
@@ -225,14 +232,15 @@ class MyRides extends StatelessWidget {
                             rideStatus == Constant.RIDE_JOINED) ...[
                           Expanded(
                             child: outlineButtonView(Constant.BUTTON_CANCEL,
-                                    () => cancelRide(context, rideType, rideId)),
+                                () => cancelRide(context, rideType, rideId)),
                           ),
                         ],
                         addHorizontalSpace(10),
                         Expanded(
                           child: elevatedButtonView(
                               getRightButtonText(rideType, rideStatus),
-                                  () => updateRideDetails(context, rideType, rideId)),
+                              () =>
+                                  updateRideDetails(context, rideType, rideId)),
                         ),
                       ],
                     ),
@@ -256,7 +264,8 @@ class MyRides extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     child: Column(
                       children: [
                         index == 0
@@ -301,7 +310,8 @@ class MyRides extends StatelessWidget {
                                                 addHorizontalSpace(10),
                                                 Row(
                                                   children: [
-                                                    const Icon(Icons.route_rounded),
+                                                    const Icon(
+                                                        Icons.route_rounded),
                                                     Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -356,8 +366,8 @@ class MyRides extends StatelessWidget {
                                     ),
                                   ),
                                   const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
                                     child: Divider(
                                       color: Colors.grey,
                                     ),
@@ -591,13 +601,16 @@ class MyRides extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AvailableRidesScreen(rideId: rideId, rideType: rideType,)));
-      } else if (rideType == Constant.RIDE_JOINED ||
-          rideType == Constant.RIDE_STARTED) {
+                builder: (context) => AvailableRidesScreen(
+                      rideId: rideId,
+                      rideType: rideType,
+                    )));
+      } else if (rideStatus == Constant.RIDE_JOINED ||
+          rideStatus == Constant.RIDE_STARTED) {
         Navigator.push(
             context,
             PageTransition(
-                type: PageTransitionType.bottomToTop, child: MyRideRoutes()));
+                type: PageTransitionType.bottomToTop, child: const MyRidesRoutesScreen()));
       } else {
         String? status = getStatus(rideStatus, rideType);
         if (status != null && status.isNotEmpty) {
@@ -636,4 +649,24 @@ class MyRides extends StatelessWidget {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
+
+  // getMyRidesRouteObject() {
+  //   return MyRideRoutesView(
+  //     rideId: rideId,
+  //     carIcon: carIcon,
+  //     startAddress: startAddress,
+  //     endAddress: endAddress,
+  //     rideType: rideType,
+  //     amount: amount,
+  //     dateTime: dateTime,
+  //     seatsOffered: seatsOffered,
+  //     carType: carType,
+  //     coRidersCount: coRidersCount,
+  //     leftButtonText: leftButtonText,
+  //     rideStatus: rideStatus,
+  //     startLocation: ,
+  //     endLocation: ,
+  //     refreshScreen: () => refreshScreen(),
+  //   );
+  // }
 }

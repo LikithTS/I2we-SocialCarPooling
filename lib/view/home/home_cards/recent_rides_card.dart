@@ -137,22 +137,29 @@ class RecentRidesWidget extends StatelessWidget {
                       const Divider(
                         color: Colors.grey,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            timeView(Icons.calendar_today_sharp,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: timeView(Icons.calendar_today_sharp,
                                 getFormattedDate(dateTime)),
-                            timeView(
+                          ),
+                          Expanded(
+                            child: timeView(
                                 Icons.schedule, getFormattedTime(dateTime)),
-                            if (rideType == Constant.AS_HOST) ...[
-                              timeView(Icons.airline_seat_recline_normal,
+                          ),
+                          if (rideType == Constant.AS_HOST) ...[
+                            Expanded(
+                              child: timeView(
+                                  Icons.airline_seat_recline_normal,
                                   seatsOffered.toString()),
-                            ]
-                          ],
-                        ),
+                            )
+                          ] else ...[
+                            Expanded(
+                              child: timeView(Icons.directions_car, carType),
+                            )
+                          ]
+                        ],
                       ),
                       const Divider(
                         color: Colors.grey,
