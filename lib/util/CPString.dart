@@ -1,8 +1,8 @@
-class CPString{
-
+class CPString {
   static const String CONTINUE = "continue";
   static const String QUESTIONARIES = "Questionaries";
-  static const String ALERT_SELECT_ATLEAST_ONE_CATEGORY = "Please select atleast 1 category.";
+  static const String ALERT_SELECT_ATLEAST_ONE_CATEGORY =
+      "Please select atleast 1 category.";
   static const String Yet_Constant = "Yet to be implemented";
   static const String please_wait = "Please Wait";
   static const String welcome = "Hi, Welcome";
@@ -17,8 +17,10 @@ class CPString{
   static const String no = "no";
   static const String yet_to_be_impl = "Yet to be implemented!!!";
   static const String makeFriends = "Make New Friends";
-  static const String tempText = "A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car";
-  static const String welcometempText = "To give best experience for user, we required Few information or interest of yours.";
+  static const String tempText =
+      "A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car";
+  static const String welcometempText =
+      "To give best experience for user, we required Few information or interest of yours.";
   static const String takeMinute = "Its takes less than a Minute";
   static const String working_task = "Working on the task";
   static const String work = "Work";
@@ -42,7 +44,8 @@ class CPString{
   static const String verifyOTP = "Verify OTP";
   static const String thankYou = "Thank You!";
   static const String registrationSuccess = "The registration successful";
-  static const String verifyOTPTitle = "Enter OTP sent to registered phone number";
+  static const String verifyOTPTitle =
+      "Enter OTP sent to registered phone number";
   static const String confirmPassword = "Confirm Password";
   static const String selectDate = "DOB";
   static const String fullNameError = "Full Name can not empty";
@@ -61,28 +64,30 @@ class CPString{
   static const String passwordError = "Password can not empty";
   static const String cPasswordError = "Confirm Password can not empty";
   static const String passwordValidError = "Please Enter valid password";
-  static const String cPasswordValidError = "Please enter same as password and confirm password";
+  static const String cPasswordValidError =
+      "Please enter same as password and confirm password";
   static const String registerSuccess = "The registration successful";
   static const String signupAgree = "By Signing up ,you agree with our ";
   static const String termsConditions = "Terms & conditions";
   static const String resendOTP = "Resend OTP";
-  static const String resendOtpIn='Resend OTP in ';
-  static const String dontreciveOtp='Didn’t receive.Click here to ';
-  static const String androidApiKey='AIzaSyAG2pCMKsS6ZQXXClEKbKD4nrNEAg9AlAI12';
-  static const String iosApiKey='AIzaSyCeObuRTT0Hfh3gnqiGmGFSsqGyoAyWehQ';
-  static const String Alert='Alert';
+  static const String resendOtpIn = 'Resend OTP in ';
+  static const String dontreciveOtp = 'Didn’t receive.Click here to ';
+  static const String androidApiKey =
+      'AIzaSyAG2pCMKsS6ZQXXClEKbKD4nrNEAg9AlAI12';
+  static const String iosApiKey = 'AIzaSyCeObuRTT0Hfh3gnqiGmGFSsqGyoAyWehQ';
+  static const String Alert = 'Alert';
   static const String logout_desc = "Are you sure wants to logout?";
   static const String appName = "i2We";
-  static const String about_desc = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque '
+  static const String about_desc =
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque '
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque'
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque';
   static const String copyright = '©2022 i2we.com';
   static const String HISTORY = "History";
   static const String NO_RIDES_AVAILABLE = 'No Rides Available';
-  static const String FEEDBACK_DESC = 'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car';
+  static const String FEEDBACK_DESC =
+      'A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car';
   static const String SUBMIT = 'Submit';
   static const String LOADING = "Loading";
   static const String UPDATED_SUCCESS = "Successfully updated";
-
-
 }

@@ -10,6 +10,7 @@ import 'package:socialcarpooling/view/home/rides/available_rides_card.dart';
 import '../../../util/constant.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
+import 'my_available_start_page.dart';
 
 class AvailableRidesScreen extends StatelessWidget {
   final String rideId;
@@ -58,48 +59,59 @@ class AvailableRidesScreen extends StatelessWidget {
                     builder: (context, AsyncSnapshot<dynamic> snapshot) {
                       if (!snapshot.hasData) {
                         return const Center(child: CircularProgressIndicator());
-                      } else {
+                      } else if (snapshot.hasData) {
                         List<AvailableRidesResponse> availableRideList =
                             snapshot.data;
                         log("Available ride is screen ${availableRideList.length}");
-                        return ListView.builder(
-                          itemCount: availableRideList.length,
-                          itemBuilder: (context, index) {
-                            return AvailableRides(
-                              profileImage: "",
-                              carIcon: 'assets/images/car_pool.png',
-                              startAddress: availableRideList[index]
-                                      .startDestinationFormattedAddress ??
-                                  "",
-                              endAddress: availableRideList[index]
-                                      .endDestinationFormattedAddress ??
-                                  "",
-                              amount:
-                                  availableRideList[index].amountPerSeat ?? 0,
-                              dateTime: getDateTimeFormatter()
-                                  .parse(availableRideList[index].startTime!),
-                              seatsOffered:
-                                  availableRideList[index].seatsOffered ?? 1,
-                              carType:
-                                  availableRideList[index].car?.carType ?? "",
-                              name: availableRideList[index].user?.name ?? "",
-                              designation:
-                                  availableRideList[index].user?.designation ??
-                                      "",
-                              routeMatch: availableRideList[index]
-                                      .rideMatchPercentage?.toInt() ??
-                                  0,
-                              profileMatch: availableRideList[index]
-                                      .profileMatchingPercentage ??
-                                  0,
-                              carTypeInterested:
-                                  availableRideList[index].carTypeInterested ??
-                                      "",
-                              rideType: rideDataType,
-                            );
-                          },
-                        );
+                        if (availableRideList.isNotEmpty) {
+                          return ListView.builder(
+                            itemCount: availableRideList.length,
+                            itemBuilder: (context, index) {
+                              return AvailableRides(
+                                profileImage: availableRideList[index]
+                                        .user
+                                        ?.profileImage ??
+                                    "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png",
+                                carIcon: availableRideList[index]
+                                        .car
+                                        ?.carPictures?[0] ??
+                                    "",
+                                startAddress: availableRideList[index]
+                                        .startDestinationFormattedAddress ??
+                                    "",
+                                endAddress: availableRideList[index]
+                                        .endDestinationFormattedAddress ??
+                                    "",
+                                amount:
+                                    availableRideList[index].amountPerSeat ?? 0,
+                                dateTime: getDateTimeFormatter()
+                                    .parse(availableRideList[index].startTime!),
+                                seatsOffered:
+                                    availableRideList[index].seatsOffered ?? 1,
+                                carType:
+                                    availableRideList[index].car?.carType ?? "",
+                                name: availableRideList[index].user?.name ?? "",
+                                designation: availableRideList[index]
+                                        .user
+                                        ?.designation ??
+                                    "",
+                                routeMatch: availableRideList[index]
+                                        .rideMatchPercentage
+                                        ?.toInt() ??
+                                    0,
+                                profileMatch: availableRideList[index]
+                                        .profileMatchingPercentage ??
+                                    0,
+                                carTypeInterested: availableRideList[index]
+                                        .carTypeInterested ??
+                                    "",
+                                rideType: rideDataType,
+                              );
+                            },
+                          );
+                        }
                       }
+                      return MyAvailableStartPage();
                     },
                   ),
                 ),
@@ -112,7 +124,7 @@ class AvailableRidesScreen extends StatelessWidget {
   }
 
   String getRideType(String rideType) {
-    if(rideType == Constant.AS_HOST) {
+    if (rideType == Constant.AS_HOST) {
       return Constant.AS_RIDER;
     } else {
       return Constant.AS_HOST;

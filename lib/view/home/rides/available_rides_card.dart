@@ -58,14 +58,13 @@ class AvailableRides extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 5),
+                        padding: const EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
+                            backgroundImage: NetworkImage(profileImage)),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -80,10 +79,10 @@ class AvailableRides extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  availableRidesText(name,
-                                      Colors.black, 18.sp, FontWeight.w400),
-                                  availableRidesText(designation,
-                                      primaryColor, 10.sp, FontWeight.w400),
+                                  availableRidesText(name, Colors.black, 18.sp,
+                                      FontWeight.w400),
+                                  availableRidesText(designation, primaryColor,
+                                      10.sp, FontWeight.w400),
                                   if (rideType == Constant.AS_HOST) ...[
                                     availableRidesText(carType, Colors.black,
                                         11.sp, FontWeight.w400)
@@ -113,8 +112,8 @@ class AvailableRides extends StatelessWidget {
                                     Icons.repeat,
                                     color: primaryColor,
                                   ),
-                                  availableRidesText("$routeMatch%", Colors.black, 16.sp,
-                                      FontWeight.w400)
+                                  availableRidesText("$routeMatch%",
+                                      Colors.black, 16.sp, FontWeight.w400)
                                 ],
                               ),
                               availableRidesCenterText(
@@ -138,10 +137,13 @@ class AvailableRides extends StatelessWidget {
                   children: [
                     if (rideType == Constant.AS_HOST) ...[
                       Expanded(
-                        flex: 2,
-                        child: Image.asset(carIcon,
-                            width: 60, height: 60, fit: BoxFit.cover),
-                      ),
+                          flex: 2,
+                          child: FadeInImage.assetNetwork(
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                              placeholder: 'assets/place_holder.jpg',
+                              image: carIcon)),
                       const SizedBox(width: 15),
                     ],
                     Expanded(
@@ -192,8 +194,8 @@ class AvailableRides extends StatelessWidget {
                                     Icons.favorite,
                                     color: Color(0Xfff86565),
                                   ),
-                                  availableRidesText("$profileMatch%", Colors.black, 16.sp,
-                                      FontWeight.w400)
+                                  availableRidesText("$profileMatch%",
+                                      Colors.black, 16.sp, FontWeight.w400)
                                 ],
                               ),
                               availableRidesCenterText(
@@ -306,21 +308,20 @@ Widget availableRidesCenterText(
               fontFamily: 'Poppins')),
     );
 
-Widget outlineButtonView(VoidCallback onClick) =>
-    OutlinedButton(
-        style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            side: const BorderSide(
-                color: primaryColor, width: 0.5, style: BorderStyle.solid)),
-        onPressed: () {
-          onClick;
-        },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(color: Colors.blue),
-        ));
+Widget outlineButtonView(VoidCallback onClick) => OutlinedButton(
+    style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        side: const BorderSide(
+            color: primaryColor, width: 0.5, style: BorderStyle.solid)),
+    onPressed: () {
+      onClick;
+    },
+    child: const Text(
+      "Cancel",
+      style: TextStyle(color: Colors.blue),
+    ));
 
 Widget elevatedButtonView(
         String buttonName, VoidCallback onClick, BuildContext context) =>

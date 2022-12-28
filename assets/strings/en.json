@@ -123,7 +123,6 @@
   "verify" : "Verify",
   "send_otp" : "Send OTP",
   "new_user_verification" : "New User Verification",
-  "send_otp" : "Send OTP",
   "verification" : "Verification",
   "verify_personal_identity": "Verify Personal Identity",
   "aadhar_verification": "Aadhar ID verification",
@@ -133,7 +132,8 @@
   "driving_verification": "Driving License verification",
   "select" : "SELECT",
   "aadhar_verification_under_verify" : "Aadhar under Verification",
-  "driving_verification_under_verify" : "Driving License under Verification"
+  "driving_verification_under_verify" : "Driving License under Verification",
+  "no_available_ride": "No rides available at the moment"
 
 
 
