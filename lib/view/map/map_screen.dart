@@ -58,7 +58,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
 
     if(widget.directionAlreadyAvailable ?? false) {
       log("Inside if condition of maps");
@@ -68,6 +67,7 @@ class _MapScreenState extends State<MapScreen> {
       _addDestMarker(destinationLocation!);
       _addPolyLine(sourceLocation,destinationLocation);
     } else {
+      var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
       if (driverFlag) {
         sourceLocation =
             Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
