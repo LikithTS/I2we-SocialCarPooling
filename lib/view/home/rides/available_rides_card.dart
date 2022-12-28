@@ -1,6 +1,13 @@
+import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/RideRespository.dart';
+import 'package:common/network/request/InviteRideApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:socialcarpooling/buttons/elevated_button_view.dart';
+import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/constant.dart';
 import '../../../utils/Localization.dart';
@@ -23,6 +30,8 @@ class AvailableRides extends StatelessWidget {
   final int routeMatch;
   final int profileMatch;
   final String carTypeInterested;
+  final String driverRideId;
+  final String passengerRideId;
 
   const AvailableRides(
       {Key? key,
@@ -39,7 +48,9 @@ class AvailableRides extends StatelessWidget {
       required this.dateTime,
       required this.seatsOffered,
       required this.profileImage,
-      required this.carTypeInterested})
+      required this.carTypeInterested,
+      required this.driverRideId,
+      required this.passengerRideId})
       : super(key: key);
 
   @override
@@ -257,20 +268,16 @@ class AvailableRides extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      outlineButtonView(() {}),
-                      const Spacer(),
                       if (rideType == Constant.AS_HOST) ...[
                         elevatedButtonView(
                             DemoLocalizations.of(context)?.getText("join") ??
                                 "",
-                            () {},
-                            context)
+                            () => sendRideRequestData(context)),
                       ] else ...[
                         elevatedButtonView(
                             DemoLocalizations.of(context)?.getText("invite") ??
                                 "",
-                            () {},
-                            context)
+                            () => sendRideRequestData(context)),
                       ],
                     ],
                   ),
@@ -281,6 +288,46 @@ class AvailableRides extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  sendRideRequestData(BuildContext context) {
+    InternetChecks.isConnected().then((isAvailable) => {
+          sendRideRequest(
+              isAvailable, context, rideType, driverRideId, passengerRideId)
+        });
+  }
+
+  sendRideRequest(bool isAvailable, BuildContext context, String rideType,
+      String driverRideId, String passengerRideId) {
+    if (isAvailable) {
+      InternetChecks.showLoadingCircle(context);
+      RideRepository rideRepository = RideRepository();
+      InviteRideApi inviteRideApi = InviteRideApi(
+          asDriverId: driverRideId,
+          asPassengerId: passengerRideId,
+          type: getType(rideType));
+      Future<dynamic> future = rideRepository.inviteRide(api: inviteRideApi);
+      future.then((value) => {handleResponseData(context, value)});
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  getType(String rideType) {
+    if (rideType == Constant.AS_HOST) {
+      return Constant.INVITE;
+    } else {
+      return Constant.REQUEST;
+    }
+  }
+
+  handleResponseData(BuildContext context, value) {
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      // Handle status
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 }
 
@@ -313,41 +360,3 @@ Widget availableRidesCenterText(
               fontWeight: fontWeight,
               fontFamily: 'Poppins')),
     );
-
-Widget outlineButtonView(VoidCallback onClick) => OutlinedButton(
-    style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        side: const BorderSide(
-            color: primaryColor, width: 0.5, style: BorderStyle.solid)),
-    onPressed: () {
-      onClick;
-    },
-    child: const Text(
-      "Cancel",
-      style: TextStyle(color: Colors.blue),
-    ));
-
-Widget elevatedButtonView(
-        String buttonName, VoidCallback onClick, BuildContext context) =>
-    ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: const Color(0Xff1D883A),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-            ),
-            minimumSize: const Size(150, 40)),
-        onPressed: () {
-          onClick;
-        },
-        child: Text(
-          buttonName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.normal,
-            letterSpacing: 1.2,
-            fontFamily: 'PoppinsBold',
-          ),
-        ));

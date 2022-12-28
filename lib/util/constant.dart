@@ -36,4 +36,6 @@ class Constant {
   static const String BACHELORS_DEGREE = "BACHELORS_DEGREE";
   static const String MASTERS_DEGREE = "MASTERS_DEGREE";
   static const String OTHER = "OTHER";
+  static const String INVITE = "INVITE";
+  static const String REQUEST = "REQUEST";
 }

@@ -4,6 +4,7 @@ import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/ApiRepository.dart';
 import 'package:common/network/request/AvailableRideApi.dart';
+import 'package:common/network/request/InviteRideApi.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -70,6 +71,23 @@ class RideRepository extends ApiRepository {
             List<AvailableRidesResponse>.from(
                 response.map((i) => AvailableRidesResponse.fromJson(i)));
         return availableRideList;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> inviteRide(
+      {required InviteRideApi api}) async {
+    try {
+      Response rideData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.INVITE_RIDE, data: api.toJson());
+      dynamic response = handleAPIResponseData(rideData);
+      if (response is ErrorResponse) {
+        return response;
+      } else if(response is SuccessResponse){
+        return SuccessResponse();
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

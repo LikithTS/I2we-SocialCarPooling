@@ -93,7 +93,7 @@ class AvailableRidesScreen extends StatelessWidget {
                                 name: availableRideList[index].user?.name ?? "",
                                 designation: availableRideList[index]
                                         .user
-                                        ?.designation ??
+                                        ?.work ??
                                     "",
                                 routeMatch: availableRideList[index]
                                         .rideMatchPercentage
@@ -106,12 +106,14 @@ class AvailableRidesScreen extends StatelessWidget {
                                         .carTypeInterested ??
                                     "",
                                 rideType: rideDataType,
+                                driverRideId: getDriverId(availableRideList[index].id, api.rideId, api.rideType),
+                                passengerRideId: getPassengerId(availableRideList[index].id, api.rideId, api.rideType),
                               );
                             },
                           );
                         }
                       }
-                      return MyAvailableStartPage();
+                      return const MyAvailableStartPage();
                     },
                   ),
                 ),
@@ -128,6 +130,22 @@ class AvailableRidesScreen extends StatelessWidget {
       return Constant.AS_RIDER;
     } else {
       return Constant.AS_HOST;
+    }
+  }
+
+  getDriverId(String? id, String rideId, String rideType) {
+    if(rideType == Constant.AS_HOST) {
+      return rideId;
+    } else {
+      return id;
+    }
+  }
+
+  getPassengerId(String? id, String rideId, String rideType) {
+    if(rideType == Constant.AS_RIDER) {
+      return rideId;
+    } else {
+      return id;
     }
   }
 }

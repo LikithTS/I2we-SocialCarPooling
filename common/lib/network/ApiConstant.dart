@@ -41,5 +41,6 @@ class ApiConstant {
   static const String PRESIGNED_CAR_IMAGES = "/user/car-images-presigned-url/";
   static const String RIDE_STATUS_PASSANGER = "ride/change-status-passenger";
   static const String RIDE_STATUS_DRIVER = "ride/change-status-driver";
+  static const String INVITE_RIDE = "invite";
 
 }
