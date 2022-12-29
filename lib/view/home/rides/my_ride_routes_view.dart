@@ -18,6 +18,7 @@ import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
 import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
 import 'package:socialcarpooling/view/home/rides/join_ride_passenger_card.dart';
+import 'package:socialcarpooling/view/map/map_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
@@ -82,9 +83,8 @@ class MyRideRoutesView extends StatelessWidget {
         children: [
           SizedBox(
             height: deviceHeight(context) * .50,
-            child: MapScreen(
+            child: MapRouteScreen(
               gpsIconShow: false,
-              directionAlreadyAvailable: true,
               startLocation: startLocation,
               endLocation: endLocation,
             ),
