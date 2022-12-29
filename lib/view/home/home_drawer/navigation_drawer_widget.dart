@@ -19,7 +19,6 @@ import 'package:socialcarpooling/view/feedback/feedback_page.dart';
 import 'package:socialcarpooling/view/history/history_page.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
-import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/view/myvehicle/my_vehicle_start_page.dart';
@@ -31,12 +30,18 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import '../../../util/string_url.dart';
 import '../../../utils/Localization.dart';
 import '../../../widgets/image_widgets.dart';
-import '../../commondialog/custom_dialog.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
 
-class NavigationDrawerWidget extends StatelessWidget {
+class NavigationDrawerWidget extends StatefulWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
+
+  @override
+  State<NavigationDrawerWidget> createState() => _NavigationDrawerWidgetState();
+}
+
+class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
+  var profileImage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -162,8 +167,8 @@ class NavigationDrawerWidget extends StatelessWidget {
         break;
 
       case 1:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const MyRidesScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const MyRidesScreen()));
         break;
 
       case 2:
@@ -193,19 +198,19 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
-        // showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return const CustomDialog(
-        //         title: "Allow Your Location",
-        //         descriptions:
-        //             "We need your location permission to Give better expericance",
-        //         rightButtonText: "Allow",
-        //         leftButtonText: "Not now",
-        //         img: "assets/images/location_dialog.png",
-        //       );
-        //     });
-        // break;
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return const CustomDialog(
+      //         title: "Allow Your Location",
+      //         descriptions:
+      //             "We need your location permission to Give better expericance",
+      //         rightButtonText: "Allow",
+      //         leftButtonText: "Not now",
+      //         img: "assets/images/location_dialog.png",
+      //       );
+      //     });
+      // break;
       case 6:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => FeedbackPage()));
@@ -260,8 +265,8 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   void handleErrorResponseData(onError, BuildContext context) {
     if (onError is ApiException) {
-      showSnackbar(homeGlobalkey.currentContext!,
-          onError.errorResponse.message ?? "");
+      showSnackbar(
+          homeGlobalkey.currentContext!, onError.errorResponse.message ?? "");
     }
   }
 
@@ -287,6 +292,13 @@ class NavigationDrawerWidget extends StatelessWidget {
       Navigator.of(homeGlobalkey.currentContext!).pop(true);
       onLogoutButtonPressed(context);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    profileImage = CPSessionManager().getProfileImage();
   }
 }
 

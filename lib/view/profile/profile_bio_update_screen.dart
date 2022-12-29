@@ -93,9 +93,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                                 : CircleAvatar(
                                     radius: 58,
                                     backgroundImage: NetworkImage(
-                                        AppPreference().imageBaseUrl +
-                                            (AppPreference().profileImageKey ??
-                                                "")),
+                                        CPSessionManager().getProfileImage()),
                                   )),
                         CircleAvatar(
                           radius: 18,

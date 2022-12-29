@@ -33,7 +33,7 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   var viewmodel = ProfileViewModel();
-  NetworkImage? netWorkImage;
+  var profileImage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +86,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              InternetChecks.isConnected().then((isAvailable) =>
-                                  {handleProfileUpload(isAvailable)});
+                              setState(() {
+                                InternetChecks.isConnected().then(
+                                    (isAvailable) =>
+                                        {handleProfileUpload(isAvailable)});
+                              });
                             },
-                            child: netWorkImage == null
-                                ? CircleAvatar(
-                                    radius: 58,
-                                    backgroundImage: Image.file(File(
-                                            CPSessionManager()
-                                                .getProfileImage()))
-                                        .image,
-                                  )
-                                : CircleAvatar(
-                                    radius: 58,
-                                    backgroundImage: netWorkImage,
-                                  ),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(profileImage),
+                            ),
                           ),
                         ),
                         const CircleAvatar(
@@ -462,11 +457,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
     super.initState();
-    var profileImage =
-        AppPreference().imageBaseUrl + (AppPreference().profileImageKey ?? "");
-    netWorkImage = NetworkImage(profileImage);
     if (CPSessionManager().isUserLoggedIn()) {
       GetProfileDetails(context);
+      profileImage = CPSessionManager().getProfileImageWithBase();
     }
   }
 
@@ -488,16 +481,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         Future<dynamic> future = viewmodel.getProfileImage();
         future.then((value) => {
               if (value is File && uploadUrl.isNotEmpty)
-                {
-                  CPSessionManager().setProfileImage(value.path),
-                  AwsApi().uploadImage(uploadUrl, value),
-                  updateUserApi(
-                      ProfileImageUpdate(profileImage: profileUrl.key),
-                      context,
-                      profileUrl.key)
-                }
+                {handleImageUpload(value, uploadUrl, profileUrl)}
             });
       }
+    }
+  }
+
+  handleImageUpload(
+      File value, String uploadUrl, ProfileImageUpload profileUrl) async {
+    CPSessionManager().setProfileImage(value.path);
+    var isUploaded = await AwsApi().uploadImage(uploadUrl, value);
+    if (isUploaded) {
+      updateUserApi(ProfileImageUpdate(profileImage: profileUrl.key), context,
+          profileUrl.key);
+    } else {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, "Something went wrong..Please try after sometime");
     }
   }
 
@@ -514,8 +513,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       print("UPdate success$value");
       setState(() {
         if (imageKey != null) {
-          netWorkImage =
-              NetworkImage(AppPreference().imageBaseUrl + (imageKey ?? ""));
+          profileImage = CPSessionManager().getProfileImageWithBase();
         }
       });
 

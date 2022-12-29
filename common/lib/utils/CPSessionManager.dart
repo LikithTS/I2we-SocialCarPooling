@@ -1,12 +1,12 @@
-
 import 'dart:collection';
 import 'dart:convert';
 
 import 'package:common/utils/storageutil.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 
 import '../model/direction.dart';
 
-class CPSessionManager{
+class CPSessionManager {
   //Auth Token
   final String USER_ID = "user_id";
   final String AUTH_TOKEN = "user_auth_token";
@@ -23,18 +23,22 @@ class CPSessionManager{
     return _instance;
   }
 
-  CPSessionManager._internal() {
-
-  }
+  CPSessionManager._internal() {}
 
   Set<String> categoryIds = HashSet();
-  HashMap<String, Set<String>> postQuestionarieData = HashMap<String, Set<String>>();
+  HashMap<String, Set<String>> postQuestionarieData =
+      HashMap<String, Set<String>>();
 
-  void saveSelectedCategoryIds(String categoryId, String subCategoryId, bool selected) {
-    selected ? categoryIds.add(subCategoryId) : categoryIds.remove(subCategoryId);
-    if(postQuestionarieData.containsKey(categoryId)){
+  void saveSelectedCategoryIds(
+      String categoryId, String subCategoryId, bool selected) {
+    selected
+        ? categoryIds.add(subCategoryId)
+        : categoryIds.remove(subCategoryId);
+    if (postQuestionarieData.containsKey(categoryId)) {
       var existingValue = postQuestionarieData[categoryId];
-      selected ? existingValue?.add(subCategoryId) : existingValue?.remove(subCategoryId);
+      selected
+          ? existingValue?.add(subCategoryId)
+          : existingValue?.remove(subCategoryId);
       postQuestionarieData.updateAll((categoryId, value) => existingValue!);
     } else {
       final subSet = HashSet<String>();
@@ -47,7 +51,7 @@ class CPSessionManager{
     return categoryIds.contains(id);
   }
 
-  void clearAllSelectedCategoryData(){
+  void clearAllSelectedCategoryData() {
     categoryIds.clear();
     postQuestionarieData.clear();
   }
@@ -110,11 +114,11 @@ class CPSessionManager{
     setAuthToken("");
     setAuthRefreshToken("");
   }
-  
+
   bool getIfCarDetailsAdded() {
     return PreferencesUtil.getBoolean(CAR_DETAILS_AVAILABLE);
   }
-  
+
   void setIfCarDetailsAdded(bool value) {
     PreferencesUtil.putBoolean(CAR_DETAILS_AVAILABLE, value);
   }
@@ -124,9 +128,20 @@ class CPSessionManager{
   }
 
   Direction getDirectionObject() {
-    Map<String, dynamic> json = jsonDecode(PreferencesUtil.getString(DIRECTION_OBJECT));
+    Map<String, dynamic> json =
+        jsonDecode(PreferencesUtil.getString(DIRECTION_OBJECT));
     var direction = Direction.fromJson(json);
     return direction;
   }
 
+  String getImage(String imageKey) {
+    return AppPreference().imageBaseUrl + imageKey;
+  }
+
+  String getProfileImageWithBase() {
+    if (AppPreference().profileImageKey.isNotEmpty) {
+      return AppPreference().imageBaseUrl + AppPreference().profileImageKey;
+    }
+    return "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png";
+  }
 }

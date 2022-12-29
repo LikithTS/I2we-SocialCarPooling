@@ -2,15 +2,16 @@ import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/InviteRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:socialcarpooling/buttons/elevated_button_view.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
+import '../../../buttons/elevated_button_view.dart';
 import '../../../util/constant.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/get_formatted_date_time.dart';
@@ -77,7 +78,8 @@ class AvailableRides extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(profileImage)),
+                            backgroundImage: NetworkImage(
+                                CPSessionManager().getProfileImageWithBase())),
                       ),
                     ),
                     const SizedBox(width: 20),

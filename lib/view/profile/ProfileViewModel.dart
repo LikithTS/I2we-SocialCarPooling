@@ -14,7 +14,7 @@ class ProfileViewModel {
 
     final XFile? pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 50, // <- Reduce Image quality
+        imageQuality: 10, // <- Reduce Image quality
         maxHeight: 500, // <- reduce the image size
         maxWidth: 500);
     log("Image picked file ${pickedFile!.path}");

@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/addCarApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/network/response/car/AddCarResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
@@ -17,6 +19,8 @@ import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import 'package:socialcarpooling/widgets/material_text_form.dart';
 
+import '../../imageupload/AwsApi.dart';
+import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
@@ -44,12 +48,14 @@ class AddCarScreenState extends State<AddCarScreen> {
   List<Color> availableSeatsTextColor = [];
   List<Color> offeringSeatsTextColor = [];
   File? rcImageFile;
-
+  List<XFile?>? carImages;
   CarRepository get _carRepository => widget.carRepository;
+  List<String> finalCarImageKeys = [];
 
   final carNameController = TextEditingController();
   final carRegNumberController = TextEditingController();
   final carTypeController = TextEditingController();
+  AddCarViewModel viewModel = AddCarViewModel();
 
   @override
   void initState() {
@@ -68,8 +74,6 @@ class AddCarScreenState extends State<AddCarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AddCarViewModel viewModel = AddCarViewModel();
-
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -454,42 +458,51 @@ class AddCarScreenState extends State<AddCarScreen> {
                         ),
                       ),
                       addVerticalSpace(20),
-                      Material(
-                        elevation: 2,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                addVerticalSpace(10),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.photo_camera,
-                                    color: primaryLightColor,
+                      InkWell(
+                        onTap: () {
+                          var carsFuture = viewModel.getCarImages();
+                          carsFuture.then((value) => setState(() {
+                                carImages = value;
+                              }));
+                        },
+                        child: Material(
+                          elevation: 2,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  addVerticalSpace(10),
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.photo_camera,
+                                      color: primaryLightColor,
+                                    ),
+                                  ),
+                                  smallText(
+                                      DemoLocalizations.of(context)
+                                              ?.getText("upload_car_images") ??
+                                          "",
+                                      Alignment.topLeft)
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                          "assets/images/login_image.png",
+                                          width: 45.w,
+                                          height: 54.h,
+                                          fit: BoxFit.fill),
+                                    ],
                                   ),
                                 ),
-                                smallText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("upload_car_images") ??
-                                        "",
-                                    Alignment.topLeft)
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Row(
-                                  children: [
-                                    Image.asset("assets/images/login_image.png",
-                                        width: 45.w,
-                                        height: 54.h,
-                                        fit: BoxFit.fill),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
@@ -561,15 +574,12 @@ class AddCarScreenState extends State<AddCarScreen> {
     } else if (selectedCarType == "Car Type") {
       alertDialogView(context, "car_type_error");
     } else {
-      addCarApi(
-          carRegNumberController.text,
-          is_electric_vehicle,
-          carNameController.text,
-          availableSeats,
-          [],
-          offeringSeats,
-          selectedCarType,
-          "");
+      InternetChecks.isConnected().then((isInternetAvailable) => {
+            handleAddCar(
+              isInternetAvailable,
+              carImages!,
+            )
+          });
     }
   }
 
@@ -637,6 +647,40 @@ class AddCarScreenState extends State<AddCarScreen> {
     future.then((value) => {handleResponseData(value)});
   }
 
+  void handleAddCar(bool isInternetAvailable, List<XFile?> carImages) async {
+    InternetChecks.showLoadingCircle(context);
+    var a = viewModel.getUrlsForCars(carImages.length);
+
+    a.then((value) => handleCarUrlResponse(value, carImages));
+  }
+
+  handleCarUrlResponse(
+      List<AddCarResponse> list, List<XFile?> carImages) async {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].url != null) {
+        var isUploaded =
+            await AwsApi().uploadImage(list[i].url!, File(carImages[i]!.path));
+        if (isUploaded) {
+          finalCarImageKeys.add(list[i].key!);
+        } else {
+          alertDialogView(
+              context, "Something went wrong..Please try after sometime");
+          return;
+        }
+      }
+    }
+
+    addCarApi(
+        carRegNumberController.text,
+        is_electric_vehicle,
+        carNameController.text,
+        availableSeats,
+        finalCarImageKeys,
+        offeringSeats,
+        selectedCarType,
+        "");
+  }
+
   handleResponseData(value) {
     if (value is SuccessResponse) {
       showDialog(
@@ -665,6 +709,8 @@ class AddCarScreenState extends State<AddCarScreen> {
               ],
             );
           });
+    } else {
+      InternetChecks.closeLoadingProgress(context);
     }
   }
 }

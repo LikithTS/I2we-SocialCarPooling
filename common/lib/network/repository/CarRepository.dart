@@ -10,20 +10,22 @@ import '../ApiConstant.dart';
 import '../model/error_response.dart';
 import '../response/CarDetailsResponse.dart';
 import '../response/SuccessResponse.dart';
+import '../response/car/AddCarResponse.dart';
 import 'ApiRepository.dart';
 
 class CarRepository extends ApiRepository {
   Future<List<dynamic>> carDetails() async {
     try {
       Response carData =
-      await APIClient().getDioInstance().get(ApiConstant.CAR_API_PATH);
+          await APIClient().getDioInstance().get(ApiConstant.CAR_API_PATH);
       dynamic response = handleAPIResponseData(carData);
       if (response is ErrorResponse) {
         return List.empty();
       } else {
         log("Response car $response");
-        List<CarDetailsResponse> carResponseList = List<CarDetailsResponse>.from(
-            response.map((i) => CarDetailsResponse.fromJson(i)));
+        List<CarDetailsResponse> carResponseList =
+            List<CarDetailsResponse>.from(
+                response.map((i) => CarDetailsResponse.fromJson(i)));
         // var carResponse = CarDetailsResponse.fromJson(response);
         log("Car details response ${carResponseList.length}");
         return carResponseList;
@@ -33,8 +35,8 @@ class CarRepository extends ApiRepository {
     }
   }
 
-  Future<dynamic> carDrivingStatusUpdate({required DrivingStatusApi api}) async {
-
+  Future<dynamic> carDrivingStatusUpdate(
+      {required DrivingStatusApi api}) async {
     try {
       Response userData = await APIClient()
           .getDioInstance()
@@ -67,6 +69,24 @@ class CarRepository extends ApiRepository {
     }
   }
 
+  Future<List<AddCarResponse>> getCarUrls(int count) async {
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .get(ApiConstant.GET_CAR_UPLOAD_URL + "$count/");
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return List.empty();
+      } else {
+        List<AddCarResponse> availableRideList = List<AddCarResponse>.from(
+            response.map((i) => AddCarResponse.fromJson(i)));
+        return availableRideList;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
   Future<dynamic> deleteCar({required DeleteCarApi api}) async {
     try {
       Response userData = await APIClient()
@@ -82,5 +102,4 @@ class CarRepository extends ApiRepository {
       throw getErrorResponse(onError);
     }
   }
-
 }

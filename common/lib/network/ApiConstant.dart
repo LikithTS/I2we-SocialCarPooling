@@ -26,7 +26,7 @@ class ApiConstant {
   static const String UPDATE_USER = "user/update-details";
   static const String GET_USER = "user";
   static const String GET_USER_PROFILE_URL = "/user/profile-upload-url";
-  static const String GET_CAR_UPLOAD_URL = "/car/car-images-presigned-url/2";
+  static const String GET_CAR_UPLOAD_URL = "/car/car-images-presigned-url/";
   static const String POST_UPDATE_PROFILE_PHOTO = "/user/update-profile-photo";
   static const String POST_UPDATE_DL_PHOTO =
       "/user/update-driver-license-photo";
@@ -46,4 +46,5 @@ class ApiConstant {
   static const String CURRENT_RIDE = "ride/ride";
   static const String INVITE_CANCEL = "invite/cancel";
 
+  static const String RC_UPLOAD_URL = "/user/rc-upload-url";
 }

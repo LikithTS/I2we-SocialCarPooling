@@ -25,7 +25,7 @@ class AwsApi {
       log("call response upload   : " + response.request.toString());
       log("call response upload  body : " + response.body.toString());
       if (response.statusCode == 200) {
-        log("aws image upload" + response.toString());
+        log("aws image upload sucess" + response.toString());
         return true;
       }
     } catch (e) {

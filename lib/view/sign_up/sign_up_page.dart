@@ -1,19 +1,16 @@
-
-
 import 'dart:developer';
 
 import 'package:common/network/request/signinapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
+import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_address.dart';
@@ -57,18 +54,19 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   int age = 0;
 
   Future _registration(name, mobile) async {
-
-    if(apiValueGender.isEmpty) {
+    if (apiValueGender.isEmpty) {
       showSnackbar(context, "Please select gender");
     } else if (apiValueEducation.isEmpty) {
       showSnackbar(context, "Please select education");
     } else if (emailNoController.text.toString().isEmpty) {
       showSnackbar(context, "Please enter valid email id");
-    } else if(mobile.isBlank) {
+    } else if (mobile.isEmpty) {
       showSnackbar(context, "Please enter valid mobile number");
-    } else if(passwordController.text.toString().isEmpty || cpasswordController.text.toString().isEmpty) {
+    } else if (passwordController.text.toString().isEmpty ||
+        cpasswordController.text.toString().isEmpty) {
       showSnackbar(context, "Please enter password");
-    } else if(passwordController.text.toString() != cpasswordController.text.toString()) {
+    } else if (passwordController.text.toString() !=
+        cpasswordController.text.toString()) {
       showSnackbar(context, "Password is not matching");
     } else {
       SignInApi api = SignInApi(
@@ -280,16 +278,24 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     IconButton(
                       icon: const Icon(Icons.error_outline),
                       onPressed: () {
-                        alertWidgets(context,CPString.passwordInfo,DemoLocalizations.of(context)?.getText("password_info"));
+                        alertWidgets(
+                            context,
+                            CPString.passwordInfo,
+                            DemoLocalizations.of(context)
+                                ?.getText("password_info"));
                       },
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     InkWell(
-                      onTap:(){
-                        alertWidgets(context,CPString.passwordInfo,DemoLocalizations.of(context)?.getText("password_info"));
-                    },
+                      onTap: () {
+                        alertWidgets(
+                            context,
+                            CPString.passwordInfo,
+                            DemoLocalizations.of(context)
+                                ?.getText("password_info"));
+                      },
                       child: Container(
                           margin: EdgeInsets.only(top: 5),
                           child: Text(
@@ -313,9 +319,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Container(
                     child: TextFormField(
                       keyboardType: TextInputType.text,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10)
-                      ],
+                      inputFormatters: [LengthLimitingTextInputFormatter(10)],
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
@@ -376,9 +380,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Container(
                     child: TextFormField(
                       keyboardType: TextInputType.text,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10)
-                      ],
+                      inputFormatters: [LengthLimitingTextInputFormatter(10)],
                       controller: cpasswordController,
                       obscureText: !_cpasswordVisible,
                       decoration: InputDecoration(
@@ -608,22 +610,30 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   }
 
   String getGenderApiKey(Object? value) {
-    switch(value) {
-      case "Male" : return Constant.MALE;
-      case "Female" : return Constant.FEMALE;
-      default : return "";
+    switch (value) {
+      case "Male":
+        return Constant.MALE;
+      case "Female":
+        return Constant.FEMALE;
+      default:
+        return "";
     }
   }
 
   String getEducationValue(Object? value) {
-    switch(value) {
-      case "Primary Education" : return Constant.PRIMARY_EDUCATION;
-      case "Secondary Education" : return Constant.SECONDARY_EDUCATION;
-      case "Bachelors Degree" : return Constant.BACHELORS_DEGREE;
-      case "Master Degree" : return Constant.MASTERS_DEGREE;
-      case "Other" : return Constant.OTHER;
-      default : return "";
+    switch (value) {
+      case "Primary Education":
+        return Constant.PRIMARY_EDUCATION;
+      case "Secondary Education":
+        return Constant.SECONDARY_EDUCATION;
+      case "Bachelors Degree":
+        return Constant.BACHELORS_DEGREE;
+      case "Master Degree":
+        return Constant.MASTERS_DEGREE;
+      case "Other":
+        return Constant.OTHER;
+      default:
+        return "";
     }
   }
-
 }
