@@ -340,7 +340,7 @@ Widget buildHeader(
                 : CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
-                        AppPreference().userDetail?.profileImage ?? ""),
+                        CPSessionManager().getProfileImageWithBase()),
                   ),
             addHorizontalSpace(20),
             Column(

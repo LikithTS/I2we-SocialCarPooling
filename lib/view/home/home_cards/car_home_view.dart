@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -82,7 +83,8 @@ class _State extends State<HomeCarCard> {
                             flex: 2,
                             child: CircleAvatar(
                                 radius: 30,
-                                backgroundImage: NetworkImage(widget.carImage)),
+                                backgroundImage: NetworkImage(CPSessionManager()
+                                    .getCarImage(widget.carImage))),
                           ),
                           const SizedBox(width: 10),
                           Expanded(

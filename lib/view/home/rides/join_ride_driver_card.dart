@@ -1,3 +1,4 @@
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -6,6 +7,7 @@ import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/widgets/ride_amount_view.dart';
 import 'package:socialcarpooling/widgets/ride_type_view.dart';
+
 import '../../../utils/Localization.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/text_widgets.dart';
@@ -144,8 +146,10 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                               children: [
                                 CircleAvatar(
                                     radius: 30,
-                                    backgroundImage:
-                                        NetworkImage(widget.profileImage)),
+                                    backgroundImage: NetworkImage(
+                                        CPSessionManager().getImage(
+                                                widget.profileImage) ??
+                                            "")),
                                 const Positioned(
                                     bottom: 0,
                                     right: 0,

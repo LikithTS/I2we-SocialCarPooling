@@ -1,3 +1,4 @@
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
@@ -48,8 +49,9 @@ class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
                           children: [
                             CircleAvatar(
                                 radius: 30,
-                                backgroundImage:
-                                    NetworkImage(widget.profileImage)),
+                                backgroundImage: NetworkImage(CPSessionManager()
+                                        .getImage(widget.profileImage) ??
+                                    "")),
                             const Positioned(
                                 bottom: 0,
                                 right: 0,

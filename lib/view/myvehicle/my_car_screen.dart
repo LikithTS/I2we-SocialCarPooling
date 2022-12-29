@@ -162,7 +162,9 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                               child: CircleAvatar(
                                 radius: 30, // Image radius
                                 backgroundImage: NetworkImage(CPSessionManager()
-                                    .getProfileImageWithBase()),
+                                    .getCarImage(
+                                        getCarImageKey(widget.carList[index]) ??
+                                            "")),
                               ),
                             ),
                             Padding(
@@ -352,6 +354,13 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
     } else {
       showSnackbar(context, "No Internet");
     }
+  }
+
+  String getCarImageKey(CarDetailsResponse car) {
+    if (car.carPictures != null && car.carPictures!.isNotEmpty) {
+      return car.carPictures![0];
+    }
+    return "";
   }
 }
 

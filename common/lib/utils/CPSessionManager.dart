@@ -134,8 +134,20 @@ class CPSessionManager {
     return direction;
   }
 
-  String getImage(String imageKey) {
-    return AppPreference().imageBaseUrl + imageKey;
+  String? getImage(String? imageKey) {
+    if (imageKey != null) {
+      return AppPreference().imageBaseUrl + imageKey;
+    } else {
+      return "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png";
+    }
+  }
+
+  String getCarImage(String? imageKey) {
+    if (imageKey == null || imageKey.isEmpty) {
+      return "https://cdn.pixabay.com/photo/2022/06/02/18/17/car-7238650_1280.png";
+    } else {
+      return AppPreference().imageBaseUrl + imageKey;
+    }
   }
 
   String getProfileImageWithBase() {

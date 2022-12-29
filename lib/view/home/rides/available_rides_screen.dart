@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:common/network/model/AvailableRideResponse.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/AvailableRideApi.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_card.dart';
@@ -68,14 +69,15 @@ class AvailableRidesScreen extends StatelessWidget {
                             itemCount: availableRideList.length,
                             itemBuilder: (context, index) {
                               return AvailableRides(
-                                profileImage: availableRideList[index]
-                                        .user
-                                        ?.profileImage ??
+                                profileImage: CPSessionManager().getImage(
+                                        availableRideList[index]
+                                            .user
+                                            ?.profileImage) ??
                                     "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png",
-                                carIcon: availableRideList[index]
+                                carIcon: CPSessionManager().getCarImage(
+                                    availableRideList[index]
                                         .car
-                                        ?.carPictures?[0] ??
-                                    "",
+                                        ?.carPictures?[0]),
                                 startAddress: availableRideList[index]
                                         .startDestinationFormattedAddress ??
                                     "",
@@ -91,10 +93,8 @@ class AvailableRidesScreen extends StatelessWidget {
                                 carType:
                                     availableRideList[index].car?.carType ?? "",
                                 name: availableRideList[index].user?.name ?? "",
-                                designation: availableRideList[index]
-                                        .user
-                                        ?.work ??
-                                    "",
+                                designation:
+                                    availableRideList[index].user?.work ?? "",
                                 routeMatch: availableRideList[index]
                                         .rideMatchPercentage
                                         ?.toInt() ??
@@ -106,8 +106,14 @@ class AvailableRidesScreen extends StatelessWidget {
                                         .carTypeInterested ??
                                     "",
                                 rideType: rideDataType,
-                                driverRideId: getDriverId(availableRideList[index].id, api.rideId, api.rideType),
-                                passengerRideId: getPassengerId(availableRideList[index].id, api.rideId, api.rideType),
+                                driverRideId: getDriverId(
+                                    availableRideList[index].id,
+                                    api.rideId,
+                                    api.rideType),
+                                passengerRideId: getPassengerId(
+                                    availableRideList[index].id,
+                                    api.rideId,
+                                    api.rideType),
                               );
                             },
                           );
@@ -134,7 +140,7 @@ class AvailableRidesScreen extends StatelessWidget {
   }
 
   getDriverId(String? id, String rideId, String rideType) {
-    if(rideType == Constant.AS_HOST) {
+    if (rideType == Constant.AS_HOST) {
       return rideId;
     } else {
       return id;
@@ -142,7 +148,7 @@ class AvailableRidesScreen extends StatelessWidget {
   }
 
   getPassengerId(String? id, String rideId, String rideType) {
-    if(rideType == Constant.AS_RIDER) {
+    if (rideType == Constant.AS_RIDER) {
       return rideId;
     } else {
       return id;
