@@ -126,12 +126,14 @@ class _InviteRideCard extends State<InviteRideCard> {
                     if (widget.rideType == Constant.AS_HOST) ...[
                       Expanded(
                           flex: 2,
-                          child: FadeInImage.assetNetwork(
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
-                              placeholder: 'assets/place_holder.jpg',
-                              image: widget.carIcon)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 5),
+                            child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(CPSessionManager()
+                                        .getCarImage(widget.carIcon) ??
+                                    "")),
+                          )),
                       const SizedBox(width: 15),
                     ],
                     Expanded(
