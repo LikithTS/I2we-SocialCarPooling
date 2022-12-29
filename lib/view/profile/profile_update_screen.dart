@@ -53,9 +53,11 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
     mobileNoController.text = AppPreference().userDetail?.phoneNumber ?? "";
     emailNoController.text = AppPreference().userDetail?.email ?? "";
     workController.text = AppPreference().userDetail?.work ?? "";
-    dateController.text =
-        getFormattedDate(DateTime.parse(AppPreference().userDetail?.dob ?? ""));
-    selectedValueGender = AppPreference().userDetail?.gender ?? "";
+    if(AppPreference().userDetail != null && AppPreference().userDetail?.dob != null) {
+      dateController.text =
+          getFormattedDate(DateTime.parse(AppPreference().userDetail?.dob ?? ""));
+    }
+    selectedValueGender = AppPreference().userDetail?.gender ?? "Gender";
   }
 
   @override

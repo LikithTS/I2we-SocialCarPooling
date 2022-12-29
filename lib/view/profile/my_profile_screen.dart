@@ -202,7 +202,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             context,
                             PageTransition(
                                 type: PageTransitionType.bottomToTop,
-                                child: ProfileUpdateScreen()));
+                                child: const ProfileUpdateScreen()));
                       },
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
