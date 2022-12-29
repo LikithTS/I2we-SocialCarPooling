@@ -84,7 +84,7 @@ class MyRideRoutesView extends StatelessWidget {
             height: deviceHeight(context) * .50,
             child: MapScreen(
               gpsIconShow: false,
-              directionAlreadyAvailable: false,
+              directionAlreadyAvailable: true,
               startLocation: startLocation,
               endLocation: endLocation,
             ),
@@ -523,9 +523,9 @@ class MyRideRoutesView extends StatelessWidget {
         profileImage: invites[index].asPassenger?.user?.profileImage ?? "",
         carIcon: invites[index].asPassenger?.car?.carPictures?[0] ?? "",
         startAddress:
-        invites[index].asPassenger?.startDestinationFormattedAddress ?? "",
+            invites[index].asPassenger?.startDestinationFormattedAddress ?? "",
         endAddress:
-        invites[index].asPassenger?.endDestinationFormattedAddress ?? "",
+            invites[index].asPassenger?.endDestinationFormattedAddress ?? "",
         rideType: getRideType(rideType),
         amount: invites[index].asPassenger?.amountPerSeat ?? 0,
         dateTime: getDateTimeFormatter()
@@ -545,13 +545,13 @@ class MyRideRoutesView extends StatelessWidget {
         profileImage: invites[index].asDriver?.user?.profileImage ?? "",
         carIcon: invites[index].asDriver?.car?.carPictures?[0] ?? "",
         startAddress:
-        invites[index].asDriver?.startDestinationFormattedAddress ?? "",
+            invites[index].asDriver?.startDestinationFormattedAddress ?? "",
         endAddress:
-        invites[index].asDriver?.endDestinationFormattedAddress ?? "",
+            invites[index].asDriver?.endDestinationFormattedAddress ?? "",
         rideType: getRideType(rideType),
         amount: invites[index].asDriver?.amountPerSeat ?? 0,
         dateTime:
-        getDateTimeFormatter().parse(invites[index].asDriver!.startTime!),
+            getDateTimeFormatter().parse(invites[index].asDriver!.startTime!),
         seatsOffered: invites[index].asDriver?.seatsOffered ?? 1,
         carType: invites[index].asDriver?.car?.carType ?? "",
         name: invites[index].asDriver?.user?.name ?? "",
@@ -591,5 +591,4 @@ class MyRideRoutesView extends StatelessWidget {
       refreshScreen: refreshScreen,
     );
   }
-
 }
