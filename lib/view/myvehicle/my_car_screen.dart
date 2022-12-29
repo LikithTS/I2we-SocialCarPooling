@@ -6,6 +6,7 @@ import 'package:common/network/request/deleteCarApi.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
 import 'package:common/network/response/CarDetailsResponse.dart';
 import 'package:common/network/response/SuccessResponse.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -156,12 +157,12 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                         elevation: 5,
                         child: Row(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(8.0),
                               child: CircleAvatar(
                                 radius: 30, // Image radius
-                                backgroundImage: NetworkImage(
-                                    'http://m.gettywallpapers.com/wp-content/uploads/2021/09/Hulk-Wallpaper.jpg'),
+                                backgroundImage: NetworkImage(CPSessionManager()
+                                    .getProfileImageWithBase()),
                               ),
                             ),
                             Padding(

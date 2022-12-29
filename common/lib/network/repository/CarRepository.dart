@@ -11,6 +11,7 @@ import '../model/error_response.dart';
 import '../response/CarDetailsResponse.dart';
 import '../response/SuccessResponse.dart';
 import '../response/car/AddCarResponse.dart';
+import '../response/user/ProfileImageUploadUrl.dart';
 import 'ApiRepository.dart';
 
 class CarRepository extends ApiRepository {
@@ -81,6 +82,22 @@ class CarRepository extends ApiRepository {
         List<AddCarResponse> availableRideList = List<AddCarResponse>.from(
             response.map((i) => AddCarResponse.fromJson(i)));
         return availableRideList;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<dynamic> getRcUploadURL() async {
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .get(ApiConstant.GET_USER_PROFILE_URL);
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return "";
+      } else {
+        return ProfileImageUpload.fromJson(response[0]);
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/addCarApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/car/AddCarResponse.dart';
+import 'package:common/network/response/user/ProfileImageUploadUrl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,6 +26,7 @@ import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import '../../utils/widget_functions.dart';
+import '../../widgets/aleart_widgets.dart';
 import '../../widgets/button_widgets.dart';
 
 class AddCarScreen extends StatefulWidget {
@@ -51,6 +54,7 @@ class AddCarScreenState extends State<AddCarScreen> {
   List<XFile?>? carImages;
   CarRepository get _carRepository => widget.carRepository;
   List<String> finalCarImageKeys = [];
+  String finalRcPicture = "";
 
   final carNameController = TextEditingController();
   final carRegNumberController = TextEditingController();
@@ -421,38 +425,36 @@ class AddCarScreenState extends State<AddCarScreen> {
                         ),
                       ),
                       addVerticalSpace(10),
-                      GestureDetector(
-                        onTap: () {
-                          Future<dynamic> future = viewModel.getRcImage();
-                          future.then((value) => {
-                                if (value != null && value is File)
-                                  setState(() {
-                                    rcImageFile = value;
-                                  })
-                              });
-                        },
-                        child: Material(
-                          elevation: 2.0,
-                          child: TextFormField(
-                            readOnly: true,
-                            showCursor: true,
-                            cursorWidth: 0,
-                            decoration: InputDecoration(
-                              filled: true,
-                              labelText: DemoLocalizations.of(context)
-                                      ?.getText("upload_document") ??
-                                  "",
-                              hintText: DemoLocalizations.of(context)
-                                  ?.getText("add_photos"),
-                              labelStyle: const TextStyle(color: hintColor),
-                              hintStyle:
-                                  const TextStyle(color: primaryLightColor),
-                              prefixIcon: const Icon(Icons.newspaper,
-                                  color: primaryLightColor),
-                              suffixIcon: const Icon(
-                                Icons.add_circle_outline,
-                                color: primaryLightColor,
-                              ),
+                      Material(
+                        elevation: 2.0,
+                        child: TextFormField(
+                          readOnly: true,
+                          showCursor: false,
+                          cursorWidth: 0,
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: DemoLocalizations.of(context)
+                                    ?.getText("upload_document") ??
+                                "",
+                            hintText: DemoLocalizations.of(context)
+                                ?.getText("add_photos"),
+                            labelStyle: const TextStyle(color: hintColor),
+                            hintStyle:
+                                const TextStyle(color: primaryLightColor),
+                            prefixIcon: const Icon(Icons.newspaper,
+                                color: primaryLightColor),
+                            suffixIcon: IconButton(
+                              color: primaryLightColor,
+                              onPressed: () {
+                                Future<dynamic> future = viewModel.getRcImage();
+                                future.then((value) => {
+                                      if (value != null && value is File)
+                                        setState(() {
+                                          rcImageFile = value;
+                                        })
+                                    });
+                              },
+                              icon: Icon(Icons.add_circle_outline),
                             ),
                           ),
                         ),
@@ -638,10 +640,11 @@ class AddCarScreenState extends State<AddCarScreen> {
         isEv: isEv,
         carName: carName,
         seatingCapacity: seatingCapacity,
-        carPicture: carPictures,
-        offeringSeats: offeringSeats,
+        carPictures: carPictures,
+        offeringSeat: offeringSeats,
         carType: carType,
-        carRcPicture: rcPicture);
+        drivingStatus: set_default,
+        rcPicture: rcPicture);
 
     Future<dynamic> future = _carRepository.addNewCar(api: api);
     future.then((value) => {handleResponseData(value)});
@@ -669,7 +672,7 @@ class AddCarScreenState extends State<AddCarScreen> {
         }
       }
     }
-
+    await handleRcImageUpload();
     addCarApi(
         carRegNumberController.text,
         is_electric_vehicle,
@@ -679,6 +682,25 @@ class AddCarScreenState extends State<AddCarScreen> {
         offeringSeats,
         selectedCarType,
         "");
+  }
+
+  handleRcImageUpload() async {
+    var future = CarRepository().getRcUploadURL();
+    future.then((value) => handleRcUrl(value));
+  }
+
+  handleRcUrl(value) async {
+    if (value is ProfileImageUpload) {
+      if (value.url != null && rcImageFile != null) {
+        var uploaded = await AwsApi().uploadImage(value.url!, rcImageFile!);
+        if (uploaded) {
+          finalRcPicture = value.key ?? "";
+        }
+      }
+    } else {
+      InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 
   handleResponseData(value) {
@@ -709,8 +731,9 @@ class AddCarScreenState extends State<AddCarScreen> {
               ],
             );
           });
-    } else {
+    } else if (value is ErrorResponse) {
       InternetChecks.closeLoadingProgress(context);
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
 }
