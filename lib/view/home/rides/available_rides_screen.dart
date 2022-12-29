@@ -74,10 +74,10 @@ class AvailableRidesScreen extends StatelessWidget {
                                             .user
                                             ?.profileImage) ??
                                     "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png",
-                                carIcon: CPSessionManager().getCarImage(
-                                    availableRideList[index]
+                                carIcon: availableRideList[index]
                                         .car
-                                        ?.carPictures?[0]),
+                                        ?.carPictures?[0] ??
+                                    "",
                                 startAddress: availableRideList[index]
                                         .startDestinationFormattedAddress ??
                                     "",

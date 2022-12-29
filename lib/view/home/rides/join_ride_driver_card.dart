@@ -74,12 +74,9 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                               CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 30,
-                                child: FadeInImage.assetNetwork(
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                    placeholder: 'assets/place_holder.jpg',
-                                    image: widget.carIcon),
+                                backgroundImage: NetworkImage(CPSessionManager()
+                                        .getCarImage(widget.carIcon) ??
+                                    ""),
                               ),
                               const Positioned(
                                   bottom: 0,
@@ -132,7 +129,7 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                 ),
               ),
               Container(
-                width: screenWidth * 0.85,
+                width: screenWidth * 0.90,
                 margin: const EdgeInsets.all(5.0),
                 child: Column(
                   children: [

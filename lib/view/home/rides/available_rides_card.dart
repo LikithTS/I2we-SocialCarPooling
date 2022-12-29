@@ -153,12 +153,10 @@ class AvailableRides extends StatelessWidget {
                     if (rideType == Constant.AS_HOST) ...[
                       Expanded(
                           flex: 2,
-                          child: FadeInImage.assetNetwork(
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
-                              placeholder: 'assets/place_holder.jpg',
-                              image: carIcon)),
+                          child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  CPSessionManager().getCarImage(carIcon)))),
                       const SizedBox(width: 15),
                     ],
                     Expanded(
