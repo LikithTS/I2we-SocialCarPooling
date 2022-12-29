@@ -1,19 +1,15 @@
-  import 'dart:core';
+import 'dart:core';
 import 'dart:developer';
 
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
-import 'package:common/network/response/AuthResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 
 import '../../../utils/Localization.dart';
 import '../../../widgets/text_widgets.dart';
-
 
 class HomeCarCard extends StatefulWidget {
   final String carId;
@@ -22,23 +18,25 @@ class HomeCarCard extends StatefulWidget {
   final String carNumber;
   final int numberOfSeatsOffered;
   final int numberOfSeatsAvailable;
+  final String carImage;
   bool defaultStatus;
   final CarRepository carRepository;
 
-  HomeCarCard({Key? key,
-    required this.carId,
-    required this.carType,
-    required this.carName,
-    required this.carNumber,
-    required this.numberOfSeatsOffered,
-    required this.numberOfSeatsAvailable,
-    required this.defaultStatus,
-    required this.carRepository
-  }) : super(key: key);
+  HomeCarCard(
+      {Key? key,
+      required this.carId,
+      required this.carType,
+      required this.carName,
+      required this.carNumber,
+      required this.numberOfSeatsOffered,
+      required this.numberOfSeatsAvailable,
+      required this.defaultStatus,
+      required this.carRepository,
+      required this.carImage})
+      : super(key: key);
 
   @override
   _State createState() => _State();
-
 }
 
 class _State extends State<HomeCarCard> {
@@ -64,7 +62,8 @@ class _State extends State<HomeCarCard> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-              child: primaryTextWidgetLeft(context, DemoLocalizations.of(context)?.getText("my_cars_title")),
+              child: primaryTextWidgetLeft(context,
+                  DemoLocalizations.of(context)?.getText("my_cars_title")),
             ),
             GestureDetector(
               onTap: () {
@@ -79,12 +78,11 @@ class _State extends State<HomeCarCard> {
                     children: [
                       Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             flex: 2,
                             child: CircleAvatar(
                                 radius: 30,
-                                backgroundImage: NetworkImage(
-                                    "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
+                                backgroundImage: NetworkImage(widget.carImage)),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -94,7 +92,8 @@ class _State extends State<HomeCarCard> {
                               children: [
                                 primaryThemeTextWidget(context, widget.carType),
                                 primaryTextNormal(context, widget.carName),
-                                primaryThemeTextNormal(context, widget.carNumber)
+                                primaryThemeTextNormal(
+                                    context, widget.carNumber)
                               ],
                             ),
                           ),
@@ -105,7 +104,7 @@ class _State extends State<HomeCarCard> {
                                 Card(
                                   child: Container(
                                     margin: const EdgeInsets.all(4.0),
-                                    child: Wrap (
+                                    child: Wrap(
                                       direction: Axis.vertical,
                                       children: [
                                         Expanded(
@@ -114,30 +113,58 @@ class _State extends State<HomeCarCard> {
                                               Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  const Icon(Icons.airline_seat_recline_normal, color: Colors.blue,),
-                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("seats")),
+                                                  const Icon(
+                                                    Icons
+                                                        .airline_seat_recline_normal,
+                                                    color: Colors.blue,
+                                                  ),
+                                                  primaryTextSmall(
+                                                      context,
+                                                      DemoLocalizations.of(
+                                                              context)
+                                                          ?.getText("seats")),
                                                 ],
                                               ),
-                                              const SizedBox(width: 5,),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
                                               Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  primaryThemeTextWidget(context, widget.numberOfSeatsAvailable.toString()),
-                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("available")),
+                                                  primaryThemeTextWidget(
+                                                      context,
+                                                      widget
+                                                          .numberOfSeatsAvailable
+                                                          .toString()),
+                                                  primaryTextSmall(
+                                                      context,
+                                                      DemoLocalizations.of(
+                                                              context)
+                                                          ?.getText(
+                                                              "available")),
                                                 ],
                                               ),
-                                              const SizedBox(width: 5,),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
                                               Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  primaryThemeTextWidget(context, widget.numberOfSeatsOffered.toString()),
-                                                  primaryTextSmall(context, DemoLocalizations.of(context)?.getText("offered")),
+                                                  primaryThemeTextWidget(
+                                                      context,
+                                                      widget
+                                                          .numberOfSeatsOffered
+                                                          .toString()),
+                                                  primaryTextSmall(
+                                                      context,
+                                                      DemoLocalizations.of(
+                                                              context)
+                                                          ?.getText("offered")),
                                                 ],
                                               ),
                                             ],
                                           ),
                                         )
-
                                       ],
                                     ),
                                   ),
@@ -146,9 +173,13 @@ class _State extends State<HomeCarCard> {
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Row(
                                     children: [
-                                      secondaryTextSmall(context, DemoLocalizations.of(context)?.getText("set_default")),
+                                      secondaryTextSmall(
+                                          context,
+                                          DemoLocalizations.of(context)
+                                              ?.getText("set_default")),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 10, right: 10),
                                         child: CupertinoSwitch(
                                           // This bool value toggles the switch.
                                           value: widget.defaultStatus,
@@ -157,7 +188,8 @@ class _State extends State<HomeCarCard> {
                                             setState(() {
                                               log("Cupertion switch $value");
                                               widget.defaultStatus = value;
-                                              changeDefaultStateOfCar(widget.carId, value);
+                                              changeDefaultStateOfCar(
+                                                  widget.carId, value);
                                             });
                                           },
                                         ),
@@ -185,6 +217,7 @@ class _State extends State<HomeCarCard> {
     Navigator.push(
         context,
         PageTransition(
-            type: PageTransitionType.leftToRightWithFade, child: AllCarDetailsPage(carRepository: CarRepository())));
+            type: PageTransitionType.leftToRightWithFade,
+            child: AllCarDetailsPage(carRepository: CarRepository())));
   }
 }

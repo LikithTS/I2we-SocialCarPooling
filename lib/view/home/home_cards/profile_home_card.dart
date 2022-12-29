@@ -1,3 +1,4 @@
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -25,74 +26,79 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-                child: primaryTextWidgetLeft(context, DemoLocalizations.of(context)?.getText("my_profile")),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Add page navigation here
-                  openProfilePage(context);
-                },
-                child: Card(
-                  child: Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.all(10.0),
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Expanded(
-                              flex: 2,
-                              child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(
-                                      "https://free4kwallpapers.com/uploads/wallpaper/incredible-hulk-wallpaper-1024x768-wallpaper.jpg")),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  primaryThemeTextWidget(context, profileName),
-                                  primaryTextNormal(context, DemoLocalizations.of(context)?.getText("complete_profile")),
-                                ],
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+                  child: primaryTextWidgetLeft(context,
+                      DemoLocalizations.of(context)?.getText("my_profile")),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Add page navigation here
+                    openProfilePage(context);
+                  },
+                  child: Card(
+                    child: Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(10.0),
+                      child: Wrap(
+                        direction: Axis.horizontal,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        CPSessionManager()
+                                            .getProfileImageWithBase())),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: CircularPercentIndicator(
-                                  radius: 55,
-                                  lineWidth: 6,
-                                  percent: profileCompletionPercentage/100,
-                                  progressColor: progressThemeColor,
-                                  backgroundColor: lightGreyColor,
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  center: primaryThemeTextWidget(context,
-                                      '${getPercentage(profileCompletionPercentage/100)}%')),
-                            )
-                          ],
-                        ),
-                      ],
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    primaryThemeTextWidget(
+                                        context, profileName),
+                                    primaryTextNormal(
+                                        context,
+                                        DemoLocalizations.of(context)
+                                            ?.getText("complete_profile")),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CircularPercentIndicator(
+                                    radius: 55,
+                                    lineWidth: 6,
+                                    percent: profileCompletionPercentage / 100,
+                                    progressColor: progressThemeColor,
+                                    backgroundColor: lightGreyColor,
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    center: primaryThemeTextWidget(context,
+                                        '${getPercentage(profileCompletionPercentage / 100)}%')),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )
-        )
-    );
+              ],
+            )));
   }
 
   void openProfilePage(BuildContext context) {
     Navigator.push(
         context,
         PageTransition(
-            type: PageTransitionType.leftToRightWithFade, child: const MyProfileScreen()));
+            type: PageTransitionType.leftToRightWithFade,
+            child: const MyProfileScreen()));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +39,7 @@ class RatingsAndReviews extends StatelessWidget {
                 CircleAvatar(
                   radius: size.width / 3,
                   backgroundImage: NetworkImage(
-                      "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                      CPSessionManager().getProfileImageWithBase()),
                 ),
                 addVerticalSpace(5),
                 ratingsAndReviewsCenterText("User Name", primaryColor, 26.sp,
@@ -86,7 +87,7 @@ class RatingsAndReviews extends StatelessWidget {
                                     EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                                 child: Stack(
                                   alignment: Alignment.bottomRight,
-                                  children: const [
+                                  children: [
                                     Padding(
                                       padding: EdgeInsets.only(
                                         right: 1,
@@ -94,7 +95,8 @@ class RatingsAndReviews extends StatelessWidget {
                                       child: CircleAvatar(
                                         radius: 25,
                                         backgroundImage: NetworkImage(
-                                            "https://cdn.britannica.com/64/182864-050-8975B127/Scene-The-Incredible-Hulk-Louis-Leterrier.jpg"),
+                                            CPSessionManager()
+                                                .getProfileImageWithBase()),
                                       ),
                                     ),
                                     Icon(
