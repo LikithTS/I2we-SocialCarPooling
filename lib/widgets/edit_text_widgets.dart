@@ -15,7 +15,8 @@ Widget inputEditTextWithPrefixWidget(
         int flag,
         int maxLength,
         InputValidationMixin inputValidationMixin,
-        String? initValue) =>
+        String? initValue,
+        bool? readOnlyText) =>
     Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
@@ -26,6 +27,7 @@ Widget inputEditTextWithPrefixWidget(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: TextFormField(
           controller: _controller,
+          readOnly: readOnlyText ?? false,
           keyboardType: flag == 2 && flag == 4
               ? TextInputType.number
               : TextInputType.text,

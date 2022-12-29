@@ -56,6 +56,7 @@ class _SocialLoginNewUserVerificationScreenState
   bool enableResend = false;
   bool enableSendOtpButton = false;
   bool otpSent = false;
+  bool readOnly = false;
   Timer? timer;
 
   TextEditingController otpString1Controller = TextEditingController();
@@ -104,6 +105,7 @@ class _SocialLoginNewUserVerificationScreenState
     setState(() {
       log("Set state otp");
       otpSent = true;
+      readOnly = true;
       widget.mobileNo = phoneNumber!;
     });
   }
@@ -167,30 +169,31 @@ class _SocialLoginNewUserVerificationScreenState
                             4,
                             10,
                             this,
-                            widget.mobileNo),
+                            widget.mobileNo,
+                            readOnly),
                       ),
-                      if (widget.mobileNo.isNotEmpty &&
-                          !enableSendOtpButton) ...[
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  enableSendOtpButton = true;
-                                });
-                              },
-                              child: Positioned(
-                                  right: 40,
-                                  bottom: 25,
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyleUtils.primaryTextMedium
-                                        .copyWith(
-                                            color: primaryColor,
-                                            fontSize: fontSize16),
-                                  ))),
-                        ),
-                      ],
+                      // if (widget.mobileNo.isNotEmpty &&
+                      //     !enableSendOtpButton) ...[
+                      //   Padding(
+                      //     padding: const EdgeInsets.all(20.0),
+                      //     child: InkWell(
+                      //         onTap: () {
+                      //           setState(() {
+                      //             enableSendOtpButton = true;
+                      //           });
+                      //         },
+                      //         child: Positioned(
+                      //             right: 40,
+                      //             bottom: 25,
+                      //             child: Text(
+                      //               'Edit',
+                      //               style: TextStyleUtils.primaryTextMedium
+                      //                   .copyWith(
+                      //                       color: primaryColor,
+                      //                       fontSize: fontSize16),
+                      //             ))),
+                      //   ),
+                      // ],
                       if (enableSendOtpButton) ...[
                         Padding(
                           padding: const EdgeInsets.all(20.0),

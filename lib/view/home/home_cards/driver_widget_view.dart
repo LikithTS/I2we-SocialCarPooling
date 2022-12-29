@@ -130,7 +130,14 @@ class HomeDriverState extends State<DriverWidgetView> {
     if (value is SuccessResponse) {
       log("Post new ride successful");
       alertDialogView(context, "ride_created_successful");
-      setState(() {});
+      setState(() {
+        originValue.text = "";
+        destinationValue.text = "";
+        timeValue.text = "";
+        dateValue.text = "";
+        seatOffered.text = "";
+        rideAmount.text = "";
+      });
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }

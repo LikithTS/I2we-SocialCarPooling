@@ -83,7 +83,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   void validOtp(ValidOtpApi validOtpApi) {
     Future<dynamic> future = SigninRepository().validOtp(api: validOtpApi);
-    future.then((value) => {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
+    future.then((value) =>
+        {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
     //     .catchError((onError) {
     //   handleErrorResponse(onError);
     // });
@@ -108,7 +109,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
           context,
           PageTransition(
               type: PageTransitionType.bottomToTop,
-              child: ForgetPasswordConfirmScreen(mobileNumber: phoneNumber,)));
+              child: ForgetPasswordConfirmScreen(
+                mobileNumber: phoneNumber,
+              )));
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? "");
     }
@@ -154,57 +157,58 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                             4,
                             10,
                             this,
-                            widget.mobileNo),
+                            widget.mobileNo,
+                            true),
                       ),
-                      if (widget.mobileNo.isNotEmpty &&
-                          !enableSendOtpButton) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  enableSendOtpButton = true;
-                                });
-                              },
-                              child: Positioned(
-                                  right: 40,
-                                  bottom: 10,
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyleUtils.primaryTextMedium
-                                        .copyWith(
-                                        color: primaryColor,
-                                        fontSize: fontSize16),
-                                  )
-                              )
-                          ),
-                        ),
-                      ],
-                      if (enableSendOtpButton) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  enableSendOtpButton = false;
-                                  InternetChecks.isConnected().then((isAvailable) =>
-                                  {callSendOtpApi(isAvailable, widget.mobileNo)});
-                                });
-                              },
-                              child: Positioned(
-                                  right: 40,
-                                  bottom: 20,
-                                  child: Text(
-                                    'Send OTP',
-                                    style: TextStyleUtils.primaryTextMedium
-                                        .copyWith(
-                                        color: primaryColor,
-                                        fontSize: fontSize16),
-                                  )
-                              )
-                          ),
-                        ),
-                      ],
+                      // if (widget.mobileNo.isNotEmpty &&
+                      //     !enableSendOtpButton) ...[
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
+                      //     child: InkWell(
+                      //         onTap: () {
+                      //           setState(() {
+                      //             enableSendOtpButton = true;
+                      //           });
+                      //         },
+                      //         child: Positioned(
+                      //             right: 40,
+                      //             bottom: 10,
+                      //             child: Text(
+                      //               'Edit',
+                      //               style: TextStyleUtils.primaryTextMedium
+                      //                   .copyWith(
+                      //                   color: primaryColor,
+                      //                   fontSize: fontSize16),
+                      //             )
+                      //         )
+                      //     ),
+                      //   ),
+                      // ],
+                      // if (enableSendOtpButton) ...[
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
+                      //     child: InkWell(
+                      //         onTap: () {
+                      //           setState(() {
+                      //             enableSendOtpButton = false;
+                      //             InternetChecks.isConnected().then((isAvailable) =>
+                      //             {callSendOtpApi(isAvailable, widget.mobileNo)});
+                      //           });
+                      //         },
+                      //         child: Positioned(
+                      //             right: 40,
+                      //             bottom: 20,
+                      //             child: Text(
+                      //               'Send OTP',
+                      //               style: TextStyleUtils.primaryTextMedium
+                      //                   .copyWith(
+                      //                   color: primaryColor,
+                      //                   fontSize: fontSize16),
+                      //             )
+                      //         )
+                      //     ),
+                      //   ),
+                      // ],
                     ],
                   ),
                   Container(
@@ -331,8 +335,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   void _resendCode() {
     //other code here
-    InternetChecks.isConnected().then((isAvailable) =>
-    {callSendOtpApi(isAvailable, widget.mobileNo)});
+    InternetChecks.isConnected()
+        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
     setState(() {
       secondsRemaining = 10;
       enableResend = false;
@@ -346,7 +350,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   }
 
   void callSendOtpApi(bool isInternetAvailable, String mobileNo) {
-    if(isInternetAvailable) {
+    if (isInternetAvailable) {
       if (mobileNo.isNotEmpty) {
         InternetChecks.showLoadingCircle(context);
         SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
@@ -360,14 +364,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   void callValidateOtpApi(String mobileNumber, String otpText) {
     log("Mobile Number $mobileNumber");
     log("Otp $otpText");
-    if(mobileNumber.isEmpty) {
+    if (mobileNumber.isEmpty) {
       alertDialogView(context, "change_password_mobile_no_error");
-    } else if(otpText.isEmpty) {
-      if(otpSent) {
+    } else if (otpText.isEmpty) {
+      if (otpSent) {
         alertDialogView(context, "change_password_otp_error");
       } else {
-        InternetChecks.isConnected().then((isAvailable) =>
-        {callSendOtpApi(isAvailable, mobileNumber)});
+        InternetChecks.isConnected()
+            .then((isAvailable) => {callSendOtpApi(isAvailable, mobileNumber)});
       }
     } else {
       if (mobileNumber.isNotEmpty && otpText.isNotEmpty) {
@@ -380,12 +384,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   }
 
   String getButtonLabel(String mobileNo) {
-    if(mobileNo.isNotEmpty) {
-       return DemoLocalizations.of(context)!
-           .getText("verify");
+    if (mobileNo.isNotEmpty) {
+      return DemoLocalizations.of(context)!.getText("verify");
     } else {
-      return DemoLocalizations.of(context)!
-          .getText("send_otp");
+      return DemoLocalizations.of(context)!.getText("send_otp");
     }
   }
 }

@@ -56,7 +56,7 @@ class _SignUpAddressState extends State<SignUpAddress>
         work: signInApi.work,
         password: signInApi.password);
     print('${api.toJson().toString()}');
-    if(isAvailable) {
+    if (isAvailable) {
       signIn(api);
     } else {
       showSnackbar(context, "No Internet");
@@ -87,7 +87,8 @@ class _SignUpAddressState extends State<SignUpAddress>
                     5,
                     30,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -103,7 +104,8 @@ class _SignUpAddressState extends State<SignUpAddress>
                     5,
                     20,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -119,7 +121,8 @@ class _SignUpAddressState extends State<SignUpAddress>
                     5,
                     15,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -135,7 +138,8 @@ class _SignUpAddressState extends State<SignUpAddress>
                     5,
                     15,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -151,19 +155,20 @@ class _SignUpAddressState extends State<SignUpAddress>
                     4,
                     6,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               Container(
-                margin:
-                const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+                margin: const EdgeInsets.only(
+                    left: 30, right: 30, top: 10, bottom: 10),
                 padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       InternetChecks.isConnected().then((isAvailable) => {
-                      _registrationAddress(
-                        addressController.text, addressTwoController.text, isAvailable)
-                      });
+                            _registrationAddress(addressController.text,
+                                addressTwoController.text, isAvailable)
+                          });
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -192,10 +197,7 @@ class _SignUpAddressState extends State<SignUpAddress>
   void signIn(SignInApi signInApi) {
     InternetChecks.showLoadingCircle(context);
     Future<dynamic> future = SigninRepository().signIn(api: signInApi);
-    future.then((value) =>
-    {
-      handleResponseData(value)
-    });
+    future.then((value) => {handleResponseData(value)});
   }
 
   handleResponseData(value) {
@@ -205,7 +207,8 @@ class _SignUpAddressState extends State<SignUpAddress>
           context,
           PageTransition(
               type: PageTransitionType.leftToRight,
-              child: VerifyOtpPage(userName: widget.signInApi.name,
+              child: VerifyOtpPage(
+                userName: widget.signInApi.name,
                 mobileNo: widget.signInApi.phoneNumber,
               )));
     } else if (value is ErrorResponse) {

@@ -134,7 +134,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     1,
                     20,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -150,7 +151,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     2,
                     10,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -166,7 +168,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     3,
                     30,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -488,7 +491,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     5,
                     30,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),

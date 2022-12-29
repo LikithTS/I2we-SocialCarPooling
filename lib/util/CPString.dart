@@ -68,7 +68,7 @@ class CPString {
       "Please enter same as password and confirm password";
   static const String registerSuccess = "The registration successful";
   static const String signupAgree = "By Signing up ,you agree with our ";
-  static const String termsConditions = "Terms & conditions";
+  static const String termsConditions = "\n\nTerms & conditions";
   static const String resendOTP = "Resend OTP";
   static const String resendOtpIn = 'Resend OTP in ';
   static const String dontreciveOtp = 'Didn’t receive.Click here to ';

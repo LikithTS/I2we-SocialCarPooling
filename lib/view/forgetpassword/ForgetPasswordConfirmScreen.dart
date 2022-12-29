@@ -23,11 +23,9 @@ import '../../widgets/header_widgets.dart';
 import '../../widgets/image_widgets.dart';
 
 class ForgetPasswordConfirmScreen extends StatefulWidget {
-
   String mobileNumber;
 
-  ForgetPasswordConfirmScreen(
-      {Key? key, required this.mobileNumber})
+  ForgetPasswordConfirmScreen({Key? key, required this.mobileNumber})
       : super(key: key);
 
   @override
@@ -39,6 +37,7 @@ class _ForgetPasswordConfirmScreenState
     extends State<ForgetPasswordConfirmScreen> with InputValidationMixin {
   TextEditingController newPassController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +67,8 @@ class _ForgetPasswordConfirmScreenState
                         4,
                         10,
                         this,
-                        ""),
+                        "",
+                        false),
                   ),
                   addHorizontalSpace(20),
                   Padding(
@@ -83,7 +83,8 @@ class _ForgetPasswordConfirmScreenState
                         4,
                         10,
                         this,
-                        ""),
+                        "",
+                        false),
                   ),
                   Container(
                     width: deviceWidth(context),
@@ -124,21 +125,22 @@ class _ForgetPasswordConfirmScreenState
     log("New Password text ${newPassController.text}");
     log("Confirm Password text ${confirmPassController.text}");
     log("Mobile number $mobileNumber");
-    if(newPassController.text == confirmPassController.text && mobileNumber.isNotEmpty) {
-        log("Both the password is same");
-        ChangePasswordApi changePasswordApi = ChangePasswordApi(
-            phoneNumber: mobileNumber, password: confirmPassController.text);
-        Future<dynamic> future = ChangePasswordRepository().changePassword(api: changePasswordApi);
-        future.then((value) => {handleResponseData(value)});
+    if (newPassController.text == confirmPassController.text &&
+        mobileNumber.isNotEmpty) {
+      log("Both the password is same");
+      ChangePasswordApi changePasswordApi = ChangePasswordApi(
+          phoneNumber: mobileNumber, password: confirmPassController.text);
+      Future<dynamic> future =
+          ChangePasswordRepository().changePassword(api: changePasswordApi);
+      future.then((value) => {handleResponseData(value)});
     }
   }
 
   handleResponseData(value) {
-
     GetProfileDetails(context);
     Timer(
         const Duration(seconds: 2),
-            () => Navigator.pushReplacement(
+        () => Navigator.pushReplacement(
             context,
             PageTransition(
                 type: PageTransitionType.bottomToTop,

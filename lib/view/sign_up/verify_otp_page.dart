@@ -18,6 +18,7 @@ import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
+import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
@@ -100,7 +101,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                   const SizedBox(
                     height: 20,
                   ),
-                  Stack(
+                  Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -113,47 +114,48 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             4,
                             10,
                             this,
-                            widget.mobileNo),
+                            widget.mobileNo,
+                            true),
                       ),
-                      InkWell(
-                          onTap: () {
-                            setState(() {
-                              enableSendOtpButton = true;
-                            });
-                          },
-                          child: Positioned(
-                              right: 40,
-                              bottom: 15,
-                              child: Text(
-                                'Edit',
-                                style: TextStyleUtils.primaryTextMedium
-                                    .copyWith(
-                                        color: primaryColor,
-                                        fontSize: fontSize16),
-                              ))),
-                      if (enableSendOtpButton) ...[
-                        InkWell(
-                            onTap: () {
-                              setState(() {
-                                enableSendOtpButton = false;
-                                InternetChecks.isConnected().then(
-                                    (isAvailable) => {
-                                          callSendOtpApi(
-                                              isAvailable, widget.mobileNo)
-                                        });
-                              });
-                            },
-                            child: Positioned(
-                                right: 40,
-                                bottom: 15,
-                                child: Text(
-                                  'Send OTP',
-                                  style: TextStyleUtils.primaryTextMedium
-                                      .copyWith(
-                                          color: primaryColor,
-                                          fontSize: fontSize16),
-                                ))),
-                      ],
+                      // GestureDetector(
+                      //     onTap: () {
+                      //       setState(() {
+                      //         enableSendOtpButton = true;
+                      //       });
+                      //     },
+                      //     child: Positioned(
+                      //         right: 40,
+                      //         bottom: 15,
+                      //         child: Text(
+                      //           'Edit',
+                      //           style: TextStyleUtils.primaryTextMedium
+                      //               .copyWith(
+                      //                   color: primaryColor,
+                      //                   fontSize: fontSize16),
+                      //         ))),
+                      // if (enableSendOtpButton) ...[
+                      //   GestureDetector(
+                      //       onTap: () {
+                      //         setState(() {
+                      //           enableSendOtpButton = false;
+                      //           InternetChecks.isConnected().then(
+                      //               (isAvailable) => {
+                      //                     callSendOtpApi(
+                      //                         isAvailable, widget.mobileNo)
+                      //                   });
+                      //         });
+                      //       },
+                      //       child: Positioned(
+                      //           right: 40,
+                      //           bottom: 15,
+                      //           child: Text(
+                      //             'Send OTP',
+                      //             style: TextStyleUtils.primaryTextMedium
+                      //                 .copyWith(
+                      //                     color: primaryColor,
+                      //                     fontSize: fontSize16),
+                      //           ))),
+                      // ],
                     ],
                   ),
                   Container(
@@ -204,7 +206,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             ],
                           ),
                         )
-                      : InkWell(
+                      : GestureDetector(
                           onTap: enableResend ? _resendCode : null,
                           child: RichText(
                             overflow: TextOverflow.clip,
@@ -274,42 +276,37 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: RichText(
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.rtl,
+                      softWrap: true,
+                      maxLines: 4,
+                      textScaleFactor: 1,
+                      text: TextSpan(
+                        text: CPString.signupAgree,
+                        style: TextStyleUtils.primaryTextRegular.copyWith(
+                          color: borderColor,
+                          fontSize: fontSize14,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: CPString.termsConditions,
+                            style: TextStyleUtils.primaryTextSemiBold.copyWith(
+                                color: primaryColor,
+                                fontSize: fontSize16,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Positioned(
-            child: Container(
-              margin: EdgeInsets.only(bottom: margin10),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: RichText(
-                  overflow: TextOverflow.clip,
-                  textAlign: TextAlign.end,
-                  textDirection: TextDirection.rtl,
-                  softWrap: true,
-                  maxLines: 1,
-                  textScaleFactor: 1,
-                  text: TextSpan(
-                    text: CPString.signupAgree,
-                    style: TextStyleUtils.primaryTextRegular.copyWith(
-                      color: borderColor,
-                      fontSize: fontSize14,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: CPString.termsConditions,
-                        style: TextStyleUtils.primaryTextSemiBold.copyWith(
-                            color: primaryColor,
-                            fontSize: fontSize16,
-                            decoration: TextDecoration.underline),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       )),
     );

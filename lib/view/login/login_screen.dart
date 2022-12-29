@@ -25,6 +25,7 @@ import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/login/social_login_newUser_VerificationScreen.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
+import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 

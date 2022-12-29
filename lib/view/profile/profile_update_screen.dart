@@ -53,9 +53,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
     mobileNoController.text = AppPreference().userDetail?.phoneNumber ?? "";
     emailNoController.text = AppPreference().userDetail?.email ?? "";
     workController.text = AppPreference().userDetail?.work ?? "";
-    if(AppPreference().userDetail != null && AppPreference().userDetail?.dob != null) {
-      dateController.text =
-          getFormattedDate(DateTime.parse(AppPreference().userDetail?.dob ?? ""));
+    if (AppPreference().userDetail != null &&
+        AppPreference().userDetail?.dob != null) {
+      dateController.text = getFormattedDate(
+          DateTime.parse(AppPreference().userDetail?.dob ?? ""));
     }
     selectedValueGender = AppPreference().userDetail?.gender ?? "Gender";
   }
@@ -96,7 +97,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     1,
                     20,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -112,7 +114,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     2,
                     10,
                     this,
-                    ''),
+                    '',
+                    true),
               ),
               const SizedBox(
                 height: 10,
@@ -128,7 +131,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     3,
                     30,
                     this,
-                    AppPreference().userDetail?.email ?? ""),
+                    AppPreference().userDetail?.email ?? "",
+                    false),
               ),
               const SizedBox(
                 height: 10,
@@ -241,7 +245,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     3,
                     15,
                     this,
-                    ''),
+                    '',
+                    false),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
