@@ -10,13 +10,19 @@ import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
 import 'package:provider/provider.dart';
 
-
 class MapScreen extends StatefulWidget {
   final bool? gpsIconShow;
   final bool? directionAlreadyAvailable;
   final StartLocation? startLocation;
   final StartLocation? endLocation;
-  const MapScreen({Key? key, this.gpsIconShow, this.directionAlreadyAvailable, this.startLocation, this.endLocation }) : super(key: key);
+
+  const MapScreen(
+      {Key? key,
+      this.gpsIconShow,
+      this.directionAlreadyAvailable,
+      this.startLocation,
+      this.endLocation})
+      : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -24,7 +30,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-  CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
+      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -58,25 +64,30 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(widget.directionAlreadyAvailable ?? false) {
+    if (widget.directionAlreadyAvailable ?? false) {
       log("Inside if condition of maps");
-      sourceLocation = LatLng(widget.startLocation?.coordinates?.first ?? 0.0, widget.startLocation?.coordinates?.last ?? 0.0);
+      sourceLocation = LatLng(widget.startLocation?.coordinates?.last ?? 0.0,
+          widget.startLocation?.coordinates?.first ?? 0.0);
       _addSourceMarker(sourceLocation!);
-      destinationLocation = LatLng(widget.endLocation?.coordinates?.first ?? 0.0, widget.endLocation?.coordinates?.last ?? 0.0);
+      destinationLocation = LatLng(
+          widget.endLocation?.coordinates?.last ?? 0.0,
+          widget.endLocation?.coordinates?.first ?? 0.0);
       _addDestMarker(destinationLocation!);
-      _addPolyLine(sourceLocation,destinationLocation);
+      _addPolyLine(sourceLocation, destinationLocation);
     } else {
       var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
       if (driverFlag) {
-        sourceLocation =
-            Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
+        sourceLocation = Provider.of<AddressProvider>(context, listen: false)
+            .riderStartLatLng;
         destinationLocation =
-            Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
+            Provider.of<AddressProvider>(context, listen: false)
+                .riderDestLatLng;
       } else {
-        sourceLocation = Provider.of<AddressProvider>(context, listen: false).driverStartLatLng;
+        sourceLocation = Provider.of<AddressProvider>(context, listen: false)
+            .driverStartLatLng;
         destinationLocation =
-            Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
+            Provider.of<AddressProvider>(context, listen: false)
+                .driverDestLatLng;
       }
       if (sourceLocation!.latitude != 0.0) {
         _addSourceMarker(sourceLocation!);
@@ -85,9 +96,9 @@ class _MapScreenState extends State<MapScreen> {
         _addDestMarker(destinationLocation!);
       }
 
-      if(sourceLocation!.latitude!= 0.0 && destinationLocation!.latitude != 0.0)
-      {
-        _addPolyLine(sourceLocation,destinationLocation);
+      if (sourceLocation!.latitude != 0.0 &&
+          destinationLocation!.latitude != 0.0) {
+        _addPolyLine(sourceLocation, destinationLocation);
       }
     }
 
@@ -101,94 +112,95 @@ class _MapScreenState extends State<MapScreen> {
             initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller) => _googleMapController = controller,
             markers: {
-              if (currentLocation != null) currentLocation!,
+              if (currentLocation != null && !widget.directionAlreadyAvailable!)
+                currentLocation!,
               if (_origin != null) _origin!,
               if (_destination != null) _destination!,
             },
 
-            polylines:Set<Polyline>.of(polylines.values),
+            polylines: Set<Polyline>.of(polylines.values),
             //onLongPress: _addMarker,
           ),
-          totalDistance!=null&& totalDistance!=null?
-          Positioned(
-              top: 40,
-              child:Container(
-                padding:
-                EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
-                decoration: BoxDecoration(
-                    color: Colors.yellowAccent,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black26,
-                          offset: Offset(0, 2),
-                          blurRadius: 6.0)
-                    ]),
-                child:Text(
-                  '$totalDistance,$totalDuration',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-              )):Container()
+          totalDistance != null && totalDistance != null
+              ? Positioned(
+                  top: 40,
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                    decoration: BoxDecoration(
+                        color: Colors.yellowAccent,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(0, 2),
+                              blurRadius: 6.0)
+                        ]),
+                    child: Text(
+                      '$totalDistance,$totalDuration',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                  ))
+              : Container()
         ],
       ),
-      floatingActionButton: widget.gpsIconShow!? FloatingActionButton(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        onPressed: () => getGpsLocation(),
-        child: Icon(Icons.gps_fixed),
-      ):SizedBox.shrink(),
+      floatingActionButton: widget.gpsIconShow!
+          ? FloatingActionButton(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              onPressed: () => getGpsLocation(),
+              child: Icon(Icons.gps_fixed),
+            )
+          : SizedBox.shrink(),
     );
   }
 
-
   void _addSourceMarker(LatLng pos) async {
-
     setState(() {
       _origin = Marker(
           markerId: MarkerId('orgin'),
           infoWindow: InfoWindow(title: 'Orgin'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueBlue),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           position: pos);
       _destination = null;
     });
-
   }
+
   void _addDestMarker(LatLng pos) async {
     setState(() {
       _destination = Marker(
           markerId: MarkerId('destination'),
           infoWindow: InfoWindow(title: 'Destination'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueBlue),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           position: pos);
-
     });
-
   }
 
-  void _addPolyLine(_origin,_destination) async
-  {
-    final directions = await DirectionApiRepository().getDirection(
-        origin: _origin, destination: _destination);
+  void _addPolyLine(_origin, _destination) async {
+    final directions = await DirectionApiRepository()
+        .getDirection(origin: _origin, destination: _destination);
     polylineCoordinates.clear();
     setState(() {
       for (var element in directions.routes!) {
         bounds = LatLngBounds(
-          southwest: LatLng(element.bounds!.southwest!.lat!, element.bounds!.southwest!.lng!),
-          northeast: LatLng(element.bounds!.northeast!.lat!, element.bounds!.northeast!.lng!),);
-        polylinePoints= PolylinePoints().decodePolyline(element.overviewPolyline!.points!);
+          southwest: LatLng(
+              element.bounds!.southwest!.lat!, element.bounds!.southwest!.lng!),
+          northeast: LatLng(
+              element.bounds!.northeast!.lat!, element.bounds!.northeast!.lng!),
+        );
+        polylinePoints =
+            PolylinePoints().decodePolyline(element.overviewPolyline!.points!);
         for (var point in polylinePoints!) {
           polylineCoordinates.add(LatLng(point.latitude, point.longitude));
 
-          totalDuration= element.legs![0].duration!.text;
-          totalDistance= element.legs![0].distance!.text;
-
+          totalDuration = element.legs![0].duration!.text;
+          totalDistance = element.legs![0].distance!.text;
         }
         PolylineId id = PolylineId('poly');
         Polyline polyline = Polyline(
           polylineId: id,
-          color:Colors.blueAccent,
+          color: Colors.blueAccent,
           points: polylineCoordinates,
           width: 5,
         );
@@ -197,31 +209,30 @@ class _MapScreenState extends State<MapScreen> {
           polylines[id] = polyline;
         });
       }
-
     });
   }
 
-
   void getGpsLocation() async {
-    Position position = await getGeoLocationCoOrdinates();
-    log("Location home page latitude ${position.latitude}");
-    log("Location home page longitude ${position.longitude}");
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-      // on below line we have given positions of Location 5
-        CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 12,
-        )));
+    if (widget.directionAlreadyAvailable ?? false) {
+      Position position = await getGeoLocationCoOrdinates();
+      log("Location home page latitude ${position.latitude}");
+      log("Location home page longitude ${position.longitude}");
+      _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+          // on below line we have given positions of Location 5
+          CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        zoom: 12,
+      )));
 
-    setState(() {
-
-      currentLocation = Marker(
-          markerId: MarkerId('currentLocation'),
-          infoWindow: InfoWindow(title: 'Current Location'),
-          icon:
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          position: LatLng(position.latitude,position.longitude));
-    });
+      setState(() {
+        currentLocation = Marker(
+            markerId: MarkerId('currentLocation'),
+            infoWindow: InfoWindow(title: 'Current Location'),
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+            position: LatLng(position.latitude, position.longitude));
+      });
+    }
   }
 
   Future<Position> getGeoLocationCoOrdinates() async {
@@ -249,5 +260,4 @@ class _MapScreenState extends State<MapScreen> {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
-
 }
