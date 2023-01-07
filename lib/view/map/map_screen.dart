@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:common/network/model/StartLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,10 +10,7 @@ import 'package:provider/provider.dart';
 class MapScreen extends StatefulWidget {
   final bool? gpsIconShow;
 
-  const MapScreen(
-      {Key? key,
-      this.gpsIconShow})
-      : super(key: key);
+  const MapScreen({Key? key, this.gpsIconShow}) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -24,7 +18,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 12);
+      CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -59,18 +53,17 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     var driverFlag = Provider.of<DriverProvider>(context).driverFlag;
+
     if (driverFlag) {
-      sourceLocation = Provider.of<AddressProvider>(context, listen: false)
-          .riderStartLatLng;
+      sourceLocation =
+          Provider.of<AddressProvider>(context, listen: false).riderStartLatLng;
       destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false)
-              .riderDestLatLng;
+          Provider.of<AddressProvider>(context, listen: false).riderDestLatLng;
     } else {
       sourceLocation = Provider.of<AddressProvider>(context, listen: false)
           .driverStartLatLng;
       destinationLocation =
-          Provider.of<AddressProvider>(context, listen: false)
-              .driverDestLatLng;
+          Provider.of<AddressProvider>(context, listen: false).driverDestLatLng;
     }
     if (sourceLocation!.latitude != 0.0) {
       _addSourceMarker(sourceLocation!);
@@ -195,21 +188,18 @@ class _MapScreenState extends State<MapScreen> {
 
   void getGpsLocation() async {
     Position position = await getGeoLocationCoOrdinates();
-    log("Location home page latitude ${position.latitude}");
-    log("Location home page longitude ${position.longitude}");
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-      // on below line we have given positions of Location 5
+        // on below line we have given positions of Location 5
         CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 12,
-        )));
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 12,
+    )));
 
     setState(() {
       currentLocation = Marker(
           markerId: MarkerId('currentLocation'),
           infoWindow: InfoWindow(title: 'Current Location'),
-          icon:
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           position: LatLng(position.latitude, position.longitude));
     });
   }
