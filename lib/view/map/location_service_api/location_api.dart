@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:common/model/places.dart';
 import 'package:flutter/material.dart';
@@ -34,19 +35,20 @@ class LocationApi extends ChangeNotifier {
       _delay.run(() async {
         try {
           List<Location> location = await locationFromAddress(query);
+          log("Location from type address $location");
           location.forEach((location) async {
-            List<Placemark> placeMarks = await placemarkFromCoordinates(
+            List<Placemark> placeMarks = await GeocodingPlatform.instance.placemarkFromCoordinates(
                 location.latitude, location.longitude);
             placeMarks.forEach((placeMaker) {
              addPlace(Place(
-                  name: placeMaker.name!,
-                  street: placeMaker.street!,
-                  locality: placeMaker.locality!,
-                  country: placeMaker.country!,latitude:location.latitude,longitude: location.longitude));
+                  name: placeMaker.name.toString(),
+                  street: placeMaker.street.toString(),
+                  locality: placeMaker.locality.toString(),
+                  country: placeMaker.country.toString(),latitude:location.latitude,longitude: location.longitude));
             });
           });
         } on Exception catch (e) {
-          print(e.toString());
+          print("Platform exception in location api "+e.toString());
         }
       });
     }

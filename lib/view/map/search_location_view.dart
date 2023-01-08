@@ -64,9 +64,9 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: new BorderRadius.circular(5.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 blurRadius: 2.0,
                                 spreadRadius: 0.4)
                           ]),
@@ -74,17 +74,17 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                           controller: api.addressController,
                           decoration: InputDecoration(
                             fillColor: Colors.grey,
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
                                   width: 0, color: Colors.transparent),
                             ),
                             hintText: 'Search Location',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.location_on,
                               color: Colors.grey,
                             ),
                             suffixIcon: IconButton(
-                              icon: Icon(Icons.close),
+                              icon: const Icon(Icons.close),
                               onPressed: () {
                                 setState(()
                                 {
@@ -102,7 +102,7 @@ class _SearchLocationViewState extends State<SearchLocationView> {
                 closeFlag
                     ? Container(
                   margin: EdgeInsets.only(left: 40),
-                  color: Colors.blue[200],
+                  color: Colors.white,
                   width: deviceWidth(context) * .75,
                   child: StreamBuilder<List<Place>>(
                       stream: api.controllerOut,

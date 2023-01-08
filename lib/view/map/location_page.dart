@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -41,6 +43,7 @@ class _LocationPageState extends State<LocationPage> {
 
   var _initialCameraPosition =
       const CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
+
   //Don't change this
 
   void getCurrentLocation() async {
@@ -50,34 +53,55 @@ class _LocationPageState extends State<LocationPage> {
     getLocation(position.latitude, position.longitude);
   }
 
-  void getLocation(double lat, double lng) async {
-    try {
-      List<Placemark> places = await placemarkFromCoordinates(lat, lng);
-      // var places = await GeocodingPlatform.instance.placemarkFromCoordinates(
-      //     lat, lng,
-      //     localeIdentifier: "en");
-      _initialCameraPosition= CameraPosition(target: LatLng(lat, lng), zoom: 16);
-      mapController?.animateCamera(
-          CameraUpdate.newCameraPosition(
-              _initialCameraPosition
-          )
-      );
-      setState(() {
-        latitude = lat;
-        longitude = lng;
+  convertToAddress(double lat, double long, String apikey) async {
+    Dio dio = Dio(); //initilize dio package
+    String apiurl =
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=$apikey";
 
-        Provider.of<AddressProvider>(context, listen: false)
-            .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-        log("PlacesPlaces $places");
-        ProviderPreference().putAddress(context,
-            '${places[0].name} , ${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
-        _markers.add(Marker(
-            markerId: MarkerId('Home'),
-            position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
-      });
-    } on PlatformException catch (err) {
-      log("Platform exception $err");
+    Response response = await dio.get(apiurl); //send get request to API URL
+    if (response.statusCode == 200) {
+      //if connection is successful
+      Map data = response.data; //get response data
+      if (data["status"] == "OK") {
+        //if status is "OK" returned from REST API
+        if (data["results"].length > 0) {
+          //if there is atleast one address
+          Map firstresult = data["results"][0]; //select the first address
+
+          String address = firstresult["formatted_address"]; //get the address
+          log("Formatted address $address");
+          //you can use the JSON data to get address in your own format
+
+          setState(() {
+            //refresh UI
+            latitude = lat;
+            longitude = long;
+
+            Provider.of<AddressProvider>(context, listen: false)
+                .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+            ProviderPreference().putAddress(context, address);
+            // _markers.add(Marker(
+            //     markerId: const MarkerId('Home'),
+            //     position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
+          });
+        }
+      } else {
+        log("Location data error message " + data["error_message"]);
+      }
+    } else {
+      log("error while fetching geoconding data");
     }
+  }
+
+  void getLocation(double lat, double lng) async {
+    if (Platform.isIOS) {
+      convertToAddress(lat, lng, CPString.iosApiKey);
+    } else {
+      convertToAddress(lat, lng, CPString.androidApiKey);
+    }
+    _initialCameraPosition = CameraPosition(target: LatLng(lat, lng), zoom: 16);
+    mapController
+        ?.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
   }
 
   void onMoveCamera(BuildContext context) async {
@@ -86,38 +110,53 @@ class _LocationPageState extends State<LocationPage> {
     final lat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
     _markers.clear();
 
-    var places = await GeocodingPlatform.instance
-        .placemarkFromCoordinates(lat, lon, localeIdentifier: "en");
+    Dio dio = Dio(); //initilize dio package
+    String apiKey = CPString.androidApiKey;
+    if (Platform.isIOS) {
+      apiKey = CPString.iosApiKey;
+    }
+    String apiurl =
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lon&key=$apiKey";
+    Response response = await dio.get(apiurl); //send get request to API URL
+    log("Response of gecoding api 2 ${response.statusCode}");
+    if (response.statusCode == 200) {
+      //if connection is successful
+      Map data = response.data; //get response data
+      if (data["status"] == "OK") {
+        //if status is "OK" returned from REST API
+        if (data["results"].length > 0) {
+          //if there is atleast one address
+          Map firstresult = data["results"][0]; //select the first address
 
-    setState(() {
-      _markers.add(Marker(
-        draggable: true,
-        markerId: MarkerId("marker_2"),
-        position: LatLng(lat, lon),
-        icon: BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(
-          title:
-          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}',
-        ),
-      ));
-      latitude = lat;
-      longitude = lon;
-      ProviderPreference()
-          .putAddress(
-          context,
-          '${places[0].street} , ${places[0].locality}, ${places[0].postalCode}');
+          String address = firstresult["formatted_address"]; //get the address
+          log("Formatted address $address");
+          //you can use the JSON data to get address in your own format
+          setState(() {
+            _markers.add(Marker(
+              draggable: true,
+              markerId: MarkerId("marker_2"),
+              position: LatLng(lat, lon),
+              icon: BitmapDescriptor.defaultMarker,
+              infoWindow: InfoWindow(
+                title: address,
+              ),
+            ));
+            latitude = lat;
+            longitude = lon;
+            ProviderPreference().putAddress(context, address);
 
-      ProviderPreference()
-          .putLatLng(
-          context,
-          LatLng(
-              lat, lon));
-      Provider.of<DriverProvider>(context,
-          listen: false)
-          .changeSearchDrag(false);
-    });
+            ProviderPreference().putLatLng(context, LatLng(lat, lon));
+            Provider.of<DriverProvider>(context, listen: false)
+                .changeSearchDrag(false);
+          });
+        }
+      } else {
+        log("Location data error message " + data["error_message"]);
+      }
+    } else {
+      log("error while fetching geoconding data");
+    }
   }
-
 
   Future<Position> getGeoLocationCoOrdinates() async {
     bool isServiceEnabled;
@@ -145,7 +184,7 @@ class _LocationPageState extends State<LocationPage> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  void searchedAddressData(double latitude, double longitude){
+  void searchedAddressData(double latitude, double longitude) {
     log("Searched address data callback $latitude and $longitude");
     getLocation(latitude, longitude);
   }
@@ -162,23 +201,18 @@ class _LocationPageState extends State<LocationPage> {
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
     var searchDrag = Provider.of<DriverProvider>(context).searchDragFlag;
     List<String> result = address.split(',');
-    _initialCameraPosition= CameraPosition(target: LatLng(latitude??0.0, longitude??0.0), zoom: 14);
-    mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-            _initialCameraPosition
-        )
-    );
+    _initialCameraPosition = CameraPosition(
+        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 14);
+    mapController
+        ?.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
 
-    if(latLngProvider.latitude!=0.0 &&  searchDrag==true)
-    {
-      setState(()
-      {
-        _initialCameraPosition= CameraPosition(target: LatLng(latLngProvider.latitude, latLngProvider.longitude), zoom: 14);
+    if (latLngProvider.latitude != 0.0 && searchDrag == true) {
+      setState(() {
+        _initialCameraPosition = CameraPosition(
+            target: LatLng(latLngProvider.latitude, latLngProvider.longitude),
+            zoom: 14);
         mapController?.animateCamera(
-            CameraUpdate.newCameraPosition(
-                _initialCameraPosition
-            )
-        );
+            CameraUpdate.newCameraPosition(_initialCameraPosition));
         _markers.clear();
         _markers.add(Marker(
             markerId: MarkerId('Home'),
@@ -220,7 +254,9 @@ class _LocationPageState extends State<LocationPage> {
                 },
               ),
             ),
-            SearchLocationView(searchedAddressData: searchedAddressData,),
+            SearchLocationView(
+              searchedAddressData: searchedAddressData,
+            ),
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -338,7 +374,8 @@ class _LocationPageState extends State<LocationPage> {
                 child: Transform.translate(
                     offset: Offset(0, -34),
                     child: Icon(
-                      Icons.location_on,color: primaryColor,
+                      Icons.location_on,
+                      color: primaryColor,
                       size: 44,
                     )))
           ],
@@ -356,7 +393,6 @@ class _LocationPageState extends State<LocationPage> {
         zoomControlsEnabled: false,
         initialCameraPosition: _initialCameraPosition,
         markers: _markers,
-        onCameraIdle: () => onMoveCamera(context),
         onMapCreated: (controller) => mapController = controller,
       ),
     );
