@@ -14,7 +14,7 @@
         android:label="I2We">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDxd4iBDqfPggZJIPWgV5x-_GMvOI0DAf4" />
+            android:value="AIzaSyC7PPfo_xprhpqXmATL9pa8Ad9_W1w9KrQ" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
