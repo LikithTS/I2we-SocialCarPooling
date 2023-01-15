@@ -3,117 +3,156 @@ import 'dart:developer';
 import 'package:common/network/model/MyCars.dart';
 import 'package:common/network/model/Profile.dart';
 import 'package:common/network/model/StartLocation.dart';
+import 'package:common/network/model/Steps.dart';
+import 'package:common/network/model/Stops.dart';
 
 class AvailableRidesResponse {
   String? id;
   String? driverUserId;
   String? riderUserId;
+  String? carTypeInterested;
   String? driverRideId;
   String? carId;
   int? amountPerSeat;
   String? distance;
   String? duration;
   StartLocation? startLocation;
+  int? pricePaid;
+  String? startTime;
+  String? endTime;
   String? startDestinationFormattedAddress;
   String? startDestinationPlaceId;
   int? seatsOffered;
-  String? startTime;
   String? endDestinationFormattedAddress;
   StartLocation? endLocation;
   String? endDestinationPlaceId;
-  String? rideStatus;
+  int? profileMatchPercentage;
+  int? routeMatchPercentage;
+  String? riderStatus;
+  List<Stops>? stops;
+  List<Steps>? steps;
   Profile? user;
   MyCars? car;
   double? rideMatchPercentage;
   int? profileMatchingPercentage;
-  String? carTypeInterested;
 
   AvailableRidesResponse(
       {this.id,
-      this.driverUserId,
-      this.riderUserId,
-      this.driverRideId,
-      this.carId,
-      this.amountPerSeat,
-      this.distance,
-      this.duration,
-      this.startLocation,
-      this.startDestinationFormattedAddress,
-      this.startDestinationPlaceId,
-      this.seatsOffered,
-      this.startTime,
-      this.endDestinationFormattedAddress,
-      this.endLocation,
-      this.endDestinationPlaceId,
-      this.rideStatus,
-      this.user,
-      this.car,
-      this.rideMatchPercentage,
-      this.profileMatchingPercentage,
-      this.carTypeInterested});
+        this.driverUserId,
+        this.riderUserId,
+        this.carTypeInterested,
+        this.driverRideId,
+        this.carId,
+        this.amountPerSeat,
+        this.seatsOffered,
+        this.pricePaid,
+        this.startTime,
+        this.endTime,
+        this.startDestinationFormattedAddress,
+        this.startLocation,
+        this.startDestinationPlaceId,
+        this.endDestinationFormattedAddress,
+        this.endLocation,
+        this.endDestinationPlaceId,
+        this.profileMatchPercentage,
+        this.routeMatchPercentage,
+        this.riderStatus,
+        this.stops,
+        this.distance,
+        this.duration,
+        this.steps,
+        this.user,
+        this.car,
+        this.rideMatchPercentage,
+        this.profileMatchingPercentage});
 
   AvailableRidesResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     driverUserId = json['driverUserId'];
     riderUserId = json['riderUserId'];
+    carTypeInterested = json['carTypeInterested'];
     driverRideId = json['driverRideId'];
     carId = json['carId'];
     amountPerSeat = json['amountPerSeat'];
-    distance = json['distance'];
-    duration = json['duration'];
+    pricePaid = json['pricePaid'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
+    startDestinationFormattedAddress = json['startDestinationFormattedAddress'];
     startLocation = json['startLocation'] != null
         ? new StartLocation.fromJson(json['startLocation'])
         : null;
-    startDestinationFormattedAddress = json['startDestinationFormattedAddress'];
     startDestinationPlaceId = json['startDestinationPlaceId'];
-    seatsOffered = json['seatsOffered'];
-    startTime = json['startTime'];
     endDestinationFormattedAddress = json['endDestinationFormattedAddress'];
     endLocation = json['endLocation'] != null
         ? new StartLocation.fromJson(json['endLocation'])
         : null;
     endDestinationPlaceId = json['endDestinationPlaceId'];
-    rideStatus = json['rideStatus'];
-    user = json['user'] != null ? new Profile.fromJson(json['user']) : null;
+    profileMatchPercentage = json['profileMatchPercentage'];
+    routeMatchPercentage = json['routeMatchPercentage'];
+    riderStatus = json['riderStatus'];
+    seatsOffered = json['seatsOffered'];
+    startTime = json['startTime'];
+    if (json['stops'] != null) {
+      stops = <Stops>[];
+      json['stops'].forEach((v) {
+        stops!.add(new Stops.fromJson(v));
+      });
+    }
+    distance = json['distance'];
+    duration = json['duration'];
     car = json['car'] != null ? new MyCars.fromJson(json['car']) : null;
+    if (json['steps'] != null) {
+      steps = <Steps>[];
+      json['steps'].forEach((v) {
+        steps!.add(new Steps.fromJson(v));
+      });
+    }
+    user = json['user'] != null ? new Profile.fromJson(json['user']) : null;
     rideMatchPercentage = json['rideMatchPercentage'];
     profileMatchingPercentage = json['profileMatchingPercentage'];
-    carTypeInterested = json['carTypeInterested'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['driverUserId'] = this.driverUserId;
     data['riderUserId'] = this.riderUserId;
     data['carId'] = this.carId;
     data['amountPerSeat'] = this.amountPerSeat;
-    data['distance'] = this.distance;
-    data['duration'] = this.duration;
+    data['carTypeInterested'] = this.carTypeInterested;
+    data['driverRideId'] = this.driverRideId;
+    data['pricePaid'] = this.pricePaid;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
+    data['startDestinationFormattedAddress'] =
+        this.startDestinationFormattedAddress;
     if (this.startLocation != null) {
       data['startLocation'] = this.startLocation!.toJson();
     }
-    data['startDestinationFormattedAddress'] =
-        this.startDestinationFormattedAddress;
     data['startDestinationPlaceId'] = this.startDestinationPlaceId;
-    data['seatsOffered'] = this.seatsOffered;
-    data['startTime'] = this.startTime;
     data['endDestinationFormattedAddress'] =
         this.endDestinationFormattedAddress;
     if (this.endLocation != null) {
       data['endLocation'] = this.endLocation!.toJson();
     }
     data['endDestinationPlaceId'] = this.endDestinationPlaceId;
-    data['rideStatus'] = this.rideStatus;
+    data['profileMatchPercentage'] = this.profileMatchPercentage;
+    data['routeMatchPercentage'] = this.routeMatchPercentage;
+    data['riderStatus'] = this.riderStatus;
+    if (this.stops != null) {
+      data['stops'] = this.stops!.map((v) => v.toJson()).toList();
+    }
+    data['distance'] = this.distance;
+    data['duration'] = this.duration;
+    if (this.steps != null) {
+      data['steps'] = this.steps!.map((v) => v.toJson()).toList();
+    }
+    data['seatsOffered'] = this.seatsOffered;
+    data['startTime'] = this.startTime;
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
-    if (this.car != null) {
-      data['car'] = this.car!.toJson();
-    }
     data['rideMatchPercentage'] = this.rideMatchPercentage;
     data['profileMatchingPercentage'] = this.profileMatchingPercentage;
-    data['carTypeInterested'] = this.carTypeInterested;
     return data;
   }
 }
