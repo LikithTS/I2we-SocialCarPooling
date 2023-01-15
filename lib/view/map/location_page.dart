@@ -4,18 +4,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_geocoder/geocoder.dart' as geoCoder;
+import 'package:location/location.dart' as currentLocation;
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/view/map/search_location_view.dart';
 
 import '../../provider/provider_preference.dart';
 import '../../util/CPString.dart';
@@ -38,189 +40,25 @@ class _LocationPageState extends State<LocationPage> {
 
   double? latitude;
   double? longitude;
-  late LatLng currentPosition;
+  late currentLocation.LocationData currentPosition;
   Set<Marker> _markers = {};
-
-  var _initialCameraPosition =
-      const CameraPosition(target: LatLng(12.9716, 77.5946), zoom: 16);
-
-  //Don't change this
-
-  void getCurrentLocation() async {
-    Position position = await getGeoLocationCoOrdinates();
-    log("Current latitude ${position.latitude}");
-    log("Current longitude ${position.longitude}");
-    getLocation(position.latitude, position.longitude);
-  }
-
-  convertToAddress(double lat, double long, String apikey) async {
-    Dio dio = Dio(); //initilize dio package
-    String apiurl =
-        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=$apikey";
-
-    Response response = await dio.get(apiurl); //send get request to API URL
-    if (response.statusCode == 200) {
-      //if connection is successful
-      Map data = response.data; //get response data
-      if (data["status"] == "OK") {
-        //if status is "OK" returned from REST API
-        if (data["results"].length > 0) {
-          //if there is atleast one address
-          Map firstresult = data["results"][0]; //select the first address
-
-          String address = firstresult["formatted_address"]; //get the address
-          log("Formatted address $address");
-          //you can use the JSON data to get address in your own format
-
-          setState(() {
-            //refresh UI
-            latitude = lat;
-            longitude = long;
-
-            Provider.of<AddressProvider>(context, listen: false)
-                .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-            ProviderPreference().putAddress(context, address);
-            // _markers.add(Marker(
-            //     markerId: const MarkerId('Home'),
-            //     position: LatLng(latitude ?? 0.0, longitude ?? 0.0)));
-          });
-        }
-      } else {
-        log("Location data error message " + data["error_message"]);
-      }
-    } else {
-      log("error while fetching geoconding data");
-    }
-  }
-
-  void getLocation(double lat, double lng) async {
-    if (Platform.isIOS) {
-      convertToAddress(lat, lng, CPString.iosApiKey);
-    } else {
-      convertToAddress(lat, lng, CPString.androidApiKey);
-    }
-    _initialCameraPosition = CameraPosition(target: LatLng(lat, lng), zoom: 16);
-    mapController
-        ?.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
-  }
-
-  void onMoveCamera(BuildContext context) async {
-    LatLngBounds bounds = await mapController!.getVisibleRegion();
-    final lon = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
-    final lat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-    _markers.clear();
-
-    Dio dio = Dio(); //initilize dio package
-    String apiKey = CPString.androidApiKey;
-    if (Platform.isIOS) {
-      apiKey = CPString.iosApiKey;
-    }
-    String apiurl =
-        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lon&key=$apiKey";
-    Response response = await dio.get(apiurl); //send get request to API URL
-    log("Response of gecoding api 2 ${response.statusCode}");
-    if (response.statusCode == 200) {
-      //if connection is successful
-      Map data = response.data; //get response data
-      if (data["status"] == "OK") {
-        //if status is "OK" returned from REST API
-        if (data["results"].length > 0) {
-          //if there is atleast one address
-          Map firstresult = data["results"][0]; //select the first address
-
-          String address = firstresult["formatted_address"]; //get the address
-          log("Formatted address $address");
-          //you can use the JSON data to get address in your own format
-          setState(() {
-            _markers.add(Marker(
-              draggable: true,
-              markerId: MarkerId("marker_2"),
-              position: LatLng(lat, lon),
-              icon: BitmapDescriptor.defaultMarker,
-              infoWindow: InfoWindow(
-                title: address,
-              ),
-            ));
-            latitude = lat;
-            longitude = lon;
-            ProviderPreference().putAddress(context, address);
-
-            ProviderPreference().putLatLng(context, LatLng(lat, lon));
-            Provider.of<DriverProvider>(context, listen: false)
-                .changeSearchDrag(false);
-          });
-        }
-      } else {
-        log("Location data error message " + data["error_message"]);
-      }
-    } else {
-      log("error while fetching geoconding data");
-    }
-  }
-
-  Future<Position> getGeoLocationCoOrdinates() async {
-    bool isServiceEnabled;
-    LocationPermission permission;
-
-    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!isServiceEnabled) {
-      await Geolocator.openLocationSettings();
-      return Future.error('Location Services are not enabled');
-    }
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location Permission are not enabled');
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location Permission are denied permanently');
-    }
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
-
-  void searchedAddressData(double latitude, double longitude) {
-    log("Searched address data callback $latitude and $longitude");
-    getLocation(latitude, longitude);
-  }
+  currentLocation.Location location = currentLocation.Location();
+  LatLng initialCameraPosition = const LatLng(12.9716, 12.9716);
+  var searchedAddressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    log("Inside init state of location");
     getCurrentLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     var address = Provider.of<AddressProvider>(context).address;
+    log("Address in location page $address");
     var latLngProvider = Provider.of<AddressProvider>(context).latLng;
-    var searchDrag = Provider.of<DriverProvider>(context).searchDragFlag;
     List<String> result = address.split(',');
-    _initialCameraPosition = CameraPosition(
-        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 14);
-    mapController
-        ?.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
-
-    if (latLngProvider.latitude != 0.0 && searchDrag == true) {
-      setState(() {
-        _initialCameraPosition = CameraPosition(
-            target: LatLng(latLngProvider.latitude, latLngProvider.longitude),
-            zoom: 14);
-        mapController?.animateCamera(
-            CameraUpdate.newCameraPosition(_initialCameraPosition));
-        _markers.clear();
-        _markers.add(Marker(
-            markerId: MarkerId('Home'),
-            position:
-                LatLng(latLngProvider.latitude, latLngProvider.longitude)));
-      });
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -232,30 +70,59 @@ class _LocationPageState extends State<LocationPage> {
                     child: Container(
                       width: margin50,
                       height: margin50,
-                      child: Center(
+                      child: const Center(
                         child: CircularProgressIndicator(),
                       ),
                     ),
                   )
-                : googleMap(context, LatLng(latitude!, longitude!)),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10)),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
+                : googleMap(context, initialCameraPosition),
+            Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10)),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            SearchLocationView(
-              searchedAddressData: searchedAddressData,
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  width: deviceWidth(context) * .75,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.white, blurRadius: 2.0, spreadRadius: 0.4)
+                      ]),
+                  child: TextField(
+                    controller: searchedAddressController,
+                    decoration: const InputDecoration(
+                      fillColor: Colors.grey,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(width: 0, color: Colors.transparent),
+                      ),
+                      hintText: 'Search Location',
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    onTap: () async {
+                      getPlacesAutoCompleteView();
+                    },
+                  ),
+                ),
+              ],
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -289,8 +156,8 @@ class _LocationPageState extends State<LocationPage> {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 10),
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
@@ -301,8 +168,8 @@ class _LocationPageState extends State<LocationPage> {
                         ),
                       ),
                       Container(
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: Text(
                             address,
                             style: TextStyleUtils.primaryTextRegular.copyWith(
@@ -313,8 +180,8 @@ class _LocationPageState extends State<LocationPage> {
                       Container(
                         width: deviceWidth(context),
                         height: 70,
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        padding: EdgeInsets.all(10),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
                           onPressed: () {
                             widget.userType.toString() == 'driver'
@@ -372,8 +239,8 @@ class _LocationPageState extends State<LocationPage> {
             Align(
                 alignment: Alignment.center,
                 child: Transform.translate(
-                    offset: Offset(0, -34),
-                    child: Icon(
+                    offset: const Offset(0, -34),
+                    child: const Icon(
                       Icons.location_on,
                       color: primaryColor,
                       size: 44,
@@ -384,6 +251,89 @@ class _LocationPageState extends State<LocationPage> {
     );
   }
 
+  void getCurrentLocation() async {
+    log("Calling get current location co-ordinates");
+
+    bool isServiceEnabled;
+    LocationPermission permission;
+
+    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!isServiceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location Services are not enabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location Permission are not enabled');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location Permission are denied permanently');
+    }
+
+    currentPosition = await location.getLocation();
+    log("Current latitude ${currentPosition.latitude}");
+    log("Current longitude ${currentPosition.longitude}");
+    _getAddress(currentPosition.latitude!, currentPosition.longitude!)
+        .then((value) => {
+      setState(() {
+        latitude = currentPosition.latitude;
+        longitude = currentPosition.longitude;
+        initialCameraPosition = LatLng(currentPosition.latitude!,currentPosition.longitude!);
+        Provider.of<AddressProvider>(context, listen: false)
+            .changeLatLng(
+            LatLng(latitude ?? 0.0, longitude ?? 0.0));
+        ProviderPreference().putAddress(context, value);
+        ProviderPreference().putLatLng(context, LatLng(latitude!, longitude!));
+        mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
+          ),
+        );
+      })
+    });
+
+
+    // location.onLocationChanged
+    //     .listen((currentLocation.LocationData currentLocation) {
+    //   if (currentLocation.latitude! != latitude &&
+    //       currentLocation.longitude! != longitude) {
+    //     log("Triggered on location change in current location ${currentLocation.latitude} and ${currentLocation.longitude}");
+    //     _getAddress(currentLocation.latitude!, currentLocation.longitude!)
+    //         .then((value) => {
+    //               setState(() {
+    //                 currentPosition = currentLocation;
+    //                 latitude = currentLocation.latitude;
+    //                 longitude = currentLocation.longitude;
+    //                 Provider.of<AddressProvider>(context, listen: false)
+    //                     .changeLatLng(
+    //                         LatLng(latitude ?? 0.0, longitude ?? 0.0));
+    //                 ProviderPreference().putAddress(context, value);
+    //               })
+    //             });
+    //   }
+    // });
+
+  }
+
+  Future<String?> _getAddress(double lat, double lang) async {
+    var apiKey = CPString.androidApiKey;
+    if (Platform.isIOS) {
+      apiKey = CPString.iosApiKey;
+    }
+    final coordinates = geoCoder.Coordinates(lat, lang);
+    var addresses = await geoCoder.Geocoder.google(apiKey)
+        .findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    log("Addresses ${first.featureName} : ${first.addressLine}");
+    return first.addressLine;
+  }
+
   Widget googleMap(BuildContext context, LatLng latLng) {
     return Container(
       height: MediaQuery.of(context).size.height,
@@ -391,16 +341,122 @@ class _LocationPageState extends State<LocationPage> {
       child: GoogleMap(
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
-        initialCameraPosition: _initialCameraPosition,
+        initialCameraPosition:
+            CameraPosition(target: initialCameraPosition, zoom: 14),
         markers: _markers,
-        onMapCreated: (controller) => mapController = controller,
+        onCameraIdle: onMoveCamera,
+        mapType: MapType.normal,
+        onMapCreated: _onMapCreated,
+        myLocationEnabled: true,
       ),
     );
+  }
+
+  void _onMapCreated(GoogleMapController googleMapController) {
+    mapController = googleMapController;
+    // location.onLocationChanged.listen((l) {
+    //   log("Triggered on location change in map created ${l.latitude} and ${l.longitude}");
+    //   mapController?.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
+    //     ),
+    //   );
+    // });
   }
 
   @override
   void dispose() {
     super.dispose();
-    mapController!.dispose();
+    if (mapController != null) {
+      mapController!.dispose();
+    }
+  }
+
+  void onMoveCamera() async {
+    LatLngBounds bounds = await mapController!.getVisibleRegion();
+    final lon = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+    final lat = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    log("OnMove camera lat $lat");
+    log("OnMove camera long $lon");
+
+    if (lat != latitude && lon != longitude) {
+      _markers.clear();
+      _getAddress(lat, lon).then((value) => {
+            setState(() {
+              latitude = lat;
+              longitude = lon;
+              initialCameraPosition = LatLng(latitude!, longitude!);
+              // _markers.add(Marker(
+              //   draggable: true,
+              //   markerId: MarkerId("marker_2"),
+              //   position: LatLng(lat, lon),
+              //   icon: BitmapDescriptor.defaultMarker,
+              //   infoWindow: InfoWindow(
+              //     title: '$value',
+              //   ),
+              // ));
+              Provider.of<AddressProvider>(context, listen: false)
+                  .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+              ProviderPreference().putAddress(context, value);
+              ProviderPreference().putLatLng(context, LatLng(lat, lon));
+            })
+          });
+    }
+  }
+
+  getPlacesAutoCompleteView() async {
+    var apiKey = CPString.androidApiKey;
+    if (Platform.isIOS) {
+      apiKey = CPString.iosApiKey;
+    }
+    var place = await PlacesAutocomplete.show(
+        context: context,
+        apiKey: apiKey,
+        mode: Mode.overlay,
+        types: [],
+        logo: const Text(""),
+        strictbounds: false,
+        components: [Component(Component.country, 'in')],
+        //google_map_webservice package
+        onError: (err) {
+          log("Error while searching $err");
+        });
+
+    log("Place is $place");
+    if (place != null) {
+      searchedAddressController.text = place.description.toString();
+      //form google_maps_webservice package
+      final plist = GoogleMapsPlaces(
+        apiKey: apiKey,
+        apiHeaders: await const GoogleApiHeaders().getHeaders(),
+        //from google_api_headers package
+      );
+      log("PList is $plist");
+      String placeId = place.placeId ?? "0";
+      final detail = await plist.getDetailsByPlaceId(placeId);
+      log("Details place id searched $detail");
+      final geometry = detail.result.geometry!;
+      final lat = geometry.location.lat;
+      final lang = geometry.location.lng;
+
+      setState(() {
+        log("Set to new state after address search");
+        FocusManager.instance.primaryFocus?.unfocus();
+        latitude = lat;
+        longitude = lang;
+        initialCameraPosition = LatLng(lat,lang);
+        log("Searched address lat $latitude");
+        log("Searched address long $longitude");
+        Provider.of<AddressProvider>(context, listen: false)
+            .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+        ProviderPreference().putAddress(context, searchedAddressController.text);
+        ProviderPreference().putLatLng(context, LatLng(lat, lang));
+        mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
+          ),
+        );
+      });
+    }
   }
 }

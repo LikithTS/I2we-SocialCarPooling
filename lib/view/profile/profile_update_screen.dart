@@ -8,6 +8,7 @@ import 'package:socialcarpooling/font&margin/margin_confiq.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
+import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
@@ -44,6 +45,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
   String selectedValueGender = "Gender";
   String selectedValueEducation = "Education";
   String selectedValueWork = "Work";
+  String apiValueEducation = "";
   String dob = "";
 
   @override
@@ -273,13 +275,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                                   style: TextStyleUtils.primaryTextMedium,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items: dataEducationList.map((list) {
+                                items: uiEducationList.map((list) {
                                   return DropdownMenuItem(
                                     value: list.toString(),
                                     child: Text(list),
                                   );
                                 }).toList(),
                                 onChanged: (value) {
+                                  apiValueEducation = getEducationValue(value);
                                   setState(() {
                                     selectedValueEducation = value.toString();
                                   });
@@ -390,6 +393,23 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       // });
       //  print("Response Data : Error");
 
+    }
+  }
+
+  String getEducationValue(Object? value) {
+    switch (value) {
+      case "Primary Education":
+        return Constant.PRIMARY_EDUCATION;
+      case "Secondary Education":
+        return Constant.SECONDARY_EDUCATION;
+      case "Bachelors Degree":
+        return Constant.BACHELORS_DEGREE;
+      case "Master Degree":
+        return Constant.MASTERS_DEGREE;
+      case "Other":
+        return Constant.OTHER;
+      default:
+        return "";
     }
   }
 }

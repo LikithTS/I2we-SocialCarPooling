@@ -117,6 +117,7 @@ dependencies:
   cloud_firestore: ^4.0.1
   connectivity: ^3.0.6
   overlay_support: ^2.1.0
+  flutter_geocoder: ^0.2.2-nullsafety
 
 dev_dependencies:
   flutter_test:

@@ -17,9 +17,8 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static const _initialCameraPosition =
-      CameraPosition(target: LatLng(13.0714, 80.2417), zoom: 12);
 
+  LatLng initialCameraPosition = const LatLng(12.9716, 12.9716);
   late GoogleMapController _googleMapController;
   Marker? _origin;
   Marker? currentLocation;
@@ -42,12 +41,6 @@ class _MapScreenState extends State<MapScreen> {
   void dispose() {
     super.dispose();
     _googleMapController.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getGpsLocation();
   }
 
   @override
@@ -75,6 +68,12 @@ class _MapScreenState extends State<MapScreen> {
     if (sourceLocation!.latitude != 0.0 &&
         destinationLocation!.latitude != 0.0) {
       _addPolyLine(sourceLocation, destinationLocation);
+      CameraPosition _initialCameraPosition = CameraPosition(
+          target: LatLng(sourceLocation!.latitude,
+              destinationLocation!.latitude),
+          zoom: 12);
+    } else {
+      getGpsLocation();
     }
 
     return Scaffold(
@@ -84,10 +83,10 @@ class _MapScreenState extends State<MapScreen> {
           GoogleMap(
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
-            initialCameraPosition: _initialCameraPosition,
+            initialCameraPosition: CameraPosition(target: initialCameraPosition, zoom: 14),
             onMapCreated: (controller) => _googleMapController = controller,
             markers: {
-              if (currentLocation != null) currentLocation!,
+              if (currentLocation != null && (_origin == null || _destination == null)) currentLocation!,
               if (_origin != null) _origin!,
               if (_destination != null) _destination!,
             },
@@ -100,11 +99,11 @@ class _MapScreenState extends State<MapScreen> {
                   top: 40,
                   child: Container(
                     padding:
-                        EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                        const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
                     decoration: BoxDecoration(
                         color: Colors.yellowAccent,
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               color: Colors.black26,
                               offset: Offset(0, 2),
@@ -113,7 +112,7 @@ class _MapScreenState extends State<MapScreen> {
                     child: Text(
                       '$totalDistance,$totalDuration',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                          const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ))
               : Container()
@@ -124,7 +123,7 @@ class _MapScreenState extends State<MapScreen> {
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
               onPressed: () => getGpsLocation(),
-              child: Icon(Icons.gps_fixed),
+              child: const Icon(Icons.gps_fixed),
             )
           : SizedBox.shrink(),
     );

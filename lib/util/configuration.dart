@@ -11,5 +11,6 @@ List<String> dataWorkList = ['Work','Doctor','Businessman','Scientist'];
 List<String> uiEducationList = ['Education','Primary Education', 'Secondary Education', 'Bachelors Degree', 'Master Degree', 'Other'];
 List<String> dataEducationList = ['Education','PRIMARY_EDUCATION','SECONDARY_EDUCATION','BACHELORS_DEGREE','MASTERS_DEGREE','OTHER'];
 List<String> carTypeList = ['Car Type', 'MINI', 'HATCHBACK', 'SEDAN', 'SUV', 'LUXURY'];
+List<int> offeringSeatsList = [1,2,3,4,5,6];
 
 

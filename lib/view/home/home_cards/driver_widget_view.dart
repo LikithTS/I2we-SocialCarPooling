@@ -10,11 +10,17 @@ import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/util/string_url.dart';
 import 'package:socialcarpooling/view/home/home_cards/date_selection_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/text_form_with_hint.dart';
 import 'package:socialcarpooling/view/home/home_cards/time_selection_with_hint.dart';
@@ -33,7 +39,16 @@ class DriverWidgetView extends StatefulWidget {
   State<DriverWidgetView> createState() => HomeDriverState();
 }
 
+Iterable<int> get positiveIntegers sync* {
+  int i = 0;
+  while (true) {
+    yield i++;
+  }
+}
+
 class HomeDriverState extends State<DriverWidgetView> {
+
+  var noOfSeatsOffered = "Seats Offering";
   var originValue = TextEditingController();
   var destinationValue = TextEditingController();
   var timeValue = TextEditingController();
@@ -43,6 +58,7 @@ class HomeDriverState extends State<DriverWidgetView> {
 
   @override
   Widget build(BuildContext context) {
+
     double width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<DriverProvider>(context, listen: false).changeDriver(false);
@@ -92,13 +108,58 @@ class HomeDriverState extends State<DriverWidgetView> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                child: TextFormWithHintSupport(
-                  text: DemoLocalizations.of(context)!.getText("seats_offered"),
-                  iconData: Icons.airline_seat_recline_extra,
-                  isNumber: true,
-                  updatedValue: seatOffered,
+                child:
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField(
+                        isExpanded: true,
+                        decoration: const InputDecoration(
+                          fillColor: Colors.grey,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(width: 0, color: Colors.transparent),
+                          ),
+                        ),
+                        hint: Text(
+                          DemoLocalizations.of(context)?.getText("seats_offered") ?? "",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        items: offeringSeatsList.map((list) {
+                          return DropdownMenuItem(
+                            value: list.toString(),
+                            child: Text(list.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            noOfSeatsOffered = value.toString();
+                          });
+                        },
+                        icon: SvgPicture.asset(
+                          StringUrl.downArrowImage,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                // TextFormWithHintSupport(
+                //   text: DemoLocalizations.of(context)!.getText("seats_offered"),
+                //   iconData: Icons.airline_seat_recline_extra,
+                //   isNumber: true,
+                //   updatedValue: seatOffered,
+                // ),
               ),
+
               addHorizontalSpace(12),
               Expanded(
                 child: TextFormWithHintSupport(

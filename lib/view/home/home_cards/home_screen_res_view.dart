@@ -2,6 +2,7 @@ import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/response/HomeResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
 
 import '../../../util/constant.dart';
@@ -106,7 +107,7 @@ Widget loadHomePageData(HomeResponse data, Function() refreshScreen) {
           carName: data.myCars?.firstWhere((element) => true).carName ?? "",
           carNumber: data.myCars?.firstWhere((element) => true).regNumber ?? "",
           numberOfSeatsOffered:
-              data.myCars?.firstWhere((element) => true).offeringSeat ?? 2,
+              data.myCars?.firstWhere((element) => true).offeringSeat ?? 0,
           numberOfSeatsAvailable:
               data.myCars?.firstWhere((element) => true).seatingCapacity ?? 2,
           defaultStatus:
