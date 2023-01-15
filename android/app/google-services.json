@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "996268724185-eq4lo3m0npviad37f5o968t9414g3o34.apps.googleusercontent.com",
+          "client_id": "996268724185-ga03s7gv2338dgbt68g1b6l09409gdh0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ride.socialcarpooling",
@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDxd4iBDqfPggZJIPWgV5x-_GMvOI0DAf4"
+          "current_key": "AIzaSyAi1JbnzqJSW0TcdnbxUj_rKeEEFFukubE"
         }
       ],
       "services": {

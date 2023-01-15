@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:common/network/exception/dio_exception.dart';
+import 'package:common/network/model/new_user_error_response.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/src/response.dart';
 
@@ -37,6 +38,9 @@ class ApiRepository {
         log("Error 1 : $e");
         return ErrorResponse.fromJson(responseData.data);
       }
+    } else if (responseData.statusCode == ApiConstant.SOCIAL_LOGIN_NEW_USER_ERROR) {
+      log("Social login new user");
+      return NewUserErrorResponse.fromJson(responseData.data);
     } else {
       log("Error 2 : ${responseData.data}");
       final String parsed = json.encode(responseData.data);

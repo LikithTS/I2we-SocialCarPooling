@@ -95,13 +95,10 @@ class AvailableRidesScreen extends StatelessWidget {
                                 name: availableRideList[index].user?.name ?? "",
                                 designation:
                                     availableRideList[index].user?.work ?? "",
-                                routeMatch: availableRideList[index]
-                                        .rideMatchPercentage
-                                        ?.toInt() ??
-                                    0,
-                                profileMatch: availableRideList[index]
-                                        .profileMatchingPercentage ??
-                                    0,
+                                routeMatch: int.parse((availableRideList[index]
+                                    .rideMatchPercentage ?? "0").split('.').first),
+                                profileMatch: int.parse((availableRideList[index]
+                                        .profileMatchingPercentage ?? "0").split('.').first),
                                 carTypeInterested: availableRideList[index]
                                         .carTypeInterested ??
                                     "",

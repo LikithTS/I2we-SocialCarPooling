@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:common/network/apiclient.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/model/new_user_error_response.dart';
 import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
@@ -41,7 +42,10 @@ class LoginRepository extends ApiRepository {
         return response;
       } else if(response is SuccessResponse) {
         return response;
-      } else {
+      }else if(response is NewUserErrorResponse) {
+        return response;
+      }
+      else {
         var authResponse = AuthResponse.fromJson(response[0]);
         return authResponse;
       }

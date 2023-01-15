@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:common/model/GoogleUserObject.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/model/new_user_error_response.dart';
+import 'package:common/network/repository/FirebaseRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/request/SocialLoginApi.dart';
@@ -40,9 +42,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   LoginRepository get _userRepository => widget.userRepository;
   TextEditingController phoneNumberController =
-      TextEditingController(); //9986215749
+      TextEditingController();
   TextEditingController passwordController =
-      TextEditingController(); //Test@1234
+      TextEditingController();
   bool passwordVisible = true;
 
   @override
@@ -393,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
     log("Response value $value");
     if (value is AuthResponse) {
       handleSuccessResponse(value, userObject.phoneNumber);
-    } else if (value is ErrorResponse) {
+    } else if (value is NewUserErrorResponse) {
       if (value.statusCode == 503) {
         log("Navigate to mobile number page");
         Navigator.push(

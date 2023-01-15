@@ -33,8 +33,8 @@ class AvailableRidesResponse {
   List<Steps>? steps;
   Profile? user;
   MyCars? car;
-  double? rideMatchPercentage;
-  int? profileMatchingPercentage;
+  String? rideMatchPercentage;
+  String? profileMatchingPercentage;
 
   AvailableRidesResponse(
       {this.id,
