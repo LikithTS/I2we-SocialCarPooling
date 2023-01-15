@@ -3,10 +3,8 @@ import 'dart:developer';
 
 import 'package:common/model/GoogleUserObject.dart';
 import 'package:common/network/model/error_response.dart';
-import 'package:common/network/repository/FirebaseRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
-import 'package:common/network/request/FirebaseTokenApi.dart';
 import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
@@ -20,17 +18,13 @@ import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
-import 'package:socialcarpooling/view/login/login_mobile_number_text_form.dart';
-import 'package:socialcarpooling/view/login/login_text_form.dart';
 import 'package:socialcarpooling/view/login/social_login_newUser_VerificationScreen.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/sign_up_page.dart';
-import 'package:socialcarpooling/view/sign_up/verify_otp_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
-import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 
-import '../../util/color.dart';
 import '../../font&margin/margin_confiq.dart';
+import '../../util/color.dart';
 import '../../utils/Localization.dart';
 import 'authentication.dart';
 
@@ -45,8 +39,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginRepository get _userRepository => widget.userRepository;
-  TextEditingController phoneNumberController = TextEditingController(); //9986215749
-  TextEditingController passwordController = TextEditingController(); //Test@1234
+  TextEditingController phoneNumberController =
+      TextEditingController(); //9986215749
+  TextEditingController passwordController =
+      TextEditingController(); //Test@1234
   bool passwordVisible = true;
 
   @override
@@ -98,8 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset("assets/images/facebook_icon.png",
-                      width: 45.w, height: 45.h, fit: BoxFit.fill),
+                  Visibility(
+                    visible: false,
+                    child: Image.asset("assets/images/facebook_icon.png",
+                        width: 45.w, height: 45.h, fit: BoxFit.fill),
+                  ),
                   addHorizontalSpace(20),
                   InkWell(
                     onTap: () {
@@ -112,7 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               addHorizontalSpace(20),
-              smallText("or", Alignment.center),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: smallText("or", Alignment.center),
+              ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
@@ -417,11 +419,12 @@ class _LoginScreenState extends State<LoginScreen> {
     Timer(
         const Duration(seconds: 2),
         () => {
-          InternetChecks.closeLoadingProgress(context),
-          Navigator.pushReplacement(
-            context,
-            PageTransition(
-                type: PageTransitionType.bottomToTop,
-                child: HomePage(homeRepository: HomeRepository())))});
+              InternetChecks.closeLoadingProgress(context),
+              Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: HomePage(homeRepository: HomeRepository())))
+            });
   }
 }
