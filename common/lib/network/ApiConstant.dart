@@ -47,4 +47,5 @@ class ApiConstant {
   static const String INVITE_CANCEL = "invite/cancel";
 
   static const String RC_UPLOAD_URL = "/user/rc-upload-url";
+  static const String GET_NOTIFICATIONS = "/user/get-notifications";
 }

@@ -158,3 +158,52 @@ Widget primaryTextLightWidgetLeft(BuildContext context, String? text) =>
             overflow: TextOverflow.ellipsis,
           )),
     ));
+
+Widget notificationTitle(BuildContext context, String? text) => Center(
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: textGreyColor,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          maxLines: 1,
+        ),
+      ),
+    );
+
+Widget notificationSubTitle(BuildContext context, String? text) => Center(
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: primaryColor,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          maxLines: 1,
+        ),
+      ),
+    );
+
+Widget notificationSubDesc(BuildContext context, String? text) => Center(
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          text!,
+          style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+              decoration: TextDecoration.none,
+              fontFamily: 'Poppins'),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
+      ),
+    );

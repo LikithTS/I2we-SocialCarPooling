@@ -12,7 +12,6 @@ class APIClient {
   static const baseUrl =
       'http://I2weebackend-env.eba-fa7sbxxg.ap-south-1.elasticbeanstalk.com/';
 
-
   factory APIClient() {
     return _instance;
   }

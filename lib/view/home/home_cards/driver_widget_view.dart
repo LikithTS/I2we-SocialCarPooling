@@ -14,9 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
-import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
-import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/constant.dart';
@@ -47,7 +45,6 @@ Iterable<int> get positiveIntegers sync* {
 }
 
 class HomeDriverState extends State<DriverWidgetView> {
-
   var noOfSeatsOffered = "Seats Offering";
   var originValue = TextEditingController();
   var destinationValue = TextEditingController();
@@ -58,7 +55,6 @@ class HomeDriverState extends State<DriverWidgetView> {
 
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<DriverProvider>(context, listen: false).changeDriver(false);
@@ -108,14 +104,15 @@ class HomeDriverState extends State<DriverWidgetView> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                child:
-                Container(
+                child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.0),
                       boxShadow: const [
                         BoxShadow(
-                            color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+                            color: Colors.grey,
+                            blurRadius: 2.0,
+                            spreadRadius: 0.4)
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 10.0),
@@ -126,11 +123,13 @@ class HomeDriverState extends State<DriverWidgetView> {
                           fillColor: Colors.grey,
                           enabledBorder: UnderlineInputBorder(
                             borderSide:
-                            BorderSide(width: 0, color: Colors.transparent),
+                                BorderSide(width: 0, color: Colors.transparent),
                           ),
                         ),
                         hint: Text(
-                          DemoLocalizations.of(context)?.getText("seats_offered") ?? "",
+                          DemoLocalizations.of(context)
+                                  ?.getText("seats_offered") ??
+                              "",
                           overflow: TextOverflow.ellipsis,
                         ),
                         items: offeringSeatsList.map((list) {
@@ -159,7 +158,6 @@ class HomeDriverState extends State<DriverWidgetView> {
                 //   updatedValue: seatOffered,
                 // ),
               ),
-
               addHorizontalSpace(12),
               Expanded(
                 child: TextFormWithHintSupport(
@@ -221,7 +219,6 @@ class HomeDriverState extends State<DriverWidgetView> {
           destinationValue.text.isEmpty ||
           timeValue.text.isEmpty ||
           dateValue.text.isEmpty ||
-          seatOffered.text.isEmpty ||
           rideAmount.text.isEmpty) {
         alertDialogView(context, "post_ride_error");
       } else {
@@ -264,7 +261,7 @@ class HomeDriverState extends State<DriverWidgetView> {
             endDestination: destination,
             rideType: Constant.AS_HOST,
             startTime: utcRideStartTime.toIso8601String(),
-            seatsOffered: int.parse(seatOffered.text),
+            seatsOffered: int.parse(noOfSeatsOffered),
             amountPerSeat: int.parse(rideAmount.text),
             distance: distance,
             duration: duration,

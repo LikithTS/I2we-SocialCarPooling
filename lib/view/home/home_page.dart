@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Container(
                     height: deviceHeight(context) * .48,
                     //Load Maps here
-                    child: MapScreen(gpsIconShow:true)),
+                    child: MapScreen(gpsIconShow: true)),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Material(
@@ -123,14 +123,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         const Spacer(),
-                        BorderIcon(
-                          height: 50,
-                          width: 50,
-                          child: IconButton(
-                            icon: const Icon(Icons.message),
-                            color: Colors.blue,
-                            padding: EdgeInsets.zero,
-                            onPressed: () {},
+                        Visibility(
+                          visible: false,
+                          child: BorderIcon(
+                            height: 50,
+                            width: 50,
+                            child: IconButton(
+                              icon: const Icon(Icons.message),
+                              color: Colors.blue,
+                              padding: EdgeInsets.zero,
+                              onPressed: () {},
+                            ),
                           ),
                         ),
                         addHorizontalSpace(10),
@@ -147,7 +150,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const NotificationMainScreen()));
+                                          NotificationMainScreen()));
                             },
                           ),
                         ),
@@ -248,8 +251,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           return Text(
                                               'Error: ${snapshot.error}');
                                         } else {
-                                          return loadHomePageData(
-                                              snapshot.data,  () => refreshScreen());
+                                          return loadHomePageData(snapshot.data,
+                                              () => refreshScreen());
                                         }
                                     }
                                   },

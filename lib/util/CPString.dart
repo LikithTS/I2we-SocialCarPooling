@@ -72,8 +72,7 @@ class CPString {
   static const String resendOTP = "Resend OTP";
   static const String resendOtpIn = 'Resend OTP in ';
   static const String dontreciveOtp = 'Didn’t receive.Click here to ';
-  static const String androidApiKey =
-      'AIzaSyC7PPfo_xprhpqXmATL9pa8Ad9_W1w9KrQ';
+  static const String androidApiKey = 'AIzaSyC7PPfo_xprhpqXmATL9pa8Ad9_W1w9KrQ';
   static const String iosApiKey = 'AIzaSyDxd4iBDqfPggZJIPWgV5x-_GMvOI0DAf4';
   static const String Alert = 'Alert';
   static const String logout_desc = "Are you sure wants to logout?";
@@ -90,4 +89,6 @@ class CPString {
   static const String SUBMIT = 'Submit';
   static const String LOADING = "Loading";
   static const String UPDATED_SUCCESS = "Successfully updated";
+  static const String NOTIFICATIONS = "Notifications";
+  static const String NO_NOTIFICATION = "No Notifications Available";
 }
