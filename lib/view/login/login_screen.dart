@@ -96,11 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Visibility(
-                    visible: false,
-                    child: Image.asset("assets/images/facebook_icon.png",
-                        width: 45.w, height: 45.h, fit: BoxFit.fill),
-                  ),
+                  // Visibility(
+                  //   visible: false,
+                  //   child: Image.asset("assets/images/facebook_icon.png",
+                  //       width: 45.w, height: 45.h, fit: BoxFit.fill),
+                  // ),
                   addHorizontalSpace(20),
                   InkWell(
                     onTap: () {
