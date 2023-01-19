@@ -338,9 +338,9 @@ class AvailableRides extends StatelessWidget {
 
   getType(String rideType) {
     if (rideType == Constant.AS_HOST) {
-      return Constant.INVITE;
-    } else {
       return Constant.REQUEST;
+    } else {
+      return Constant.INVITE;
     }
   }
 

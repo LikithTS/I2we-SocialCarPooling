@@ -28,6 +28,7 @@ class AvailableRidesScreen extends StatelessWidget {
     AvailableRideApi api = AvailableRideApi(rideId: rideId, rideType: rideType);
     log("Api Request for available rides $rideId and ride type $rideType");
     String rideDataType = getRideType(rideType);
+    log("Ride data Type $rideDataType");
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -129,6 +130,8 @@ class AvailableRidesScreen extends StatelessWidget {
   }
 
   String getRideType(String rideType) {
+    log("Compare two string ${rideType.trim().toUpperCase().compareTo(Constant.AS_HOST.trim().toUpperCase())}");
+    log("Compare two string 2 ${rideType == Constant.AS_HOST}");
     if (rideType == Constant.AS_HOST) {
       return Constant.AS_RIDER;
     } else {
