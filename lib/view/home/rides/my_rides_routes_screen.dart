@@ -61,10 +61,8 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
                         seatsOffered: upcomingRide.seatsOffered ?? 1,
                         carType: upcomingRide.carTypeInterested ?? "",
                         coRidersCount: upcomingRide.riderCount ?? 0,
-                        leftButtonText:
-                            upcomingRide.riderStatus ?? Constant.RIDE_CANCELLED,
-                        rideStatus:
-                            upcomingRide.riderStatus ?? Constant.RIDE_CREATED,
+                        leftButtonText: getRideStatus(widget.rideType, upcomingRide.rideStatus, upcomingRide.riderStatus),
+                        rideStatus: getRideStatus(widget.rideType, upcomingRide.rideStatus, upcomingRide.riderStatus),
                         startLocation:
                             upcomingRide.startLocation ?? StartLocation(),
                         endLocation:
@@ -91,5 +89,13 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
     setState(() {
       log("Refresh move screen data");
     });
+  }
+
+  getRideStatus(String rideType, String? rideStatus, String? riderStatus) {
+    if(rideStatus == Constant.AS_HOST) {
+      return rideStatus;
+    } else {
+      return riderStatus;
+    }
   }
 }
