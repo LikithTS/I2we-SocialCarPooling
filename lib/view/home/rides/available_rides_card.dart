@@ -78,8 +78,7 @@ class AvailableRides extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                CPSessionManager().getProfileImageWithBase())),
+                            backgroundImage: NetworkImage(profileImage)),
                       ),
                     ),
                     const SizedBox(width: 20),
