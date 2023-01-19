@@ -411,12 +411,12 @@ class _LoginScreenState extends State<LoginScreen> {
   handleSuccessResponse(AuthResponse value, String? phoneNumber) {
     if (phoneNumber != null) {
       CPSessionManager().setUserId(phoneNumber);
-      FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
-      firebaseTokenUpdate.getToken();
-      firebaseTokenUpdate.initInfo();
     }
     CPSessionManager().setAuthToken(value.accessToken ?? "");
     CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
+    FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
+    firebaseTokenUpdate.getToken();
+    firebaseTokenUpdate.initInfo();
     GetProfileDetails(context);
     Timer(
         const Duration(seconds: 2),

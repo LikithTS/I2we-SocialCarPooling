@@ -158,10 +158,10 @@ class RideRepository extends ApiRepository {
       dynamic response = handleAPIResponseData(rideData);
       if (response is ErrorResponse) {
         return response;
-      } else if(response is SuccessResponse){
-        var responseData = UpcomingRides.fromJson(response.data?[0]);
-        log("Current ride details ${responseData.rideType}");
-        return responseData;
+      } else {
+        List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
+            response.map((i) => UpcomingRides.fromJson(i)));
+        return upcomingRidesList[0];
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);

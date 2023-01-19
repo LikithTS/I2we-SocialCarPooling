@@ -46,7 +46,6 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     UpcomingRides? upcomingRide = snapshot.data;
-                    log("Current rides ${upcomingRide?.startTime}");
                     if (upcomingRide != null) {
                       return MyRideRoutesView(
                         rideId: upcomingRide.id ?? "",
@@ -63,9 +62,9 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
                         carType: upcomingRide.carTypeInterested ?? "",
                         coRidersCount: upcomingRide.riderCount ?? 0,
                         leftButtonText:
-                            upcomingRide.rideStatus ?? Constant.RIDE_CANCELLED,
+                            upcomingRide.riderStatus ?? Constant.RIDE_CANCELLED,
                         rideStatus:
-                            upcomingRide.rideStatus ?? Constant.RIDE_CREATED,
+                            upcomingRide.riderStatus ?? Constant.RIDE_CREATED,
                         startLocation:
                             upcomingRide.startLocation ?? StartLocation(),
                         endLocation:

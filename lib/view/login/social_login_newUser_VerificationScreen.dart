@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/CPString.dart';
+import 'package:socialcarpooling/util/FirebaseTokenUpdate.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
@@ -115,6 +116,9 @@ class _SocialLoginNewUserVerificationScreenState
       CPSessionManager().setUserId(phoneNumber);
       CPSessionManager().setAuthToken(value.accessToken ?? "");
       CPSessionManager().setAuthRefreshToken(value.refreshToken ?? "");
+      FirebaseTokenUpdate firebaseTokenUpdate = FirebaseTokenUpdate();
+      firebaseTokenUpdate.getToken();
+      firebaseTokenUpdate.initInfo();
       GetProfileDetails(context);
       Timer(
           const Duration(seconds: 2),
