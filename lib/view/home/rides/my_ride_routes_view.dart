@@ -6,14 +6,17 @@ import 'package:common/network/model/Invites.dart';
 import 'package:common/network/model/StartLocation.dart';
 import 'package:common/network/model/TravelledPassengers.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/utils/ride_status_text_function.dart';
+import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
 import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
@@ -503,6 +506,11 @@ class MyRideRoutesView extends StatelessWidget {
     InternetChecks.closeLoadingProgress(context);
     if (value is SuccessResponse) {
       refreshScreen();
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.bottomToTop,
+              child: HomePage(homeRepository: HomeRepository())));
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
