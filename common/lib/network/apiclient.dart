@@ -9,10 +9,8 @@ class APIClient {
   APIClient._privateConstructor();
 
   static final APIClient _instance = APIClient._privateConstructor();
-  // static const baseUrl =
-  //     'http://I2weebackend-env.eba-fa7sbxxg.ap-south-1.elasticbeanstalk.com/';
-
-  static const baseUrl = 'https://a99b-49-205-137-190.ngrok.io/';
+  static const baseUrl =
+      'http://I2weebackend-env.eba-fa7sbxxg.ap-south-1.elasticbeanstalk.com/';
   factory APIClient() {
     return _instance;
   }
