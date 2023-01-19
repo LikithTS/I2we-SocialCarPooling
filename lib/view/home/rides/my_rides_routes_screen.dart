@@ -92,7 +92,7 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
   }
 
   getRideStatus(String rideType, String? rideStatus, String? riderStatus) {
-    if(rideStatus != null && rideStatus == Constant.AS_HOST) {
+    if(rideType == Constant.AS_HOST) {
       return rideStatus;
     } else {
       return riderStatus;
