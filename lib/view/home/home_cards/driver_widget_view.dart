@@ -27,6 +27,7 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
+import '../../../provider/provider_preference.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 
@@ -190,6 +191,8 @@ class HomeDriverState extends State<DriverWidgetView> {
       log("Post new ride successful");
       alertDialogView(context, "ride_created_successful");
       setState(() {
+        ProviderPreference().putStartDriverAddress(context, "");
+        ProviderPreference().putEndDriverAddress(context, "");
         originValue.text = "";
         destinationValue.text = "";
         timeValue.text = "";

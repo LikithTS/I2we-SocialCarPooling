@@ -27,6 +27,7 @@ import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 
 import '../../../buttons/elevated_full_width_button_view.dart';
 import '../../../provider/driver_provider.dart';
+import '../../../provider/provider_preference.dart';
 import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 
@@ -234,6 +235,8 @@ class HomeRiderState extends State<RiderWidgetView> {
       setState(() {
         originValue.text = "";
         destinationValue.text = "";
+        ProviderPreference().putStartRiderAddress(context, "");
+        ProviderPreference().putEndRiderAddress(context, "");
         timeValue.text = "";
         dateValue.text = "";
         selectedCarType = "Car Type";

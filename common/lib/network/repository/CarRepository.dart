@@ -90,9 +90,8 @@ class CarRepository extends ApiRepository {
 
   Future<dynamic> getRcUploadURL() async {
     try {
-      Response userData = await APIClient()
-          .getDioInstance()
-          .get(ApiConstant.GET_USER_PROFILE_URL);
+      Response userData =
+          await APIClient().getDioInstance().get(ApiConstant.RC_UPLOAD_URL);
       dynamic response = handleAPIResponseData(userData);
       if (response is ErrorResponse) {
         return "";
