@@ -401,9 +401,8 @@ class MyRides extends StatelessWidget {
               rideType == Constant.AS_HOST) ||
           rideStatusData == Constant.RIDE_JOINED) {
         openCurrentRidePage(context);
-      } else {
-        refreshScreen();
       }
+      refreshScreen();
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
