@@ -113,9 +113,12 @@ class MyRideRoutesView extends StatelessWidget {
                   children: [
                     Stack(
                       children: const [
-                        CircleAvatar(
-                          radius: 20,
-                          child: Icon(Icons.message),
+                        Visibility(
+                          visible: false,
+                          child: CircleAvatar(
+                            radius: 20,
+                            child: Icon(Icons.message),
+                          ),
                         ),
                         Positioned(
                           right: 0,
@@ -130,9 +133,12 @@ class MyRideRoutesView extends StatelessWidget {
                     addHorizontalSpace(10),
                     Stack(
                       children: const [
-                        CircleAvatar(
-                          radius: 20,
-                          child: Icon(Icons.notifications),
+                        Visibility(
+                          visible: false,
+                          child: CircleAvatar(
+                            radius: 20,
+                            child: Icon(Icons.notifications),
+                          ),
                         ),
                         Positioned(
                           right: 0,
