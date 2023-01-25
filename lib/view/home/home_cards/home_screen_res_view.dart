@@ -49,7 +49,8 @@ Widget loadHomePageData(HomeResponse data, Function() refreshScreen) {
                   ?.firstWhere((element) => true)
                   .carTypeInterested ??
               Constant.CAR_TYPE_SEDAN,
-          coRidersCount: "2",
+          coRidersCount:
+              data.upcomingRides?.firstWhere((element) => true).riderCount ?? 0,
           leftButtonText:
               data.upcomingRides?.firstWhere((element) => true).rideStatus ??
                   Constant.RIDE_CANCELLED,

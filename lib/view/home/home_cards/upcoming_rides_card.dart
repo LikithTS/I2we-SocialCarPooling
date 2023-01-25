@@ -34,7 +34,7 @@ class UpcomingRidesWidget extends StatelessWidget {
   final DateTime dateTime;
   final int seatsOffered;
   final String carType;
-  final String coRidersCount;
+  final int coRidersCount;
   final String leftButtonText;
   final String rideStatus;
   final VoidCallback refreshScreen;
@@ -192,14 +192,14 @@ class UpcomingRidesWidget extends StatelessWidget {
                                         rideId: rideId, rideType: rideType)));
                           },
                         ),
-                        if (int.tryParse(coRidersCount) == 0 &&
+                        if (coRidersCount == 0 &&
                             rideType == Constant.AS_HOST) ...[
                           primaryTextNormalTwoLine(
                               context,
                               DemoLocalizations.of(context)
                                       ?.getText("invite_ride_to_see") ??
                                   ""),
-                        ] else if (int.tryParse(coRidersCount) == 0 &&
+                        ] else if (coRidersCount == 0 &&
                             rideType == Constant.AS_RIDER) ...[
                           primaryTextNormalTwoLine(
                               context,
@@ -207,7 +207,7 @@ class UpcomingRidesWidget extends StatelessWidget {
                                       ?.getText("join_ride_to_see") ??
                                   ""),
                         ] else ...[
-                          primaryTextNormalTwoLine(context, coRidersCount),
+                          primaryTextNormalTwoLine(context, coRidersCount.toString()),
                         ],
                       ],
                     ),
