@@ -44,13 +44,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   FirebaseNotification firebaseNotification = FirebaseNotification();
   late Future<dynamic> homeDataFuture;
 
-  void getLocation() async {
-    Position position = await getGeoLocationCoOrdinates();
-    setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
-    });
-  }
+  // void getLocation() async {
+  //   Position position = await getGeoLocationCoOrdinates();
+  //   setState(() {
+  //     latitude = position.latitude;
+  //     longitude = position.longitude;
+  //   });
+  // }
 
   Future<Position> getGeoLocationCoOrdinates() async {
     bool isServiceEnabled;
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     homeDataFuture = _homeRepository.home();
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    getLocation();
+    // getLocation();
   }
 
   @override

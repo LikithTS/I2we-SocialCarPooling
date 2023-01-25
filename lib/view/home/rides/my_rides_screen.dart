@@ -21,6 +21,13 @@ class MyRidesScreen extends StatefulWidget {
 
 class _MyRidesScreen extends State<MyRidesScreen> {
   RideRepository rideRepository = RideRepository();
+  late Future<List<dynamic>> future;
+
+  @override
+  void initState() {
+    future = rideRepository.getUpcomingRides();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +79,7 @@ class _MyRidesScreen extends State<MyRidesScreen> {
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
-                future: rideRepository.getUpcomingRides(),
+                future: future,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());

@@ -38,6 +38,12 @@ class _MapScreenState extends State<MapScreen> {
   Map<PolylineId, Polyline> polylines = {};
 
   @override
+  void initState() {
+    getGpsLocation();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _googleMapController.dispose();
@@ -72,8 +78,6 @@ class _MapScreenState extends State<MapScreen> {
           target: LatLng(sourceLocation!.latitude,
               destinationLocation!.latitude),
           zoom: 12);
-    } else {
-      getGpsLocation();
     }
 
     return Scaffold(
