@@ -103,7 +103,7 @@ class _HistoryState extends State<HistoryPage> {
         dateTime: DateTime.parse(recentRide.startTime ?? ""),
         seatsOffered: recentRide.seatsOffered ?? 1,
         carType: recentRide.carTypeInterested ?? "",
-        coRidersCount: "",
+        coRidersCount: 0,
         leftButtonText: "",
         rideStatus: recentRide.rideStatus ?? recentRide.riderStatus?? "",
         isDisplayTitle: false

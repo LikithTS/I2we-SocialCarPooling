@@ -20,7 +20,7 @@ class RecentRidesWidget extends StatelessWidget {
   final DateTime dateTime;
   final int seatsOffered;
   final String carType;
-  final String coRidersCount;
+  final int coRidersCount;
   final String leftButtonText;
   final String rideStatus;
   bool isDisplayTitle;
@@ -169,7 +169,7 @@ class RecentRidesWidget extends StatelessWidget {
                             left: 10, right: 10, top: 5, bottom: 5),
                         child: Row(
                           children: [
-                            if (coRidersCount.isNotEmpty) ...[
+                            if (coRidersCount != 0) ...[
                               const Icon(
                                 Icons.add_circle_outline,
                                 color: Colors.blue,
@@ -177,7 +177,7 @@ class RecentRidesWidget extends StatelessWidget {
                               const SizedBox(
                                 width: 10,
                               ),
-                              primaryTextNormalTwoLine(context, coRidersCount)
+                              primaryTextNormalTwoLine(context, coRidersCount.toString())
                             ],
                             const Spacer(),
                             elevatedButtonView(
