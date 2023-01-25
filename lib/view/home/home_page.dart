@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late LatLng currentPosition;
   HomeRepository get _homeRepository => widget.homeRepository;
   FirebaseNotification firebaseNotification = FirebaseNotification();
+  late Future<dynamic> homeDataFuture;
 
   void getLocation() async {
     Position position = await getGeoLocationCoOrdinates();
@@ -84,6 +85,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     firebaseNotification.registerNotification();
     firebaseNotification.handleBackgroundNotification();
     firebaseNotification.checkForInitialMessage();
+    homeDataFuture = _homeRepository.home();
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getLocation();
@@ -103,7 +105,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Container(
                     height: deviceHeight(context) * .48,
                     //Load Maps here
-                    child: MapScreen(gpsIconShow: true)),
+                    child: const MapScreen(gpsIconShow: true)),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Material(
@@ -236,8 +238,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 FutureBuilder<dynamic>(
-                                  future: _homeRepository
-                                      .home(), // a Future<String> or null
+                                  future: homeDataFuture, // a Future<String> or null
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
                                     switch (snapshot.connectionState) {
