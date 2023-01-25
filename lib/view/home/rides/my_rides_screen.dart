@@ -48,21 +48,24 @@ class _MyRidesScreen extends State<MyRidesScreen> {
                               "")
                     ],
                   ),
-                  Stack(
-                    children: const [
-                      CircleAvatar(
-                        radius: 20,
-                        child: Icon(Icons.group),
-                      ),
-                      Positioned(
-                        right: 0,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.red,
-                          child: Text('1'),
+                  Visibility(
+                    visible: false,
+                    child: Stack(
+                      children: const [
+                        CircleAvatar(
+                          radius: 20,
+                          child: Icon(Icons.group),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.red,
+                            child: Text('1'),
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
