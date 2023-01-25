@@ -140,6 +140,7 @@ class _MyRidesScreen extends State<MyRidesScreen> {
 
   refreshScreen() {
     // Refresh home screen data
+    future = rideRepository.getUpcomingRides();
     setState(() {
       log("Refresh move screen data");
     });
