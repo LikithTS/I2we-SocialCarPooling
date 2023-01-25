@@ -231,9 +231,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     height: 320,
                                     child: TabBarView(
                                         controller: tabController,
-                                        children: const [
-                                          DriverWidgetView(),
-                                          RiderWidgetView()
+                                        children: [
+                                          DriverWidgetView(refreshHomePage: () => refreshHomePageApi()),
+                                          RiderWidgetView(refreshHomePage: () => refreshHomePageApi())
                                         ]),
                                   ),
                                 ),
@@ -320,6 +320,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   refreshScreen() {
     // Refresh home screen data
+    setState(() {
+      log("Refresh move screen data");
+    });
+  }
+
+  refreshHomePageApi() {
+    homeDataFuture = _homeRepository.home();
     setState(() {
       log("Refresh move screen data");
     });

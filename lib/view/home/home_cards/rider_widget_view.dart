@@ -32,7 +32,10 @@ import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 
 class RiderWidgetView extends StatefulWidget {
-  const RiderWidgetView({Key? key}) : super(key: key);
+
+  final VoidCallback refreshHomePage;
+
+  const RiderWidgetView({Key? key, required this.refreshHomePage}) : super(key: key);
 
   @override
   State<RiderWidgetView> createState() => HomeRiderState();
@@ -241,6 +244,7 @@ class HomeRiderState extends State<RiderWidgetView> {
         dateValue.text = "";
         selectedCarType = "Car Type";
       });
+      widget.refreshHomePage();
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }

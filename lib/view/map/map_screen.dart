@@ -74,7 +74,7 @@ class _MapScreenState extends State<MapScreen> {
     if (sourceLocation!.latitude != 0.0 &&
         destinationLocation!.latitude != 0.0) {
       _addPolyLine(sourceLocation, destinationLocation);
-      CameraPosition _initialCameraPosition = CameraPosition(
+      CameraPosition(
           target: LatLng(sourceLocation!.latitude,
               destinationLocation!.latitude),
           zoom: 12);

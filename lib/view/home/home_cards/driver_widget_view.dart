@@ -32,7 +32,10 @@ import '../../../utils/Localization.dart';
 import '../../../utils/widget_functions.dart';
 
 class DriverWidgetView extends StatefulWidget {
-  const DriverWidgetView({Key? key}) : super(key: key);
+
+  final VoidCallback refreshHomePage;
+
+  const DriverWidgetView({Key? key, required this.refreshHomePage}) : super(key: key);
 
   @override
   State<DriverWidgetView> createState() => HomeDriverState();
@@ -200,6 +203,7 @@ class HomeDriverState extends State<DriverWidgetView> {
         seatOffered.text = "";
         rideAmount.text = "";
       });
+      widget.refreshHomePage();
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
