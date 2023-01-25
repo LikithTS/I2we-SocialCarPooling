@@ -27,11 +27,18 @@ class MyRidesRoutesScreen extends StatefulWidget {
 
 class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
   RideRepository rideRepository = RideRepository();
+  late Future<dynamic> future;
+
+  @override
+  void initState() {
+    CurrentRideApi currentRideApi =
+    CurrentRideApi(rideType: widget.rideType, rideId: widget.rideId);
+    future = rideRepository.getCurrentRide(api: currentRideApi);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    CurrentRideApi currentRideApi =
-        CurrentRideApi(rideType: widget.rideType, rideId: widget.rideId);
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -40,7 +47,7 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
           children: <Widget>[
             Expanded(
               child: FutureBuilder<dynamic>(
-                future: rideRepository.getCurrentRide(api: currentRideApi),
+                future: future,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());

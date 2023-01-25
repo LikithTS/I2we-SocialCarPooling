@@ -512,11 +512,6 @@ class MyRideRoutesView extends StatelessWidget {
     InternetChecks.closeLoadingProgress(context);
     if (value is SuccessResponse) {
       refreshScreen();
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: HomePage(homeRepository: HomeRepository())));
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
