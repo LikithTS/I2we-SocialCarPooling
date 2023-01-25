@@ -93,6 +93,9 @@ class _MyRidesRoutesScreen extends State<MyRidesRoutesScreen> {
 
   refreshScreen() {
     // Refresh home screen data
+    CurrentRideApi currentRideApi =
+    CurrentRideApi(rideType: widget.rideType, rideId: widget.rideId);
+    future = rideRepository.getCurrentRide(api: currentRideApi);
     setState(() {
       log("Refresh move screen data");
     });
