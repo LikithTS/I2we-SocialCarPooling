@@ -15,8 +15,8 @@ import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 
 import '../../util/InternetChecks.dart';
-import '../../utils/Localization.dart';
-import '../../utils/widget_functions.dart';
+import '../../util/Localization.dart';
+import '../../widgets/widget_text.dart';
 import '../../widgets/aleart_widgets.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
@@ -163,8 +163,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                 radius: 30, // Image radius
                                 backgroundImage: NetworkImage(CPSessionManager()
                                     .getCarImage(
-                                        getCarImageKey(widget.carList[index]) ??
-                                            "")),
+                                        getCarImageKey(widget.carList[index]))),
                               ),
                             ),
                             Padding(

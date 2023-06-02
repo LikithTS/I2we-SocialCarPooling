@@ -5,12 +5,12 @@ import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/AvailableRideApi.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
+import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_card.dart';
 
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../widgets/widget_text.dart';
 import 'my_available_start_page.dart';
 
 class AvailableRidesScreen extends StatelessWidget {

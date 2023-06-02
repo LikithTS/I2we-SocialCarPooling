@@ -19,7 +19,7 @@ import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -238,7 +238,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         child: TextFormField(
                           controller: dateController,
                           decoration: const InputDecoration(
-                            fillColor: Colors.grey,
+                            fillColor: greyColor,
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: Colors.blue),
@@ -326,10 +326,10 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
-                        fillColor: Colors.grey,
+                        fillColor: greyColor,
                         counterText: "",
                         enabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                          borderSide: BorderSide(width: 1, color: primaryColor),
                         ),
                         labelText: CPString.password,
                         hintText: CPString.password,
@@ -554,7 +554,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(margin20),
                     ),

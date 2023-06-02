@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/history/history_page.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
-import '../../../utils/ride_status_text_function.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
+import '../../../util/ride_status_text_function.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
@@ -135,7 +136,7 @@ class RecentRidesWidget extends StatelessWidget {
                         ],
                       ),
                       const Divider(
-                        color: Colors.grey,
+                        color: greyColor,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,7 +163,7 @@ class RecentRidesWidget extends StatelessWidget {
                         ],
                       ),
                       const Divider(
-                        color: Colors.grey,
+                        color: greyColor,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -172,7 +173,7 @@ class RecentRidesWidget extends StatelessWidget {
                             if (coRidersCount != 0) ...[
                               const Icon(
                                 Icons.add_circle_outline,
-                                color: Colors.blue,
+                                color: primaryColor,
                               ),
                               const SizedBox(
                                 width: 10,

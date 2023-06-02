@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 
-import '../../../utils/Localization.dart';
+import '../../../util/Localization.dart';
+import '../../../util/color.dart';
 import '../../../widgets/text_widgets.dart';
 
 class AddCarCard extends StatelessWidget {
@@ -38,6 +39,7 @@ class AddCarCard extends StatelessWidget {
                         children: [
                           const CircleAvatar(
                             radius: 30,
+                            backgroundColor: lightGreyColor,
                             backgroundImage:
                                 AssetImage('assets/images/add_car.png'),
                           ),

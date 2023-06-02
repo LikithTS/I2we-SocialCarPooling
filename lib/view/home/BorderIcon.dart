@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../util/color.dart';
+
 class BorderIcon extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
@@ -17,7 +19,7 @@ class BorderIcon extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(50.0)),
-            border: Border.all(color: Colors.grey.withAlpha(40), width: 2)),
+            border: Border.all(color: lightGreyColor, width: 2)),
         padding: padding ?? const EdgeInsets.all(8.0),
         child: Center(child: child));
   }

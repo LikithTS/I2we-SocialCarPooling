@@ -24,7 +24,7 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.0),
           boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+            BoxShadow(color: greyColor, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextField(
         textAlign: TextAlign.start,
@@ -34,14 +34,14 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
           showClock(context);
         },
         decoration: InputDecoration(
-            fillColor: Colors.grey,
+            fillColor: greyColor,
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: text,
             prefixIcon: Icon(
               iconData,
-              color: primaryLightColor,
+              color: primaryColor,
             )),
       ),
     );
@@ -57,7 +57,7 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: ThemeData.light().copyWith(
-              primaryColor: Color(primaryLightColor.value),
+              primaryColor: Color(primaryColor.value),
               colorScheme:
                   ColorScheme.light(primary: Color(primaryLightColor.value)),
               buttonTheme:

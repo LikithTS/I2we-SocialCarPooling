@@ -10,14 +10,14 @@ import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
+import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/widgets/header_widgets.dart';
 
 import '../../util/AppPreference.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 
 class ProfileUpdateScreen extends StatefulWidget {
@@ -202,7 +202,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                         child: TextFormField(
                           controller: dateController,
                           decoration: const InputDecoration(
-                            fillColor: Colors.grey,
+                            fillColor: greyColor,
                             enabledBorder: const UnderlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: Colors.blue),
@@ -307,7 +307,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                     updateUser();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(margin20),
                     ),

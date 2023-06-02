@@ -36,7 +36,7 @@ Widget primaryThemeTextWidget(BuildContext context, String? text) => Container(
           style: TextStyle(
               fontSize: fontSize16,
               fontWeight: FontWeight.normal,
-              color: textThemeColor,
+              color: primaryColor,
               decoration: TextDecoration.none,
               fontFamily: CPString.fontFamilyPoppins)),
     );
@@ -47,7 +47,7 @@ Widget primaryThemeTextNormal(BuildContext context, String? text) => Container(
         style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.normal,
-          color: textThemeColor,
+          color: primaryColor,
           decoration: TextDecoration.none,
           fontFamily: CPString.fontFamilyPoppins,
         ),

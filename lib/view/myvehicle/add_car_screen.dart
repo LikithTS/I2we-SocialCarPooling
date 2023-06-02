@@ -24,8 +24,8 @@ import 'package:socialcarpooling/widgets/material_text_form.dart';
 import '../../imageupload/AwsApi.dart';
 import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
-import '../../utils/Localization.dart';
-import '../../utils/widget_functions.dart';
+import '../../util/Localization.dart';
+import '../../widgets/widget_text.dart';
 import '../../widgets/aleart_widgets.dart';
 import '../../widgets/button_widgets.dart';
 

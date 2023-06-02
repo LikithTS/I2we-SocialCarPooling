@@ -40,7 +40,7 @@ class TextFormWithHintSupport extends StatelessWidget {
             hintText: text,
             prefixIcon: Icon(
               iconData,
-              color: primaryLightColor,
+              color: primaryColor,
             )),
       ),
     );

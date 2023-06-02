@@ -13,8 +13,8 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/text_widgets.dart';
 
@@ -78,6 +78,7 @@ class AvailableRides extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
+                            backgroundColor: lightGreyColor,
                             backgroundImage: NetworkImage(profileImage)),
                       ),
                     ),
@@ -93,12 +94,12 @@ class AvailableRides extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  availableRidesText(name, Colors.black, 18.sp,
+                                  availableRidesText(name, greyColor, 18.sp,
                                       FontWeight.w400),
                                   availableRidesText(designation, primaryColor,
                                       10.sp, FontWeight.w400),
                                   if (rideType == Constant.AS_HOST) ...[
-                                    availableRidesText(carType, Colors.black,
+                                    availableRidesText(carType, greyColor,
                                         11.sp, FontWeight.w400)
                                   ]
                                 ],
@@ -127,7 +128,7 @@ class AvailableRides extends StatelessWidget {
                                     color: primaryColor,
                                   ),
                                   availableRidesText("$routeMatch%",
-                                      Colors.black, 16.sp, FontWeight.w400)
+                                      greyColor, 16.sp, FontWeight.w400)
                                 ],
                               ),
                               availableRidesCenterText(
@@ -145,7 +146,7 @@ class AvailableRides extends StatelessWidget {
                   ],
                 ),
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Row(
                   children: [
@@ -154,6 +155,7 @@ class AvailableRides extends StatelessWidget {
                           flex: 2,
                           child: CircleAvatar(
                               radius: 30,
+                              backgroundColor: lightGreyColor,
                               backgroundImage: NetworkImage(
                                   CPSessionManager().getCarImage(carIcon)))),
                       const SizedBox(width: 15),
@@ -207,7 +209,7 @@ class AvailableRides extends StatelessWidget {
                                     color: Color(0Xfff86565),
                                   ),
                                   availableRidesText("$profileMatch%",
-                                      Colors.black, 16.sp, FontWeight.w400)
+                                      greyColor, 16.sp, FontWeight.w400)
                                 ],
                               ),
                               availableRidesCenterText(
@@ -225,7 +227,7 @@ class AvailableRides extends StatelessWidget {
                   ],
                 ),
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,7 +255,7 @@ class AvailableRides extends StatelessWidget {
                 ),
                 if (rideType == Constant.AS_HOST) ...[
                   const Divider(
-                    color: Colors.grey,
+                    color: greyColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10, left: 10),
@@ -274,7 +276,7 @@ class AvailableRides extends StatelessWidget {
                   )
                 ],
                 const Divider(
-                  color: Colors.grey,
+                  color:greyColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),

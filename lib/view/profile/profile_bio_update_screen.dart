@@ -7,13 +7,13 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
-import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/util/Localization.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../font&margin/margin_confiq.dart';
 import '../../util/AppPreference.dart';
 import '../../util/color.dart';
-import '../../utils/widget_functions.dart';
+import '../../widgets/widget_text.dart';
 import '../../widgets/circular_progress_loader.dart';
 
 class ProfileBioUpdateScreen extends StatefulWidget {
@@ -34,9 +34,6 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final Color lightOrange = Color(0Xfffacb9c);
-    final Color orange = Color(0XffF29339);
-    final Color lightBlue = Color(0Xffd9e9fc);
 
     return SafeArea(
       child: Scaffold(
@@ -85,6 +82,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                                     .isNotEmpty
                                 ? CircleAvatar(
                                     radius: 58,
+                                    backgroundColor: lightGreyColor,
                                     backgroundImage: Image.file(File(
                                             CPSessionManager()
                                                 .getProfileImage()))
@@ -92,6 +90,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                                   )
                                 : CircleAvatar(
                                     radius: 58,
+                                    backgroundColor: lightGreyColor,
                                     backgroundImage: NetworkImage(
                                         CPSessionManager().getProfileImage()),
                                   )),
@@ -201,7 +200,7 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                         updateBio();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
+                        backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

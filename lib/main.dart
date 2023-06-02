@@ -12,7 +12,7 @@ import 'package:socialcarpooling/provider/address_provider.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/util/Localization.dart';
 import 'package:socialcarpooling/view/splash/splash_page.dart';
 
 Future<void> main() async {
@@ -27,6 +27,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initConfiguration();
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+            statusBarColor: primaryColor
+          //color set to purple or set your own color
+        )
+    );
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AddressProvider()),
@@ -49,15 +55,22 @@ class MyApp extends StatelessWidget {
                     ),
                     elevatedButtonTheme: ElevatedButtonThemeData(
                       style: ElevatedButton.styleFrom(
-                          primary: buttonBgColor, onPrimary: Colors.white),
+                          backgroundColor: buttonBgColor, foregroundColor: Colors.white),
                     ),
                     backgroundColor: Colors.white,
                     scaffoldBackgroundColor: Colors.white,
                     useMaterial3: true,
+                    primaryColor: primaryColor,
                     appBarTheme: AppBarTheme(
+                      systemOverlayStyle: const SystemUiOverlayStyle(
+                          statusBarColor: primaryColor,
+                          // Status bar brightness (optional)
+                          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+                          statusBarBrightness: Brightness.light,
+                      ),
+                      color: primaryColor,
                       titleTextStyle: TextStyleUtils.primaryTextBold.copyWith(
                           color: toolbarTitleColor, fontSize: textsize22sp),
-                      backgroundColor: Colors.white,
                       elevation: 0,
                       iconTheme: const IconThemeData(color: Colors.black),
                     )),
@@ -76,6 +89,6 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.blue));
+        const SystemUiOverlayStyle(statusBarColor: primaryColor));
   }
 }

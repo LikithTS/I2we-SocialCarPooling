@@ -1,9 +1,4 @@
-import 'dart:developer';
-
-import 'package:common/network/ApiConstant.dart';
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/util/constant.dart';
 
 Widget outlineButtonView(String buttonName, VoidCallback onClicked) => OutlinedButton(
     style: ElevatedButton.styleFrom(

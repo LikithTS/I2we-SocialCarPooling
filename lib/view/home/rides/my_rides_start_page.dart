@@ -1,12 +1,11 @@
-import 'package:common/network/repository/CarRepository.dart';
+
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/utils/Localization.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/util/Localization.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
-import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 import 'package:socialcarpooling/widgets/button_widgets.dart';
 import 'package:socialcarpooling/widgets/text_widgets.dart';
 
@@ -45,7 +44,7 @@ class MyRidesStartPageState extends State<MyRidesStartPage> {
                   child: primaryBigTextWidget(
                       context,
                       DemoLocalizations.of(context)?.getText("add_ride") ?? "",
-                      Colors.black),
+                      greyColor),
                 ),
                 addVerticalSpace(20),
                 Padding(
@@ -59,7 +58,7 @@ class MyRidesStartPageState extends State<MyRidesStartPage> {
                           children: [
                             const Icon(
                               Icons.people,
-                              color: textThemeColor,
+                              color: primaryColor,
                             ),
                             addHorizontalSpace(10),
                             primaryTextLightWidgetLeft(
@@ -78,7 +77,7 @@ class MyRidesStartPageState extends State<MyRidesStartPage> {
                           children: [
                             const Icon(
                               Icons.sentiment_satisfied_alt,
-                              color: textThemeColor,
+                              color: primaryColor,
                             ),
                             addHorizontalSpace(10),
                             primaryTextLightWidgetLeft(

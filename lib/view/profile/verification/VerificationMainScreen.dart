@@ -10,8 +10,8 @@ import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/profile/verification/aadhar/AadharVerfication.dart';
 import 'package:socialcarpooling/view/profile/verification/drivinglicense/DrivingLicenseScreen.dart';
 
-import '../../../utils/Localization.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../widgets/widget_text.dart';
 
 class VerificationMainScreen extends StatefulWidget {
   const VerificationMainScreen({Key? key}) : super(key: key);
@@ -21,7 +21,6 @@ class VerificationMainScreen extends StatefulWidget {
 }
 
 class _VerificationMainScreenState extends State<VerificationMainScreen> {
-  File? _profileImage;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -141,7 +140,6 @@ class _VerificationMainScreenState extends State<VerificationMainScreen> {
     CroppedFile? cropFile =
         await ImageCropper().cropImage(sourcePath: image.path);
     setState(() {
-      _profileImage = image;
       print("_profileImage${cropFile!.path}");
     });
   }

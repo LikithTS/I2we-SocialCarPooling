@@ -13,8 +13,8 @@ import '../../../../font&margin/font_size.dart';
 import '../../../../font&margin/margin_confiq.dart';
 import '../../../../util/InternetChecks.dart';
 import '../../../../util/color.dart';
-import '../../../../utils/Localization.dart';
-import '../../../../utils/widget_functions.dart';
+import '../../../../util/Localization.dart';
+import '../../../../widgets/widget_text.dart';
 import '../../../../widgets/aleart_widgets.dart';
 
 class DrivingLicenseScreen extends StatefulWidget {
@@ -64,7 +64,7 @@ class _DrivingLicenseScreenState extends State<DrivingLicenseScreen> {
                         {uploadLicense(isInternetAvailable)});
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(margin20),
                     ),

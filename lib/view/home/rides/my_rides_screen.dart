@@ -1,15 +1,14 @@
 import 'dart:developer';
 
-import 'package:common/network/model/Invites.dart';
 import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
+import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_start_page.dart';
 
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../widgets/widget_text.dart';
 import 'my_rides_card.dart';
 
 class MyRidesScreen extends StatefulWidget {

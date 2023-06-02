@@ -27,7 +27,7 @@ class DateSelectionWithHintSupport extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.0),
           boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+            BoxShadow(color: greyColor, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextField(
         textAlign: TextAlign.start,
@@ -37,14 +37,14 @@ class DateSelectionWithHintSupport extends StatelessWidget {
           showClock(context);
         },
         decoration: InputDecoration(
-            fillColor: Colors.grey,
+            fillColor: greyColor,
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: text,
             prefixIcon: Icon(
               iconData,
-              color: primaryLightColor,
+              color: primaryColor,
             )),
       ),
     );
@@ -64,8 +64,8 @@ class DateSelectionWithHintSupport extends StatelessWidget {
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       String respFormattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       log("Formatted Date $formattedDate"); //formatted date output using intl package =>  2021-03-16
-      dateValue.text = formattedDate ?? "";
-      reqDateValue.text = respFormattedDate ?? "";
+      dateValue.text = formattedDate;
+      reqDateValue.text = respFormattedDate;
     }
   }
 }

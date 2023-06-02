@@ -82,12 +82,12 @@ class _LocationPageState extends State<LocationPage> {
                   margin: const EdgeInsets.only(top: 10),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
+                        backgroundColor: Colors.white,
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(10)),
                     child: const Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
+                      color: primaryColor,
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -107,14 +107,14 @@ class _LocationPageState extends State<LocationPage> {
                   child: TextField(
                     controller: searchedAddressController,
                     decoration: const InputDecoration(
-                      fillColor: Colors.grey,
+                      fillColor: greyColor,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(width: 0, color: Colors.transparent),
                       ),
                       hintText: 'Search Location',
                       prefixIcon: Icon(
                         Icons.location_on,
-                        color: Colors.grey,
+                        color: greyColor,
                       ),
                     ),
                     onTap: () async {
@@ -130,12 +130,12 @@ class _LocationPageState extends State<LocationPage> {
                 margin: const EdgeInsets.only(top: 15, bottom: 200),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      backgroundColor: Colors.white,
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(10)),
                   child: const Icon(
                     Icons.my_location,
-                    color: Colors.black,
+                    color: greyColor,
                   ),
                   onPressed: () {
                     // Navigator.pop(context);
@@ -218,7 +218,7 @@ class _LocationPageState extends State<LocationPage> {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
+                            backgroundColor: primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(margin10),
                             ),
@@ -405,58 +405,61 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   getPlacesAutoCompleteView() async {
-    var apiKey = CPString.androidApiKey;
-    if (Platform.isIOS) {
-      apiKey = CPString.iosApiKey;
-    }
-    var place = await PlacesAutocomplete.show(
-        context: context,
-        apiKey: apiKey,
-        mode: Mode.overlay,
-        types: [],
-        logo: const Text(""),
-        strictbounds: false,
-        components: [Component(Component.country, 'in')],
-        //google_map_webservice package
-        onError: (err) {
-          log("Error while searching $err");
-        });
 
-    log("Place is $place");
-    if (place != null) {
-      searchedAddressController.text = place.description.toString();
-      //form google_maps_webservice package
-      final plist = GoogleMapsPlaces(
-        apiKey: apiKey,
-        apiHeaders: await const GoogleApiHeaders().getHeaders(),
-        //from google_api_headers package
-      );
-      log("PList is $plist");
-      String placeId = place.placeId ?? "0";
-      final detail = await plist.getDetailsByPlaceId(placeId);
-      log("Details place id searched $detail");
-      final geometry = detail.result.geometry!;
-      final lat = geometry.location.lat;
-      final lang = geometry.location.lng;
+    if(searchedAddressController.text.length > 8) {
+      var apiKey = CPString.androidApiKey;
+      if (Platform.isIOS) {
+        apiKey = CPString.iosApiKey;
+      }
+      var place = await PlacesAutocomplete.show(
+          context: context,
+          apiKey: apiKey,
+          mode: Mode.overlay,
+          types: [],
+          logo: const Text(""),
+          strictbounds: false,
+          components: [Component(Component.country, 'in')],
+          //google_map_webservice package
+          onError: (err) {
+            log("Error while searching $err");
+          });
 
-      setState(() {
-        log("Set to new state after address search");
-        FocusManager.instance.primaryFocus?.unfocus();
-        latitude = lat;
-        longitude = lang;
-        initialCameraPosition = LatLng(lat,lang);
-        log("Searched address lat $latitude");
-        log("Searched address long $longitude");
-        Provider.of<AddressProvider>(context, listen: false)
-            .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-        ProviderPreference().putAddress(context, searchedAddressController.text);
-        ProviderPreference().putLatLng(context, LatLng(lat, lang));
-        mapController?.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
-          ),
+      log("Place is $place");
+      if (place != null) {
+        searchedAddressController.text = place.description.toString();
+        //form google_maps_webservice package
+        final plist = GoogleMapsPlaces(
+          apiKey: apiKey,
+          apiHeaders: await const GoogleApiHeaders().getHeaders(),
+          //from google_api_headers package
         );
-      });
+        log("PList is $plist");
+        String placeId = place.placeId ?? "0";
+        final detail = await plist.getDetailsByPlaceId(placeId);
+        log("Details place id searched $detail");
+        final geometry = detail.result.geometry!;
+        final lat = geometry.location.lat;
+        final lang = geometry.location.lng;
+
+        setState(() {
+          log("Set to new state after address search");
+          FocusManager.instance.primaryFocus?.unfocus();
+          latitude = lat;
+          longitude = lang;
+          initialCameraPosition = LatLng(lat,lang);
+          log("Searched address lat $latitude");
+          log("Searched address long $longitude");
+          Provider.of<AddressProvider>(context, listen: false)
+              .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
+          ProviderPreference().putAddress(context, searchedAddressController.text);
+          ProviderPreference().putLatLng(context, LatLng(lat, lang));
+          mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
+            ),
+          );
+        });
+      }
     }
   }
 }

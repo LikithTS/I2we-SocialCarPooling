@@ -6,17 +6,14 @@ import 'package:common/network/model/Invites.dart';
 import 'package:common/network/model/StartLocation.dart';
 import 'package:common/network/model/TravelledPassengers.dart';
 import 'package:common/network/model/error_response.dart';
-import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/constant.dart';
-import 'package:socialcarpooling/utils/ride_status_text_function.dart';
-import 'package:socialcarpooling/view/home/home_page.dart';
+import 'package:socialcarpooling/util/ride_status_text_function.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
 import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
@@ -29,13 +26,12 @@ import '../../../buttons/outline_button_view.dart';
 import '../../../util/TextStylesUtil.dart';
 import '../../../util/color.dart';
 import '../../../util/configuration.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
+import '../../../widgets/widget_text.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
-import '../../map/map_screen.dart';
 
 class MyRideRoutesView extends StatelessWidget {
   final String rideId;
@@ -260,7 +256,7 @@ class MyRideRoutesView extends StatelessWidget {
                                   ],
                                 ),
                                 const Divider(
-                                  color: Colors.grey,
+                                  color: greyColor,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -294,7 +290,7 @@ class MyRideRoutesView extends StatelessWidget {
                                   ),
                                 ),
                                 const Divider(
-                                  color: Colors.grey,
+                                  color: greyColor,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -304,7 +300,7 @@ class MyRideRoutesView extends StatelessWidget {
                                       IconButton(
                                         icon: const Icon(
                                             Icons.add_circle_outline),
-                                        color: Colors.blue,
+                                        color: primaryColor,
                                         onPressed: () {
                                           //Open available rides screen
                                           Navigator.push(
@@ -347,7 +343,7 @@ class MyRideRoutesView extends StatelessWidget {
                                   ),
                                 ),
                                 const Divider(
-                                  color: Colors.grey,
+                                  color: greyColor,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(

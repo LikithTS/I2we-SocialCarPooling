@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/font&margin/margin_confiq.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 
 Widget getLoadingWidget() {
   return Center(

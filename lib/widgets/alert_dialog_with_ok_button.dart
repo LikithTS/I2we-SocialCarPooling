@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/util/Localization.dart';
 
 alertDialogView(BuildContext context, String id) {
   showDialog(

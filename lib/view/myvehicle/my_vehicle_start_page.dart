@@ -2,10 +2,10 @@ import 'package:common/network/repository/CarRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/myvehicle/add_car_screen.dart';
 
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
 
@@ -73,7 +73,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                           children: [
                             const Icon(
                               Icons.drive_eta,
-                              color: textThemeColor,
+                              color: primaryColor,
                             ),
                             addHorizontalSpace(10),
                             primaryTextLightWidgetLeft(
@@ -92,7 +92,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                           children: [
                             const Icon(
                               Icons.people,
-                              color: textThemeColor,
+                              color: primaryColor,
                             ),
                             addHorizontalSpace(10),
                             primaryTextLightWidgetLeft(
@@ -111,7 +111,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                           children: [
                             const Icon(
                               Icons.sentiment_satisfied_alt,
-                              color: textThemeColor,
+                              color: primaryColor,
                             ),
                             addHorizontalSpace(10),
                             primaryTextLightWidgetLeft(

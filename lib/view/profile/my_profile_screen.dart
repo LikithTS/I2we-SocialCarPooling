@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socialcarpooling/imageupload/AwsApi.dart';
-import 'package:socialcarpooling/utils/Localization.dart';
+import 'package:socialcarpooling/util/Localization.dart';
 import 'package:socialcarpooling/view/profile/ProfileViewModel.dart';
 import 'package:socialcarpooling/view/profile/profile_bio_update_screen.dart';
 import 'package:socialcarpooling/view/profile/profile_update_screen.dart';
@@ -21,7 +21,7 @@ import 'package:socialcarpooling/view/profile/verification/VerificationMainScree
 import '../../util/AppPreference.dart';
 import '../../util/InternetChecks.dart';
 import '../../util/color.dart';
-import '../../utils/widget_functions.dart';
+import '../../widgets/widget_text.dart';
 import '../../widgets/aleart_widgets.dart';
 
 class MyProfileScreen extends StatefulWidget {

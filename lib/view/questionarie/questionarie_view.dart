@@ -81,17 +81,17 @@ class _QuestionarieState extends State<QuestionariePage>
                 child: Scaffold(
                   backgroundColor: Colors.white,
                   appBar: AppBar(
-                    backgroundColor: Colors.black12,
+                    backgroundColor: lightGreyColor,
                     elevation: 0,
                     toolbarHeight: 0,
                     bottom: TabBar(
                     unselectedLabelColor: tabUnSelectedTextColor,
                     labelColor: tabSelectedTextColor,
-                    indicatorColor: tabIndicatorColor,
+                    indicatorColor: primaryColor,
                     indicatorSize: TabBarIndicatorSize.tab,
                     indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: tabIndicatorColor),
+                        borderRadius: BorderRadius.circular(30),
+                        color: primaryColor),
                     labelStyle:
                         TextStyleUtils.primaryTextBold.copyWith(fontSize: textsize12sp),
                     unselectedLabelStyle: TextStyleUtils.primaryTextRegular
@@ -115,7 +115,7 @@ class _QuestionarieState extends State<QuestionariePage>
                 child: ElevatedButton(
                   onPressed: handleOnContinueButtonPressed,
                   style: ElevatedButton.styleFrom(
-                      primary: buttonBgColor,
+                      backgroundColor: primaryColor,
                       padding: EdgeInsets.all(margin10),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin10))),

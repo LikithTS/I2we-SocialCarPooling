@@ -28,7 +28,7 @@ Widget timeViewGreen(IconData icons, String dateTime) => Text.rich(
 
 Widget timeView(IconData icons, String dateTime) => Column(
       children: [
-        Icon(icons, color: textThemeColor),
+        Icon(icons, color: primaryColor),
         Text(dateTime,
             textAlign: TextAlign.center,
             maxLines: 1,

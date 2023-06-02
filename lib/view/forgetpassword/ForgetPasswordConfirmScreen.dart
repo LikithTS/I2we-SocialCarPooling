@@ -7,7 +7,7 @@ import 'package:common/network/request/ChangePasswordApi.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
@@ -17,7 +17,7 @@ import '../../util/color.dart';
 import '../../util/configuration.dart';
 import '../../font&margin/margin_confiq.dart';
 import '../../util/string_url.dart';
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/header_widgets.dart';
 import '../../widgets/image_widgets.dart';
@@ -96,7 +96,7 @@ class _ForgetPasswordConfirmScreenState
                         callChangePasswordApi(widget.mobileNumber);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
+                        backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

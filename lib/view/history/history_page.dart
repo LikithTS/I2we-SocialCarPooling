@@ -7,12 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/home_cards/recent_rides_card.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../util/CPString.dart';
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/circular_progress_loader.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/Localization.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../widgets/widget_text.dart';
 import '../../../widgets/text_widgets.dart';
 
 class MyAvailableStartPage extends StatefulWidget {

@@ -5,7 +5,7 @@ import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/CurrentRideApi.dart';
 import 'package:flutter/material.dart';
-import 'package:socialcarpooling/utils/get_formatted_date_time.dart';
+import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/my_ride_routes_view.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_start_page.dart';
 

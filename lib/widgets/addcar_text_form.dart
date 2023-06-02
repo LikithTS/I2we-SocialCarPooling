@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/color.dart';
 
 class AddCarForm extends StatelessWidget {
   final String hint;
@@ -25,15 +26,15 @@ class AddCarForm extends StatelessWidget {
           color: Colors.white,
           borderRadius: new BorderRadius.circular(5.0),
           boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+            BoxShadow(color: greyColor, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
         textAlign: TextAlign.start,
         validator: formValidator,
         decoration: InputDecoration(
-            fillColor: Colors.grey,
+            fillColor: greyColor,
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(width: 1, color: Colors.blue),
+              borderSide: BorderSide(width: 1, color: primaryColor),
             ),
             hintText: hint,
             prefixIcon: Icon(suffixIcon, color: prefixIconColor),

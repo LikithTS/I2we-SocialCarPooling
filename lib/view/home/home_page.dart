@@ -9,14 +9,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:socialcarpooling/util/FirebaseNotification.dart';
 import 'package:socialcarpooling/util/configuration.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/BorderIcon.dart';
 import 'package:socialcarpooling/view/home/home_drawer/navigation_drawer_widget.dart';
 import 'package:socialcarpooling/view/map/map_screen.dart';
 import 'package:socialcarpooling/view/notifications/notification_main_screen.dart';
 
 import '../../util/color.dart';
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 import '../../widgets/button_widgets.dart';
 import 'home_cards/driver_widget_view.dart';
 import 'home_cards/home_screen_res_view.dart';
@@ -35,7 +35,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final TabController tabController;
-  final Completer<GoogleMapController> _controller = Completer();
 
   double? latitude;
   double? longitude;
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           width: 50,
                           child: IconButton(
                             icon: const Icon(Icons.menu),
-                            color: Colors.blue,
+                            color: primaryColor,
                             padding: EdgeInsets.zero,
                             onPressed: () {
                               homeGlobalkey.currentState?.openDrawer();
@@ -132,7 +131,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             width: 50,
                             child: IconButton(
                               icon: const Icon(Icons.message),
-                              color: Colors.blue,
+                              color: primaryColor,
                               padding: EdgeInsets.zero,
                               onPressed: () {},
                             ),
@@ -145,7 +144,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           child: IconButton(
                             icon: const Icon(Icons.notifications),
                             padding: EdgeInsets.zero,
-                            color: Colors.blue,
+                            color: primaryColor,
                             onPressed: () {
                               //For top Menu
                               Navigator.push(
@@ -184,7 +183,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   width: 50,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey),
+                                      color: greyColor),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -192,7 +191,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   child: TabBar(
                                     unselectedLabelColor: textGreyColor,
                                     unselectedLabelStyle: TextStyle(
-                                        color: textGreyColor,
+                                        color: greyColor,
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.normal,
                                         fontSize: 18.sp),
@@ -205,7 +204,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     indicator: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       shape: BoxShape.rectangle,
-                                      color: primaryLightColor,
+                                      color: primaryColor,
                                       // Other flags
                                       // indicatorRadius: 1,
                                       // insets: EdgeInsets.all(1),
@@ -276,7 +275,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: [
           Text(
             DemoLocalizations.of(context)!.getText("home"),
-            style: const TextStyle(color: Colors.blue),
+            style: const TextStyle(color: primaryColor),
           )
         ],
       );

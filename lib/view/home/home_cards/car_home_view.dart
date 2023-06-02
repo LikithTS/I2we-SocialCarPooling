@@ -7,9 +7,10 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/myvehicle/all_car_details_screen.dart';
 
-import '../../../utils/Localization.dart';
+import '../../../util/Localization.dart';
 import '../../../widgets/text_widgets.dart';
 
 class HomeCarCard extends StatefulWidget {
@@ -83,6 +84,7 @@ class _State extends State<HomeCarCard> {
                             flex: 2,
                             child: CircleAvatar(
                                 radius: 30,
+                                backgroundColor: lightGreyColor,
                                 backgroundImage: NetworkImage(CPSessionManager()
                                     .getCarImage(widget.carImage))),
                           ),
@@ -118,7 +120,7 @@ class _State extends State<HomeCarCard> {
                                                   const Icon(
                                                     Icons
                                                         .airline_seat_recline_normal,
-                                                    color: Colors.blue,
+                                                    color: primaryColor,
                                                   ),
                                                   primaryTextSmall(
                                                       context,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/questionarie/questionarie_view.dart';
 
-import '../../../utils/Localization.dart';
+import '../../../util/Localization.dart';
 import '../../../widgets/text_widgets.dart';
 
 class QuestionnaireCard extends StatelessWidget {
@@ -54,6 +55,7 @@ class QuestionnaireCard extends StatelessWidget {
                           ),
                           const CircleAvatar(
                             radius: 25,
+                            backgroundColor: primaryColor,
                             backgroundImage:
                             AssetImage('assets/images/circle_right_arrow.png'),
                           )

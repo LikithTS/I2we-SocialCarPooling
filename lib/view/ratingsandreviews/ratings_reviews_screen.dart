@@ -4,8 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../util/color.dart';
-import '../../utils/Localization.dart';
-import '../../utils/widget_functions.dart';
+import '../../util/Localization.dart';
+import '../../widgets/widget_text.dart';
 
 class RatingsAndReviews extends StatelessWidget {
   const RatingsAndReviews({Key? key}) : super(key: key);
@@ -38,6 +38,7 @@ class RatingsAndReviews extends StatelessWidget {
                 addVerticalSpace(20),
                 CircleAvatar(
                   radius: size.width / 3,
+                  backgroundColor: lightGreyColor,
                   backgroundImage: NetworkImage(
                       CPSessionManager().getProfileImageWithBase()),
                 ),
@@ -94,6 +95,7 @@ class RatingsAndReviews extends StatelessWidget {
                                       ),
                                       child: CircleAvatar(
                                         radius: 25,
+                                        backgroundColor: lightGreyColor,
                                         backgroundImage: NetworkImage(
                                             CPSessionManager()
                                                 .getProfileImageWithBase()),

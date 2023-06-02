@@ -18,7 +18,6 @@ import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/configuration.dart';
 import 'package:socialcarpooling/util/string_url.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 import 'package:socialcarpooling/view/sign_up/verifyed_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
@@ -261,7 +260,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             {validOtp(isAvailable, validOtpApi)});
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
+                        backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(margin20),
                         ),

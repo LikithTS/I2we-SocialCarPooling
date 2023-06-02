@@ -12,8 +12,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/constant.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/WebviewPage.dart';
 import 'package:socialcarpooling/view/feedback/feedback_page.dart';
 import 'package:socialcarpooling/view/history/history_page.dart';
@@ -28,7 +29,7 @@ import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/string_url.dart';
-import '../../../utils/Localization.dart';
+import '../../../util/Localization.dart';
 import '../../../widgets/image_widgets.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
@@ -138,7 +139,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       {required String text,
       required IconData icon,
       required VoidCallback onClicked}) {
-    const iconColor = Colors.blue;
+    const iconColor = primaryColor;
     return ListTile(
       visualDensity: const VisualDensity(vertical: -3),
       leading: BorderIcon(
@@ -330,17 +331,17 @@ Widget buildHeader(
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(children: [
-            CPSessionManager().getProfileImage().isNotEmpty
+            profileImage.isNotEmpty
                 ? CircleAvatar(
                     radius: 30,
-                    backgroundImage:
-                        Image.file(File(CPSessionManager().getProfileImage()))
-                            .image,
+                    backgroundColor: lightGreyColor,
+                    backgroundImage: NetworkImage(
+                        CPSessionManager().getProfileImageWithBase()),
                   )
                 : CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(
-                        CPSessionManager().getProfileImageWithBase()),
+                    backgroundColor: lightGreyColor,
+                    backgroundImage: Image.file(File(CPSessionManager().getProfileImage())).image,
                   ),
             addHorizontalSpace(20),
             Column(
@@ -349,7 +350,7 @@ Widget buildHeader(
                 tileText(name, Alignment.topLeft, textAlign: TextAlign.start),
                 tileText(profile_percentage, Alignment.topLeft,
                     textAlign: TextAlign.start,
-                    textColor: Colors.grey,
+                    textColor: greyColor,
                     fontSize: 9)
               ],
             )
@@ -361,18 +362,16 @@ Widget tileText(String text, Alignment alignment,
     Container(
         child: Align(
       alignment: alignment,
-      child: Expanded(
-        child: Text(
-          text,
-          textAlign: textAlign ?? TextAlign.start,
-          style: TextStyle(
-              fontSize: fontSize ?? 19.sp,
-              height: 1.3,
-              color: textColor ?? Colors.black,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              fontFamily: 'Poppins'),
-          maxLines: 1,
-        ),
+      child: Text(
+        text,
+        textAlign: textAlign ?? TextAlign.start,
+        style: TextStyle(
+            fontSize: fontSize ?? 19.sp,
+            height: 1.3,
+            color: textColor ?? greyColor,
+            fontWeight: FontWeight.normal,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins'),
+        maxLines: 1,
       ),
     ));

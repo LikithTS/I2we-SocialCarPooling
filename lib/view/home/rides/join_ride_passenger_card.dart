@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 
 class JoinRidePassengerCard extends StatefulWidget {
   final String profileImage;
@@ -49,6 +49,7 @@ class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
                           children: [
                             CircleAvatar(
                                 radius: 30,
+                                backgroundColor: lightGreyColor,
                                 backgroundImage: NetworkImage(CPSessionManager()
                                         .getImage(widget.profileImage) ??
                                     "")),

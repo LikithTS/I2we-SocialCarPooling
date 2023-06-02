@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../util/color.dart';
+
 class HomeTextIconForm extends StatelessWidget {
   final String hint;
   final IconData prefixIcon;
@@ -15,12 +17,12 @@ class HomeTextIconForm extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.0),
           boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+            BoxShadow(color: greyColor, blurRadius: 2.0, spreadRadius: 0.4)
           ]),
       child: TextFormField(
         textAlign: TextAlign.start,
         decoration: InputDecoration(
-            fillColor: Colors.grey,
+            fillColor: greyColor,
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),

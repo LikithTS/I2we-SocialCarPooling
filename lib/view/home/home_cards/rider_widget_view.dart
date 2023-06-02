@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:socialcarpooling/buttons/elevated_button_view.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
@@ -25,11 +26,10 @@ import 'package:socialcarpooling/view/home/tab_utils/home_icon_text_form_click.d
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 
-import '../../../buttons/elevated_full_width_button_view.dart';
 import '../../../provider/driver_provider.dart';
 import '../../../provider/provider_preference.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../util/Localization.dart';
+import '../../../widgets/widget_text.dart';
 
 class RiderWidgetView extends StatefulWidget {
 
@@ -83,7 +83,7 @@ class HomeRiderState extends State<RiderWidgetView> {
                 borderRadius: BorderRadius.circular(5.0),
                 boxShadow: const [
                   BoxShadow(
-                      color: Colors.grey, blurRadius: 2.0, spreadRadius: 0.4)
+                      color: greyColor, blurRadius: 2.0, spreadRadius: 0.4)
                 ]),
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 10.0),
@@ -92,7 +92,7 @@ class HomeRiderState extends State<RiderWidgetView> {
                   isExpanded: true,
                   value: selectedCarType,
                   decoration: const InputDecoration(
-                    fillColor: Colors.grey,
+                    fillColor: greyColor,
                     enabledBorder: UnderlineInputBorder(
                       borderSide:
                           BorderSide(width: 0, color: Colors.transparent),

@@ -1,14 +1,11 @@
-import 'dart:developer';
 
 import 'package:common/network/model/StartLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:socialcarpooling/provider/address_provider.dart';
-import 'package:socialcarpooling/provider/driver_provider.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
-import 'package:provider/provider.dart';
 
 class MapRouteScreen extends StatefulWidget {
   final bool? gpsIconShow;
@@ -157,7 +154,7 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
         PolylineId id = PolylineId('poly');
         Polyline polyline = Polyline(
           polylineId: id,
-          color: Colors.blueAccent,
+          color: primaryColor,
           points: polylineCoordinates,
           width: 5,
         );

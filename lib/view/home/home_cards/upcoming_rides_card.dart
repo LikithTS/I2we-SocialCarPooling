@@ -8,7 +8,8 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
@@ -16,9 +17,9 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import '../../../buttons/elevated_button_view.dart';
 import '../../../buttons/outline_button_view.dart';
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
-import '../../../utils/ride_status_text_function.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
+import '../../../util/ride_status_text_function.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
@@ -147,7 +148,7 @@ class UpcomingRidesWidget extends StatelessWidget {
                     ],
                   ),
                   const Divider(
-                    color: Colors.grey,
+                    color: greyColor,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,7 +174,7 @@ class UpcomingRidesWidget extends StatelessWidget {
                     ],
                   ),
                   const Divider(
-                    color: Colors.grey,
+                    color: greyColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -182,7 +183,7 @@ class UpcomingRidesWidget extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.add_circle_outline),
-                          color: Colors.blue,
+                          color: primaryColor,
                           onPressed: () {
                             //Open available rides screen
                             Navigator.push(
@@ -213,7 +214,7 @@ class UpcomingRidesWidget extends StatelessWidget {
                     ),
                   ),
                   const Divider(
-                    color: Colors.grey,
+                    color: greyColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(

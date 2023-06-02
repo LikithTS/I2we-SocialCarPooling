@@ -101,9 +101,9 @@ class _IntroPageState extends State<IntroPage> {
           borderRadius: BorderRadius.all(Radius.circular(margin10)
           ),
         ), // <-- Radius
-        primary: title==CPString.skip?Colors.white:primaryLightColor,
+        backgroundColor: title==CPString.skip?Colors.white:primaryColor,
         textStyle: TextStyleUtils.primaryTextRegular,
-        side: title==CPString.skip?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
+        side: title==CPString.skip?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryColor),
       ),
       child: Padding(
         padding:  EdgeInsets.only(left: margin12,right: margin12),

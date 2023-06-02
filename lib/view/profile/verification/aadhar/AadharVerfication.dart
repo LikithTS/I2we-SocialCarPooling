@@ -13,8 +13,8 @@ import '../../../../font&margin/margin_confiq.dart';
 import '../../../../imageupload/AwsApi.dart';
 import '../../../../util/InternetChecks.dart';
 import '../../../../util/color.dart';
-import '../../../../utils/Localization.dart';
-import '../../../../utils/widget_functions.dart';
+import '../../../../util/Localization.dart';
+import '../../../../widgets/widget_text.dart';
 import '../../../../widgets/aleart_widgets.dart';
 import '../../../commondialog/custom_dialog.dart';
 
@@ -136,7 +136,7 @@ class _AadharVerificationScreenState extends State<AadharVerificationScreen> {
                         {uploadAadhar(isInternetAvailable)});
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(margin20),
                     ),

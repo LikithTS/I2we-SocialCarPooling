@@ -14,8 +14,8 @@ import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/text_widgets.dart';
 
@@ -84,6 +84,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                         padding: const EdgeInsets.only(left: 10, right: 5),
                         child: CircleAvatar(
                             radius: 30,
+                            backgroundColor: lightGreyColor,
                             backgroundImage: NetworkImage(CPSessionManager()
                                     .getImage(widget.profileImage) ??
                                 "")),
@@ -101,13 +102,13 @@ class _InviteRideCard extends State<InviteRideCard> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  availableRidesText(widget.name, Colors.black,
+                                  availableRidesText(widget.name, greyColor,
                                       18.sp, FontWeight.w400),
                                   availableRidesText(widget.designation,
                                       primaryColor, 10.sp, FontWeight.w400),
                                   if (widget.rideType == Constant.AS_HOST) ...[
                                     availableRidesText(widget.carType,
-                                        Colors.black, 11.sp, FontWeight.w400)
+                                        greyColor, 11.sp, FontWeight.w400)
                                   ]
                                 ],
                               ),
@@ -119,7 +120,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                   ],
                 ),
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Row(
                   children: [
@@ -130,9 +131,9 @@ class _InviteRideCard extends State<InviteRideCard> {
                             padding: const EdgeInsets.only(left: 10, right: 5),
                             child: CircleAvatar(
                                 radius: 30,
+                                backgroundColor: lightGreyColor,
                                 backgroundImage: NetworkImage(CPSessionManager()
-                                        .getCarImage(widget.carIcon) ??
-                                    "")),
+                                        .getCarImage(widget.carIcon))),
                           )),
                       const SizedBox(width: 15),
                     ],
@@ -170,7 +171,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                   ],
                 ),
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,7 +199,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                 ),
                 if (widget.rideType == Constant.AS_HOST) ...[
                   const Divider(
-                    color: Colors.grey,
+                    color: greyColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10, left: 10),
@@ -220,7 +221,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                   )
                 ],
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
@@ -245,7 +246,7 @@ class _InviteRideCard extends State<InviteRideCard> {
                   ),
                 ),
                 const Divider(
-                  color: Colors.grey,
+                  color: greyColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),

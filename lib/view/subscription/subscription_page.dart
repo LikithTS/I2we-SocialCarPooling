@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/Localization.dart';
+import '../../util/Localization.dart';
 
 class SubscriptionPage extends StatefulWidget {
   @override

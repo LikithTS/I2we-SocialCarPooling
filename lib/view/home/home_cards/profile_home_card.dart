@@ -5,7 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socialcarpooling/view/profile/my_profile_screen.dart';
 
 import '../../../util/color.dart';
-import '../../../utils/Localization.dart';
+import '../../../util/Localization.dart';
 import '../../../widgets/text_widgets.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -53,6 +53,7 @@ class ProfileCard extends StatelessWidget {
                                 flex: 2,
                                 child: CircleAvatar(
                                     radius: 30,
+                                    backgroundColor: lightGreyColor,
                                     backgroundImage: NetworkImage(
                                         CPSessionManager()
                                             .getProfileImageWithBase())),
@@ -77,7 +78,7 @@ class ProfileCard extends StatelessWidget {
                                     radius: 55,
                                     lineWidth: 6,
                                     percent: profileCompletionPercentage / 100,
-                                    progressColor: progressThemeColor,
+                                    progressColor: primaryColor,
                                     backgroundColor: lightGreyColor,
                                     circularStrokeCap: CircularStrokeCap.round,
                                     center: primaryThemeTextWidget(context,

@@ -12,8 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
-import 'package:socialcarpooling/utils/ride_status_text_function.dart';
-import 'package:socialcarpooling/utils/widget_functions.dart';
+import 'package:socialcarpooling/util/color.dart';
+import 'package:socialcarpooling/util/ride_status_text_function.dart';
+import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
 import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
 import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
@@ -24,8 +25,8 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import '../../../buttons/elevated_button_view.dart';
 import '../../../buttons/outline_button_view.dart';
 import '../../../util/constant.dart';
-import '../../../utils/Localization.dart';
-import '../../../utils/get_formatted_date_time.dart';
+import '../../../util/Localization.dart';
+import '../../../util/get_formatted_date_time.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/ride_amount_view.dart';
 import '../../../widgets/ride_type_view.dart';
@@ -158,7 +159,7 @@ class MyRides extends StatelessWidget {
                       ],
                     ),
                     const Divider(
-                      color: Colors.grey,
+                      color: greyColor,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,7 +186,7 @@ class MyRides extends StatelessWidget {
                     ),
                     if (rideStatus != Constant.RIDE_JOINED) ...[
                       const Divider(
-                        color: Colors.grey,
+                        color: greyColor,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -194,7 +195,7 @@ class MyRides extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.add_circle_outline),
-                              color: Colors.blue,
+                              color: primaryColor,
                               onPressed: () {
                                 //Open available rides screen
                                 Navigator.push(
@@ -235,7 +236,7 @@ class MyRides extends StatelessWidget {
                       ),
                     ],
                     const Divider(
-                      color: Colors.grey,
+                      color: greyColor,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
