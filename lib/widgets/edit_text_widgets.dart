@@ -87,6 +87,7 @@ TextFormField buildFormBuilderTextField(
     decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        hintStyle: const TextStyle(color: primaryColor),
         border: const OutlineInputBorder()),
   );
 }
@@ -110,6 +111,7 @@ TextFormField buildFormBuilderMultilineTextField(
         counterText: "",
         labelText: labelText,
         hintText: hintText,
+        hintStyle: const TextStyle(color: primaryColor),
         hintTextDirection: TextDirection.ltr,
         border: const OutlineInputBorder()),
   );

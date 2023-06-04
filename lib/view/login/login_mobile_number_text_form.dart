@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:socialcarpooling/util/color.dart';
 
 
 Material buildMaterialForm(
@@ -34,6 +33,7 @@ Material buildMaterialForm(
             borderSide: BorderSide(width: 1, color: Colors.blue),
           ),
           hintText: hint,
+          hintStyle: const TextStyle(color: greyColor),
           labelText: labelText,
           suffixIcon: IconButton(
             iconSize: 30,

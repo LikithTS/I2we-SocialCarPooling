@@ -44,7 +44,7 @@ class _CustomDialogState extends State<CustomDialog> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
-                color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+                color: greyColor, offset: Offset(0, 10), blurRadius: 10),
           ]),
       child: Column(
         mainAxisSize: MainAxisSize.min,

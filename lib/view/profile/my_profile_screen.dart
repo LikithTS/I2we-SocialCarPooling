@@ -38,9 +38,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final Color lightOrange = Color(0Xfffacb9c);
-    final Color orange = Color(0XffF29339);
-    final Color lightBlue = Color(0Xffd9e9fc);
 
     return SafeArea(
       child: Scaffold(
@@ -94,6 +91,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             },
                             child: CircleAvatar(
                               radius: 50,
+                              backgroundColor: lightGreyColor,
                               backgroundImage: NetworkImage(profileImage),
                             ),
                           ),
@@ -126,12 +124,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
+                        const Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                              EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                           child: Icon(
                             Icons.verified_user,
-                            color: orange,
+                            color: primaryColor,
                             size: 40,
                           ),
                         ),
@@ -151,7 +149,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                                   ?.getText("get_verified") ??
                                               "",
                                           14.sp,
-                                          Colors.black)),
+                                          greyColor)),
                                   addHorizontalSpace(20),
                                   Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -160,7 +158,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                                   ?.getText("pending") ??
                                               "",
                                           14.sp,
-                                          orange))
+                                          primaryColor))
                                 ],
                               ),
                               Padding(
@@ -214,8 +212,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 20, left: 20),
                               child: Container(
-                                decoration: BoxDecoration(
-                                    color: lightBlue,
+                                decoration: const BoxDecoration(
+                                    color: lightBlueColor,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15))),
                                 child: Column(
@@ -242,7 +240,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                                     ?.getText("view_details") ??
                                                 "",
                                             style: const TextStyle(
-                                              color: Colors.black,
+                                              color: greyColor,
                                               fontSize: 14,
                                               fontWeight: FontWeight.normal,
                                               fontFamily: 'Poppins',
@@ -300,8 +298,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 20, left: 20),
                               child: Container(
-                                decoration: BoxDecoration(
-                                    color: lightOrange,
+                                decoration: const BoxDecoration(
+                                    color: primaryLightColor,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15))),
                                 child: Column(
@@ -328,7 +326,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                                     ?.getText("view_details") ??
                                                 "",
                                             style: const TextStyle(
-                                              color: Colors.black,
+                                              color: greyColor,
                                               fontSize: 14,
                                               fontWeight: FontWeight.normal,
                                               fontFamily: 'Poppins',
@@ -348,11 +346,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   radius: 60,
                                   lineWidth: 6,
                                   percent: 10 / 100,
-                                  progressColor: orange,
+                                  progressColor: primaryColor,
                                   backgroundColor: lightGreyColor,
                                   circularStrokeCap: CircularStrokeCap.round,
                                   center:
-                                      progressTextBlack("10%", 13.sp, orange)),
+                                      progressTextBlack("10%", 13.sp, primaryColor)),
                             )
                           ],
                         ),
@@ -397,7 +395,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                             ?.getText("edit") ??
                                         "",
                                     12.sp,
-                                    orange),
+                                    primaryColor),
                               ],
                             ),
                           ),
@@ -539,7 +537,7 @@ Widget userNameText(String title) => Container(
           style: TextStyle(
               fontSize: 32.sp,
               decoration: TextDecoration.none,
-              color: Colors.black,
+              color: greyColor,
               fontWeight: FontWeight.bold,
               fontFamily: 'Poppins')),
     ));

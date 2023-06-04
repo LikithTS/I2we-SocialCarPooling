@@ -38,6 +38,7 @@ class TextFormWithHintSupport extends StatelessWidget {
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: text,
+            hintStyle: const TextStyle(color: greyColor),
             prefixIcon: Icon(
               iconData,
               color: primaryColor,

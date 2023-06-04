@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:socialcarpooling/util/color.dart';
 
 class LoginTextForm extends StatefulWidget {
   final String hint;
@@ -65,6 +66,7 @@ class InputFieldState extends State<LoginTextForm> {
               borderSide: BorderSide(width: 1, color: Colors.blue),
             ),
             hintText: widget.hint,
+            hintStyle: const TextStyle(color: greyColor),
             labelText: widget.labelText,
             suffixIcon: IconButton(
               iconSize: 30,

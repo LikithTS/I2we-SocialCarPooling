@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/color.dart';
 
-Widget elevatedButtonView(String buttonName, VoidCallback onClicked, [Color btnBgColor = buttonBgColor]) => ElevatedButton(
+Widget elevatedButtonView(String buttonName, VoidCallback onClicked, [Color btnBgColor = primaryColor]) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -23,7 +23,7 @@ Widget elevatedButtonView(String buttonName, VoidCallback onClicked, [Color btnB
       ),
     ));
 
-Widget elevatedFullWidthButtonView(String buttonName, VoidCallback onClicked, [Color btnBgColor = buttonBgColor]) => ElevatedButton(
+Widget elevatedFullWidthButtonView(String buttonName, VoidCallback onClicked, [Color btnBgColor = primaryColor]) => ElevatedButton(
     style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),

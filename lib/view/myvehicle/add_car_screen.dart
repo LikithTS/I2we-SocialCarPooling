@@ -259,7 +259,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Icon(Icons.airline_seat_recline_normal,
-                              color: primaryLightColor),
+                              color: primaryColor),
                           smallText(
                               DemoLocalizations.of(context)
                                       ?.getText("available_seats") ??
@@ -344,7 +344,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Icon(Icons.airline_seat_recline_normal,
-                              color: primaryLightColor),
+                              color: primaryColor),
                           smallText(
                               DemoLocalizations.of(context)
                                       ?.getText("offering_seats") ??
@@ -438,13 +438,12 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 "",
                             hintText: DemoLocalizations.of(context)
                                 ?.getText("add_photos"),
+                            hintStyle: const TextStyle(color: greyColor),
                             labelStyle: const TextStyle(color: hintColor),
-                            hintStyle:
-                                const TextStyle(color: primaryLightColor),
                             prefixIcon: const Icon(Icons.newspaper,
-                                color: primaryLightColor),
+                                color: primaryColor),
                             suffixIcon: IconButton(
-                              color: primaryLightColor,
+                              color: primaryColor,
                               onPressed: () {
                                 Future<dynamic> future = viewModel.getRcImage();
                                 future.then((value) => {
@@ -478,7 +477,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Icon(
                                       Icons.photo_camera,
-                                      color: primaryLightColor,
+                                      color: primaryColor,
                                     ),
                                   ),
                                   smallText(
@@ -552,7 +551,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                 MaterialStateProperty.all(bgColor), // <-- Button color
             overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
               if (states.contains(MaterialState.pressed)) {
-                return primaryLightColor;
+                return primaryColor;
               } // <-- Splash color
             }),
           ),

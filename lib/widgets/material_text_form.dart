@@ -16,10 +16,10 @@ Material buildMaterialForm(
       decoration: InputDecoration(
         filled: true,
         labelText: labelText,
-        prefixIcon: Icon(prefixIcon, color: primaryLightColor),
+        prefixIcon: Icon(prefixIcon, color: primaryColor),
         suffixIcon: Icon(
           suffixIcon,
-          color: primaryLightColor,
+          color: primaryColor,
         ),
       ),
     ),

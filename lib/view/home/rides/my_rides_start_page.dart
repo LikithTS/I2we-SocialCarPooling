@@ -69,7 +69,7 @@ class MyRidesStartPageState extends State<MyRidesStartPage> {
                           ]),
                       addVerticalSpace(10),
                       const Divider(
-                        color: Colors.grey,
+                        color: greyColor,
                       ),
                       addVerticalSpace(10),
                       Row(

@@ -10,7 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_geocoder/geocoder.dart' as geoCoder;
 import 'package:location/location.dart' as currentLocation;
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/provider/address_provider.dart';
@@ -294,20 +293,6 @@ class _LocationPageState extends State<LocationPage> {
     }).catchError((e) {
       debugPrint(e);
     });
-  }
-
-  Future<String?> _getAddress(double lat, double lang) async {
-    var apiKey = CPString.androidApiKey;
-    if (Platform.isIOS) {
-      apiKey = CPString.iosApiKey;
-    }
-    final coordinates = geoCoder.Coordinates(lat, lang);
-    var addresses = await geoCoder.Geocoder.google(apiKey)
-        .findAddressesFromCoordinates(coordinates);
-    log("Address Data $addresses");
-    var first = addresses.first;
-    log("Addresses ${first.featureName} : ${first.addressLine}");
-    return first.addressLine;
   }
 
   Widget googleMap(BuildContext context, LatLng latLng) {

@@ -12,7 +12,7 @@ Widget primaryTextWidget(BuildContext context, String? text) => Container(
           style: TextStyle(
             fontSize: fontSize17,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: greyColor,
             decoration: TextDecoration.none,
             fontFamily: CPString.fontFamilyPoppins,
             overflow: TextOverflow.ellipsis,
@@ -62,7 +62,7 @@ Widget primaryTextNormalTwoLine(BuildContext context, String? text) =>
         style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.normal,
-          color: textGreyColor,
+          color: greyColor,
           decoration: TextDecoration.none,
           fontFamily: CPString.fontFamilyPoppins,
           overflow: TextOverflow.ellipsis,
@@ -79,7 +79,7 @@ Widget primaryTextNormal(BuildContext context, String? text) => Center(
           style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: textGreyColor,
+              color: greyColor,
               decoration: TextDecoration.none,
               fontFamily: CPString.fontFamilyPoppins),
           maxLines: 3,
@@ -95,7 +95,7 @@ Widget primaryTextSmall(BuildContext context, String? text) => Center(
           style: const TextStyle(
               fontSize: 8,
               fontWeight: FontWeight.normal,
-              color: textGreyColor,
+              color: greyColor,
               decoration: TextDecoration.none,
               fontFamily: 'Poppins'),
           maxLines: 1,
@@ -111,7 +111,7 @@ Widget secondaryTextSmall(BuildContext context, String? text) => Center(
           style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.normal,
-              color: textGreyColor,
+              color: greyColor,
               decoration: TextDecoration.none,
               fontFamily: 'Poppins'),
           maxLines: 1,
@@ -126,7 +126,7 @@ Widget primaryTextWidgetLeft(BuildContext context, String? text) => Container(
           style: TextStyle(
             fontSize: 17.sp,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: greyColor,
             decoration: TextDecoration.none,
             fontFamily: 'Poppins',
             overflow: TextOverflow.ellipsis,
@@ -152,7 +152,7 @@ Widget primaryTextLightWidgetLeft(BuildContext context, String? text) =>
           style: TextStyle(
             fontSize: 17.sp,
             fontWeight: FontWeight.w100,
-            color: Colors.black,
+            color: greyColor,
             decoration: TextDecoration.none,
             fontFamily: 'Poppins',
             overflow: TextOverflow.ellipsis,
@@ -167,7 +167,7 @@ Widget notificationTitle(BuildContext context, String? text) => Center(
           style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: textGreyColor,
+              color: greyColor,
               decoration: TextDecoration.none,
               fontFamily: 'Poppins'),
           maxLines: 1,
@@ -199,7 +199,7 @@ Widget notificationSubDesc(BuildContext context, String? text) => Center(
           style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w400,
-              color: Colors.black,
+              color: greyColor,
               decoration: TextDecoration.none,
               fontFamily: 'Poppins'),
           overflow: TextOverflow.ellipsis,

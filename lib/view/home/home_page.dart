@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.only(
                                       left: 8.0, right: 8.0),
                                   child: TabBar(
-                                    unselectedLabelColor: textGreyColor,
+                                    unselectedLabelColor: greyColor,
                                     unselectedLabelStyle: TextStyle(
                                         color: greyColor,
                                         fontFamily: 'Poppins',
@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 .getText("driver_tab")),
                                       ),
                                       Text(DemoLocalizations.of(context)!
-                                          .getText("rider_tab"))
+                                          .getText("as_rider"))
                                     ],
                                   ),
                                 ),

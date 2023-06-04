@@ -126,8 +126,8 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                                 ?.getText("languages_known") ??
                             "",
                         hintText: "",
+                        hintStyle: const TextStyle(color: greyColor),
                         labelStyle: const TextStyle(color: hintColor),
-                        hintStyle: const TextStyle(color: primaryLightColor),
                         prefixIcon: const Icon(Icons.newspaper,
                             color: primaryLightColor),
                         suffixIcon: const Icon(
@@ -176,8 +176,8 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                         labelText:
                             DemoLocalizations.of(context)?.getText("bio") ?? "",
                         hintText: "",
+                        hintStyle: const TextStyle(color: primaryColor),
                         labelStyle: const TextStyle(color: hintColor),
-                        hintStyle: const TextStyle(color: primaryLightColor),
                         prefix: const Icon(Icons.emoji_emotions,
                             color: primaryLightColor),
                         suffix: const Icon(
@@ -284,7 +284,7 @@ Widget userNameText(String title) => Container(
           style: TextStyle(
               fontSize: 32.sp,
               decoration: TextDecoration.none,
-              color: Colors.black,
+              color: greyColor,
               fontWeight: FontWeight.bold,
               fontFamily: 'Poppins')),
     ));

@@ -60,7 +60,7 @@ class MyVehicleStartPageState extends State<MyVehicleStartPage> {
                   child: primaryBigTextWidget(
                       context,
                       DemoLocalizations.of(context)?.getText("add_car") ?? "",
-                      Colors.black),
+                      primaryColor),
                 ),
                 addVerticalSpace(20),
                 Padding(

@@ -12,7 +12,7 @@ Widget primaryButton(String title, VoidCallback callback) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(margin10)),
       ), // <-- Radius
-      primary: Colors.white,
+      backgroundColor: Colors.white,
       textStyle: TextStyleUtils.primaryTextMedium,
       side: BorderSide(width: 0, color: primaryLightColor),
     ),
@@ -34,7 +34,7 @@ Widget secondaryButton(String title, VoidCallback callback) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(margin5)),
       ), // <-- Radius
-      primary: buttonBgColor,
+      backgroundColor: primaryColor,
       minimumSize: const Size.fromHeight(50),
       textStyle: TextStyleUtils.primaryTextRegular,
     ),
@@ -55,7 +55,7 @@ Widget primaryButtonWithCallBack(String title, VoidCallback callback) =>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(margin5)),
         ), // <-- Radius
-        primary: primaryLightColor,
+        backgroundColor: primaryColor,
         textStyle: TextStyle(
             fontSize: 20.sp, fontFamily: 'assets/fonts/poppins_medium.ttf'),
         side: const BorderSide(width: 0, color: primaryLightColor),

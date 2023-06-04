@@ -37,6 +37,7 @@ class AddCarForm extends StatelessWidget {
               borderSide: BorderSide(width: 1, color: primaryColor),
             ),
             hintText: hint,
+            hintStyle: const TextStyle(color: primaryColor),
             prefixIcon: Icon(suffixIcon, color: prefixIconColor),
             suffixIcon: Align(
               alignment: Alignment.bottomRight,

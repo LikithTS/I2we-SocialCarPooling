@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/provider/provider_preference.dart';
+import 'package:socialcarpooling/util/color.dart';
 
 import '../../../provider/address_provider.dart';
 import '../../map/location_page.dart';
@@ -78,6 +79,7 @@ class _HomeTextIconFormClickState extends State<HomeTextIconFormClick> {
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: widget.hint,
+            hintStyle: const TextStyle(color: greyColor),
             prefixIcon: Icon(
               widget.prefixIcon,
               color: Colors.grey,

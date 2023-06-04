@@ -346,7 +346,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                             // Based on passwordVisible state choose the icon
                             Icons.visibility,
                             color:
-                                _passwordVisible ? Colors.black : primaryColor,
+                                _passwordVisible ? greyColor : primaryColor,
                           ),
                           onPressed: () {
                             // Update the state i.e. toogle the state of passwordVisible variable
@@ -407,7 +407,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                             // Based on passwordVisible state choose the icon
                             Icons.visibility,
                             color:
-                                _cpasswordVisible ? Colors.black : primaryColor,
+                                _cpasswordVisible ? greyColor : primaryColor,
                           ),
                           onPressed: () {
                             // Update the state i.e. toogle the state of passwordVisible variable

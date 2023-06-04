@@ -152,7 +152,7 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                                     right: 0,
                                     child: Icon(
                                       Icons.verified_user_rounded,
-                                      color: primaryLightColor,
+                                      color: primaryColor,
                                     ))
                               ],
                             ),
@@ -218,7 +218,7 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                         Text(
                           'Ride Status',
                           style: TextStyleUtils.primaryTextRegular.copyWith(
-                              fontSize: 13, color: textGreyColor, height: 1.3),
+                              fontSize: 13, color: greyColor, height: 1.3),
                           textAlign: TextAlign.start,
                         ),
                         Text(

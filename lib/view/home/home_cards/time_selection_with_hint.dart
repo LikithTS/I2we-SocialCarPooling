@@ -39,6 +39,7 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: text,
+            hintStyle: const TextStyle(color: greyColor),
             prefixIcon: Icon(
               iconData,
               color: primaryColor,
@@ -59,7 +60,7 @@ class TimeSelectionWithHintSupport extends StatelessWidget {
             data: ThemeData.light().copyWith(
               primaryColor: Color(primaryColor.value),
               colorScheme:
-                  ColorScheme.light(primary: Color(primaryLightColor.value)),
+                  ColorScheme.light(primary: Color(primaryColor.value)),
               buttonTheme:
                   const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             ),

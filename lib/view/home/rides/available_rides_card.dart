@@ -266,7 +266,7 @@ class AvailableRides extends StatelessWidget {
                             textAlign: TextAlign.start,
                             maxLines: 1,
                             style: TextStyleUtils.primaryTextRegular.copyWith(
-                              color: textGreyColor,
+                              color: greyColor,
                               fontSize: fontSize13,
                               letterSpacing: 1,
                             )),

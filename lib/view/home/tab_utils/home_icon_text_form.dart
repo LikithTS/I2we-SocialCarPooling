@@ -27,6 +27,7 @@ class HomeTextIconForm extends StatelessWidget {
               borderSide: BorderSide(width: 0, color: Colors.transparent),
             ),
             hintText: hint,
+            hintStyle: const TextStyle(color: greyColor),
             prefixIcon: Icon(
               prefixIcon,
               color: Colors.grey,

@@ -161,7 +161,7 @@ Widget verificationCard(String title, VoidCallback onTap) => Padding(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                verificatonScreenText(title, Colors.black, 14.sp,
+                verificatonScreenText(title, greyColor, 14.sp,
                     FontWeight.normal, Alignment.topLeft),
                 const Icon(
                   Icons.navigate_next,

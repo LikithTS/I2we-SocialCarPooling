@@ -48,14 +48,14 @@ class RatingsAndReviews extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ratingsAndReviewsCenterText("Designation", Colors.black,
+                    ratingsAndReviewsCenterText("Designation", greyColor,
                         14.sp, FontWeight.normal, Alignment.center),
                     addHorizontalSpace(20),
-                    Icon(
+                    const Icon(
                       Icons.star,
                       color: Colors.yellow,
                     ),
-                    ratingsAndReviewsCenterText("4.5", Colors.black, 15.sp,
+                    ratingsAndReviewsCenterText("4.5", greyColor, 15.sp,
                         FontWeight.normal, Alignment.center),
                   ],
                 ),
@@ -63,7 +63,7 @@ class RatingsAndReviews extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: ratingsAndReviewsCenterText("Recent Reviews",
-                      Colors.black, 18.sp, FontWeight.w600, Alignment.topLeft),
+                      greyColor, 18.sp, FontWeight.w600, Alignment.topLeft),
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -111,7 +111,7 @@ class RatingsAndReviews extends StatelessWidget {
                               ),
                               ratingsAndReviewsCenterText(
                                   "Co-rider name",
-                                  Colors.black,
+                                  greyColor,
                                   18.sp,
                                   FontWeight.normal,
                                   Alignment.centerLeft)
@@ -146,7 +146,7 @@ class RatingsAndReviews extends StatelessWidget {
                               ),
                               ratingsAndReviewsCenterText(
                                   "09/08/22",
-                                  Colors.black,
+                                  greyColor,
                                   14.sp,
                                   FontWeight.normal,
                                   Alignment.topLeft)
@@ -158,7 +158,7 @@ class RatingsAndReviews extends StatelessWidget {
                               const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                           child: ratingsAndReviewsCenterText(
                               "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis",
-                              Colors.black,
+                              greyColor,
                               10.sp,
                               FontWeight.normal,
                               Alignment.topLeft),

@@ -145,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: DemoLocalizations.of(context)
                                 ?.getText("mobile_number") ??
                             "",
+                        hintStyle: const TextStyle(color: greyColor),
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("mobile_number") ??
                             "",
@@ -194,6 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: DemoLocalizations.of(context)
                                 ?.getText("password") ??
                             "",
+                        hintStyle: const TextStyle(color: greyColor),
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("password") ??
                             "",

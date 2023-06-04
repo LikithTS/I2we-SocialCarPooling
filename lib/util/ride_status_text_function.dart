@@ -38,7 +38,7 @@ Color getRightButtonBgColor(String rideType, String rideStatus) {
     case Constant.BUTTON_CANCELLED:
       return Colors.red;
     default:
-      return buttonBgColor;
+      return primaryColor;
   }
 }
 
