@@ -90,11 +90,11 @@ dependencies:
 
   #Google Map
   google_maps_flutter: ^2.1.12
-  geolocator: ^9.0.1
+  geolocator: ^9.0.2
   geocoding: ^2.0.4
   geocode: ^1.0.2
   location: ^4.4.0
-  flutter_google_places: ^0.3.0
+#  flutter_google_places: ^0.3.0
   google_api_headers: ^1.5.0
   google_maps_webservice: ^0.0.19
 
@@ -118,6 +118,7 @@ dependencies:
   connectivity: ^3.0.6
   overlay_support: ^2.1.0
   flutter_geocoder: ^0.2.2-nullsafety
+  google_places_flutter: ^2.0.5
 
 dev_dependencies:
   flutter_test:

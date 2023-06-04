@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
         android:screenOrientation="portrait"
-        android:label="I2We">
+        android:label="i2we">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC7PPfo_xprhpqXmATL9pa8Ad9_W1w9KrQ" />

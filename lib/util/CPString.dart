@@ -76,7 +76,7 @@ class CPString {
   static const String iosApiKey = 'AIzaSyDxd4iBDqfPggZJIPWgV5x-_GMvOI0DAf4';
   static const String Alert = 'Alert';
   static const String logout_desc = "Are you sure wants to logout?";
-  static const String appName = "i2We";
+  static const String appName = "i2we";
   static const String about_desc =
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque '
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque'

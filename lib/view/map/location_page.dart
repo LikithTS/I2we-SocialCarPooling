@@ -4,11 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_geocoder/geocoder.dart' as geoCoder;
 import 'package:location/location.dart' as currentLocation;
@@ -104,23 +104,7 @@ class _LocationPageState extends State<LocationPage> {
                         BoxShadow(
                             color: Colors.white, blurRadius: 2.0, spreadRadius: 0.4)
                       ]),
-                  child: TextField(
-                    controller: searchedAddressController,
-                    decoration: const InputDecoration(
-                      fillColor: greyColor,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(width: 0, color: Colors.transparent),
-                      ),
-                      hintText: 'Search Location',
-                      prefixIcon: Icon(
-                        Icons.location_on,
-                        color: greyColor,
-                      ),
-                    ),
-                    onTap: () async {
-                      getPlacesAutoCompleteView();
-                    },
-                  ),
+                  child: placesAutoCompleteTextField(),
                 ),
               ],
             ),
@@ -279,46 +263,37 @@ class _LocationPageState extends State<LocationPage> {
     currentPosition = await location.getLocation();
     log("Current latitude ${currentPosition.latitude}");
     log("Current longitude ${currentPosition.longitude}");
-    _getAddress(currentPosition.latitude!, currentPosition.longitude!)
-        .then((value) => {
+    _getAddressFromLatLng(currentPosition.latitude!, currentPosition.longitude!);
+
+  }
+
+  Future<void> _getAddressFromLatLng(double lat, double lang) async {
+    await placemarkFromCoordinates(
+        lat, lang)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      var address =
+          '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+
       setState(() {
-        latitude = currentPosition.latitude;
-        longitude = currentPosition.longitude;
-        initialCameraPosition = LatLng(currentPosition.latitude!,currentPosition.longitude!);
+        latitude = lat;
+        longitude = lang;
+        initialCameraPosition = LatLng(lat,lang);
         Provider.of<AddressProvider>(context, listen: false)
             .changeLatLng(
             LatLng(latitude ?? 0.0, longitude ?? 0.0));
-        ProviderPreference().putAddress(context, value);
+        ProviderPreference().putAddress(context, address);
         ProviderPreference().putLatLng(context, LatLng(latitude!, longitude!));
         mapController?.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
           ),
         );
-      })
+      });
+
+    }).catchError((e) {
+      debugPrint(e);
     });
-
-
-    // location.onLocationChanged
-    //     .listen((currentLocation.LocationData currentLocation) {
-    //   if (currentLocation.latitude! != latitude &&
-    //       currentLocation.longitude! != longitude) {
-    //     log("Triggered on location change in current location ${currentLocation.latitude} and ${currentLocation.longitude}");
-    //     _getAddress(currentLocation.latitude!, currentLocation.longitude!)
-    //         .then((value) => {
-    //               setState(() {
-    //                 currentPosition = currentLocation;
-    //                 latitude = currentLocation.latitude;
-    //                 longitude = currentLocation.longitude;
-    //                 Provider.of<AddressProvider>(context, listen: false)
-    //                     .changeLatLng(
-    //                         LatLng(latitude ?? 0.0, longitude ?? 0.0));
-    //                 ProviderPreference().putAddress(context, value);
-    //               })
-    //             });
-    //   }
-    // });
-
   }
 
   Future<String?> _getAddress(double lat, double lang) async {
@@ -329,6 +304,7 @@ class _LocationPageState extends State<LocationPage> {
     final coordinates = geoCoder.Coordinates(lat, lang);
     var addresses = await geoCoder.Geocoder.google(apiKey)
         .findAddressesFromCoordinates(coordinates);
+    log("Address Data $addresses");
     var first = addresses.first;
     log("Addresses ${first.featureName} : ${first.addressLine}");
     return first.addressLine;
@@ -354,14 +330,6 @@ class _LocationPageState extends State<LocationPage> {
 
   void _onMapCreated(GoogleMapController googleMapController) {
     mapController = googleMapController;
-    // location.onLocationChanged.listen((l) {
-    //   log("Triggered on location change in map created ${l.latitude} and ${l.longitude}");
-    //   mapController?.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
-    //     ),
-    //   );
-    // });
   }
 
   @override
@@ -381,78 +349,44 @@ class _LocationPageState extends State<LocationPage> {
 
     if (lat != latitude && lon != longitude) {
       _markers.clear();
-      _getAddress(lat, lon).then((value) => {
-            setState(() {
-              latitude = lat;
-              longitude = lon;
-              initialCameraPosition = LatLng(latitude!, longitude!);
-              // _markers.add(Marker(
-              //   draggable: true,
-              //   markerId: MarkerId("marker_2"),
-              //   position: LatLng(lat, lon),
-              //   icon: BitmapDescriptor.defaultMarker,
-              //   infoWindow: InfoWindow(
-              //     title: '$value',
-              //   ),
-              // ));
-              Provider.of<AddressProvider>(context, listen: false)
-                  .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-              ProviderPreference().putAddress(context, value);
-              ProviderPreference().putLatLng(context, LatLng(lat, lon));
-            })
-          });
+      _getAddressFromLatLng(lat, lon);
     }
   }
 
-  getPlacesAutoCompleteView() async {
+  placesAutoCompleteTextField() {
 
-    if(searchedAddressController.text.length > 8) {
-      var apiKey = CPString.androidApiKey;
-      if (Platform.isIOS) {
-        apiKey = CPString.iosApiKey;
-      }
-      var place = await PlacesAutocomplete.show(
-          context: context,
-          apiKey: apiKey,
-          mode: Mode.overlay,
-          types: [],
-          logo: const Text(""),
-          strictbounds: false,
-          components: [Component(Component.country, 'in')],
-          //google_map_webservice package
-          onError: (err) {
-            log("Error while searching $err");
-          });
+    var apiKey = CPString.androidApiKey;
+    if (Platform.isIOS) {
+      apiKey = CPString.iosApiKey;
+    }
 
-      log("Place is $place");
-      if (place != null) {
-        searchedAddressController.text = place.description.toString();
-        //form google_maps_webservice package
-        final plist = GoogleMapsPlaces(
-          apiKey: apiKey,
-          apiHeaders: await const GoogleApiHeaders().getHeaders(),
-          //from google_api_headers package
-        );
-        log("PList is $plist");
-        String placeId = place.placeId ?? "0";
-        final detail = await plist.getDetailsByPlaceId(placeId);
-        log("Details place id searched $detail");
-        final geometry = detail.result.geometry!;
-        final lat = geometry.location.lat;
-        final lang = geometry.location.lng;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GooglePlaceAutoCompleteTextField(
+          textEditingController: searchedAddressController,
+          googleAPIKey: apiKey,
+          inputDecoration: const InputDecoration(hintText: "Search location"),
+          debounceTime: 1200,
+          countries: const ["in"],
+          isLatLngRequired: true,
+          getPlaceDetailWithLatLng: _PlaceDetailsPrediction,
+          itmClick: _ClickPrediction
+      ),
+    );
+  }
 
-        setState(() {
-          log("Set to new state after address search");
+  void _PlaceDetailsPrediction(Prediction prediction) {
+      log("Places details lat ${prediction.lat?.toString()}");
+      log("Places details lng ${prediction.lng?.toString()}");
+      if(prediction.lat != null && prediction.lng != null) {
+        setState((){
           FocusManager.instance.primaryFocus?.unfocus();
-          latitude = lat;
-          longitude = lang;
-          initialCameraPosition = LatLng(lat,lang);
-          log("Searched address lat $latitude");
-          log("Searched address long $longitude");
+          latitude = double.parse(prediction.lat!);
+          longitude = double.parse(prediction.lng!);
+          initialCameraPosition = LatLng(latitude!,longitude!);
           Provider.of<AddressProvider>(context, listen: false)
               .changeLatLng(LatLng(latitude ?? 0.0, longitude ?? 0.0));
-          ProviderPreference().putAddress(context, searchedAddressController.text);
-          ProviderPreference().putLatLng(context, LatLng(lat, lang));
+          ProviderPreference().putLatLng(context, LatLng(latitude!,longitude!));
           mapController?.animateCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(target: LatLng(latitude!, longitude!), zoom: 15),
@@ -460,6 +394,16 @@ class _LocationPageState extends State<LocationPage> {
           );
         });
       }
-    }
+
   }
+
+  void _ClickPrediction(Prediction prediction) {
+      if(prediction.description != null) {
+        log("Click Prediction data ${prediction.description}");
+        searchedAddressController.text = prediction.description!;
+        searchedAddressController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description!.length));
+        ProviderPreference().putAddress(context, prediction.description);
+      }
+  }
+
 }
