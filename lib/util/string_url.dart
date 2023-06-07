@@ -11,5 +11,6 @@ class StringUrl
   static const String introFour = "assets/images/intro_four.png";
   static const String history_no_ride = "assets/svgimages/history.svg";
   static const String feedback_image = "assets/svgimages/feedback.svg";
+  static const String subscription_image = "assets/svgimages/subscription_page.svg";
 
 }

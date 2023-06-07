@@ -133,6 +133,48 @@ Widget primaryTextWidgetLeft(BuildContext context, String? text) => Container(
           )),
     ));
 
+Widget primaryTextBoldWidgetLeft(BuildContext context, String? text) => Container(
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: Text(text!,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: greyColor,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins',
+            overflow: TextOverflow.ellipsis,
+          )),
+    ));
+
+Widget primaryTextBoldWidgetLeftCustomColor(BuildContext context, String? text, Color color) => Container(
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: Text(text!,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: color,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins',
+            overflow: TextOverflow.ellipsis,
+          )),
+    ));
+
+Widget secondaryTextBoldWidgetLeftCustomColor(BuildContext context, String? text, Color color) => Container(
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: Text(text!,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.normal,
+            color: color,
+            decoration: TextDecoration.none,
+            fontFamily: 'Poppins',
+            overflow: TextOverflow.clip,
+          )),
+    ));
+
 Widget primaryBigTextWidget(BuildContext context, String? text, Color color) =>
     Container(
       child: Text(text!,

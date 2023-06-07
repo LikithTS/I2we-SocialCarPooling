@@ -109,9 +109,6 @@
   "benefits_includes" : "Benefits Includes",
   "unlimited_host_a_ride": "Unlimited Host a Ride",
   "premium_membership": "Premium Membership",
-  "15_days" : "15 days",
-  "1_year": "1 Year",
-  "go_pro": "Go Pro",
   "subscription_desc": "Subscription will automatically renew and your credit card will be charged at the end of the each period",
   "confirm_password" : "Confirm Password",
   "new_password" : "New Confirm Password",
@@ -133,10 +130,18 @@
   "aadhar_verification_under_verify" : "Aadhar under Verification",
   "driving_verification_under_verify" : "Driving License under Verification",
   "no_available_ride": "No rides available at the moment",
-  "co_riders": "Co-Riders"
-
-
-
-
-
+  "co_riders": "Co-Riders",
+  "subscription_title": "Benefits Includes",
+  "subscription_point_one": "Unlimited Host a Ride",
+  "subscription_point_one_desc": "Create multiple rides and invite people to join ride.",
+  "subscription_point_two": "Unlimited Join a Ride",
+  "subscription_point_two_desc": "Join rides and make new friends.",
+  "subscription_premium_membership": "Premium Membership",
+  "subscription_premium_membership_desc": "Join Prime membership to enjoy all feature.",
+  "free" : "Free",
+  "pay_annual_fees" : "Pay 5000 per annul",
+  "pay_annual_fees_after" : "Pay 5000 per annul after",
+  "15_days" : "15 days",
+  "1_year": "1 Year",
+  "go_pro": "Go Pro"
 }

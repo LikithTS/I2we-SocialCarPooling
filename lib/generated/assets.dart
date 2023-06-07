@@ -25,6 +25,7 @@ class Assets {
   static const String imagesProfileBackgroundCar = 'assets/images/profile_background_car.png';
   static const String imagesProfilePlaceholder = 'assets/images/profile_placeholder.jpg';
   static const String imagesSplashImage = 'assets/images/splash_image.png';
+  static const String imagesStar = 'assets/images/star.png';
   static const String imagesVerifyPin = 'assets/images/verify_pin.png';
   static const String imagesWelcomeUser = 'assets/images/welcome_user.png';
   static const String jsonQuestionarie = 'assets/json/questionarie.json';
@@ -33,5 +34,6 @@ class Assets {
   static const String svgimagesDownArrow = 'assets/svgimages/down_arrow.svg';
   static const String svgimagesFeedback = 'assets/svgimages/feedback.svg';
   static const String svgimagesHistory = 'assets/svgimages/history.svg';
+  static const String svgimagesSubscriptionPage = 'assets/svgimages/subscription_page.svg';
 
 }

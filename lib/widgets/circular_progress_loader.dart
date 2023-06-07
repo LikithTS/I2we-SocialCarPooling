@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/font&margin/margin_confiq.dart';
+import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
 
 Widget getLoadingWidget() {
@@ -10,7 +11,7 @@ Widget getLoadingWidget() {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircularProgressIndicator(),
+        const CircularProgressIndicator( color: primaryColor,),
         addVerticalSpace(margin20),
         const Text(CPString.LOADING),
       ],
