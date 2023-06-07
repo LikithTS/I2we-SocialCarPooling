@@ -41,411 +41,407 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          width: size.width,
-          height: size.height,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back)),
-                    headerText(
-                        DemoLocalizations.of(context)?.getText("profile") ?? "")
-                  ],
-                ),
-                addVerticalSpace(20),
-                Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 50,
+        resizeToAvoidBottomInset : false,
+        body:SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back)),
+                  headerText(
+                      DemoLocalizations.of(context)?.getText("profile") ?? "")
+                ],
+              ),
+              addVerticalSpace(20),
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 50,
+                    ),
+                    child: Image.asset(
+                        "assets/images/profile_background_car.png",
+                        width: size.width,
+                        height: 200,
+                        fit: BoxFit.cover),
+                  ),
+                  Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: 18,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              InternetChecks.isConnected().then(
+                                      (isAvailable) =>
+                                  {handleProfileUpload(isAvailable)});
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: lightGreyColor,
+                            backgroundImage: NetworkImage(profileImage),
+                          ),
+                        ),
                       ),
-                      child: Image.asset(
-                          "assets/images/profile_background_car.png",
-                          width: size.width,
-                          height: 200,
-                          fit: BoxFit.cover),
-                    ),
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 18,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                InternetChecks.isConnected().then(
-                                    (isAvailable) =>
-                                        {handleProfileUpload(isAvailable)});
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: lightGreyColor,
-                              backgroundImage: NetworkImage(profileImage),
+                      const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.photo_camera,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              addVerticalSpace(5),
+              userNameText(AppPreference().userDetail?.name ?? ""),
+              workText(AppPreference().userDetail?.designation ?? ""),
+              addVerticalSpace(10),
+              Container(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                height: 140,
+                width: double.maxFinite,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding:
+                        EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                        child: Icon(
+                          Icons.verified_user,
+                          color: primaryColor,
+                          size: 40,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: profileText(
+                                        DemoLocalizations.of(context)
+                                            ?.getText("get_verified") ??
+                                            "",
+                                        14.sp,
+                                        greyColor)),
+                                addHorizontalSpace(20),
+                                Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: profileText(
+                                        DemoLocalizations.of(context)
+                                            ?.getText("pending") ??
+                                            "",
+                                        14.sp,
+                                        primaryColor))
+                              ],
                             ),
-                          ),
-                        ),
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.photo_camera,
-                            color: primaryColor,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                addVerticalSpace(5),
-                userNameText(AppPreference().userDetail?.name ?? ""),
-                workText(AppPreference().userDetail?.designation ?? ""),
-                addVerticalSpace(20),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                  height: 120,
-                  width: double.maxFinite,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding:
-                              EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
-                          child: Icon(
-                            Icons.verified_user,
-                            color: primaryColor,
-                            size: 40,
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: profileText(
-                                          DemoLocalizations.of(context)
-                                                  ?.getText("get_verified") ??
-                                              "",
-                                          14.sp,
-                                          greyColor)),
-                                  addHorizontalSpace(20),
-                                  Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: profileText(
-                                          DemoLocalizations.of(context)
-                                                  ?.getText("pending") ??
-                                              "",
-                                          14.sp,
-                                          primaryColor))
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  28, 0.0, 8.0, 8.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    // add this
+                                    child: Text(
+                                      DemoLocalizations.of(context)?.getText(
+                                          "profile_screen_verification_pending_desc") ??
+                                          "",
+                                      maxLines:
+                                      5, // you can change it accordingly
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 11.sp,
+                                          color: greyColor), // and this
+                                    ),
+                                  ),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    28, 0.0, 8.0, 8.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      // add this
-                                      child: Text(
-                                        DemoLocalizations.of(context)?.getText(
-                                                "profile_screen_verification_pending_desc") ??
-                                            "",
-                                        maxLines:
-                                            3, // you can change it accordingly
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 11.sp,
-                                            color:
-                                                Color(0Xff707070)), // and this
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: const ProfileUpdateScreen()));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                        height: 180,
-                        width: size.width / 2,
-                        child: Stack(
-                          alignment: Alignment.topLeft,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20, left: 20),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: lightBlueColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 18.0),
-                                        child: profileText(
-                                            DemoLocalizations.of(context)
-                                                    ?.getText(
-                                                        "profile_completed") ??
-                                                "",
-                                            14.sp,
-                                            const Color(0Xff707070)),
-                                      ),
-                                      addVerticalSpace(20),
-                                      Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.start,
-                                        children: [
-                                          Text(
-                                            DemoLocalizations.of(context)
-                                                    ?.getText("view_details") ??
-                                                "",
-                                            style: const TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              fontFamily: 'Poppins',
-                                            ),
-                                          ),
-                                          const Icon(Icons.arrow_right)
-                                        ],
-                                      )
-                                    ]),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(35),
-                                  color: Colors.white),
-                              child: CircularPercentIndicator(
-                                  radius: 60,
-                                  lineWidth: 6,
-                                  percent: (AppPreference()
-                                              .userDetail
-                                              ?.percentageOfCompletion ??
-                                          0) /
-                                      100,
-                                  progressColor: primaryColor,
-                                  backgroundColor: lightGreyColor,
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  center: progressTextBlack(
-                                      (AppPreference()
-                                                  .userDetail
-                                                  ?.percentageOfCompletion ??
-                                              0)
-                                          .toString(),
-                                      13.sp,
-                                      primaryColor)),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: VerificationMainScreen()));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                        height: 180,
-                        width: size.width / 2,
-                        child: Stack(
-                          alignment: Alignment.topLeft,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20, left: 20),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: primaryLightColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 18.0),
-                                        child: profileText(
-                                            DemoLocalizations.of(context)
-                                                    ?.getText(
-                                                        "verify_pending") ??
-                                                "",
-                                            14.sp,
-                                            const Color(0Xff707070)),
-                                      ),
-                                      addVerticalSpace(20),
-                                      Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.start,
-                                        children: [
-                                          Text(
-                                            DemoLocalizations.of(context)
-                                                    ?.getText("view_details") ??
-                                                "",
-                                            style: const TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              fontFamily: 'Poppins',
-                                            ),
-                                          ),
-                                          const Icon(Icons.arrow_right)
-                                        ],
-                                      )
-                                    ]),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(35),
-                                  color: Colors.white),
-                              child: CircularPercentIndicator(
-                                  radius: 60,
-                                  lineWidth: 6,
-                                  percent: 10 / 100,
-                                  progressColor: primaryColor,
-                                  backgroundColor: lightGreyColor,
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  center:
-                                      progressTextBlack("10%", 13.sp, primaryColor)),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                  height: 250,
-                  width: double.maxFinite,
-                  child: GestureDetector(
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
                           PageTransition(
                               type: PageTransitionType.bottomToTop,
-                              child: ProfileBioUpdateScreen()));
+                              child: const ProfileUpdateScreen()));
                     },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      elevation: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                      height: 180,
+                      width: size.width / 2,
+                      child: Stack(
+                        alignment: Alignment.topLeft,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                profileText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("bio") ??
-                                        "",
-                                    12.sp,
-                                    primaryColor),
-                                profileText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("edit") ??
-                                        "",
-                                    12.sp,
-                                    primaryColor),
-                              ],
+                            padding: const EdgeInsets.only(top: 20, left: 20),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: lightBlueColor,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(top: 18.0),
+                                      child: profileText(
+                                          DemoLocalizations.of(context)
+                                              ?.getText(
+                                              "profile_completed") ??
+                                              "",
+                                          14.sp,
+                                          const Color(0Xff707070)),
+                                    ),
+                                    addVerticalSpace(20),
+                                    Wrap(
+                                      crossAxisAlignment:
+                                      WrapCrossAlignment.start,
+                                      children: [
+                                        Text(
+                                          DemoLocalizations.of(context)
+                                              ?.getText("view_details") ??
+                                              "",
+                                          style: const TextStyle(
+                                            color: greyColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: 'Poppins',
+                                          ),
+                                        ),
+                                        const Icon(Icons.arrow_right)
+                                      ],
+                                    )
+                                  ]),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: profileText(
-                                  AppPreference().userDetail?.bio ?? "",
-                                  12.sp,
-                                  const Color(0Xff707070)),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, left: 8.0, right: 8.0, bottom: 4.0),
-                            child: Row(
-                              children: [
-                                profileText(
-                                    DemoLocalizations.of(context)
-                                            ?.getText("languages") ??
-                                        "",
-                                    12.sp,
-                                    primaryColor),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8.0, bottom: 8.0),
-                            child: Row(
-                              children: [
-                                profileText(
-                                    AppPreference()
-                                            .userDetail
-                                            ?.language
-                                            ?.join(', ') ??
-                                        "",
-                                    12.sp,
-                                    const Color(0Xff707070)),
-                              ],
-                            ),
-                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35),
+                                color: Colors.white),
+                            child: CircularPercentIndicator(
+                                radius: 60,
+                                lineWidth: 6,
+                                percent: (AppPreference()
+                                    .userDetail
+                                    ?.percentageOfCompletion ??
+                                    0) /
+                                    100,
+                                progressColor: primaryColor,
+                                backgroundColor: lightGreyColor,
+                                circularStrokeCap: CircularStrokeCap.round,
+                                center: progressTextBlack(
+                                    (AppPreference()
+                                        .userDetail
+                                        ?.percentageOfCompletion ??
+                                        0)
+                                        .toString(),
+                                    13.sp,
+                                    primaryColor)),
+                          )
                         ],
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: VerificationMainScreen()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                      height: 180,
+                      width: size.width / 2,
+                      child: Stack(
+                        alignment: Alignment.topLeft,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20, left: 20),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: primaryLightColor,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(top: 18.0),
+                                      child: profileText(
+                                          DemoLocalizations.of(context)
+                                              ?.getText(
+                                              "verify_pending") ??
+                                              "",
+                                          14.sp,
+                                          const Color(0Xff707070)),
+                                    ),
+                                    addVerticalSpace(20),
+                                    Wrap(
+                                      crossAxisAlignment:
+                                      WrapCrossAlignment.start,
+                                      children: [
+                                        Text(
+                                          DemoLocalizations.of(context)
+                                              ?.getText("view_details") ??
+                                              "",
+                                          style: const TextStyle(
+                                            color: greyColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: 'Poppins',
+                                          ),
+                                        ),
+                                        const Icon(Icons.arrow_right)
+                                      ],
+                                    )
+                                  ]),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35),
+                                color: Colors.white),
+                            child: CircularPercentIndicator(
+                                radius: 60,
+                                lineWidth: 6,
+                                percent: 10 / 100,
+                                progressColor: primaryColor,
+                                backgroundColor: lightGreyColor,
+                                circularStrokeCap: CircularStrokeCap.round,
+                                center:
+                                progressTextBlack("10%", 13.sp, primaryColor)),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                height: 250,
+                width: double.maxFinite,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: ProfileBioUpdateScreen()));
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    elevation: 5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              profileText(
+                                  DemoLocalizations.of(context)
+                                      ?.getText("bio") ??
+                                      "",
+                                  12.sp,
+                                  primaryColor),
+                              profileText(
+                                  DemoLocalizations.of(context)
+                                      ?.getText("edit") ??
+                                      "",
+                                  12.sp,
+                                  primaryColor),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: profileText(
+                                AppPreference().userDetail?.bio ?? "",
+                                12.sp,
+                                const Color(0Xff707070)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, left: 8.0, right: 8.0, bottom: 4.0),
+                          child: Row(
+                            children: [
+                              profileText(
+                                  DemoLocalizations.of(context)
+                                      ?.getText("languages") ??
+                                      "",
+                                  12.sp,
+                                  primaryColor),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, bottom: 8.0),
+                          child: Row(
+                            children: [
+                              profileText(
+                                  AppPreference()
+                                      .userDetail
+                                      ?.language
+                                      ?.join(', ') ??
+                                      "",
+                                  12.sp,
+                                  const Color(0Xff707070)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

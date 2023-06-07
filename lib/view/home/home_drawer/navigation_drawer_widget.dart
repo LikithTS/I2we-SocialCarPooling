@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
-import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
@@ -68,67 +67,63 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                               builder: (context) => const MyProfileScreen()))
                     }),
             buildMenuItem(
-                text: DemoLocalizations.of(context)?.getText("home") ?? "",
-                icon: Icons.home,
-                onClicked: () => selectedItem(context, 0)),
-            buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("my_rides") ?? "",
                 icon: Icons.directions_car,
-                onClicked: () => selectedItem(context, 1)),
+                onClicked: () => selectedItem(context, 0)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("history") ?? "",
                 icon: Icons.history,
-                onClicked: () => selectedItem(context, 2)),
+                onClicked: () => selectedItem(context, 1)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("my_vehicle") ?? "",
                 icon: Icons.car_crash_sharp,
-                onClicked: () => selectedItem(context, 3)),
+                onClicked: () => selectedItem(context, 2)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("my_questioners") ??
                         "",
                 icon: Icons.help,
-                onClicked: () => selectedItem(context, 4)),
+                onClicked: () => selectedItem(context, 3)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)
                         ?.getText("ratings_and_reviews") ??
                     "",
                 icon: Icons.stars,
-                onClicked: () => selectedItem(context, 5)),
+                onClicked: () => selectedItem(context, 4)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("feedback") ?? "",
                 icon: Icons.forum,
-                onClicked: () => selectedItem(context, 6)),
+                onClicked: () => selectedItem(context, 5)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("subscription") ??
                     "",
                 icon: Icons.subscriptions,
-                onClicked: () => selectedItem(context, 7)),
+                onClicked: () => selectedItem(context, 6)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)
                         ?.getText("terms_and_conditions") ??
                     "",
                 icon: Icons.description,
-                onClicked: () => selectedItem(context, 8)),
+                onClicked: () => selectedItem(context, 7)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("privacy_policy") ??
                         "",
                 icon: Icons.screen_lock_portrait,
-                onClicked: () => selectedItem(context, 9)),
+                onClicked: () => selectedItem(context, 8)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("help") ?? "",
                 icon: Icons.help,
-                onClicked: () => selectedItem(context, 10)),
+                onClicked: () => selectedItem(context, 9)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("about_us") ?? "",
                 icon: Icons.info,
-                onClicked: () => selectedItem(context, 11)),
+                onClicked: () => selectedItem(context, 10)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("logout") ?? "",
                 icon: Icons.logout,
-                onClicked: () => selectedItem(context, 12)),
+                onClicked: () => selectedItem(context, 11)),
           ],
         ),
       ),
@@ -160,24 +155,16 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
     Navigator.of(context).pop();
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomePage(homeRepository: HomeRepository())));
-        break;
-
-      case 1:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const MyRidesScreen()));
         break;
 
-      case 2:
+      case 1:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HistoryPage()));
         break;
 
-      case 3:
+      case 2:
         if (CPSessionManager().getIfCarDetailsAdded()) {
           Navigator.push(
               context,
@@ -191,11 +178,11 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                   builder: (context) => const MyVehicleStartPage()));
         }
         break;
-      case 4:
+      case 3:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
-      case 5:
+      case 4:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
@@ -212,37 +199,37 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       //       );
       //     });
       // break;
-      case 6:
+      case 5:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => FeedbackPage()));
         break;
-      case 7:
+      case 6:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => SubscriptionPage()));
         break;
-      case 8:
+      case 7:
         launchWebViewScreen(
             context,
             DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
                 "",
             Constant.TERMS_CONDITION_URL);
         break;
-      case 9:
+      case 8:
         launchWebViewScreen(
             context,
             DemoLocalizations.of(context)?.getText("privacy_policy") ?? "",
             Constant.PRIVACY_POLICY_URL);
         break;
-      case 10:
+      case 9:
         launchWebViewScreen(
             context,
             DemoLocalizations.of(context)?.getText("help") ?? "",
             Constant.HELP_URL);
         break;
-      case 11:
+      case 10:
         showAbout(context);
         break;
-      case 12:
+      case 11:
         showLogoutConfirmationDialog(context);
         break;
     }
