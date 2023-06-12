@@ -77,11 +77,11 @@ class CPString {
   static const String Alert = 'Alert';
   static const String logout_desc = "Are you sure wants to logout?";
   static const String appName = "i2we";
-  static const String about_desc =
-      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque '
-      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque'
-      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque';
-  static const String copyright = '©2022 i2we.com';
+  static const String help_desc =
+      'Name : i2we community\n'
+      'Email ID : cpool.i2we@gmail.com\n'
+      'Phone Number : +91-9606075571';
+  static const String copyright = '©2023 i2we.community';
   static const String HISTORY = "History";
   static const String NO_RIDES_AVAILABLE = 'No Rides Available';
   static const String FEEDBACK_DESC =

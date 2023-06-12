@@ -10,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/CPString.dart';
-import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/constant.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
@@ -208,11 +207,19 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             MaterialPageRoute(builder: (context) => SubscriptionPage()));
         break;
       case 7:
-        launchWebViewScreen(
-            context,
-            DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
-                "",
-            Constant.TERMS_CONDITION_URL);
+        if (Platform.isIOS) {
+          launchWebViewScreen(
+              context,
+              DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
+                  "",
+              Constant.TERMS_CONDITION_IOS_URL);
+        } else {
+          launchWebViewScreen(
+              context,
+              DemoLocalizations.of(context)?.getText("terms_and_conditions") ??
+                  "",
+              Constant.TERMS_CONDITION_ANDROID_URL);
+        }
         break;
       case 8:
         launchWebViewScreen(
@@ -221,13 +228,17 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             Constant.PRIVACY_POLICY_URL);
         break;
       case 9:
-        launchWebViewScreen(
-            context,
-            DemoLocalizations.of(context)?.getText("help") ?? "",
-            Constant.HELP_URL);
+        // launchWebViewScreen(
+        //     context,
+        //     DemoLocalizations.of(context)?.getText("help") ?? "",
+        //     Constant.HELP_URL);
+        showHelpDialog(context);
         break;
       case 10:
-        showAbout(context);
+        launchWebViewScreen(
+            context,
+            DemoLocalizations.of(context)?.getText("about_us") ?? "",
+            Constant.ABOUT_US_URL);
         break;
       case 11:
         showLogoutConfirmationDialog(context);
@@ -290,7 +301,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 }
 
-void showAbout(BuildContext context) {
+void showHelpDialog(BuildContext context) {
   PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
     showAboutDialog(
       context: context,
@@ -299,10 +310,10 @@ void showAbout(BuildContext context) {
       applicationVersion: packageInfo.version,
       applicationLegalese: CPString.copyright,
       children: <Widget>[
-        Text(DemoLocalizations.of(context)?.getText("about_us") ?? "",
-            style: TextStyleUtils.primaryTextBold),
+        // Text(DemoLocalizations.of(context)?.getText("help") ?? "",
+        //     style: TextStyleUtils.primaryTextBold),
         const Padding(
-            padding: EdgeInsets.only(top: 10), child: Text(CPString.about_desc))
+            padding: EdgeInsets.only(top: 10), child: Text(CPString.help_desc))
       ],
     );
   });

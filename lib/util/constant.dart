@@ -16,9 +16,11 @@ class Constant {
   static const String BUTTON_CHECK_OUT = "CHECK OUT";
   static const String BUTTON_COMPLETED = "COMPLETED";
 
-  static const String TERMS_CONDITION_URL = "https://www.vtricks.in/about-us";
-  static const String PRIVACY_POLICY_URL = "https://www.vtricks.in/about-us";
+  static const String TERMS_CONDITION_ANDROID_URL = "https://docs.google.com/document/d/1wqkqCPL3rLG9BgcPjTg1y3tZg_KPZe-v9Nhd2Mn3bCk/edit?usp=sharing";
+  static const String TERMS_CONDITION_IOS_URL = "https://docs.google.com/document/d/1Euleem8XUQ7PrhydbnJWQf1COfS2jUoOsYfp5kVaEjA/edit?usp=sharing";
+  static const String PRIVACY_POLICY_URL = "https://docs.google.com/document/d/1ULlIoWydYyR4EHXfyzZr-ntDy1YC7LrqRb1E1x3yVJE/edit?usp=sharing";
   static const String HELP_URL = "https://www.vtricks.in/about-us";
+  static const String ABOUT_US_URL = "https://docs.google.com/document/d/1AcDJL4BWsbfOPJS4npxabQwulkvxg6BCkUXlsLRy8Ic/edit?usp=sharing";
 
   static const String RIDE_CREATED = "CREATED";
   static const String RIDE_STARTED = "STARTED";

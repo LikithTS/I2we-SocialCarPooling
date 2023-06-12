@@ -21,8 +21,12 @@ class _WebViewAppState extends State<WebViewPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: WebView(
-        initialUrl: widget.url,
+      body: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: WebView(
+          initialUrl: widget.url,
+        ),
       ),
     );
   }
