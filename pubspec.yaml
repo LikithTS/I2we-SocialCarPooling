@@ -118,6 +118,7 @@ dependencies:
   connectivity: ^3.0.6
   overlay_support: ^2.1.0
   google_places_flutter: ^2.0.5
+  app_tracking_transparency: ^2.0.4
 
 dev_dependencies:
   flutter_test:

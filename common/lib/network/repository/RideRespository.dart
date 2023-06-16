@@ -9,12 +9,14 @@ import 'package:common/network/request/AvailableRideApi.dart';
 import 'package:common/network/request/CurrentRideApi.dart';
 import 'package:common/network/request/InviteRideApi.dart';
 import 'package:common/network/request/JoinRideApi.dart';
+import 'package:common/network/request/RidePaginationApi.dart';
 import 'package:common/network/request/RideStatusApi.dart';
 import 'package:common/network/request/newRideApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:dio/dio.dart';
 
 import '../ApiConstant.dart';
+import '../model/AllRidesModel.dart';
 
 class RideRepository extends ApiRepository {
   Future<dynamic> postNewRide({required NewRideApi api}) async {
@@ -48,6 +50,30 @@ class RideRepository extends ApiRepository {
         }
         List<UpcomingRides> upcomingRidesList = List<UpcomingRides>.from(
             response.map((i) => UpcomingRides.fromJson(i)));
+        // var carResponse = CarDetailsResponse.fromJson(response);
+        log("Upcoming rides list $upcomingRidesList");
+        return upcomingRidesList;
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
+  Future<List<AllRidesModel>> getRidesBasedOnType(RidePaginationApi ridePaginationApi,String api) async {
+    try {
+      Response carData =
+      await APIClient().getDioInstance().post(api,queryParameters: ridePaginationApi.toJson());
+      dynamic response = handleAPIResponseData(carData);
+      if (response is ErrorResponse) {
+        return List.empty();
+      } else {
+        if (response is SuccessResponse) {
+          if (response.data != null && response.data!.isEmpty) {
+            return List.empty();
+          }
+        }
+        List<AllRidesModel> upcomingRidesList = List<AllRidesModel>.from(
+            response.map((i) => AllRidesModel.fromJson(i)));
         // var carResponse = CarDetailsResponse.fromJson(response);
         log("Upcoming rides list $upcomingRidesList");
         return upcomingRidesList;

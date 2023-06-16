@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common/network/ApiConstant.dart';
 import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
@@ -12,6 +13,7 @@ import 'package:socialcarpooling/util/AppPreference.dart';
 import 'package:socialcarpooling/util/CPString.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/util/constant.dart';
+import 'package:socialcarpooling/view/home/rides/AllRidesScreen.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/WebviewPage.dart';
 import 'package:socialcarpooling/view/feedback/feedback_page.dart';
@@ -31,6 +33,8 @@ import '../../../util/Localization.dart';
 import '../../../widgets/image_widgets.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
+import '../rides/RidesDialogScreen.dart';
+import '../rides/available_rides_screen.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -70,59 +74,63 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 icon: Icons.directions_car,
                 onClicked: () => selectedItem(context, 0)),
             buildMenuItem(
-                text: DemoLocalizations.of(context)?.getText("history") ?? "",
+                text: DemoLocalizations.of(context)?.getText("all_rides") ?? "",
                 icon: Icons.history,
                 onClicked: () => selectedItem(context, 1)),
+            buildMenuItem(
+                text: DemoLocalizations.of(context)?.getText("history") ?? "",
+                icon: Icons.history,
+                onClicked: () => selectedItem(context, 2)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("my_vehicle") ?? "",
                 icon: Icons.car_crash_sharp,
-                onClicked: () => selectedItem(context, 2)),
+                onClicked: () => selectedItem(context, 3)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("my_questioners") ??
                         "",
                 icon: Icons.help,
-                onClicked: () => selectedItem(context, 3)),
+                onClicked: () => selectedItem(context, 4)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)
                         ?.getText("ratings_and_reviews") ??
                     "",
                 icon: Icons.stars,
-                onClicked: () => selectedItem(context, 4)),
+                onClicked: () => selectedItem(context, 5)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("feedback") ?? "",
                 icon: Icons.forum,
-                onClicked: () => selectedItem(context, 5)),
+                onClicked: () => selectedItem(context, 6)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("subscription") ??
                     "",
                 icon: Icons.subscriptions,
-                onClicked: () => selectedItem(context, 6)),
+                onClicked: () => selectedItem(context, 7)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)
                         ?.getText("terms_and_conditions") ??
                     "",
                 icon: Icons.description,
-                onClicked: () => selectedItem(context, 7)),
+                onClicked: () => selectedItem(context, 8)),
             buildMenuItem(
                 text:
                     DemoLocalizations.of(context)?.getText("privacy_policy") ??
                         "",
                 icon: Icons.screen_lock_portrait,
-                onClicked: () => selectedItem(context, 8)),
+                onClicked: () => selectedItem(context, 9)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("help") ?? "",
                 icon: Icons.help,
-                onClicked: () => selectedItem(context, 9)),
+                onClicked: () => selectedItem(context, 10)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("about_us") ?? "",
                 icon: Icons.info,
-                onClicked: () => selectedItem(context, 10)),
+                onClicked: () => selectedItem(context, 11)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("logout") ?? "",
                 icon: Icons.logout,
-                onClicked: () => selectedItem(context, 11)),
+                onClicked: () => selectedItem(context, 12)),
           ],
         ),
       ),
@@ -151,19 +159,28 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 
   void selectedItem(BuildContext context, int index) {
-    Navigator.of(context).pop();
     switch (index) {
       case 0:
+        Navigator.of(context).pop();
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const MyRidesScreen()));
         break;
 
       case 1:
+      _showRideSelectionDialog(context);
+        break;
+
+      case 2:
+        Navigator.of(context).pop();
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HistoryPage()));
         break;
 
-      case 2:
+      case 3:
+        Navigator.of(context).pop();
+
         if (CPSessionManager().getIfCarDetailsAdded()) {
           Navigator.push(
               context,
@@ -177,11 +194,15 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                   builder: (context) => const MyVehicleStartPage()));
         }
         break;
-      case 3:
+      case 4:
+        Navigator.of(context).pop();
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionariePage()));
         break;
-      case 4:
+      case 5:
+        Navigator.of(context).pop();
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const RatingsAndReviews()));
         break;
@@ -198,15 +219,21 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       //       );
       //     });
       // break;
-      case 5:
+      case 6:
+        Navigator.of(context).pop();
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => FeedbackPage()));
         break;
-      case 6:
+      case 7:
+        Navigator.of(context).pop();
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => SubscriptionPage()));
         break;
-      case 7:
+      case 8:
+        Navigator.of(context).pop();
+
         if (Platform.isIOS) {
           launchWebViewScreen(
               context,
@@ -221,26 +248,34 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
               Constant.TERMS_CONDITION_ANDROID_URL);
         }
         break;
-      case 8:
+      case 9:
+        Navigator.of(context).pop();
+
         launchWebViewScreen(
             context,
             DemoLocalizations.of(context)?.getText("privacy_policy") ?? "",
             Constant.PRIVACY_POLICY_URL);
         break;
-      case 9:
+      case 10:
+        Navigator.of(context).pop();
+
         // launchWebViewScreen(
         //     context,
         //     DemoLocalizations.of(context)?.getText("help") ?? "",
         //     Constant.HELP_URL);
         showHelpDialog(context);
         break;
-      case 10:
+      case 11:
+        Navigator.of(context).pop();
+
         launchWebViewScreen(
             context,
             DemoLocalizations.of(context)?.getText("about_us") ?? "",
             Constant.ABOUT_US_URL);
         break;
-      case 11:
+      case 12:
+        Navigator.of(context).pop();
+
         showLogoutConfirmationDialog(context);
         break;
     }
@@ -373,3 +408,39 @@ Widget tileText(String text, Alignment alignment,
         maxLines: 1,
       ),
     ));
+
+void _showRideSelectionDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Choose Ride Type'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              ListTile(
+                title: Text('Driver'),
+                onTap: () {
+                  Navigator.pop(context);
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_DRIVER_RIDES)));
+                },
+              ),
+              ListTile(
+                title: Text('Passenger'),
+                onTap: () {
+                  Navigator.pop(context);
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_PASSENGER_RIDES)));
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
