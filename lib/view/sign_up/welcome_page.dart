@@ -33,10 +33,10 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-          margin: EdgeInsets.only(top: margin110),
+          margin: EdgeInsets.only(top: margin90),
           width: deviceWidth(context),
           height: deviceHeight(context),
-          padding: EdgeInsets.all(margin20),
+          padding: EdgeInsets.all(margin10),
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +55,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     CPString.welcometempText),
               ),
               SizedBox(
-                height: margin30,
+                height: margin60,
               ),
               Align(
                 alignment: Alignment.center,
@@ -63,7 +63,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     .primaryTextLight.copyWith(fontWeight: FontWeight.w500),),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 40,top: 20),
+                margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -103,18 +103,18 @@ class _WelcomePageState extends State<WelcomePage> {
           borderRadius: BorderRadius.all(Radius.circular(margin10)
           ),
         ), // <-- Radius
-        primary: title==CPString.no?Colors.white:primaryLightColor,
+        backgroundColor: title==CPString.no?Colors.white:primaryColor,
         textStyle: TextStyleUtils.primaryTextRegular,
         side: title==CPString.no?BorderSide(width: 1.0,color: borderColor):BorderSide(width:0,color: primaryLightColor),
       ),
+      onPressed: callback,
       child: Padding(
-        padding:  EdgeInsets.only(left: margin12,right: margin12),
+        padding:  const EdgeInsets.only(left: 20,right: 20),
         child: Text(
           title,
           style: TextStyleUtils.primaryTextRegular.copyWith(color: title==CPString.no?borderColor:Colors.white),
         ),
       ),
-      onPressed: callback,
     );
   }
   void _gotoBioPage() {

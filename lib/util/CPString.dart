@@ -14,7 +14,7 @@ class CPString {
   static const String done = "Done";
   static const String next = "Next";
   static const String yes = "Yes";
-  static const String no = "no";
+  static const String no = "No";
   static const String yet_to_be_impl = "Yet to be implemented!!!";
   static const String makeFriends = "Make New Friends";
   static const String tempText =
@@ -36,6 +36,7 @@ class CPString {
   static const String zipCode = "Zip Code";
   static const String mobileNo = "Mobile No";
   static const String email = "Email";
+  static const String email_id = "Email ID";
   static const String verify = "Verify";
   static const String password = "Password";
   static const String signUp = "Sign Up";
@@ -44,8 +45,7 @@ class CPString {
   static const String verifyOTP = "Verify OTP";
   static const String thankYou = "Thank You!";
   static const String registrationSuccess = "The registration successful";
-  static const String verifyOTPTitle =
-      "Enter OTP sent to registered phone number";
+  static const String verifyOTPTitle = "Enter OTP sent to registered Email-ID";
   static const String confirmPassword = "Confirm Password";
   static const String selectDate = "DOB";
   static const String fullNameError = "Full Name can not empty";

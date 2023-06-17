@@ -172,7 +172,7 @@ class _SignUpAddressState extends State<SignUpAddress>
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(margin20),
                     ),
@@ -210,6 +210,7 @@ class _SignUpAddressState extends State<SignUpAddress>
               child: VerifyOtpPage(
                 userName: widget.signInApi.name,
                 mobileNo: widget.signInApi.phoneNumber,
+                emailID: widget.signInApi.email,
               )));
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");

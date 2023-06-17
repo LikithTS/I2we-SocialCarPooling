@@ -13,7 +13,7 @@ class SignInApi {
     required this.name,
     this.education,
     this.gender,
-    this.email,
+    required this.email,
     this.age,
     this.dob,
     this.address1,
@@ -29,7 +29,7 @@ class SignInApi {
   String name;
   String? education;
   String? gender;
-  String? email;
+  String email;
   int? age;
   String? dob;
   String? address1;

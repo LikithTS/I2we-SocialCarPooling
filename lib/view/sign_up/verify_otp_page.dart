@@ -32,10 +32,11 @@ import '../../widgets/image_widgets.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   final String userName;
+  final String emailID;
   final String mobileNo;
 
   const VerifyOtpPage(
-      {Key? key, required this.mobileNo, required this.userName})
+      {Key? key, required this.emailID, required this.userName, required this.mobileNo})
       : super(key: key);
 
   @override
@@ -44,7 +45,7 @@ class VerifyOtpPage extends StatefulWidget {
 
 class _VerifyOtpPageState extends State<VerifyOtpPage>
     with InputValidationMixin {
-  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   int secondsRemaining = 30;
   bool enableResend = false;
   bool enableSendOtpButton = false;
@@ -61,9 +62,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   @override
   void initState() {
     super.initState();
-    mobileNoController.text = widget.mobileNo;
+    emailController.text = widget.emailID;
     InternetChecks.isConnected()
-        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
+        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.emailID)});
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -106,14 +107,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: inputEditTextWithPrefixWidget(
                             context,
-                            CPString.mobileNo,
-                            mobileNoController,
+                            CPString.email_id,
+                            emailController,
                             CPString.mobileError,
                             Icons.mobile_screen_share_outlined,
                             4,
-                            10,
+                            30,
                             this,
-                            widget.mobileNo,
+                            widget.emailID,
                             true),
                       ),
                       // GestureDetector(
@@ -254,7 +255,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             otpString6Controller.text.toString();
                         log("OTP Text: $otpText");
                         ValidOtpApi validOtpApi = ValidOtpApi(
-                            phoneNumber: mobileNoController.text.toString(),
+                            phoneNumber: widget.mobileNo,
                             otp: otpText);
                         InternetChecks.isConnected().then((isAvailable) =>
                             {validOtp(isAvailable, validOtpApi)});
@@ -267,7 +268,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                         elevation: margin2,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(margin20),
+                        padding: EdgeInsets.all(margin16),
                         child: Text(
                           CPString.verify,
                           style: TextStyle(fontSize: fontSize18),
