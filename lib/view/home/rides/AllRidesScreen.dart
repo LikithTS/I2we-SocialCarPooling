@@ -7,6 +7,7 @@ import 'package:common/network/request/RidePaginationApi.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/AllRidesCard.dart';
+import 'package:socialcarpooling/view/home/rides/all_rides_start_page.dart';
 import 'package:socialcarpooling/view/home/rides/my_rides_start_page.dart';
 
 import '../../../util/constant.dart';
@@ -68,7 +69,7 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                         },
                       ),
                       headerText(
-                          DemoLocalizations.of(context)?.getText("my_rides") ??
+                          DemoLocalizations.of(context)?.getText("all_rides") ??
                               "")
                     ],
                   ),
@@ -101,31 +102,32 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
-                    List<AllRidesModel>? upcomingRideList = snapshot.data;
-                    if (upcomingRideList != null &&
-                        upcomingRideList.isNotEmpty) {
-                      ridesCount = upcomingRideList.length;
+                    List<AllRidesModel>? allRideList = snapshot.data;
+                    log("ALl Rides list $allRideList");
+                    if (allRideList != null &&
+                        allRideList.isNotEmpty) {
+                      ridesCount = allRideList.length;
                       return ListView.builder(
-                        itemCount: upcomingRideList.length,
+                        itemCount: allRideList.length,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                         //  log("Travel partner passenger ${upcomingRideList[index].travelPassengers}");
                           //log("Travel partner driver ${upcomingRideList[index].driverRide}");
                           return AllRidesCard(
-                            rideId: upcomingRideList[index].id ?? "",
+                            rideId: allRideList[index].id ?? "",
                             carIcon: 'assets/images/car_pool.png',
-                            startAddress: upcomingRideList[index]
+                            startAddress: allRideList[index]
                                 .startDestinationFormattedAddress ??
                                 "",
-                            endAddress: upcomingRideList[index]
+                            endAddress: allRideList[index]
                                 .endDestinationFormattedAddress ??
                                 "",
                             dateTime: getDateTimeFormatter()
-                                .parse(upcomingRideList[index].startTime!),
+                                .parse(allRideList[index].startTime!),
 
                             carType:
-                            upcomingRideList[index].carTypeInterested ?? "",
+                            allRideList[index].carTypeInterested ?? "",
 
 
                           );
@@ -133,7 +135,7 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                       );
                     }
                   }
-                  return const MyRidesStartPage();
+                  return const AllRidesStartPage();
                 },
               ),
             ),

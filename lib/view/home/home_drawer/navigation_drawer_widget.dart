@@ -168,6 +168,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         break;
 
       case 1:
+        Navigator.of(context).pop();
       _showRideSelectionDialog(context);
         break;
 
@@ -415,24 +416,23 @@ void _showRideSelectionDialog(BuildContext context) {
     barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Choose Ride Type'),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
               ListTile(
-                title: Text('Driver'),
+                title: Text(DemoLocalizations.of(context)
+                    ?.getText("find_driver") ?? 'Join ride as Passenger'),
                 onTap: () {
                   Navigator.pop(context);
-
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_DRIVER_RIDES)));
                 },
               ),
               ListTile(
-                title: Text('Passenger'),
+                title: Text(DemoLocalizations.of(context)
+                    ?.getText("find_passenger") ?? 'Join ride as Driver'),
                 onTap: () {
                   Navigator.pop(context);
-
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_PASSENGER_RIDES)));
                 },

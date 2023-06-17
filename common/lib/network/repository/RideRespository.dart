@@ -72,11 +72,10 @@ class RideRepository extends ApiRepository {
             return List.empty();
           }
         }
-        List<AllRidesModel> upcomingRidesList = List<AllRidesModel>.from(
+        List<AllRidesModel> allRidesList = List<AllRidesModel>.from(
             response.map((i) => AllRidesModel.fromJson(i)));
-        // var carResponse = CarDetailsResponse.fromJson(response);
-        log("Upcoming rides list $upcomingRidesList");
-        return upcomingRidesList;
+        log("All rides list $allRidesList");
+        return allRidesList;
       }
     } on DioError catch (onError) {
       throw getErrorResponse(onError);
