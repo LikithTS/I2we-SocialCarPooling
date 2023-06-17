@@ -31,3 +31,8 @@ DateTime parseDatetimeFromUtc({required String isoFormattedString}){
   var dateTime = DateTime.parse(isoFormattedString);
   return dateTime.toLocal();
 }
+
+bool checkForPreviousDate(DateTime dateTime) {
+  final earlier = dateTime.subtract(const Duration(hours: 2));
+  return earlier.isBefore(dateTime);
+}

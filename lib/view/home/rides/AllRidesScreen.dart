@@ -1,23 +1,21 @@
 import 'dart:developer';
 
-import 'package:common/network/model/AllRidesModel.dart';
-import 'package:common/network/model/UpcomingRides.dart';
+import 'package:common/network/model/AllRidesNewModel.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/RidePaginationApi.dart';
 import 'package:flutter/material.dart';
 import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/AllRidesCard.dart';
 import 'package:socialcarpooling/view/home/rides/all_rides_start_page.dart';
-import 'package:socialcarpooling/view/home/rides/my_rides_start_page.dart';
-
-import '../../../util/constant.dart';
 import '../../../util/Localization.dart';
 import '../../../widgets/widget_text.dart';
-import 'my_rides_card.dart';
 
 class AllRidesScreen extends StatefulWidget {
-  const AllRidesScreen({Key? key, required this.api}) : super(key: key);
-final String api;
+  const AllRidesScreen({Key? key, required this.api, required this.rideType})
+      : super(key: key);
+  final String api;
+  final String rideType;
+
   @override
   State<AllRidesScreen> createState() => _AllRidesScreen();
 }
@@ -25,21 +23,31 @@ final String api;
 class _AllRidesScreen extends State<AllRidesScreen> {
   RideRepository rideRepository = RideRepository();
   int ridesCount = 0;
+  int start = 0;
+  int end = 5;
   late Future<List<dynamic>> future;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    future = rideRepository.getRidesBasedOnType(RidePaginationApi(start: 0.toString(), end: 5.toString()),widget.api);
-/*    _scrollController.addListener(() {
+    future = rideRepository.getRidesBasedOnType(
+        RidePaginationApi(start: start.toString(), end: end.toString()), widget.api);
+    _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        future = rideRepository.getRidesBasedOnType(RidePaginationApi(start: ridesCount.toString(), end: (ridesCount+2).toString()),widget.api);
-    }
-  });*/
+        log("On Scroll end");
+        start = end+1;
+        end = end+end;
+        log("New start page $start");
+        log("New end page $end");
+        future = rideRepository.getRidesBasedOnType(
+            RidePaginationApi(
+                start: start.toString(), end: end.toString()),
+            widget.api);
+      }
+    });
   }
-
 
   @override
   void dispose() {
@@ -102,35 +110,63 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
-                    List<AllRidesModel>? allRideList = snapshot.data;
-                    log("ALl Rides list $allRideList");
+                    List<AllRidesNewModel>? allRideList = snapshot.data;
+                    log("ALl Rides list passenger ${allRideList?.first.passengers.toString()}");
+                    log("ALl Rides list driver ${allRideList?.first.drivers.toString()}");
+                    log("ALl Rides list count ${allRideList?.last.count.toString()}");
+                    ridesCount = allRideList?.last.count! ?? 0;
                     if (allRideList != null &&
-                        allRideList.isNotEmpty) {
-                      ridesCount = allRideList.length;
+                        widget.rideType == "Driver" &&
+                        allRideList.first.drivers != null &&
+                        allRideList.first.drivers!.isNotEmpty) {
                       return ListView.builder(
-                        itemCount: allRideList.length,
+                        itemCount: allRideList.first.drivers!.length,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                        //  log("Travel partner passenger ${upcomingRideList[index].travelPassengers}");
-                          //log("Travel partner driver ${upcomingRideList[index].driverRide}");
                           return AllRidesCard(
-                            rideId: allRideList[index].id ?? "",
+                            rideId: allRideList.first.drivers![index].id ?? "",
                             carIcon: 'assets/images/car_pool.png',
-                            startAddress: allRideList[index]
-                                .startDestinationFormattedAddress ??
+                            startAddress: allRideList.first.drivers![index]
+                                    .startDestinationFormattedAddress ??
                                 "",
-                            endAddress: allRideList[index]
-                                .endDestinationFormattedAddress ??
+                            endAddress: allRideList.first.drivers![index]
+                                    .endDestinationFormattedAddress ??
                                 "",
-                            dateTime: getDateTimeFormatter()
-                                .parse(allRideList[index].startTime!),
-
-                            carType:
-                            allRideList[index].carTypeInterested ?? "",
-
-
+                            dateTime: getDateTimeFormatter().parse(
+                                allRideList.first.drivers![index].startTime!),
+                            carType: "",
+                            amountPerSeat: allRideList
+                                    .first.drivers![index].amountPerSeat ??
+                                0,
                           );
+                        },
+                      );
+                    } else if (allRideList != null &&
+                        widget.rideType == "Passenger" &&
+                        allRideList.first.passengers != null &&
+                        allRideList.first.passengers!.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: allRideList.first.passengers!.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return AllRidesCard(
+                              rideId:
+                                  allRideList.first.passengers![index].id ?? "",
+                              carIcon: 'assets/images/car_pool.png',
+                              startAddress: allRideList.first.passengers![index]
+                                      .startDestinationFormattedAddress ??
+                                  "",
+                              endAddress: allRideList.first.passengers![index]
+                                      .endDestinationFormattedAddress ??
+                                  "",
+                              dateTime: getDateTimeFormatter().parse(allRideList
+                                  .first.passengers![index].startTime!),
+                              carType: allRideList.first.passengers![index]
+                                      .carTypeInterested ??
+                                  "",
+                              amountPerSeat: -1);
                         },
                       );
                     }
@@ -144,5 +180,4 @@ class _AllRidesScreen extends State<AllRidesScreen> {
       ),
     );
   }
-
 }

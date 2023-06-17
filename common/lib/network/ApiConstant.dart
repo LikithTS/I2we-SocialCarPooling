@@ -23,6 +23,7 @@ class ApiConstant {
   static const String UPCOMING_RIDE = "ride/upcoming";
   static const String ALL_DRIVER_RIDES = "ride/get-all-driver-rides";
   static const String ALL_PASSENGER_RIDES = "ride/get-all-passenger-rides";
+  static const String JOIN_PAGINATED_RIDE = "ride/join-paginated-ride";
   static const String REFRESH = "auth/refresh-token";
   static const String CHANGE_PASSWORD_API_PATH = "user/change-password";
   static const String UPDATE_USER = "user/update-details";

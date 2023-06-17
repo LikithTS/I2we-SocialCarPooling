@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:common/network/apiclient.dart';
+import 'package:common/network/model/AllRidesNewModel.dart';
 import 'package:common/network/model/AvailableRideResponse.dart';
 import 'package:common/network/model/UpcomingRides.dart';
 import 'package:common/network/model/error_response.dart';
@@ -8,6 +9,7 @@ import 'package:common/network/repository/ApiRepository.dart';
 import 'package:common/network/request/AvailableRideApi.dart';
 import 'package:common/network/request/CurrentRideApi.dart';
 import 'package:common/network/request/InviteRideApi.dart';
+import 'package:common/network/request/JoinPaginatedRideApi.dart';
 import 'package:common/network/request/JoinRideApi.dart';
 import 'package:common/network/request/RidePaginationApi.dart';
 import 'package:common/network/request/RideStatusApi.dart';
@@ -16,7 +18,6 @@ import 'package:common/network/response/SuccessResponse.dart';
 import 'package:dio/dio.dart';
 
 import '../ApiConstant.dart';
-import '../model/AllRidesModel.dart';
 
 class RideRepository extends ApiRepository {
   Future<dynamic> postNewRide({required NewRideApi api}) async {
@@ -59,7 +60,7 @@ class RideRepository extends ApiRepository {
     }
   }
 
-  Future<List<AllRidesModel>> getRidesBasedOnType(RidePaginationApi ridePaginationApi,String api) async {
+  Future<List<AllRidesNewModel>> getRidesBasedOnType(RidePaginationApi ridePaginationApi,String api) async {
     try {
       Response carData =
       await APIClient().getDioInstance().post(api,queryParameters: ridePaginationApi.toJson());
@@ -72,8 +73,8 @@ class RideRepository extends ApiRepository {
             return List.empty();
           }
         }
-        List<AllRidesModel> allRidesList = List<AllRidesModel>.from(
-            response.map((i) => AllRidesModel.fromJson(i)));
+        List<AllRidesNewModel> allRidesList = List<AllRidesNewModel>.from(
+            response.map((i) => AllRidesNewModel.fromJson(i)));
         log("All rides list $allRidesList");
         return allRidesList;
       }
@@ -140,6 +141,23 @@ class RideRepository extends ApiRepository {
       throw getErrorResponse(onError);
     }
   }
+
+  Future<dynamic> joinPaginatedRide(String id, {required JoinPaginatedRideApi api}) async {
+    try {
+      Response userData = await APIClient()
+          .getDioInstance()
+          .post(ApiConstant.JOIN_PAGINATED_RIDE + "/$id", data: api.toJson());
+      dynamic response = handleAPIResponseData(userData);
+      if (response is ErrorResponse) {
+        return response;
+      } else if(response is SuccessResponse){
+        return SuccessResponse();
+      }
+    } on DioError catch (onError) {
+      throw getErrorResponse(onError);
+    }
+  }
+
 
   Future<dynamic> inviteCancel(
       {required JoinRideApi api}) async {

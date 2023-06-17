@@ -425,7 +425,7 @@ void _showRideSelectionDialog(BuildContext context) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_DRIVER_RIDES)));
+                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_DRIVER_RIDES, rideType: "Driver")));
                 },
               ),
               ListTile(
@@ -434,7 +434,7 @@ void _showRideSelectionDialog(BuildContext context) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_PASSENGER_RIDES)));
+                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_PASSENGER_RIDES, rideType: "Passenger")));
                 },
               ),
             ],

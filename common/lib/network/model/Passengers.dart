@@ -1,29 +1,30 @@
-import '../request/Stops.dart';
+import 'package:common/network/model/Stops.dart';
+
 import 'StartLocation.dart';
 
-class AllRidesModel {
-  AllRidesModel({
-    this.id,
-    this.riderUserId,
-    this.carTypeInterested,
-    this.driverRideId,
-    this.pricePaid,
-    this.startTime,
-    this.endTime,
-    this.startDestinationFormattedAddress,
-    this.startLocation,
-    this.startDestinationPlaceId,
-    this.endDestinationFormattedAddress,
-    this.endLocation,
-    this.endDestinationPlaceId,
-    this.profileMatchPercentage,
-    this.routeMatchPercentage,
-    this.riderStatus,
-    this.stops,
-    this.distance,
-    this.duration,});
+class Passengers {
+  Passengers({
+      this.id, 
+      this.riderUserId, 
+      this.carTypeInterested, 
+      this.driverRideId, 
+      this.pricePaid, 
+      this.startTime, 
+      this.endTime, 
+      this.startDestinationFormattedAddress, 
+      this.startLocation, 
+      this.startDestinationPlaceId, 
+      this.endDestinationFormattedAddress, 
+      this.endLocation, 
+      this.endDestinationPlaceId, 
+      this.profileMatchPercentage, 
+      this.routeMatchPercentage, 
+      this.riderStatus, 
+      this.stops, 
+      this.distance, 
+      this.duration,});
 
-  AllRidesModel.fromJson(dynamic json) {
+  Passengers.fromJson(dynamic json) {
     id = json['id'];
     riderUserId = json['riderUserId'];
     carTypeInterested = json['carTypeInterested'];

@@ -235,33 +235,35 @@ class MyRides extends StatelessWidget {
                         ),
                       ),
                     ],
-                    const Divider(
-                      color: greyColor,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 5, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (rideStatus == Constant.RIDE_CREATED ||
-                              rideStatus == Constant.RIDE_STARTED ||
-                              rideStatus == Constant.RIDE_JOINED) ...[
+                    if(checkForPreviousDate(dateTime)) ... [
+                      const Divider(
+                        color: greyColor,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, top: 5, bottom: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            if (rideStatus == Constant.RIDE_CREATED ||
+                                rideStatus == Constant.RIDE_STARTED ||
+                                rideStatus == Constant.RIDE_JOINED) ...[
+                              Expanded(
+                                child: outlineButtonView(Constant.BUTTON_CANCEL,
+                                        () => cancelRide(context, rideType, rideId)),
+                              ),
+                            ],
+                            addHorizontalSpace(10),
                             Expanded(
-                              child: outlineButtonView(Constant.BUTTON_CANCEL,
-                                  () => cancelRide(context, rideType, rideId)),
+                              child: elevatedButtonView(
+                                  getRightButtonText(rideType, rideStatus),
+                                      () => updateRideDetails(
+                                      context, rideType, rideId)),
                             ),
                           ],
-                          addHorizontalSpace(10),
-                          Expanded(
-                            child: elevatedButtonView(
-                                getRightButtonText(rideType, rideStatus),
-                                () => updateRideDetails(
-                                    context, rideType, rideId)),
-                          ),
-                        ],
-                      ),
-                    )
+                        ),
+                      )
+                    ],
                   ],
                 ),
               )),
@@ -405,7 +407,11 @@ class MyRides extends StatelessWidget {
       }
       refreshScreen();
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      if(value.statusCode == 400) {
+        showSnackbar(context, value.message ?? value.errorData ?? "Bad Request");
+      } else {
+        showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      }
     }
   }
 
