@@ -139,7 +139,7 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                             amountPerSeat: allRideList
                                     .first.drivers![index].amountPerSeat ??
                                 0,
-                          );
+                            rideType: widget.rideType);
                         },
                       );
                     } else if (allRideList != null &&
@@ -166,7 +166,8 @@ class _AllRidesScreen extends State<AllRidesScreen> {
                               carType: allRideList.first.passengers![index]
                                       .carTypeInterested ??
                                   "",
-                              amountPerSeat: -1);
+                              amountPerSeat: -1,
+                              rideType: widget.rideType);
                         },
                       );
                     }

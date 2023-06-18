@@ -42,6 +42,7 @@ class AllRidesCard extends StatelessWidget {
   final DateTime dateTime;
   final String carType;
   final int amountPerSeat;
+  final String rideType;
 
   const AllRidesCard(
       {Key? key,
@@ -51,7 +52,8 @@ class AllRidesCard extends StatelessWidget {
       required this.endAddress,
       required this.dateTime,
       required this.carType,
-      required this.amountPerSeat})
+      required this.amountPerSeat,
+      required this.rideType})
       : super(key: key);
 
   @override
@@ -194,8 +196,14 @@ class AllRidesCard extends StatelessWidget {
     if (isAvailable) {
       InternetChecks.showLoadingCircle(context);
       RideRepository rideRepository = RideRepository();
+      var type = Constant.INVITE;
+      if (rideType == "Passenger") {
+        type = Constant.INVITE;
+      } else {
+        type = Constant.REQUEST;
+      }
       JoinPaginatedRideApi joinPaginatedRideApi =
-          JoinPaginatedRideApi(type: "INVITE");
+      JoinPaginatedRideApi(type: type);
       Future<dynamic> future =
           rideRepository.joinPaginatedRide(rideId, api: joinPaginatedRideApi);
       future.then((value) => {handleResponseData(context, value)});
