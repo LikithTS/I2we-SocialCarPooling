@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:common/utils/storageutil.dart';
 import 'package:socialcarpooling/util/AppPreference.dart';
@@ -81,6 +82,7 @@ class CPSessionManager {
   }
 
   String getProfileImage() {
+    log("Profile Image ${PreferencesUtil.getString(PROFILE_IMAGE)}");
     return PreferencesUtil.getString(PROFILE_IMAGE);
   }
 
@@ -154,6 +156,6 @@ class CPSessionManager {
     if (AppPreference().profileImageKey.isNotEmpty) {
       return AppPreference().imageBaseUrl + AppPreference().profileImageKey;
     }
-    return "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png";
+    return "";
   }
 }

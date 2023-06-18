@@ -51,3 +51,11 @@ void showSnackbar(BuildContext context, String message) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+void showSnackBarByTime(BuildContext context, String message) {
+  var snackBar = SnackBar(
+    content: Text(message),
+    duration: const Duration(seconds: 1),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}

@@ -33,8 +33,6 @@ import '../../../util/Localization.dart';
 import '../../../widgets/image_widgets.dart';
 import '../../login/login_screen.dart';
 import '../../profile/my_profile_screen.dart';
-import '../rides/RidesDialogScreen.dart';
-import '../rides/available_rides_screen.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -51,7 +49,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
     final name = AppPreference().userDetail?.name ?? "";
     final profile_percentage =
         "Profile ${AppPreference().userDetail?.percentageOfCompletion ?? 0}% Completed";
-    final profileImage = CPSessionManager().getProfileImage();
+    profileImage = CPSessionManager().getProfileImage();
 
     return Drawer(
       child: Material(
@@ -169,7 +167,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
       case 1:
         Navigator.of(context).pop();
-      _showRideSelectionDialog(context);
+        _showRideSelectionDialog(context);
         break;
 
       case 2:
@@ -369,13 +367,20 @@ Widget buildHeader(
                 ? CircleAvatar(
                     radius: 30,
                     backgroundColor: lightGreyColor,
-                    backgroundImage: NetworkImage(
-                        CPSessionManager().getProfileImageWithBase()),
+                    backgroundImage:
+                        Image.file(File(CPSessionManager().getProfileImage()))
+                            .image,
                   )
                 : CircleAvatar(
                     radius: 30,
                     backgroundColor: lightGreyColor,
-                    backgroundImage: Image.file(File(CPSessionManager().getProfileImage())).image,
+                    backgroundImage: (CPSessionManager()
+                            .getProfileImageWithBase()
+                            .isNotEmpty)
+                        ? NetworkImage(
+                            CPSessionManager().getProfileImageWithBase())
+                        : const AssetImage('assets/images/profile_placeholder.jpg')
+                            as ImageProvider,
                   ),
             addHorizontalSpace(20),
             Column(
@@ -420,21 +425,31 @@ void _showRideSelectionDialog(BuildContext context) {
           child: ListBody(
             children: [
               ListTile(
-                title: Text(DemoLocalizations.of(context)
-                    ?.getText("find_driver") ?? 'Join ride as Passenger'),
+                title: Text(
+                    DemoLocalizations.of(context)?.getText("find_driver") ??
+                        'Join ride as Passenger'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_DRIVER_RIDES, rideType: "Driver")));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AllRidesScreen(
+                              api: ApiConstant.ALL_DRIVER_RIDES,
+                              rideType: "Driver")));
                 },
               ),
               ListTile(
-                title: Text(DemoLocalizations.of(context)
-                    ?.getText("find_passenger") ?? 'Join ride as Driver'),
+                title: Text(
+                    DemoLocalizations.of(context)?.getText("find_passenger") ??
+                        'Join ride as Driver'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AllRidesScreen(api: ApiConstant.ALL_PASSENGER_RIDES, rideType: "Passenger")));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AllRidesScreen(
+                              api: ApiConstant.ALL_PASSENGER_RIDES,
+                              rideType: "Passenger")));
                 },
               ),
             ],

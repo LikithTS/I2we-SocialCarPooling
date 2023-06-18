@@ -470,11 +470,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   void handleprofileImageResponseData(profileUrl) {
     if (profileUrl is ProfileImageUpload) {
       if (profileUrl.url != null && profileUrl.key != null) {
+        InternetChecks.closeLoadingProgress(context);
         var uploadUrl = profileUrl.url!;
         AppPreference().profileImageKey = profileUrl.key ?? "";
         Future<dynamic> future = viewmodel.getProfileImage();
         future.then((value) => {
-              if (value is File && uploadUrl.isNotEmpty)
+              if (value != null && value is File && uploadUrl.isNotEmpty)
                 {handleImageUpload(value, uploadUrl, profileUrl)}
             });
       }
@@ -483,9 +484,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   handleImageUpload(
       File value, String uploadUrl, ProfileImageUpload profileUrl) async {
+    InternetChecks.showLoadingCircle(context);
     CPSessionManager().setProfileImage(value.path);
     var isUploaded = await AwsApi().uploadImage(uploadUrl, value);
     if (isUploaded) {
+      InternetChecks.closeLoadingProgress(context);
       updateUserApi(ProfileImageUpdate(profileImage: profileUrl.key), context,
           profileUrl.key);
     } else {

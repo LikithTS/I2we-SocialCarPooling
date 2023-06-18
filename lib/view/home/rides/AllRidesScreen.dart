@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:common/network/model/AllRidesNewModel.dart';
@@ -8,6 +9,7 @@ import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/view/home/rides/AllRidesCard.dart';
 import 'package:socialcarpooling/view/home/rides/all_rides_start_page.dart';
 import '../../../util/Localization.dart';
+import '../../../widgets/aleart_widgets.dart';
 import '../../../widgets/widget_text.dart';
 
 class AllRidesScreen extends StatefulWidget {
@@ -24,29 +26,39 @@ class _AllRidesScreen extends State<AllRidesScreen> {
   RideRepository rideRepository = RideRepository();
   int ridesCount = 0;
   int start = 0;
-  int end = 5;
-  late Future<List<dynamic>> future;
-  final ScrollController _scrollController = ScrollController();
+  int end = 10;
+  final _streamController = StreamController<List<AllRidesNewModel>>();
+  late ScrollController _scrollController;
+  List<AllRidesNewModel>? allRideList;
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     super.initState();
-    future = rideRepository.getRidesBasedOnType(
-        RidePaginationApi(start: start.toString(), end: end.toString()), widget.api);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        log("On Scroll end");
-        start = end+1;
-        end = end+end;
-        log("New start page $start");
+          _scrollController.position.maxScrollExtent && end != ridesCount) {
+        start = end + 1;
+        end = end + 10;
+        if(end > ridesCount) {
+          end = ridesCount;
+        }
         log("New end page $end");
-        future = rideRepository.getRidesBasedOnType(
-            RidePaginationApi(
-                start: start.toString(), end: end.toString()),
-            widget.api);
+        if (end <= ridesCount) {
+          showSnackBarByTime(context, "Loading more items");
+          rideRepository
+              .getRidesBasedOnType(
+              RidePaginationApi(start: start.toString(), end: end.toString()),
+              widget.api)
+              .then((response) => _streamController.add(response));
+        }
       }
     });
+    rideRepository
+        .getRidesBasedOnType(
+            RidePaginationApi(start: start.toString(), end: end.toString()),
+            widget.api)
+        .then((response) => _streamController.add(response));
   }
 
   @override
@@ -104,66 +116,86 @@ class _AllRidesScreen extends State<AllRidesScreen> {
               ),
             ),
             Expanded(
-              child: FutureBuilder<List<dynamic>>(
-                future: future,
+              child: StreamBuilder<List<AllRidesNewModel>>(
+                stream: _streamController.stream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
-                    List<AllRidesNewModel>? allRideList = snapshot.data;
-                    log("ALl Rides list passenger ${allRideList?.first.passengers.toString()}");
-                    log("ALl Rides list driver ${allRideList?.first.drivers.toString()}");
-                    log("ALl Rides list count ${allRideList?.last.count.toString()}");
+                    if (allRideList == null) {
+                      allRideList = snapshot.data;
+                    } else {
+                      List<AllRidesNewModel>? newRideList = snapshot.data;
+                      if (newRideList != null &&
+                          newRideList.first.drivers != null) {
+                        allRideList!.first.drivers!
+                            .addAll(newRideList.first.drivers!);
+                      }
+
+                      if (newRideList != null &&
+                          newRideList.first.passengers != null) {
+                        allRideList!.first.passengers!
+                            .addAll(newRideList.first.passengers!);
+                      }
+                    }
                     ridesCount = allRideList?.last.count! ?? 0;
                     if (allRideList != null &&
                         widget.rideType == "Driver" &&
-                        allRideList.first.drivers != null &&
-                        allRideList.first.drivers!.isNotEmpty) {
+                        allRideList?.first.drivers != null &&
+                        allRideList!.first.drivers!.isNotEmpty) {
                       return ListView.builder(
-                        itemCount: allRideList.first.drivers!.length,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          return AllRidesCard(
-                            rideId: allRideList.first.drivers![index].id ?? "",
-                            carIcon: 'assets/images/car_pool.png',
-                            startAddress: allRideList.first.drivers![index]
-                                    .startDestinationFormattedAddress ??
-                                "",
-                            endAddress: allRideList.first.drivers![index]
-                                    .endDestinationFormattedAddress ??
-                                "",
-                            dateTime: getDateTimeFormatter().parse(
-                                allRideList.first.drivers![index].startTime!),
-                            carType: "",
-                            amountPerSeat: allRideList
-                                    .first.drivers![index].amountPerSeat ??
-                                0,
-                            rideType: widget.rideType);
-                        },
-                      );
-                    } else if (allRideList != null &&
-                        widget.rideType == "Passenger" &&
-                        allRideList.first.passengers != null &&
-                        allRideList.first.passengers!.isNotEmpty) {
-                      return ListView.builder(
-                        itemCount: allRideList.first.passengers!.length,
+                        controller: _scrollController,
+                        itemCount: allRideList!.first.drivers!.length,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           return AllRidesCard(
                               rideId:
-                                  allRideList.first.passengers![index].id ?? "",
+                                  allRideList!.first.drivers![index].id ?? "",
                               carIcon: 'assets/images/car_pool.png',
-                              startAddress: allRideList.first.passengers![index]
+                              startAddress: allRideList!.first.drivers![index]
                                       .startDestinationFormattedAddress ??
                                   "",
-                              endAddress: allRideList.first.passengers![index]
+                              endAddress: allRideList!.first.drivers![index]
                                       .endDestinationFormattedAddress ??
                                   "",
-                              dateTime: getDateTimeFormatter().parse(allRideList
-                                  .first.passengers![index].startTime!),
-                              carType: allRideList.first.passengers![index]
+                              dateTime: getDateTimeFormatter().parse(
+                                  allRideList!
+                                      .first.drivers![index].startTime!),
+                              carType: "",
+                              amountPerSeat: allRideList!
+                                      .first.drivers![index].amountPerSeat ??
+                                  0,
+                              rideType: widget.rideType);
+                        },
+                      );
+                    } else if (allRideList != null &&
+                        widget.rideType == "Passenger" &&
+                        allRideList!.first.passengers != null &&
+                        allRideList!.first.passengers!.isNotEmpty) {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: allRideList!.first.passengers!.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return AllRidesCard(
+                              rideId:
+                                  allRideList!.first.passengers![index].id ??
+                                      "",
+                              carIcon: 'assets/images/car_pool.png',
+                              startAddress: allRideList!
+                                      .first
+                                      .passengers![index]
+                                      .startDestinationFormattedAddress ??
+                                  "",
+                              endAddress: allRideList!.first.passengers![index]
+                                      .endDestinationFormattedAddress ??
+                                  "",
+                              dateTime: getDateTimeFormatter().parse(
+                                  allRideList!
+                                      .first.passengers![index].startTime!),
+                              carType: allRideList!.first.passengers![index]
                                       .carTypeInterested ??
                                   "",
                               amountPerSeat: -1,
