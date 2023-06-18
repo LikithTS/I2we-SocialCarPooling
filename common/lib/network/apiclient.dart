@@ -9,8 +9,6 @@ class APIClient {
   APIClient._privateConstructor();
 
   static final APIClient _instance = APIClient._privateConstructor();
-  // static const baseUrl =
-  //     'http://I2weebackend-env.eba-fa7sbxxg.ap-south-1.elasticbeanstalk.com/';
   static const baseUrl = 'https://backend.i2we.community/';
   factory APIClient() {
     return _instance;
