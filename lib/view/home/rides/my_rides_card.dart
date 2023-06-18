@@ -207,29 +207,31 @@ class MyRides extends StatelessWidget {
                                                 rideType: rideType)));
                               },
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            if (coRidersCount == 0 &&
-                                rideType == Constant.AS_HOST) ...[
-                              primaryTextNormalTwoLine(
-                                  context,
-                                  DemoLocalizations.of(context)
-                                          ?.getText("invite_ride_to_see") ??
-                                      ""),
-                            ] else if (coRidersCount > 0 &&
-                                rideType == Constant.AS_HOST) ...[
-                              primaryTextNormalTwoLine(
-                                  context, coRidersCount.toString()),
-                            ] else ...[
-                              if (rideType == Constant.AS_RIDER &&
-                                  rideStatus == Constant.RIDE_CREATED) ...[
+                            if(!checkForPreviousDate(dateTime)) ... [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              if (coRidersCount == 0 &&
+                                  rideType == Constant.AS_HOST) ...[
                                 primaryTextNormalTwoLine(
                                     context,
                                     DemoLocalizations.of(context)
-                                            ?.getText("join_ride_to_see") ??
+                                        ?.getText("invite_ride_to_see") ??
                                         ""),
-                              ]
+                              ] else if (coRidersCount > 0 &&
+                                  rideType == Constant.AS_HOST) ...[
+                                primaryTextNormalTwoLine(
+                                    context, coRidersCount.toString()),
+                              ] else ...[
+                                if (rideType == Constant.AS_RIDER &&
+                                    rideStatus == Constant.RIDE_CREATED) ...[
+                                  primaryTextNormalTwoLine(
+                                      context,
+                                      DemoLocalizations.of(context)
+                                          ?.getText("join_ride_to_see") ??
+                                          ""),
+                                ]
+                              ],
                             ],
                           ],
                         ),
@@ -249,19 +251,19 @@ class MyRides extends StatelessWidget {
                               rideStatus == Constant.RIDE_JOINED) ...[
                             Expanded(
                               child: outlineButtonView(Constant.BUTTON_CANCEL,
-                                  () => cancelRide(context, rideType, rideId)),
+                                      () => cancelRide(context, rideType, rideId)),
                             ),
                           ],
                           addHorizontalSpace(10),
                           Expanded(
                             child: elevatedButtonView(
                                 getRightButtonText(rideType, rideStatus),
-                                () => updateRideDetails(
+                                    () => updateRideDetails(
                                     context, rideType, rideId)),
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               )),
@@ -405,7 +407,11 @@ class MyRides extends StatelessWidget {
       }
       refreshScreen();
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      if(value.statusCode == 400) {
+        showSnackbar(context, value.message ?? value.errorData ?? "Bad Request");
+      } else {
+        showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      }
     }
   }
 
@@ -434,6 +440,7 @@ class MyRides extends StatelessWidget {
         seatsOffered: invites[index].asPassenger?.seatsOffered ?? 1,
         carType: invites[index].asPassenger?.car?.carType ?? "",
         name: invites[index].asPassenger?.user?.name ?? "",
+        phoneNumber: invites[index].asPassenger?.user?.phoneNumber ?? "",
         designation: invites[index].asPassenger?.user?.work ?? "",
         carTypeInterested: invites[index].asPassenger?.carTypeInterested ?? "",
         driverRideId: invites[index].asDriverId ?? "",
@@ -456,6 +463,7 @@ class MyRides extends StatelessWidget {
         seatsOffered: invites[index].asDriver?.seatsOffered ?? 1,
         carType: invites[index].asDriver?.car?.carType ?? "",
         name: invites[index].asDriver?.user?.name ?? "",
+        phoneNumber: invites[index].asDriver?.user?.phoneNumber ?? "",
         designation: invites[index].asDriver?.user?.work ?? "",
         carTypeInterested: invites[index].asDriver?.carTypeInterested ?? "",
         driverRideId: invites[index].asDriverId ?? "",
@@ -469,6 +477,7 @@ class MyRides extends StatelessWidget {
     return JoinRidePassengerCard(
       profileImage: travelledPassengers[index].user?.profileImage ?? "",
       name: travelledPassengers[index].user?.name ?? "",
+      phoneNumber: travelledPassengers[index].user?.phoneNumber ?? "",
       designation: travelledPassengers[index].user?.work ?? "",
       rideStatus: travelledPassengers[index].riderStatus ?? "",
       refreshScreen: refreshScreen,
@@ -479,6 +488,7 @@ class MyRides extends StatelessWidget {
     return JoinRideDriverCard(
       profileImage: driverRide?.user?.profileImage ?? "",
       name: driverRide?.user?.name ?? "",
+      phoneNumber: driverRide?.user?.phoneNumber ?? "",
       designation: driverRide?.user?.work ?? "",
       rideStatus: driverRide?.rideStatus ?? "",
       carType: driverRide?.car?.carType ?? "",

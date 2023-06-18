@@ -12,6 +12,7 @@ import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../util/constant.dart';
 import '../../../util/Localization.dart';
@@ -31,6 +32,7 @@ class InviteRideCard extends StatefulWidget {
   final int seatsOffered;
   final String carType;
   final String name;
+  final String phoneNumber;
   final String designation;
   final String carTypeInterested;
   final String driverRideId;
@@ -41,6 +43,7 @@ class InviteRideCard extends StatefulWidget {
       {Key? key,
       required this.inviteId,
       required this.name,
+      required this.phoneNumber,
       required this.designation,
       required this.carType,
       required this.carIcon,
@@ -62,6 +65,21 @@ class InviteRideCard extends StatefulWidget {
 }
 
 class _InviteRideCard extends State<InviteRideCard> {
+
+  bool _hasCallSupport = false;
+  Future<void>? _launched;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check for phone call support.
+    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+      setState(() {
+        _hasCallSupport = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -229,10 +247,15 @@ class _InviteRideCard extends State<InviteRideCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CircleAvatar(
+                        backgroundColor: primaryColor,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_hasCallSupport) {
+                              _launched = _makePhoneCall(widget.phoneNumber);
+                            }
+                          },
                           icon: const Icon(
-                            Icons.message_rounded,
+                            Icons.phone,
                             color: Colors.white,
                           ),
                         ),
@@ -256,6 +279,8 @@ class _InviteRideCard extends State<InviteRideCard> {
                           context, widget.rideType, widget.inviteId),
                       Colors.green),
                 ),
+                FutureBuilder<void>(
+                    future: _launched, builder: _launchStatus),
               ],
             ),
           )),
@@ -315,6 +340,23 @@ class _InviteRideCard extends State<InviteRideCard> {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
     }
   }
+
+  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
 }
 
 Widget availableRidesText(

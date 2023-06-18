@@ -4,17 +4,20 @@ import 'package:socialcarpooling/font&margin/dimens.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JoinRidePassengerCard extends StatefulWidget {
   final String profileImage;
   final String name;
   final String designation;
   final String rideStatus;
+  final String phoneNumber;
   final VoidCallback refreshScreen;
 
   const JoinRidePassengerCard(
       {Key? key,
       required this.name,
+      required this.phoneNumber,
       required this.designation,
       required this.profileImage,
       required this.rideStatus,
@@ -26,6 +29,21 @@ class JoinRidePassengerCard extends StatefulWidget {
 }
 
 class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
+
+  bool _hasCallSupport = false;
+  Future<void>? _launched;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check for phone call support.
+    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+      setState(() {
+        _hasCallSupport = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -84,13 +102,19 @@ class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
                         )
                       ],
                     ),
-                    const CircleAvatar(
-                      radius: 20,
+                    CircleAvatar(
                       backgroundColor: primaryColor,
-                      child: Icon(
-                        Icons.message,
-                        size: 20,
-                        color: Colors.white,
+                      child: IconButton(
+                        onPressed: () {
+                          if (_hasCallSupport) {
+                            _launched =
+                                _makePhoneCall(widget.phoneNumber);
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.phone,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -117,7 +141,9 @@ class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
                       )
                     ],
                   ),
-                )
+                ),
+                FutureBuilder<void>(
+                    future: _launched, builder: _launchStatus),
               ],
             ),
           )),
@@ -125,4 +151,21 @@ class _JoinRidePassengerCard extends State<JoinRidePassengerCard> {
       ),
     ));
   }
+
+  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
 }

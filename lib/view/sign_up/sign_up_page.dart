@@ -33,7 +33,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   final _formKey = GlobalKey<FormState>();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController mobileNoController = TextEditingController();
-  TextEditingController emailNoController = TextEditingController();
+  TextEditingController emailIDController = TextEditingController();
   TextEditingController workController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
       showSnackbar(context, "Please select gender");
     } else if (apiValueEducation.isEmpty) {
       showSnackbar(context, "Please select education");
-    } else if (emailNoController.text.toString().isEmpty) {
+    } else if (emailIDController.text.toString().isEmpty) {
       showSnackbar(context, "Please enter valid email id");
     } else if (mobile.isEmpty) {
       showSnackbar(context, "Please enter valid mobile number");
@@ -73,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
           name: name,
           education: apiValueEducation,
           gender: apiValueGender,
-          email: emailNoController.text.toString(),
+          email: emailIDController.text.toString(),
           age: age,
           dob: dob,
           address1: '',
@@ -124,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),*/
               headerLayout(context, CPString.signUp),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: inputEditTextWithPrefixWidget(
                     context,
                     CPString.fullName,
@@ -141,7 +141,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: inputEditTextWithPrefixWidget(
                     context,
                     CPString.mobileNo,
@@ -158,11 +158,11 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: inputEditTextWithPrefixWidget(
                     context,
                     CPString.email,
-                    emailNoController,
+                    emailIDController,
                     CPString.emailError,
                     Icons.email,
                     3,
@@ -178,7 +178,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 30),
+                    padding: EdgeInsets.only(left: 20),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -226,7 +226,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   ),
                   Container(
                     width: deviceWidth(context) * .6,
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -273,7 +273,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -311,8 +311,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -373,7 +373,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -481,7 +481,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 ),
               ),*/
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: inputEditTextWithPrefixWidget(
                     context,
                     CPString.work,
@@ -495,8 +495,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     false),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -506,7 +506,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   child: Container(
                       width: deviceWidth(context) * .3,
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 10, right: 10, top: 5, bottom: 5),
                         child: Center(
                           child: DropdownButtonHideUnderline(
@@ -544,8 +544,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
               ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                padding: EdgeInsets.all(10),
+                    const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -556,12 +556,12 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(margin20),
+                      borderRadius: BorderRadius.circular(margin16),
                     ),
                     elevation: margin2,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
                       CPString.continueString,
                       style: TextStyle(fontSize: fontSize18),

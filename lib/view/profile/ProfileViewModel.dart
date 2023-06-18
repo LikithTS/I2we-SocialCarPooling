@@ -9,7 +9,7 @@ class ProfileViewModel {
     return UpdateUserRepository().getUserProfileUrl();
   }
 
-  Future<File> getProfileImage() async {
+  Future<File?> getProfileImage() async {
     final picker = ImagePicker();
 
     final XFile? pickedFile = await picker.pickImage(
@@ -17,9 +17,11 @@ class ProfileViewModel {
         imageQuality: 10, // <- Reduce Image quality
         maxHeight: 500, // <- reduce the image size
         maxWidth: 500);
-    log("Image picked file ${pickedFile!.path}");
-    File image = File(pickedFile.path);
-
-    return image;
+    if(pickedFile != null) {
+      log("Image picked file ${pickedFile.path}");
+      File image = File(pickedFile.path);
+      return image;
+    }
+    return null;
   }
 }

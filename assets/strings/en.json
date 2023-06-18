@@ -30,6 +30,7 @@
   "as_rider": "As Rider",
   "my_rides": "My Rides",
   "history": "History",
+  "all_rides": "All Rides",
   "my_vehicle": "My Vehicle",
   "ratings_and_reviews": "Rating & Reviews",
   "feedback": "Feedback",
@@ -143,5 +144,7 @@
   "pay_annual_fees_after" : "Pay 5000 per annul after",
   "15_days" : "15 days",
   "1_year": "1 Year",
-  "go_pro": "Go Pro"
+  "go_pro": "Go Pro",
+  "find_driver": "Join ride as Passenger",
+  "find_passenger": "Join ride as Driver"
 }

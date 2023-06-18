@@ -94,6 +94,7 @@ class AvailableRidesScreen extends StatelessWidget {
                                 carType:
                                     availableRideList[index].car?.carType ?? "",
                                 name: availableRideList[index].user?.name ?? "",
+                                phoneNumber: availableRideList[index].user?.phoneNumber ?? "",
                                 designation:
                                     availableRideList[index].user?.work ?? "",
                                 routeMatch: int.parse((availableRideList[index]

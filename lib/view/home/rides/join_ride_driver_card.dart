@@ -7,6 +7,7 @@ import 'package:socialcarpooling/util/get_formatted_date_time.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/widgets/ride_amount_view.dart';
 import 'package:socialcarpooling/widgets/ride_type_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../util/Localization.dart';
 import '../../../widgets/card_date_time_view.dart';
@@ -23,6 +24,7 @@ class JoinRideDriverCard extends StatefulWidget {
   final int seatsOffered;
   final String carType;
   final String name;
+  final String phoneNumber;
   final String designation;
   final String rideStatus;
   final VoidCallback refreshScreen;
@@ -30,6 +32,7 @@ class JoinRideDriverCard extends StatefulWidget {
   const JoinRideDriverCard(
       {Key? key,
       required this.name,
+      required this.phoneNumber,
       required this.designation,
       required this.carType,
       required this.carIcon,
@@ -49,6 +52,20 @@ class JoinRideDriverCard extends StatefulWidget {
 }
 
 class _JoinRideDriverCard extends State<JoinRideDriverCard> {
+  bool _hasCallSupport = false;
+  Future<void>? _launched;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check for phone call support.
+    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+      setState(() {
+        _hasCallSupport = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -75,7 +92,7 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                                 backgroundColor: Colors.white,
                                 radius: 30,
                                 backgroundImage: NetworkImage(CPSessionManager()
-                                        .getCarImage(widget.carIcon)),
+                                    .getCarImage(widget.carIcon)),
                               ),
                               const Positioned(
                                   bottom: 0,
@@ -178,13 +195,18 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                             )
                           ],
                         ),
-                        const CircleAvatar(
-                          radius: 20,
+                        CircleAvatar(
                           backgroundColor: primaryColor,
-                          child: Icon(
-                            Icons.message,
-                            size: 20,
-                            color: Colors.white,
+                          child: IconButton(
+                            onPressed: () {
+                              if (_hasCallSupport) {
+                                _launched = _makePhoneCall(widget.phoneNumber);
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.phone,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
@@ -228,7 +250,9 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
                           textAlign: TextAlign.start,
                         )
                       ],
-                    )
+                    ),
+                    FutureBuilder<void>(
+                        future: _launched, builder: _launchStatus),
                   ],
                 ),
               )
@@ -237,5 +261,21 @@ class _JoinRideDriverCard extends State<JoinRideDriverCard> {
         ],
       ),
     ));
+  }
+
+  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 }

@@ -1,6 +1,7 @@
 class Profile {
   String? _id;
   String? _name;
+  String? _phoneNumber;
   String? _verificationStatus;
   String? _profileImage;
   int? _percentageOfCompletion;
@@ -10,6 +11,7 @@ class Profile {
   Profile(
       {String? id,
         String? name,
+        String? phoneNumber,
         String? verificationStatus,
         String? profileImage,
         int? percentageOfCompletion,
@@ -20,6 +22,9 @@ class Profile {
     }
     if (name != null) {
       this._name = name;
+    }
+    if(_phoneNumber != null) {
+      this._phoneNumber = phoneNumber;
     }
     if (verificationStatus != null) {
       this._verificationStatus = verificationStatus;
@@ -42,6 +47,8 @@ class Profile {
   set id(String? id) => _id = id;
   String? get name => _name;
   set name(String? name) => _name = name;
+  String? get phoneNumber => _phoneNumber;
+  set phoneNumber(String? phoneNumber) => _phoneNumber = phoneNumber;
   String? get verificationStatus => _verificationStatus;
   set verificationStatus(String? verificationStatus) =>
       _verificationStatus = verificationStatus;
@@ -60,6 +67,7 @@ class Profile {
   Profile.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
+    _phoneNumber = json['phoneNumber'];
     _verificationStatus = json['verificationStatus'];
     _profileImage = json['profileImage'];
     _percentageOfCompletion = json['percentageOfCompletion'];
@@ -71,6 +79,7 @@ class Profile {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this._id;
     data['name'] = this._name;
+    data['phoneNumber'] = this._phoneNumber;
     data['verificationStatus'] = this._verificationStatus;
     data['profileImage'] = this._profileImage;
     data['percentageOfCompletion'] = this._percentageOfCompletion;

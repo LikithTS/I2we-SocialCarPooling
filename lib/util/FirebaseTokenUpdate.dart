@@ -59,7 +59,6 @@ class FirebaseTokenUpdate {
     flutterLocalNotificationsPlugin.initialize(initializationsSettings);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      log("OnMessage");
       log("OnMessage : ${message.notification?.title} and ${message.notification?.body}");
 
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
