@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/InviteRideApi.dart';
@@ -10,6 +12,7 @@ import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../buttons/elevated_button_view.dart';
 import '../../../util/constant.dart';
@@ -18,7 +21,7 @@ import '../../../util/get_formatted_date_time.dart';
 import '../../../widgets/card_date_time_view.dart';
 import '../../../widgets/text_widgets.dart';
 
-class AvailableRides extends StatelessWidget {
+class AvailableRides extends StatefulWidget {
   final String profileImage;
   final String carIcon;
   final String startAddress;
@@ -30,6 +33,7 @@ class AvailableRides extends StatelessWidget {
   final String carType;
   final String name;
   final String designation;
+  final String phoneNumber;
   final int routeMatch;
   final int profileMatch;
   final String carTypeInterested;
@@ -39,6 +43,7 @@ class AvailableRides extends StatelessWidget {
   const AvailableRides(
       {Key? key,
       required this.name,
+      required this.phoneNumber,
       required this.designation,
       required this.carType,
       required this.routeMatch,
@@ -55,6 +60,25 @@ class AvailableRides extends StatelessWidget {
       required this.driverRideId,
       required this.passengerRideId})
       : super(key: key);
+
+  @override
+  State<AvailableRides> createState() => _AvailableRidesState();
+}
+
+class _AvailableRidesState extends State<AvailableRides> {
+  bool _hasCallSupport = false;
+  Future<void>? _launched;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check for phone call support.
+    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+      setState(() {
+        _hasCallSupport = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +103,7 @@ class AvailableRides extends StatelessWidget {
                         child: CircleAvatar(
                             radius: 30,
                             backgroundColor: lightGreyColor,
-                            backgroundImage: NetworkImage(profileImage)),
+                            backgroundImage: NetworkImage(widget.profileImage)),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -94,13 +118,13 @@ class AvailableRides extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  availableRidesText(name, greyColor, 18.sp,
-                                      FontWeight.w400),
-                                  availableRidesText(designation, primaryColor,
-                                      10.sp, FontWeight.w400),
-                                  if (rideType == Constant.AS_HOST) ...[
-                                    availableRidesText(carType, greyColor,
-                                        11.sp, FontWeight.w400)
+                                  availableRidesText(widget.name, greyColor,
+                                      18.sp, FontWeight.w400),
+                                  availableRidesText(widget.designation,
+                                      primaryColor, 10.sp, FontWeight.w400),
+                                  if (widget.rideType == Constant.AS_HOST) ...[
+                                    availableRidesText(widget.carType,
+                                        greyColor, 11.sp, FontWeight.w400)
                                   ]
                                 ],
                               ),
@@ -127,7 +151,7 @@ class AvailableRides extends StatelessWidget {
                                     Icons.repeat,
                                     color: primaryColor,
                                   ),
-                                  availableRidesText("$routeMatch%",
+                                  availableRidesText("${widget.routeMatch}%",
                                       greyColor, 16.sp, FontWeight.w400)
                                 ],
                               ),
@@ -150,14 +174,14 @@ class AvailableRides extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    if (rideType == Constant.AS_HOST) ...[
+                    if (widget.rideType == Constant.AS_HOST) ...[
                       Expanded(
                           flex: 2,
                           child: CircleAvatar(
                               radius: 30,
                               backgroundColor: lightGreyColor,
-                              backgroundImage: NetworkImage(
-                                  CPSessionManager().getCarImage(carIcon)))),
+                              backgroundImage: NetworkImage(CPSessionManager()
+                                  .getCarImage(widget.carIcon)))),
                       const SizedBox(width: 15),
                     ],
                     Expanded(
@@ -177,12 +201,13 @@ class AvailableRides extends StatelessWidget {
                                       DemoLocalizations.of(context)
                                           ?.getText("from")),
                                   primaryTextNormalTwoLine(
-                                      context, startAddress),
+                                      context, widget.startAddress),
                                   primaryThemeTextNormal(
                                       context,
                                       DemoLocalizations.of(context)
                                           ?.getText("to")),
-                                  primaryTextNormalTwoLine(context, endAddress),
+                                  primaryTextNormalTwoLine(
+                                      context, widget.endAddress),
                                 ],
                               ),
                             ),
@@ -208,7 +233,7 @@ class AvailableRides extends StatelessWidget {
                                     Icons.favorite,
                                     color: Color(0Xfff86565),
                                   ),
-                                  availableRidesText("$profileMatch%",
+                                  availableRidesText("${widget.profileMatch}%",
                                       greyColor, 16.sp, FontWeight.w400)
                                 ],
                               ),
@@ -234,26 +259,26 @@ class AvailableRides extends StatelessWidget {
                   children: [
                     Expanded(
                       child: timeView(Icons.calendar_today_sharp,
-                          getFormattedDate(dateTime)),
+                          getFormattedDate(widget.dateTime)),
                     ),
                     Expanded(
-                      child:
-                          timeView(Icons.schedule, getFormattedTime(dateTime)),
+                      child: timeView(
+                          Icons.schedule, getFormattedTime(widget.dateTime)),
                     ),
-                    if (rideType == Constant.AS_HOST) ...[
+                    if (widget.rideType == Constant.AS_HOST) ...[
                       Expanded(
                         child: timeView(Icons.airline_seat_recline_normal,
-                            seatsOffered.toString()),
+                            widget.seatsOffered.toString()),
                       ),
                     ] else ...[
                       Expanded(
-                        child:
-                            timeView(Icons.directions_car, carTypeInterested),
+                        child: timeView(
+                            Icons.directions_car, widget.carTypeInterested),
                       ),
                     ]
                   ],
                 ),
-                if (rideType == Constant.AS_HOST) ...[
+                if (widget.rideType == Constant.AS_HOST) ...[
                   const Divider(
                     color: greyColor,
                   ),
@@ -270,13 +295,14 @@ class AvailableRides extends StatelessWidget {
                               fontSize: fontSize13,
                               letterSpacing: 1,
                             )),
-                        timeViewGreen(Icons.currency_rupee, amount.toString()),
+                        timeViewGreen(
+                            Icons.currency_rupee, widget.amount.toString()),
                       ],
                     ),
                   )
                 ],
                 const Divider(
-                  color:greyColor,
+                  color: greyColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
@@ -284,16 +310,22 @@ class AvailableRides extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CircleAvatar(
+                        backgroundColor: primaryColor,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(_hasCallSupport) {
+                              _launched =
+                                  _makePhoneCall(widget.phoneNumber);
+                            }
+                          },
                           icon: const Icon(
-                            Icons.message_rounded,
+                            Icons.phone,
                             color: Colors.white,
                           ),
                         ),
                       ),
                       const Spacer(),
-                      if (rideType == Constant.AS_HOST) ...[
+                      if (widget.rideType == Constant.AS_HOST) ...[
                         elevatedButtonView(
                             DemoLocalizations.of(context)?.getText("join") ??
                                 "",
@@ -304,6 +336,8 @@ class AvailableRides extends StatelessWidget {
                                 "",
                             () => sendRideRequestData(context)),
                       ],
+                      FutureBuilder<void>(
+                          future: _launched, builder: _launchStatus),
                     ],
                   ),
                 ),
@@ -315,10 +349,56 @@ class AvailableRides extends StatelessWidget {
     ));
   }
 
+  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
+  Widget availableRidesText(
+          String? title, Color color, double size, FontWeight fontWeight) =>
+      Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(title!,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: size,
+                  decoration: TextDecoration.none,
+                  color: color,
+                  fontWeight: fontWeight,
+                  fontFamily: 'Poppins')),
+        ),
+      );
+
+  Widget availableRidesCenterText(
+          String? title, Color color, double size, FontWeight fontWeight) =>
+      Align(
+        alignment: Alignment.center,
+        child: Text(title!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: size,
+                decoration: TextDecoration.none,
+                color: color,
+                fontWeight: fontWeight,
+                fontFamily: 'Poppins')),
+      );
+
   sendRideRequestData(BuildContext context) {
     InternetChecks.isConnected().then((isAvailable) => {
-          sendRideRequest(
-              isAvailable, context, rideType, driverRideId, passengerRideId)
+          sendRideRequest(isAvailable, context, widget.rideType,
+              widget.driverRideId, widget.passengerRideId)
         });
   }
 
@@ -355,33 +435,3 @@ class AvailableRides extends StatelessWidget {
     }
   }
 }
-
-Widget availableRidesText(
-        String? title, Color color, double size, FontWeight fontWeight) =>
-    Container(
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Text(title!,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: size,
-                decoration: TextDecoration.none,
-                color: color,
-                fontWeight: fontWeight,
-                fontFamily: 'Poppins')),
-      ),
-    );
-
-Widget availableRidesCenterText(
-        String? title, Color color, double size, FontWeight fontWeight) =>
-    Align(
-      alignment: Alignment.center,
-      child: Text(title!,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: size,
-              decoration: TextDecoration.none,
-              color: color,
-              fontWeight: fontWeight,
-              fontFamily: 'Poppins')),
-    );

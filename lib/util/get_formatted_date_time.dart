@@ -32,7 +32,11 @@ DateTime parseDatetimeFromUtc({required String isoFormattedString}){
   return dateTime.toLocal();
 }
 
-bool checkForPreviousDate(DateTime dateTime) {
-  final earlier = dateTime.subtract(const Duration(hours: 2));
-  return earlier.isBefore(dateTime);
+bool checkForPreviousDate(DateTime date) {
+  DateTime now = DateTime.now();
+  var difference =  DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inDays;
+  if(difference >= 0) {
+    return false;
+  }
+  return true;
 }

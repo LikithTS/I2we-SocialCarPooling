@@ -538,6 +538,7 @@ class MyRideRoutesView extends StatelessWidget {
         seatsOffered: invites[index].asPassenger?.seatsOffered ?? 1,
         carType: invites[index].asPassenger?.car?.carType ?? "",
         name: invites[index].asPassenger?.user?.name ?? "",
+        phoneNumber: invites[index].asPassenger?.user?.phoneNumber ?? "",
         designation: invites[index].asPassenger?.user?.work ?? "",
         carTypeInterested: invites[index].asPassenger?.carTypeInterested ?? "",
         driverRideId: invites[index].asDriverId ?? "",
@@ -560,6 +561,7 @@ class MyRideRoutesView extends StatelessWidget {
         seatsOffered: invites[index].asDriver?.seatsOffered ?? 1,
         carType: invites[index].asDriver?.car?.carType ?? "",
         name: invites[index].asDriver?.user?.name ?? "",
+        phoneNumber: invites[index].asDriver?.user?.phoneNumber ?? "",
         designation: invites[index].asDriver?.user?.work ?? "",
         carTypeInterested: invites[index].asDriver?.carTypeInterested ?? "",
         driverRideId: invites[index].asDriverId ?? "",
@@ -573,6 +575,7 @@ class MyRideRoutesView extends StatelessWidget {
     return JoinRidePassengerCard(
       profileImage: travelledPassengers[index].user?.profileImage ?? "",
       name: travelledPassengers[index].user?.name ?? "",
+      phoneNumber: travelledPassengers[index].user?.phoneNumber ?? "",
       designation: travelledPassengers[index].user?.work ?? "",
       rideStatus: travelledPassengers[index].riderStatus ?? "",
       refreshScreen: refreshScreen,
@@ -583,6 +586,7 @@ class MyRideRoutesView extends StatelessWidget {
     return JoinRideDriverCard(
       profileImage: driverRide?.user?.profileImage ?? "",
       name: driverRide?.user?.name ?? "",
+      phoneNumber: driverRide?.user?.phoneNumber ?? "",
       designation: driverRide?.user?.work ?? "",
       rideStatus: driverRide?.rideStatus ?? "",
       carType: driverRide?.car?.carType ?? "",
