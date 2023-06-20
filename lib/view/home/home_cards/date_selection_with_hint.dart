@@ -16,8 +16,6 @@ class DateSelectionWithHintSupport extends StatelessWidget {
       required this.reqDateValue})
       : super(key: key);
 
-  var dateValue = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +28,7 @@ class DateSelectionWithHintSupport extends StatelessWidget {
           ]),
       child: TextField(
         textAlign: TextAlign.start,
-        controller: dateValue,
+        controller: reqDateValue,
         readOnly: true,
         onTap: () {
           showClock(context);
@@ -76,7 +74,7 @@ class DateSelectionWithHintSupport extends StatelessWidget {
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       String respFormattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       log("Formatted Date $formattedDate"); //formatted date output using intl package =>  2021-03-16
-      dateValue.text = formattedDate;
+      reqDateValue.text = formattedDate;
       reqDateValue.text = respFormattedDate;
     }
   }
