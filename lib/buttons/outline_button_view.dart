@@ -45,5 +45,5 @@ Widget outlineFullButtonView(String buttonName, VoidCallback onClicked) => Outli
 //         },
 //         child: Text(
 //           buttonName,
-//           style: const TextStyle(color: Colors.blue),
+//           style: const TextStyle(color: primaryColor),
 //         ));

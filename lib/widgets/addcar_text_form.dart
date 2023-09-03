@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 
 class AddCarForm extends StatelessWidget {
@@ -36,6 +37,7 @@ class AddCarForm extends StatelessWidget {
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 1, color: primaryColor),
             ),
+            labelStyle: TextStyleUtils.hintTextStyle,
             hintText: hint,
             hintStyle: const TextStyle(color: primaryColor),
             prefixIcon: Icon(suffixIcon, color: prefixIconColor),

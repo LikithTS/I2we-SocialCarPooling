@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
 import 'package:socialcarpooling/util/Localization.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../font&margin/margin_confiq.dart';
@@ -126,8 +127,8 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                                 ?.getText("languages_known") ??
                             "",
                         hintText: "",
-                        hintStyle: const TextStyle(color: greyColor),
-                        labelStyle: const TextStyle(color: hintColor),
+                        hintStyle: TextStyleUtils.hintTextStyle,
+                        labelStyle: TextStyleUtils.hintTextStyle,
                         prefixIcon: const Icon(Icons.newspaper,
                             color: primaryLightColor),
                         suffixIcon: const Icon(
@@ -176,8 +177,8 @@ class _ProfileBioUpdateScreenState extends State<ProfileBioUpdateScreen> {
                         labelText:
                             DemoLocalizations.of(context)?.getText("bio") ?? "",
                         hintText: "",
-                        hintStyle: const TextStyle(color: primaryColor),
-                        labelStyle: const TextStyle(color: hintColor),
+                        hintStyle: TextStyleUtils.hintTextStyle,
+                        labelStyle: TextStyleUtils.hintTextStyle,
                         prefix: const Icon(Icons.emoji_emotions,
                             color: primaryLightColor),
                         suffix: const Icon(

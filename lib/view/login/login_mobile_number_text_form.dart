@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:socialcarpooling/util/color.dart';
 
+import '../../util/TextStylesUtil.dart';
+
 
 Material buildMaterialForm(
     BuildContext context,
@@ -30,11 +32,12 @@ Material buildMaterialForm(
           fillColor: Colors.grey,
           counterText: "",
           enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.blue),
+            borderSide: BorderSide(width: 1, color: primaryColor),
           ),
           hintText: hint,
           hintStyle: const TextStyle(color: greyColor),
           labelText: labelText,
+          labelStyle: TextStyleUtils.hintTextStyle,
           suffixIcon: IconButton(
             iconSize: 30,
             icon: Icon(suffixIcon),

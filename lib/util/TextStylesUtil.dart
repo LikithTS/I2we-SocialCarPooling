@@ -63,7 +63,7 @@ abstract class TextStyleUtils {
 
   static const TextStyle hintTextStyle = TextStyle(
       fontFamily: 'Poppins',
-      color: hintColor,
+      color: greyColor,
       fontSize: 14,
       decoration: TextDecoration.none,
       height: 0.5,

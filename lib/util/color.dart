@@ -15,9 +15,7 @@ const Color chipSetBGSelectedColor = Color(0XffF37021);
 
 const Color tabUnSelectedTextColor = Color(0Xff6d6e71);
 const Color tabSelectedTextColor = Color(0XffFFFFFF);
-const Color tabIndicatorColor = Color(0Xff178FE3);
 
-const Color progressThemeColor = Color(0XffF37021);
 const Color lightGreyColor = Color(0Xffd1d3d4);
 const Color homePageBackgroundColor = Color(0xfff7f7f9);
 

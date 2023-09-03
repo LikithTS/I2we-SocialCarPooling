@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
 
 Material buildMaterialForm(
@@ -16,6 +17,7 @@ Material buildMaterialForm(
       decoration: InputDecoration(
         filled: true,
         labelText: labelText,
+        labelStyle: TextStyleUtils.hintTextStyle,
         prefixIcon: Icon(prefixIcon, color: primaryColor),
         suffixIcon: Icon(
           suffixIcon,

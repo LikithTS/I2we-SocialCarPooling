@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/FirebaseTokenUpdate.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
+import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/widgets/widget_text.dart';
 import 'package:socialcarpooling/view/forgetpassword/forget_password_Screen.dart';
 import 'package:socialcarpooling/view/home/home_page.dart';
@@ -149,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("mobile_number") ??
                             "",
+                        labelStyle: TextStyleUtils.hintTextStyle,
                         suffixIcon: IconButton(
                           iconSize: 30,
                           icon: const Icon(Icons.check_circle),
@@ -199,6 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: DemoLocalizations.of(context)
                                 ?.getText("password") ??
                             "",
+                        labelStyle: TextStyleUtils.hintTextStyle,
                         suffixIcon: IconButton(
                           iconSize: 30,
                           icon: const Icon(Icons.visibility),

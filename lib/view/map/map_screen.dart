@@ -7,6 +7,8 @@ import 'package:socialcarpooling/provider/driver_provider.dart';
 import 'package:socialcarpooling/view/map/location_service_api/direction_api.dart';
 import 'package:provider/provider.dart';
 
+import '../../util/color.dart';
+
 class MapScreen extends StatefulWidget {
   final bool? gpsIconShow;
 
@@ -177,7 +179,7 @@ class _MapScreenState extends State<MapScreen> {
         PolylineId id = PolylineId('poly');
         Polyline polyline = Polyline(
           polylineId: id,
-          color: Colors.blueAccent,
+          color: primaryColor,
           points: polylineCoordinates,
           width: 5,
         );

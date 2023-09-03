@@ -32,11 +32,10 @@ import '../../widgets/image_widgets.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   final String userName;
-  final String emailID;
   final String mobileNo;
 
   const VerifyOtpPage(
-      {Key? key, required this.emailID, required this.userName, required this.mobileNo})
+      {Key? key, required this.userName, required this.mobileNo})
       : super(key: key);
 
   @override
@@ -45,7 +44,7 @@ class VerifyOtpPage extends StatefulWidget {
 
 class _VerifyOtpPageState extends State<VerifyOtpPage>
     with InputValidationMixin {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileNoController = TextEditingController();
   int secondsRemaining = 30;
   bool enableResend = false;
   bool enableSendOtpButton = false;
@@ -62,9 +61,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
   @override
   void initState() {
     super.initState();
-    emailController.text = widget.emailID;
-    InternetChecks.isConnected()
-        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.emailID)});
+    mobileNoController.text = widget.mobileNo;
+    // InternetChecks.isConnected()
+    //     .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -107,14 +106,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: inputEditTextWithPrefixWidget(
                             context,
-                            CPString.email_id,
-                            emailController,
+                            CPString.mobileNo,
+                            mobileNoController,
                             CPString.mobileError,
                             Icons.mobile_screen_share_outlined,
                             4,
-                            30,
+                            10,
                             this,
-                            widget.emailID,
+                            widget.mobileNo,
                             true),
                       ),
                       // GestureDetector(

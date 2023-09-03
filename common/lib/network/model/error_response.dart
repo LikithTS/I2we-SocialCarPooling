@@ -16,14 +16,12 @@ class ErrorResponse {
   ErrorResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
-    if(statusCode == 400 || statusCode == 404) {
-      errorData = json['error'];
-    } else {
-      if (json['error'] != null) {
-        error = <Error>[];
-        json['error'].forEach((v) {
-          error!.add(Error.fromJson(v));
-        });
+    final dynamic errorData = json['error'];
+    if (errorData != null) {
+      if (errorData is String) {
+        error = [Error.fromJson({'message': errorData})];
+      } else if (errorData is List) {
+        error = errorData.map((e) => Error.fromJson(e)).toList();
       }
     }
   }

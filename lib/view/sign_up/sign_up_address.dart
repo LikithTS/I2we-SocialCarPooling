@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/signinapi.dart';
@@ -210,10 +212,10 @@ class _SignUpAddressState extends State<SignUpAddress>
               child: VerifyOtpPage(
                 userName: widget.signInApi.name,
                 mobileNo: widget.signInApi.phoneNumber,
-                emailID: widget.signInApi.email,
               )));
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      log("Error response value $value");
+      showSnackbar(context, "${value.error?[0].message ?? ""} : ${value.message ?? ""}");
     }
   }
 }

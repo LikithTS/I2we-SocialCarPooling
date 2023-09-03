@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:socialcarpooling/util/color.dart';
 
+import '../../util/TextStylesUtil.dart';
+
 class LoginTextForm extends StatefulWidget {
   final String hint;
   final String labelText;
@@ -63,11 +65,12 @@ class InputFieldState extends State<LoginTextForm> {
             fillColor: Colors.grey,
             counterText: "",
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(width: 1, color: Colors.blue),
+              borderSide: BorderSide(width: 1, color: primaryColor),
             ),
             hintText: widget.hint,
             hintStyle: const TextStyle(color: greyColor),
             labelText: widget.labelText,
+            labelStyle: TextStyleUtils.hintTextStyle,
             suffixIcon: IconButton(
               iconSize: 30,
               icon: Icon(widget.suffixIcon),

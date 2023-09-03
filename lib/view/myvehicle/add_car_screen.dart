@@ -279,7 +279,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -291,7 +291,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -303,7 +303,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -315,7 +315,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -327,7 +327,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -364,7 +364,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -376,7 +376,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -388,7 +388,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -400,7 +400,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -412,7 +412,7 @@ class AddCarScreenState extends State<AddCarScreen> {
                             const SizedBox(
                               width: 20,
                               child: Divider(
-                                color: Colors.blue,
+                                color: primaryColor,
                                 thickness: 2,
                               ),
                             ),
@@ -438,8 +438,8 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 "",
                             hintText: DemoLocalizations.of(context)
                                 ?.getText("add_photos"),
-                            hintStyle: const TextStyle(color: greyColor),
-                            labelStyle: const TextStyle(color: hintColor),
+                            hintStyle: TextStyleUtils.hintTextStyle,
+                            labelStyle: TextStyleUtils.hintTextStyle,
                             prefixIcon: const Icon(Icons.newspaper,
                                 color: primaryColor),
                             suffixIcon: IconButton(

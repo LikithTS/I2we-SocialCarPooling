@@ -205,7 +205,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                             fillColor: greyColor,
                             enabledBorder: const UnderlineInputBorder(
                               borderSide:
-                                  BorderSide(width: 1, color: Colors.blue),
+                                  BorderSide(width: 1, color: primaryColor),
                             ),
                             suffixIcon: Icon(
                               Icons.edit,

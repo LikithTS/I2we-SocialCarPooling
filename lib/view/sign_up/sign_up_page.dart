@@ -241,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                             fillColor: greyColor,
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
-                                  BorderSide(width: 1, color: Colors.blue),
+                                  BorderSide(width: 1, color: primaryColor),
                             ),
                             suffixIcon: Icon(
                               Icons.edit,
@@ -390,7 +390,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         fillColor: Colors.grey,
                         counterText: "",
                         enabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.blue),
+                          borderSide: BorderSide(width: 1, color: primaryColor),
                         ),
                         labelText: CPString.confirmPassword,
                         hintText: CPString.confirmPassword,

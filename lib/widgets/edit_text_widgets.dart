@@ -36,7 +36,7 @@ Widget inputEditTextWithPrefixWidget(
             fillColor: Colors.white,
             counterText: "",
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(width: 1, color: Colors.blue),
+              borderSide: BorderSide(width: 1, color: primaryColor),
             ),
             prefixIcon: Icon(
               icon,
@@ -86,6 +86,7 @@ TextFormField buildFormBuilderTextField(
     validator: formFieldValidator,
     decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: TextStyleUtils.hintTextStyle,
         hintText: hintText,
         hintStyle: const TextStyle(color: primaryColor),
         border: const OutlineInputBorder()),
@@ -110,6 +111,7 @@ TextFormField buildFormBuilderMultilineTextField(
     decoration: InputDecoration(
         counterText: "",
         labelText: labelText,
+        labelStyle: TextStyleUtils.hintTextStyle,
         hintText: hintText,
         hintStyle: const TextStyle(color: primaryColor),
         hintTextDirection: TextDirection.ltr,
