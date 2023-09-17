@@ -6,6 +6,7 @@ import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/SendOtpApi.dart';
 import 'package:common/network/request/ValidOtpApi.dart';
 import 'package:common/network/response/AuthResponse.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,13 +39,13 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     with InputValidationMixin {
-  TextEditingController mobileNoController = TextEditingController();
+
   int secondsRemaining = 30;
   bool enableResend = false;
   bool enableSendOtpButton = false;
-  bool otpSent = false;
   Timer? timer;
 
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController otpString1Controller = TextEditingController();
   TextEditingController otpString2Controller = TextEditingController();
   TextEditingController otpString3Controller = TextEditingController();
@@ -55,7 +56,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   @override
   void initState() {
     super.initState();
-    mobileNoController.text = widget.mobileNo;
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -72,26 +72,23 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   void sendOtp(SendOtpApi sendOtpApi) {
     Future<dynamic> future = SigninRepository().sendOtp(api: sendOtpApi);
     future.then((value) => {handleResponseData(value, sendOtpApi.phoneNumber)});
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
   }
 
   void validOtp(ValidOtpApi validOtpApi) {
     Future<dynamic> future = SigninRepository().validOtp(api: validOtpApi);
     future.then((value) =>
         {handleValidOtpResponseData(value, validOtpApi.phoneNumber)});
-    //     .catchError((onError) {
-    //   handleErrorResponse(onError);
-    // });
   }
 
   handleResponseData(value, String phoneNumber) {
-    setState(() {
-      log("Set state otp");
-      otpSent = true;
-      widget.mobileNo = phoneNumber;
-    });
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      setState(() {
+        widget.mobileNo = phoneNumber;
+      });
+    }  else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 
   handleValidOtpResponseData(value, String phoneNumber) {
@@ -126,7 +123,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                   headerLayout(
                       context,
                       DemoLocalizations.of(context)!
-                          .getText("forgot_password")),
+                          .getText("forgot_password"), true),
                   Text(
                     CPString.verifyOTPTitle,
                     style:
@@ -144,67 +141,42 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: inputEditTextWithPrefixWidget(
-                            context,
-                            CPString.mobileNo,
-                            mobileNoController,
-                            CPString.mobileError,
-                            Icons.mobile_screen_share_outlined,
-                            4,
-                            10,
-                            this,
-                            widget.mobileNo,
-                            true),
+                        child: TextFormField(
+                          controller: phoneNumberController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                          textAlign: TextAlign.start,
+                          validator: (value) =>
+                          value!.isEmpty ? 'Mobile Number Cannot be Empty' : null,
+                          // onSaved: (value) => _email = value,
+                          decoration: InputDecoration(
+                              fillColor: greyColor,
+                              counterText: "",
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(width: 1, color: primaryColor),
+                              ),
+                              hintText: DemoLocalizations.of(context)
+                                  ?.getText("mobile_number") ??
+                                  "",
+                              hintStyle: const TextStyle(color: greyColor),
+                              labelText: DemoLocalizations.of(context)
+                                  ?.getText("mobile_number") ??
+                                  "",
+                              labelStyle: TextStyleUtils.hintTextStyle,
+                              suffixIcon: IconButton(
+                                iconSize: 30,
+                                icon: const Icon(Icons.check_circle),
+                                color: Colors.green,
+                                onPressed: () {
+                                  // Do Nothing
+                                },
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.mobile_friendly,
+                                color: greyColor,
+                              )),
+                        ),
                       ),
-                      // if (widget.mobileNo.isNotEmpty &&
-                      //     !enableSendOtpButton) ...[
-                      //   Padding(
-                      //     padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
-                      //     child: InkWell(
-                      //         onTap: () {
-                      //           setState(() {
-                      //             enableSendOtpButton = true;
-                      //           });
-                      //         },
-                      //         child: Positioned(
-                      //             right: 40,
-                      //             bottom: 10,
-                      //             child: Text(
-                      //               'Edit',
-                      //               style: TextStyleUtils.primaryTextMedium
-                      //                   .copyWith(
-                      //                   color: primaryColor,
-                      //                   fontSize: fontSize16),
-                      //             )
-                      //         )
-                      //     ),
-                      //   ),
-                      // ],
-                      // if (enableSendOtpButton) ...[
-                      //   Padding(
-                      //     padding: const EdgeInsets.only(right: 35.0, bottom: 20.0),
-                      //     child: InkWell(
-                      //         onTap: () {
-                      //           setState(() {
-                      //             enableSendOtpButton = false;
-                      //             InternetChecks.isConnected().then((isAvailable) =>
-                      //             {callSendOtpApi(isAvailable, widget.mobileNo)});
-                      //           });
-                      //         },
-                      //         child: Positioned(
-                      //             right: 40,
-                      //             bottom: 20,
-                      //             child: Text(
-                      //               'Send OTP',
-                      //               style: TextStyleUtils.primaryTextMedium
-                      //                   .copyWith(
-                      //                   color: primaryColor,
-                      //                   fontSize: fontSize16),
-                      //             )
-                      //         )
-                      //     ),
-                      //   ),
-                      // ],
                     ],
                   ),
                   Container(
@@ -301,8 +273,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                             otpString5Controller.text.toString() +
                             otpString6Controller.text.toString();
                         log("OTP Text: $otpText");
-                        callValidateOtpApi(
-                            mobileNoController.text.toString(), otpText);
+                        if(otpText.isNotEmpty) {
+                          callValidateOtpApi(
+                              phoneNumberController.text.toString(), otpText);
+                        } else {
+                          getOtpApi(phoneNumberController.text.toString());
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
@@ -332,7 +308,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
   void _resendCode() {
     //other code here
     InternetChecks.isConnected()
-        .then((isAvailable) => {callSendOtpApi(isAvailable, widget.mobileNo)});
+        .then((isAvailable) => {callSendOtpApi(isAvailable, phoneNumberController.text)});
     setState(() {
       secondsRemaining = 10;
       enableResend = false;
@@ -363,17 +339,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     if (mobileNumber.isEmpty) {
       alertDialogView(context, "change_password_mobile_no_error");
     } else if (otpText.isEmpty) {
-      if (otpSent) {
-        alertDialogView(context, "change_password_otp_error");
-      } else {
-        InternetChecks.isConnected()
-            .then((isAvailable) => {callSendOtpApi(isAvailable, mobileNumber)});
-      }
+      alertDialogView(context, "change_password_otp_error");
     } else {
       if (mobileNumber.isNotEmpty && otpText.isNotEmpty) {
         InternetChecks.showLoadingCircle(context);
         ValidOtpApi validOtpApi = ValidOtpApi(
-            phoneNumber: mobileNoController.text.toString(), otp: otpText);
+            phoneNumber: phoneNumberController.text.toString(), otp: otpText);
         validOtp(validOtpApi);
       }
     }
@@ -386,4 +357,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
       return DemoLocalizations.of(context)!.getText("send_otp");
     }
   }
+
+  void getOtpApi(String mobileNumber) {
+    if (mobileNumber.isEmpty) {
+      showSnackbar(context, "Please enter valid mobile number");
+    } else {
+      InternetChecks.isConnected()
+          .then((isAvailable) => {
+        callSendOtpApi(isAvailable, mobileNumber)
+      });
+    }
+  }
+
 }

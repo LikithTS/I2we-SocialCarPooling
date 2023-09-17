@@ -122,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   Text('Sign Up', style: TextStyleUtils.primaryTextBold)
                 ],
               ),*/
-              headerLayout(context, CPString.signUp),
+              headerLayout(context, CPString.signUp, true),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: inputEditTextWithPrefixWidget(

@@ -87,7 +87,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
               headerLayout(
                   context,
                   DemoLocalizations.of(context)?.getText("update_profile") ??
-                      ""),
+                      "", true),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: inputEditTextWithPrefixWidget(

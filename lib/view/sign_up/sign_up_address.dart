@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/repository/SigninRepository.dart';
 import 'package:common/network/request/signinapi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
@@ -17,6 +18,7 @@ import 'package:socialcarpooling/widgets/header_widgets.dart';
 import '../../util/color.dart';
 import '../../font&margin/margin_confiq.dart';
 import '../../widgets/edit_text_widgets.dart';
+import '../login/login_screen.dart';
 
 class SignUpAddress extends StatefulWidget {
   final SignInApi signInApi;
@@ -77,7 +79,7 @@ class _SignUpAddressState extends State<SignUpAddress>
               const SizedBox(
                 height: 10,
               ),
-              headerLayout(context, CPString.signUp),
+              headerLayout(context, CPString.signUp, true),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: inputEditTextWithPrefixWidget(
@@ -215,7 +217,16 @@ class _SignUpAddressState extends State<SignUpAddress>
               )));
     } else if (value is ErrorResponse) {
       log("Error response value $value");
-      showSnackbar(context, "${value.error?[0].message ?? ""} : ${value.message ?? ""}");
+      if(value.statusCode == 409) {
+        showSnackbar(context, "The user already exists. Please log in!");
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    LoginScreen(userRepository: LoginRepository())));
+      } else {
+        showSnackbar(context, "${value.error?[0].message ?? ""} : ${value.message ?? ""}");
+      }
     }
   }
 }

@@ -143,7 +143,7 @@ class _SocialLoginNewUserVerificationScreenState
                   headerLayout(
                       context,
                       DemoLocalizations.of(context)!
-                          .getText("new_user_verification")),
+                          .getText("new_user_verification"), true),
                   Text(
                     CPString.verifyOTPTitle,
                     style:

@@ -6,9 +6,12 @@ import 'package:common/network/model/error_response.dart';
 import 'package:common/network/model/new_user_error_response.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/repository/LoginRepository.dart';
+import 'package:common/network/repository/SigninRepository.dart';
+import 'package:common/network/request/SendOtpApi.dart';
 import 'package:common/network/request/SocialLoginApi.dart';
 import 'package:common/network/request/loginapi.dart';
 import 'package:common/network/response/AuthResponse.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +31,7 @@ import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 import '../../font&margin/margin_confiq.dart';
 import '../../util/color.dart';
 import '../../util/Localization.dart';
+import '../sign_up/verify_otp_page.dart';
 import 'authentication.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,6 +45,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginRepository get _userRepository => widget.userRepository;
+  SigninRepository signInRepository = SigninRepository();
   TextEditingController phoneNumberController =
       TextEditingController();
   TextEditingController passwordController =
@@ -339,8 +344,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (value is AuthResponse) {
       handleSuccessResponse(value, phoneNumber);
     } else if (value is ErrorResponse) {
+      log("Login Error response ${value.statusCode}");
       InternetChecks.closeLoadingProgress(context);
-      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      if(value.statusCode == 406) {
+        InternetChecks.isConnected()
+            .then((isAvailable) => {
+              callSendOtpApi(isAvailable, phoneNumber)
+            });
+      } else {
+        showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      }
     }
   }
 
@@ -433,4 +446,38 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: HomePage(homeRepository: HomeRepository())))
             });
   }
+
+  void sendOtp(SendOtpApi sendOtpApi) {
+    Future<dynamic> future = signInRepository.sendOtp(api: sendOtpApi);
+    future.then((value) => {handleOtpResponseData(value, sendOtpApi.phoneNumber)});
+  }
+
+  void callSendOtpApi(bool isInternetAvailable, String mobileNo) {
+    if (isInternetAvailable) {
+      if (mobileNo.isNotEmpty) {
+        InternetChecks.showLoadingCircle(context);
+        SendOtpApi sendOtpApi = SendOtpApi(phoneNumber: mobileNo);
+        sendOtp(sendOtpApi);
+      }
+    } else {
+      showSnackbar(context, "No Internet");
+    }
+  }
+
+  handleOtpResponseData(value, String phoneNumber) {
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.leftToRight,
+              child: VerifyOtpPage(
+                userName: "User",
+                mobileNo: phoneNumber,
+              )));
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
+  }
+
 }

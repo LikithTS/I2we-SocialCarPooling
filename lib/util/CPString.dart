@@ -2,7 +2,7 @@ class CPString {
   static const String CONTINUE = "continue";
   static const String QUESTIONARIES = "Questionaries";
   static const String ALERT_SELECT_ATLEAST_ONE_CATEGORY =
-      "Please select atleast 1 category.";
+      "Please select at least 1 category.";
   static const String Yet_Constant = "Yet to be implemented";
   static const String please_wait = "Please Wait";
   static const String welcome = "Hi, Welcome";
@@ -20,8 +20,8 @@ class CPString {
   static const String tempText =
       "A carpool is simple. It’s an arrangement between two or more people to make a regular journey in a single car";
   static const String welcometempText =
-      "To give best experience for user, we required Few information or interest of yours.";
-  static const String takeMinute = "Its takes less than a Minute";
+      "To give best experience for user, we required few information or interest of yours.";
+  static const String takeMinute = "It's takes less than a Minute";
   static const String working_task = "Working on the task";
   static const String work = "Work";
   static const String fontFamilyPoppins = "Poppins";
@@ -48,34 +48,34 @@ class CPString {
   static const String verifyOTPTitle = "Enter OTP sent to registered Email-ID";
   static const String confirmPassword = "Confirm Password";
   static const String selectDate = "DOB";
-  static const String fullNameError = "Full Name can not empty";
-  static const String stringError = "Filed can not empty";
-  static const String addressError = "Address Line One can not empty";
-  static const String addressTwoError = "Address Line Two can not empty";
-  static const String cityError = "City can not empty";
-  static const String stateError = "State can not empty";
-  static const String zipCodeError = "Enter Valid Zip Code";
-  static const String mobileError = "Mobile Name can not empty";
+  static const String fullNameError = "Full name cannot be empty";
+  static const String stringError = "Filed cannot be empty";
+  static const String addressError = "Address line one cannot be empty";
+  static const String addressTwoError = "Address line two cannot be empty";
+  static const String cityError = "City cannot be empty";
+  static const String stateError = "State cannot be empty";
+  static const String zipCodeError = "Enter valid zip code";
+  static const String mobileError = "Mobile number cannot be empty";
   static const String mobileValidError = "Enter valid mobile number";
   static const String emailValidError = "Enter valid email";
-  static const String nameError = "Enter valid Name";
-  static const String emailError = "Email can not empty";
-  static const String workError = "Work can not empty";
-  static const String passwordError = "Password can not empty";
-  static const String cPasswordError = "Confirm Password can not empty";
-  static const String passwordValidError = "Please Enter valid password";
+  static const String nameError = "Enter valid name";
+  static const String emailError = "Email cannot be empty";
+  static const String workError = "Work cannot be empty";
+  static const String passwordError = "Password cannot be empty";
+  static const String cPasswordError = "Confirm Password cannot be empty";
+  static const String passwordValidError = "Please enter valid password";
   static const String cPasswordValidError =
-      "Please enter same as password and confirm password";
-  static const String registerSuccess = "The registration successful";
+      "Please enter valid password";
+  static const String registerSuccess = "Registration is successful";
   static const String signupAgree = "By Signing up ,you agree with our ";
   static const String termsConditions = "\n\nTerms & conditions";
   static const String resendOTP = "Resend OTP";
   static const String resendOtpIn = 'Resend OTP in ';
-  static const String dontreciveOtp = 'Didn’t receive.Click here to ';
+  static const String dontreciveOtp = 'Did not receive. Click here to ';
   static const String androidApiKey = 'AIzaSyC7PPfo_xprhpqXmATL9pa8Ad9_W1w9KrQ';
   static const String iosApiKey = 'AIzaSyDxd4iBDqfPggZJIPWgV5x-_GMvOI0DAf4';
   static const String Alert = 'Alert';
-  static const String logout_desc = "Are you sure wants to logout?";
+  static const String logout_desc = "Are you sure you want to log out?";
   static const String appName = "i2we";
   static const String help_desc =
       'Name : i2we community\n'

@@ -28,6 +28,7 @@ import 'package:socialcarpooling/view/ratingsandreviews/ratings_reviews_screen.d
 import 'package:socialcarpooling/view/subscription/subscription_page.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
+import '../../../util/InternetChecks.dart';
 import '../../../util/string_url.dart';
 import '../../../util/Localization.dart';
 import '../../../widgets/image_widgets.dart';
@@ -288,6 +289,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 
   void onLogoutButtonPressed(BuildContext context) {
+    InternetChecks.showLoadingCircle(context);
     LoginRepository()
         .logout()
         .then((value) => {handleResponseData(value, context)})
@@ -297,6 +299,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 
   void handleErrorResponseData(onError, BuildContext context) {
+    InternetChecks.closeLoadingProgress(context);
     if (onError is ApiException) {
       showSnackbar(
           homeGlobalkey.currentContext!, onError.errorResponse.message ?? "");
@@ -304,6 +307,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 
   handleResponseData(value, BuildContext context) {
+    InternetChecks.closeLoadingProgress(context);
     if (value is SuccessResponse) {
       CPSessionManager().handleUserLogout();
       Navigator.pushReplacement(

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/ChangePasswordRespository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/request/ChangePasswordApi.dart';
+import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/font&margin/font_size.dart';
@@ -12,12 +14,14 @@ import 'package:socialcarpooling/view/home/home_page.dart';
 import 'package:socialcarpooling/view/profile/util/GetProfileDetails.dart';
 
 import '../../util/CPString.dart';
+import '../../util/InternetChecks.dart';
 import '../../util/Validation.dart';
 import '../../util/color.dart';
 import '../../util/configuration.dart';
 import '../../font&margin/margin_confiq.dart';
 import '../../util/string_url.dart';
 import '../../util/Localization.dart';
+import '../../widgets/aleart_widgets.dart';
 import '../../widgets/edit_text_widgets.dart';
 import '../../widgets/header_widgets.dart';
 import '../../widgets/image_widgets.dart';
@@ -51,7 +55,7 @@ class _ForgetPasswordConfirmScreenState
                   headerLayout(
                       context,
                       DemoLocalizations.of(context)!
-                          .getText("forgot_password")),
+                          .getText("forgot_password"), true),
                   const SizedBox(
                     height: 50,
                   ),
@@ -127,6 +131,7 @@ class _ForgetPasswordConfirmScreenState
     log("Mobile number $mobileNumber");
     if (newPassController.text == confirmPassController.text &&
         mobileNumber.isNotEmpty) {
+      InternetChecks.showLoadingCircle(context);
       log("Both the password is same");
       ChangePasswordApi changePasswordApi = ChangePasswordApi(
           phoneNumber: mobileNumber, password: confirmPassController.text);
@@ -137,13 +142,18 @@ class _ForgetPasswordConfirmScreenState
   }
 
   handleResponseData(value) {
-    GetProfileDetails(context);
-    Timer(
-        const Duration(seconds: 2),
-        () => Navigator.pushReplacement(
-            context,
-            PageTransition(
-                type: PageTransitionType.bottomToTop,
-                child: HomePage(homeRepository: HomeRepository()))));
+    InternetChecks.closeLoadingProgress(context);
+    if (value is SuccessResponse) {
+      GetProfileDetails(context);
+      Timer(
+          const Duration(seconds: 2),
+              () => Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: HomePage(homeRepository: HomeRepository()))));
+    } else if (value is ErrorResponse) {
+      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
   }
 }

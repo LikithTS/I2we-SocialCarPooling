@@ -87,7 +87,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  headerLayout(context, CPString.verifyOTP),
+                  headerLayout(context, CPString.verifyOTP, false),
                   Text(
                     CPString.verifyOTPTitle,
                     style:
@@ -116,49 +116,10 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
                             widget.mobileNo,
                             true),
                       ),
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       setState(() {
-                      //         enableSendOtpButton = true;
-                      //       });
-                      //     },
-                      //     child: Positioned(
-                      //         right: 40,
-                      //         bottom: 15,
-                      //         child: Text(
-                      //           'Edit',
-                      //           style: TextStyleUtils.primaryTextMedium
-                      //               .copyWith(
-                      //                   color: primaryColor,
-                      //                   fontSize: fontSize16),
-                      //         ))),
-                      // if (enableSendOtpButton) ...[
-                      //   GestureDetector(
-                      //       onTap: () {
-                      //         setState(() {
-                      //           enableSendOtpButton = false;
-                      //           InternetChecks.isConnected().then(
-                      //               (isAvailable) => {
-                      //                     callSendOtpApi(
-                      //                         isAvailable, widget.mobileNo)
-                      //                   });
-                      //         });
-                      //       },
-                      //       child: Positioned(
-                      //           right: 40,
-                      //           bottom: 15,
-                      //           child: Text(
-                      //             'Send OTP',
-                      //             style: TextStyleUtils.primaryTextMedium
-                      //                 .copyWith(
-                      //                     color: primaryColor,
-                      //                     fontSize: fontSize16),
-                      //           ))),
-                      // ],
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                    margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
