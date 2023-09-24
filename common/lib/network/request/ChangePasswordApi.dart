@@ -6,29 +6,29 @@ String loginToJson(ChangePasswordApi data) => json.encode(data.toJson());
 
 class ChangePasswordApi {
   ChangePasswordApi({
-    String? phoneNumber,
-    String? password
+    String? oldPassword,
+    String? newPassword
   }) {
-    _username = phoneNumber;
-    _password = password;
+    _oldPassword = oldPassword;
+    _newPassword = newPassword;
   }
 
   ChangePasswordApi.fromJson(dynamic json) {
-    _username = json['phoneNumber'];
-    _password = json['newPassword'];
+    _oldPassword = json['newPassword'];
+    _newPassword = json['oldPassword'];
   }
 
-  String? _username;
-  String? _password;
+  String? _oldPassword;
+  String? _newPassword;
 
-  String? get username => _username;
+  String? get oldPassword => _oldPassword;
 
-  String? get password => _password;
+  String? get newPassword => _newPassword;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['phoneNumber'] = _username;
-    map['newPassword'] = _password;
+    map['newPassword'] = _oldPassword;
+    map['oldPassword'] = _newPassword;
     return map;
   }
 }

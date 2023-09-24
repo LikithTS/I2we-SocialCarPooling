@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/LoginRepository.dart';
 import 'package:common/network/repository/SigninRepository.dart';
@@ -18,6 +19,7 @@ import 'package:socialcarpooling/widgets/header_widgets.dart';
 import '../../util/color.dart';
 import '../../font&margin/margin_confiq.dart';
 import '../../widgets/edit_text_widgets.dart';
+import '../home/home_page.dart';
 import '../login/login_screen.dart';
 
 class SignUpAddress extends StatefulWidget {
@@ -201,11 +203,14 @@ class _SignUpAddressState extends State<SignUpAddress>
   void signIn(SignInApi signInApi) {
     InternetChecks.showLoadingCircle(context);
     Future<dynamic> future = SigninRepository().signIn(api: signInApi);
-    future.then((value) => {handleResponseData(value)});
+    future.then((value) => {handleResponseData(value)}).catchError((onError) {
+      handleErrorResponseData(onError, context);
+    });
   }
 
   handleResponseData(value) {
     InternetChecks.closeLoadingProgress(context);
+    log("Registration response $value");
     if (value is SuccessResponse) {
       Navigator.pushReplacement(
           context,
@@ -217,7 +222,7 @@ class _SignUpAddressState extends State<SignUpAddress>
               )));
     } else if (value is ErrorResponse) {
       log("Error response value $value");
-      if(value.statusCode == 409) {
+      if (value.statusCode == 409) {
         showSnackbar(context, "The user already exists. Please log in!");
         Navigator.pushReplacement(
             context,
@@ -225,8 +230,17 @@ class _SignUpAddressState extends State<SignUpAddress>
                 builder: (context) =>
                     LoginScreen(userRepository: LoginRepository())));
       } else {
-        showSnackbar(context, "${value.error?[0].message ?? ""} : ${value.message ?? ""}");
+        showSnackbar(context,
+            "${value.error?[0].message ?? ""} : ${value.message ?? ""}");
       }
+    }
+  }
+
+  void handleErrorResponseData(onError, BuildContext context) {
+    InternetChecks.closeLoadingProgress(context);
+    if (onError is ApiException) {
+      showSnackbar(
+          context, onError.errorResponse.message ?? "");
     }
   }
 }

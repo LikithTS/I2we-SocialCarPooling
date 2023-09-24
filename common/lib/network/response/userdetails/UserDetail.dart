@@ -70,6 +70,7 @@ class UserDetail {
     String? otp,
     String? otpExpirationTime,
     String? gender,
+    String? verificationRejectedReason,
     num? percentageOfCompletion,
   }) {
     _id = id;
@@ -103,6 +104,7 @@ class UserDetail {
     _otp = otp;
     _otpExpirationTime = otpExpirationTime;
     _gender = gender;
+    _verificationRejectedReason = verificationRejectedReason;
     _percentageOfCompletion = percentageOfCompletion;
   }
 
@@ -144,6 +146,7 @@ class UserDetail {
     _otp = json['otp'];
     _otpExpirationTime = json['otpExpirationTime'];
     _gender = json['gender'];
+    _verificationRejectedReason = json['verificationRejectedReason'];
     _percentageOfCompletion = json['percentageOfCompletion'];
   }
   String? _id;
@@ -177,6 +180,7 @@ class UserDetail {
   String? _otp;
   String? _otpExpirationTime;
   String? _gender;
+  String? _verificationRejectedReason;
   num? _percentageOfCompletion;
   UserDetail copyWith({
     String? id,
@@ -210,6 +214,7 @@ class UserDetail {
     String? otp,
     String? otpExpirationTime,
     String? gender,
+    String? verificationRejectedReason,
     num? percentageOfCompletion,
   }) =>
       UserDetail(
@@ -248,6 +253,7 @@ class UserDetail {
         otp: otp ?? _otp,
         otpExpirationTime: otpExpirationTime ?? _otpExpirationTime,
         gender: gender ?? _gender,
+        verificationRejectedReason: verificationRejectedReason ?? _verificationRejectedReason,
         percentageOfCompletion:
             percentageOfCompletion ?? _percentageOfCompletion,
       );
@@ -284,6 +290,7 @@ class UserDetail {
   String? get otp => _otp;
   String? get otpExpirationTime => _otpExpirationTime;
   String? get gender => _gender;
+  String? get verificationRejectedReason => _verificationRejectedReason;
   num? get percentageOfCompletion => _percentageOfCompletion;
 
   Map<String, dynamic> toJson() {
@@ -322,6 +329,7 @@ class UserDetail {
     map['otp'] = _otp;
     map['otpExpirationTime'] = _otpExpirationTime;
     map['gender'] = _gender;
+    map['verificationRejectedReason'] = _verificationRejectedReason;
     map['percentageOfCompletion'] = _percentageOfCompletion;
     return map;
   }

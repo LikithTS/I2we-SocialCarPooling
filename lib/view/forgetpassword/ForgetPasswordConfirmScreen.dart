@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:common/network/exception/ApiException.dart';
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/ChangePasswordRespository.dart';
+import 'package:common/network/repository/ForgetPasswordRepository.dart';
 import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/request/ChangePasswordApi.dart';
+import 'package:common/network/request/ForgetPasswordApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -54,8 +57,8 @@ class _ForgetPasswordConfirmScreenState
                 children: [
                   headerLayout(
                       context,
-                      DemoLocalizations.of(context)!
-                          .getText("forgot_password"), true),
+                      DemoLocalizations.of(context)!.getText("forgot_password"),
+                      true),
                   const SizedBox(
                     height: 50,
                   ),
@@ -97,7 +100,7 @@ class _ForgetPasswordConfirmScreenState
                     child: ElevatedButton(
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        callChangePasswordApi(widget.mobileNumber);
+                        callForgetPasswordApi(widget.mobileNumber);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
@@ -125,7 +128,7 @@ class _ForgetPasswordConfirmScreenState
     );
   }
 
-  void callChangePasswordApi(String mobileNumber) {
+  void callForgetPasswordApi(String mobileNumber) {
     log("New Password text ${newPassController.text}");
     log("Confirm Password text ${confirmPassController.text}");
     log("Mobile number $mobileNumber");
@@ -133,11 +136,13 @@ class _ForgetPasswordConfirmScreenState
         mobileNumber.isNotEmpty) {
       InternetChecks.showLoadingCircle(context);
       log("Both the password is same");
-      ChangePasswordApi changePasswordApi = ChangePasswordApi(
-          phoneNumber: mobileNumber, password: confirmPassController.text);
+      ForgetPasswordApi forgetPasswordApi = ForgetPasswordApi(
+          password: confirmPassController.text);
       Future<dynamic> future =
-          ChangePasswordRepository().changePassword(api: changePasswordApi);
-      future.then((value) => {handleResponseData(value)});
+          ForgetPasswordRepository().forgetPassword(api: forgetPasswordApi);
+      future.then((value) => {handleResponseData(value)}).catchError((onError) {
+        handleChangePasswordErrorResponseData(onError, context);
+      });
     }
   }
 
@@ -147,13 +152,21 @@ class _ForgetPasswordConfirmScreenState
       GetProfileDetails(context);
       Timer(
           const Duration(seconds: 2),
-              () => Navigator.pushReplacement(
+          () => Navigator.pushReplacement(
               context,
               PageTransition(
                   type: PageTransitionType.bottomToTop,
                   child: HomePage(homeRepository: HomeRepository()))));
     } else if (value is ErrorResponse) {
       showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+    }
+  }
+
+  void handleChangePasswordErrorResponseData(onError, BuildContext context) {
+    InternetChecks.closeLoadingProgress(context);
+    if (onError is ApiException) {
+      showSnackbar(
+          context, onError.errorResponse.message ?? "");
     }
   }
 }

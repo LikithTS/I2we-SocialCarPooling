@@ -580,7 +580,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     DateTime? picker = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(1970),
+        firstDate: DateTime(1950),
         lastDate: DateTime.now());
 
     if (picker != null) {

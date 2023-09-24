@@ -5,6 +5,7 @@ class Profile {
   String? _verificationStatus;
   String? _profileImage;
   int? _percentageOfCompletion;
+  String? _verificationRejectedReason;
   String? _designation;
   String? _work;
 
@@ -15,6 +16,7 @@ class Profile {
         String? verificationStatus,
         String? profileImage,
         int? percentageOfCompletion,
+        String? verificationRejectedReason,
         String? designation,
         String? work}) {
     if (id != null) {
@@ -34,6 +36,9 @@ class Profile {
     }
     if (percentageOfCompletion != null) {
       this._percentageOfCompletion = percentageOfCompletion;
+    }
+    if (verificationRejectedReason != null) {
+      this._verificationRejectedReason = verificationRejectedReason;
     }
     if(designation != null) {
       this._designation = designation;
@@ -57,6 +62,9 @@ class Profile {
   int? get percentageOfCompletion => _percentageOfCompletion;
   set percentageOfCompletion(int? percentageOfCompletion) =>
       _percentageOfCompletion = percentageOfCompletion;
+  String? get verificationRejectedReason => _verificationRejectedReason;
+  set verificationRejectedReason(String? verificationRejectedReason) =>
+      _verificationRejectedReason = verificationRejectedReason;
   String? get designation => _designation;
   set designation(String? designation) =>
       _designation = designation;
@@ -71,6 +79,7 @@ class Profile {
     _verificationStatus = json['verificationStatus'];
     _profileImage = json['profileImage'];
     _percentageOfCompletion = json['percentageOfCompletion'];
+    _verificationRejectedReason = json['verificationRejectedReason'];
     _designation = json['designation'];
     _work = json['work'];
   }
@@ -83,6 +92,7 @@ class Profile {
     data['verificationStatus'] = this._verificationStatus;
     data['profileImage'] = this._profileImage;
     data['percentageOfCompletion'] = this._percentageOfCompletion;
+    data['verificationRejectedReason'] = this._verificationRejectedReason;
     data['designation'] = this._designation;
     data['work'] = this._work;
     return data;

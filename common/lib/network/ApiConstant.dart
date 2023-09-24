@@ -26,6 +26,7 @@ class ApiConstant {
   static const String JOIN_PAGINATED_RIDE = "ride/join-paginated-ride";
   static const String REFRESH = "auth/refresh-token";
   static const String CHANGE_PASSWORD_API_PATH = "user/change-password";
+  static const String FORGET_PASSWORD_API_PATH = "user/forgot-password";
   static const String UPDATE_USER = "user/update-details";
   static const String GET_USER = "user";
   static const String GET_USER_PROFILE_URL = "/user/profile-upload-url";

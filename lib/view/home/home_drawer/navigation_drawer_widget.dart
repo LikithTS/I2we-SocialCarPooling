@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:common/network/ApiConstant.dart';
@@ -308,6 +309,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
   handleResponseData(value, BuildContext context) {
     InternetChecks.closeLoadingProgress(context);
+    log("Logout response $value");
     if (value is SuccessResponse) {
       CPSessionManager().handleUserLogout();
       Navigator.pushReplacement(
@@ -320,14 +322,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
   void showLogoutConfirmationDialog(BuildContext context) {
     showAlertDialog(
-        homeGlobalkey.currentContext!,
+        context,
         CPString.Alert,
         CPString.logout_desc,
         CPString.no,
         CPString.yes,
-        () => Navigator.pop(homeGlobalkey.currentContext!), () {
+        () => Navigator.pop(context), () {
       Navigator.of(homeGlobalkey.currentContext!).pop(true);
-      onLogoutButtonPressed(context);
+      onLogoutButtonPressed(homeGlobalkey.currentContext!);
     });
   }
 
@@ -383,7 +385,8 @@ Widget buildHeader(
                             .isNotEmpty)
                         ? NetworkImage(
                             CPSessionManager().getProfileImageWithBase())
-                        : const AssetImage('assets/images/profile_placeholder.jpg')
+                        : const AssetImage(
+                                'assets/images/profile_placeholder.jpg')
                             as ImageProvider,
                   ),
             addHorizontalSpace(20),

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:common/network/model/error_response.dart';
@@ -38,11 +39,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    log("Verification rejection reason ${AppPreference().userDetail?.verificationRejectedReason}");
 
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset : false,
-        body:SingleChildScrollView(
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -82,8 +84,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              InternetChecks.isConnected().then(
-                                      (isAvailable) =>
+                              InternetChecks.isConnected().then((isAvailable) =>
                                   {handleProfileUpload(isAvailable)});
                             });
                           },
@@ -108,11 +109,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ),
               addVerticalSpace(5),
               userNameText(AppPreference().userDetail?.name ?? ""),
-              workText(AppPreference().userDetail?.designation ?? ""),
-              addVerticalSpace(10),
+              workText(AppPreference().userDetail?.work ?? ""),
+              addVerticalSpace(5),
               Container(
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                height: 140,
+                height: 200,
                 width: double.maxFinite,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -123,8 +124,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding:
-                        EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
+                        padding: EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
                         child: Icon(
                           Icons.verified_user,
                           color: primaryColor,
@@ -136,42 +136,118 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: profileText(
-                                        DemoLocalizations.of(context)
-                                            ?.getText("get_verified") ??
-                                            "",
-                                        14.sp,
-                                        greyColor)),
-                                addHorizontalSpace(20),
-                                Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: profileText(
-                                        DemoLocalizations.of(context)
-                                            ?.getText("pending") ??
-                                            "",
-                                        14.sp,
-                                        primaryColor))
-                              ],
-                            ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  28, 0.0, 8.0, 8.0),
+                              padding:
+                                  const EdgeInsets.fromLTRB(28, 5.0, 8.0, 8.0),
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
                                     // add this
                                     child: Text(
                                       DemoLocalizations.of(context)?.getText(
-                                          "profile_screen_verification_pending_desc") ??
+                                              "verification_status") ??
                                           "",
                                       maxLines:
-                                      5, // you can change it accordingly
+                                          1, // you can change it accordingly
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor), // and this
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(28, 0.0, 8.0, 8.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    // add this
+                                    child: Text(
+                                      getUIVerificationStatus(AppPreference()
+                                              .userDetail
+                                              ?.verificationStatus) ??
+                                          DemoLocalizations.of(context)
+                                              ?.getText("pending") ??
+                                          "",
+                                      maxLines:
+                                          1, // you can change it accordingly
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: primaryColor), // and this
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (AppPreference()
+                                    .userDetail
+                                    ?.verificationRejectedReason !=
+                                null) ...[
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    28, 0.0, 8.0, 8.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      // add this
+                                      child: Text(
+                                        DemoLocalizations.of(context)?.getText(
+                                                "verification_rejection_reason") ??
+                                            "",
+                                        maxLines:
+                                            5, // you can change it accordingly
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor), // and this
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    28, 0.0, 8.0, 8.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      // add this
+                                      child: Text(
+                                        AppPreference()
+                                                .userDetail
+                                                ?.verificationRejectedReason ??
+                                            DemoLocalizations.of(context)
+                                                ?.getText("reason_unknown") ??
+                                            "",
+                                        maxLines:
+                                            5, // you can change it accordingly
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: primaryColor), // and this
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(28, 0.0, 8.0, 8.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    // add this
+                                    child: Text(
+                                      DemoLocalizations.of(context)?.getText(
+                                              "profile_screen_verification_pending_desc") ??
+                                          "",
+                                      maxLines:
+                                          5, // you can change it accordingly
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize: 11.sp,
@@ -212,17 +288,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               decoration: const BoxDecoration(
                                   color: lightBlueColor,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
+                                      BorderRadius.all(Radius.circular(15))),
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding:
-                                      const EdgeInsets.only(top: 18.0),
+                                      padding: const EdgeInsets.only(top: 18.0),
                                       child: profileText(
                                           DemoLocalizations.of(context)
-                                              ?.getText(
-                                              "profile_completed") ??
+                                                  ?.getText(
+                                                      "profile_completed") ??
                                               "",
                                           14.sp,
                                           const Color(0Xff707070)),
@@ -230,11 +305,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     addVerticalSpace(20),
                                     Wrap(
                                       crossAxisAlignment:
-                                      WrapCrossAlignment.start,
+                                          WrapCrossAlignment.start,
                                       children: [
                                         Text(
                                           DemoLocalizations.of(context)
-                                              ?.getText("view_details") ??
+                                                  ?.getText("view_details") ??
                                               "",
                                           style: const TextStyle(
                                             color: greyColor,
@@ -257,18 +332,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 radius: 60,
                                 lineWidth: 6,
                                 percent: (AppPreference()
-                                    .userDetail
-                                    ?.percentageOfCompletion ??
-                                    0) /
+                                            .userDetail
+                                            ?.percentageOfCompletion ??
+                                        0) /
                                     100,
                                 progressColor: primaryColor,
                                 backgroundColor: lightGreyColor,
                                 circularStrokeCap: CircularStrokeCap.round,
                                 center: progressTextBlack(
                                     (AppPreference()
-                                        .userDetail
-                                        ?.percentageOfCompletion ??
-                                        0)
+                                                .userDetail
+                                                ?.percentageOfCompletion ??
+                                            0)
                                         .toString(),
                                     13.sp,
                                     primaryColor)),
@@ -298,17 +373,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               decoration: const BoxDecoration(
                                   color: primaryLightColor,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
+                                      BorderRadius.all(Radius.circular(15))),
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding:
-                                      const EdgeInsets.only(top: 18.0),
+                                      padding: const EdgeInsets.only(top: 18.0),
                                       child: profileText(
                                           DemoLocalizations.of(context)
-                                              ?.getText(
-                                              "verify_pending") ??
+                                                  ?.getText("verification_documents") ??
                                               "",
                                           14.sp,
                                           const Color(0Xff707070)),
@@ -316,11 +389,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     addVerticalSpace(20),
                                     Wrap(
                                       crossAxisAlignment:
-                                      WrapCrossAlignment.start,
+                                          WrapCrossAlignment.start,
                                       children: [
                                         Text(
                                           DemoLocalizations.of(context)
-                                              ?.getText("view_details") ??
+                                                  ?.getText("view_details") ??
                                               "",
                                           style: const TextStyle(
                                             color: greyColor,
@@ -346,8 +419,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 progressColor: primaryColor,
                                 backgroundColor: lightGreyColor,
                                 circularStrokeCap: CircularStrokeCap.round,
-                                center:
-                                progressTextBlack("10%", 13.sp, primaryColor)),
+                                center: progressTextBlack(
+                                    "10%", 13.sp, primaryColor)),
                           )
                         ],
                       ),
@@ -383,13 +456,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             children: [
                               profileText(
                                   DemoLocalizations.of(context)
-                                      ?.getText("bio") ??
+                                          ?.getText("bio") ??
                                       "",
                                   12.sp,
                                   primaryColor),
                               profileText(
                                   DemoLocalizations.of(context)
-                                      ?.getText("edit") ??
+                                          ?.getText("edit") ??
                                       "",
                                   12.sp,
                                   primaryColor),
@@ -413,7 +486,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             children: [
                               profileText(
                                   DemoLocalizations.of(context)
-                                      ?.getText("languages") ??
+                                          ?.getText("languages") ??
                                       "",
                                   12.sp,
                                   primaryColor),
@@ -427,9 +500,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             children: [
                               profileText(
                                   AppPreference()
-                                      .userDetail
-                                      ?.language
-                                      ?.join(', ') ??
+                                          .userDetail
+                                          ?.language
+                                          ?.join(', ') ??
                                       "",
                                   12.sp,
                                   const Color(0Xff707070)),
@@ -526,6 +599,24 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       //  print("Response Data : Error");
 
     }
+  }
+
+  getUIVerificationStatus(String? verificationStatus) {
+    if (verificationStatus != null) {
+      switch (verificationStatus) {
+        case "NOT_VERIFIED":
+          return "Not Verified";
+        case "OTP_SENT":
+          return "Not Verified";
+        case "VERIFIED":
+          return "Verified";
+        case "VERIFICATION_IN_PROCESS":
+          return "In Progress";
+        case "PARTIALLY_VERIFIED":
+          return "In Progress";
+      }
+    }
+    return null;
   }
 }
 
