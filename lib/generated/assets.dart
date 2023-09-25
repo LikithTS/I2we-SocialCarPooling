@@ -9,6 +9,7 @@ class Assets {
   static const String imagesAddCar = 'assets/images/add_car.png';
   static const String imagesBackArrow = 'assets/images/back_arrow.png';
   static const String imagesBuilding = 'assets/images/building.svg';
+  static const String imagesCarImageDefault = 'assets/images/car_image_default.jpg';
   static const String imagesCarPool = 'assets/images/car_pool.png';
   static const String imagesCircleRightArrow = 'assets/images/circle_right_arrow.png';
   static const String imagesFacebookIcon = 'assets/images/facebook_icon.png';

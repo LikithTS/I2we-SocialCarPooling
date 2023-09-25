@@ -14,13 +14,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:socialcarpooling/util/InternetChecks.dart';
 import 'package:socialcarpooling/util/TextStylesUtil.dart';
 import 'package:socialcarpooling/util/color.dart';
-import 'package:socialcarpooling/util/ride_status_text_function.dart';
-import 'package:socialcarpooling/widgets/widget_text.dart';
-import 'package:socialcarpooling/view/home/rides/available_rides_screen.dart';
-import 'package:socialcarpooling/view/home/rides/invite_rides_card.dart';
-import 'package:socialcarpooling/view/home/rides/join_ride_driver_card.dart';
-import 'package:socialcarpooling/view/home/rides/join_ride_passenger_card.dart';
-import 'package:socialcarpooling/view/home/rides/my_rides_routes_screen.dart';
 import 'package:socialcarpooling/widgets/aleart_widgets.dart';
 
 import '../../../buttons/elevated_button_view.dart';
@@ -28,10 +21,6 @@ import '../../../buttons/outline_button_view.dart';
 import '../../../font&margin/font_size.dart';
 import '../../../util/constant.dart';
 import '../../../util/Localization.dart';
-import '../../../util/get_formatted_date_time.dart';
-import '../../../widgets/card_date_time_view.dart';
-import '../../../widgets/ride_amount_view.dart';
-import '../../../widgets/ride_type_view.dart';
 import '../../../widgets/text_widgets.dart';
 
 class AllRidesCard extends StatelessWidget {

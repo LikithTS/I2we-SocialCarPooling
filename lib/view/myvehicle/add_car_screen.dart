@@ -7,6 +7,7 @@ import 'package:common/network/request/addCarApi.dart';
 import 'package:common/network/response/SuccessResponse.dart';
 import 'package:common/network/response/car/AddCarResponse.dart';
 import 'package:common/network/response/user/ProfileImageUploadUrl.dart';
+import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -116,20 +117,10 @@ class AddCarScreenState extends State<AddCarScreen> {
                               "",
                           Alignment.topLeft),
                       addVerticalSpace(20),
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 58,
-                        backgroundImage: const NetworkImage(
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
-                        child: Stack(children: const [
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: CircleAvatar(
-                              radius: 18,
-                              backgroundColor: Colors.white70,
-                              child: Icon(Icons.photo_camera),
-                            ),
-                          ),
-                        ]),
+                        backgroundImage:
+                        AssetImage("assets/images/car_image_default.jpg")
                       ),
                       addVerticalSpace(20),
                       buildMaterialForm(
@@ -450,21 +441,42 @@ class AddCarScreenState extends State<AddCarScreen> {
                                       if (value != null && value is File)
                                         setState(() {
                                           rcImageFile = value;
+                                          log("Rc Image file $rcImageFile");
                                         })
                                     });
                               },
-                              icon: Icon(Icons.add_circle_outline),
+                              icon: const Icon(Icons.add_circle_outline),
                             ),
                           ),
                         ),
                       ),
                       addVerticalSpace(20),
+                      if(rcImageFile != null) ...[
+                        Center(
+                          child: Image.file(
+                            File(rcImageFile?.path ?? ""),
+                            // You can adjust the width and height as needed.
+                            width: double.infinity,
+                            fit: BoxFit.cover, // You can choose a BoxFit option that suits your needs.
+                          ),
+                        )
+                      ],
                       InkWell(
                         onTap: () {
-                          var carsFuture = viewModel.getCarImages();
-                          carsFuture.then((value) => setState(() {
+                          log("Car images size ${carImages?.length ?? 0}");
+                          if((carImages?.length ?? 0) <= 6) {
+                            var carsFuture = viewModel.getCarImages();
+                            carsFuture.then((value) => setState(() {
+                              if (carImages == null) {
                                 carImages = value;
-                              }));
+                              } else {
+                                carImages!.addAll(value!);
+                              }
+                              log("Car Images is $carImages");
+                            }));
+                          } else {
+                            showSnackbar(context, "You can upload a maximum of 6 photos.");
+                          }
                         },
                         child: Material(
                           elevation: 2,
@@ -491,17 +503,55 @@ class AddCarScreenState extends State<AddCarScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Align(
                                   alignment: Alignment.topLeft,
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                          "assets/images/login_image.png",
-                                          width: 45.w,
-                                          height: 54.h,
-                                          fit: BoxFit.fill),
-                                    ],
+                                  child: SizedBox(
+                                    height: 54.h, // Set the height of the container.
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal, // Scroll horizontally.
+                                      itemCount: (carImages?.length ?? 0) + 1, // Include one extra item for the asset image.
+                                      itemBuilder: (context, index) {
+                                        if (carImages != null && index < (carImages?.length ?? 0)) {
+                                          // Display images from carImages list.
+                                          return Padding(
+                                            padding: const EdgeInsets.only(right: 10.0), // Add spacing.
+                                            child: Image.file(
+                                              File(carImages![index]!.path), // Get the file from XFile.
+                                              width: 45.w,
+                                              height: 54.h,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        } else {
+                                          // Display the asset image as the last item.
+                                          return Padding(
+                                            padding: const EdgeInsets.only(right: 10.0), // Add spacing.
+                                            child: Image.asset(
+                                              "assets/images/login_image.png",
+                                              width: 45.w,
+                                              height: 54.h,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
+                              // Padding(
+                              //   padding: const EdgeInsets.all(8.0),
+                              //   child: Align(
+                              //     alignment: Alignment.topLeft,
+                              //     child: Row(
+                              //       children: [
+                              //         Image.asset(
+                              //             "assets/images/login_image.png",
+                              //             width: 45.w,
+                              //             height: 54.h,
+                              //             fit: BoxFit.fill),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // )
                             ],
                           ),
                         ),
@@ -546,7 +596,7 @@ class AddCarScreenState extends State<AddCarScreen> {
             changeColor(state, number);
           },
           style: ButtonStyle(
-            shape: MaterialStateProperty.all(CircleBorder()),
+            shape: MaterialStateProperty.all(const CircleBorder()),
             backgroundColor:
                 MaterialStateProperty.all(bgColor), // <-- Button color
             overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
@@ -704,6 +754,7 @@ class AddCarScreenState extends State<AddCarScreen> {
 
   handleResponseData(value) {
     if (value is SuccessResponse) {
+      CPSessionManager().setIfCarDetailsAdded(true);
       showDialog(
           context: context,
           builder: (BuildContext context) {

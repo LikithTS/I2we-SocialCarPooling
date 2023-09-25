@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:common/network/model/error_response.dart';
 import 'package:common/network/repository/CarRepository.dart';
+import 'package:common/network/repository/HomeRepository.dart';
 import 'package:common/network/request/deleteCarApi.dart';
 import 'package:common/network/request/drivingStatusApi.dart';
 import 'package:common/network/response/CarDetailsResponse.dart';
@@ -20,6 +21,7 @@ import '../../widgets/widget_text.dart';
 import '../../widgets/aleart_widgets.dart';
 import '../../widgets/button_widgets.dart';
 import '../../widgets/text_widgets.dart';
+import '../home/home_page.dart';
 
 class MyCarsScreen extends StatefulWidget {
   final List<CarDetailsResponse> carList;
@@ -120,7 +122,10 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.bottomToTop, child: HomePage(homeRepository: HomeRepository())));
                     },
                   ),
                   headerText(

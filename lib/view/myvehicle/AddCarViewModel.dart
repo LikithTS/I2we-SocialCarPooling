@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:common/network/repository/CarRepository.dart';
@@ -6,14 +7,16 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddCarViewModel {
+
   Future<File?> getRcImage() async {
     final picker = ImagePicker();
 
     final XFile? pickedFile = await picker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 50, // <- Reduce Image quality
-        maxHeight: 500, // <- reduce the image size
-        maxWidth: 500);
+      source: ImageSource.gallery, // Change this line to open the gallery
+      imageQuality: 50, // Reduce Image quality
+      maxHeight: 500, // Limit image height
+      maxWidth: 500, // Limit image width
+    );
 
     if (pickedFile != null) {
       final file = await _cropImage(pickedFile.path);
@@ -25,7 +28,7 @@ class AddCarViewModel {
         return null;
       }
     } else {
-      null;
+      return null; // Return null if no image was picked
     }
   }
 
@@ -42,18 +45,27 @@ class AddCarViewModel {
     }
   }
 
-  Future<List<XFile?>?> getCarImages() async {
-    List<XFile>? imageFileList = [];
-    final picker = ImagePicker();
 
-    final List<XFile>? selectedImages = await picker.pickMultiImage(
-        imageQuality: 50, // <- Reduce Image quality
-        maxHeight: 500, // <- reduce the image size
-        maxWidth: 500);
-    if (selectedImages != null && selectedImages.isNotEmpty) {
-      imageFileList.addAll(selectedImages);
+  Future<List<XFile>?> getCarImages() async {
+    try {
+      final picker = ImagePicker();
+      final List<XFile> selectedImages = await picker.pickMultiImage(
+        imageQuality: 50, // Reduce image quality
+        maxHeight: 500, // Limit image height
+        maxWidth: 500, // Limit image width
+      );
+
+      if (selectedImages.isNotEmpty) {
+        return selectedImages;
+      } else {
+        // No images were selected.
+        return null;
+      }
+    } catch (e) {
+      // Handle any errors that occur during image selection.
+      log('Error selecting images: $e');
+      return null;
     }
-    return imageFileList;
   }
 
   Future<List<AddCarResponse>> getUrlsForCars(int count) async {

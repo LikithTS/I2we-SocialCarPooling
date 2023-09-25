@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../util/color.dart';
 
@@ -8,6 +9,7 @@ class TextFormWithHintSupport extends StatelessWidget {
   final String text;
   final IconData iconData;
   final bool isNumber;
+  final int maxLen;
   TextEditingController updatedValue;
 
   TextFormWithHintSupport({
@@ -15,6 +17,7 @@ class TextFormWithHintSupport extends StatelessWidget {
     required this.text,
     required this.iconData,
     required this.isNumber,
+    required this.maxLen,
     required this.updatedValue
   }) : super(key: key);
 
@@ -32,7 +35,9 @@ class TextFormWithHintSupport extends StatelessWidget {
         keyboardType: checkForInputType(isNumber),
         textAlign: TextAlign.start,
         controller: updatedValue,
+        maxLength: maxLen,
         decoration: InputDecoration(
+            counterText: "",
             fillColor: Colors.grey,
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(width: 0, color: Colors.transparent),

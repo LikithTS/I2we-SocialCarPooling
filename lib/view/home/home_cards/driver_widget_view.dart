@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:common/model/direction.dart';
 import 'package:common/model/legSteps.dart';
 import 'package:common/network/model/error_response.dart';
+import 'package:common/network/repository/CarRepository.dart';
 import 'package:common/network/repository/RideRespository.dart';
 import 'package:common/network/request/StartDestination.dart';
 import 'package:common/network/request/Steps.dart';
@@ -12,6 +13,7 @@ import 'package:common/utils/CPSessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:socialcarpooling/buttons/elevated_button_view.dart';
 import 'package:socialcarpooling/provider/driver_provider.dart';
@@ -30,6 +32,7 @@ import 'package:socialcarpooling/widgets/alert_dialog_with_ok_button.dart';
 import '../../../provider/provider_preference.dart';
 import '../../../util/Localization.dart';
 import '../../../widgets/widget_text.dart';
+import '../../myvehicle/add_car_screen.dart';
 
 class DriverWidgetView extends StatefulWidget {
 
@@ -168,6 +171,7 @@ class HomeDriverState extends State<DriverWidgetView> {
                   text: DemoLocalizations.of(context)!.getText("amount"),
                   iconData: Icons.currency_rupee,
                   isNumber: true,
+                  maxLen: 4,
                   updatedValue: rideAmount,
                 ),
               ),
@@ -184,13 +188,43 @@ class HomeDriverState extends State<DriverWidgetView> {
   }
 
   void onPostRideButtonClicked() {
-    InternetChecks.isConnected()
-        .then((isAvailable) => {callRideApi(isAvailable)});
+    if (CPSessionManager().getIfCarDetailsAdded()) {
+      InternetChecks.isConnected()
+          .then((isAvailable) => {callRideApi(isAvailable)});
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              // Retrieve the text the that user has entered by using the
+              // TextEditingController.
+              content: Text(DemoLocalizations.of(context)
+                  ?.getText("car_unavailable_error") ??
+                  ""),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                      DemoLocalizations.of(context)?.getText("continue") ?? ""),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child:
+                            AddCarScreen(carRepository: CarRepository())));
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   handleResponseData(value) {
     InternetChecks.closeLoadingProgress(context);
     if (value is SuccessResponse) {
+      log("Driver ride api success data $value");
       log("Post new ride successful");
       alertDialogView(context, "ride_created_successful");
       setState(() {
@@ -205,7 +239,8 @@ class HomeDriverState extends State<DriverWidgetView> {
       });
       widget.refreshHomePage();
     } else if (value is ErrorResponse) {
-      showSnackbar(context, value.error?[0].message ?? value.message ?? "");
+      log("Driver ride api failure data $value");
+      showSnackbar(context, value.message ?? value.error?[0].message ?? "Bad Request");
     }
   }
 

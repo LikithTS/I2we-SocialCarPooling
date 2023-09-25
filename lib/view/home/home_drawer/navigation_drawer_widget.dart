@@ -75,7 +75,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 onClicked: () => selectedItem(context, 0)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("all_rides") ?? "",
-                icon: Icons.history,
+                icon: Icons.car_rental,
                 onClicked: () => selectedItem(context, 1)),
             buildMenuItem(
                 text: DemoLocalizations.of(context)?.getText("history") ?? "",
